@@ -14,6 +14,7 @@ class Component(yaml.YAMLObject):
 
 class Release(yaml.YAMLObject):
     yaml_tag = u'!ditz.rubyforge.org,2008-03-06/release'
+
 class Issue(yaml.YAMLObject):
     yaml_tag = u'!ditz.rubyforge.org,2008-03-06/issue'
 
@@ -62,3 +63,16 @@ __test__ = dict(
 2
 """)
 
+
+class Thing(object):
+    """
+    Everything is usually a thing.
+    """
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+class Query(object):
+    """
+    Use queries to find subsets of things.
+    """
