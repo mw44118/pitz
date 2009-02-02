@@ -24,10 +24,14 @@ interface.""",
       zip_safe=False,
       install_requires=[
         'PyYAML',
-	'sphinx',
+        'sphinx',
+        'nose',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
       # -*- Entry points: -*-
       """,
+
+      test_suite = 'nose.collector',
+
       )

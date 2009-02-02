@@ -1,9 +1,0 @@
-setup.cfg
-setup.py
-pitz/__init__.py
-pitz.egg-info/PKG-INFO
-pitz.egg-info/SOURCES.txt
-pitz.egg-info/dependency_links.txt
-pitz.egg-info/entry_points.txt
-pitz.egg-info/not-zip-safe
-pitz.egg-info/top_level.txt
