@@ -23,7 +23,8 @@ interface.""",
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-        'PyYAML'
+        'PyYAML',
+	'sphinx',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
