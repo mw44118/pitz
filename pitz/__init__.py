@@ -23,6 +23,7 @@ class Blob(yaml.YAMLObject):
         then all subclasses would get a reference to it.
         """
 
+
         if not hasattr(cls, 'instances'):
             cls.instances = []
 
