@@ -55,3 +55,31 @@ class Blob(yaml.YAMLObject):
 
         return "%s(%s)" % (self.__class__.__name__, attributes)
     
+
+class Entity(object):
+
+    @classmethod
+    def from_tuples(cls, tuples):
+        """
+        Return a dictionary that maps entity names to entity objects.
+        """
+        
+        d = defaultdict(dict)
+
+        for e, a, v in tuples:
+            d[e][a] = v
+
+        return d
+
+    @classmethod
+    def matching_pairs(cls, entities, pairs):
+        """
+        For pairs like
+
+            [
+                ('type', 'task'),
+                ('assigned-to', 'person-matt'),
+            ]
+
+        return all entities that match.
+        """

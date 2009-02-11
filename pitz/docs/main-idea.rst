@@ -14,19 +14,20 @@ Features
 See the `Use cases`_ section for details on all the planned features,
 but here's the big picture:
 
+* your to-do list lives right next to the code in your source control.
 * command-line interface.
-* use source control platform to track revisions over time.
-* objects serialize and deserialize to some plain-text format, so
+* Use source control platform to track revisions over time.
+* to-do list objects serialize and deserialize to some plain-text format, so
   that standard diff tools can expose how issues evolved over time and
-  things can be edited with any editor.
+  objects can be edited with any editor.
 * Make it easy to do interesting queries (this is my main beef with ditz
   -- elaborate querying is a headache).
 * Let every issue render itself to HTML for both a singular view (one
   thing per page, with links to related things) and a plural view (all
   things in a certain relation, with links to singular view for each).
+* A data model that prioritizes flexibility over performance.
 
 .. _`Use cases`: use-cases.html
-
 
 Relations
 =========
@@ -61,6 +62,8 @@ on the Task relation:
 * name
 * description
 * createddate
+* related milestone
+* related people
 
 Every relation must have a name and description and name must be
-unique in that relation.
+unique in that relation.  Everything else is flexible.

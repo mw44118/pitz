@@ -7,3 +7,4 @@ Contents:
 
     main-idea.rst
     use-cases.rst
+    contribute.rst
