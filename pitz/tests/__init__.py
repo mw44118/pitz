@@ -3,7 +3,8 @@
 
 # This is a list of entity-attribute-value tuples.
 
-# we got tasks, milestones, people, and components.
+# We got tasks, milestones, people, components, and comments.
+
 sample_data = [
 
     # tasks.
@@ -50,4 +51,22 @@ sample_data = [
     ('component-outdoor chores', 'type', 'component'),
     ('component-outdoor chores', 'name', 'component-outdoor chores'),
     ('component-outdoor chores', 'description', 'component'),
+
+    # comments
+
+    ('comment-1', 'type', 'comment'),
+    ('comment-1', 'name', 'I do not want to'),
+
+    ('comment-1', 'description', 
+        'I do not want to clean out the cat box.  You do it.'),
+
+    ('comment-1', 'linked-to', 'task-1'),
+    ('comment-1', 'created-date', 'Wed Feb 11 09:58:08 EST 2009'),
+
+    ('comment-2', 'type', 'comment'),
+    ('comment-2', 'name', 'But...'),
+    ('comment-2', 'description', 'You said you would do it!'),
+    ('comment-2', 'linked-to', 'task-1'),
+    ('comment-2', 'created-date', 'Wed Feb 11 09:58:48 EST 2009'),
+
 ]
