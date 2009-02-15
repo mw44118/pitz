@@ -1,0 +1,28 @@
+--- !ditz.rubyforge.org,2008-03-06/project 
+name: staffknex
+version: "0.5"
+components: 
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: staffknex
+releases: 
+- !ditz.rubyforge.org,2008-03-06/release 
+  name: 3.5.1
+  status: :released
+  release_time: 2008-10-10 18:40:45.054912 Z
+  log_events: 
+  - - 2008-09-02 19:16:28.409034 Z
+    - Matthew Wilson <mw@staffknex.com>
+    - created
+    - Even more awesome than ever before
+  - - 2008-10-10 18:40:45.054939 Z
+    - Matthew Wilson <mw@staffknex.com>
+    - released
+    - ""
+- !ditz.rubyforge.org,2008-03-06/release 
+  name: Matt's queue
+  status: :unreleased
+  release_time: 
+  log_events: 
+  - - 2008-10-10 18:41:10.757638 Z
+    - Matthew Wilson <mw@staffknex.com>
+    - created

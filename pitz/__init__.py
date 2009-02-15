@@ -55,24 +55,27 @@ class Blob(yaml.YAMLObject):
 
         return "%s(%s)" % (self.__class__.__name__, attributes)
     
+class EAV(object):
+    """
+    crappy implementation of entity-attribute-value database.
+    """
 
-class Entity(object):
-
-    @classmethod
-    def from_tuples(cls, tuples):
+    def __init__(self, tl):
         """
-        Return a dictionary that maps entity names to entity objects.
+        tl needs to be a list of tuples like
+            ('entity', 'attribute', 'value')
         """
-        
-        d = defaultdict(dict)
+        self.tl = tl
 
-        for e, a, v in tuples:
-            d[e][a] = v
+    @property
+    def types(self):
+        """
+        Return a set of all types defined in this database.
+        """
 
-        return d
+        return set([t[2] for t in self.tl if t[1] == 'type'])
 
-    @classmethod
-    def matching_pairs(cls, entities, pairs):
+    def matching_pairs(self, pairs):
         """
         For pairs like
 
@@ -82,4 +85,16 @@ class Entity(object):
             ]
 
         return all entities that match.
+        """
+    
+class Entity(object):
+    """
+    Just a primitive bag of attributes and values, with some other
+    stupid stuff mixed in.
+    """
+
+    def __init__(self, tl):
+        """
+        tl mustt be a list of (entity, attribute, value) tuples, and all
+        the entity elements have to be the same.
         """

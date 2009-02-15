@@ -1,0 +1,39 @@
+---
+type: task
+
+name: task-1
+
+title: Clean up the cat box!
+
+assignedto: person-matt
+
+plannedfor: milestone-1
+
+description: |-
+
+  The cat box is a disgusting mess.  Please clean it up!
+
+  Really, it is **revolting**!
+
+---
+type: person
+
+name: person-matt
+
+title: Matthew Wilson
+
+description: |-
+
+  33 years old, lives in Cleveland Heights, OH, loves that chicken from
+  Popeyes.
+
+---
+type: milestone
+
+name:milestone-1
+
+title: Short-run goals
+
+description: |-
+
+  This is a list of stuff to do in the short run.
