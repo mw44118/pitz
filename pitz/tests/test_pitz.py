@@ -1,43 +1,19 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+from pprint import pprint
+
 import pitz
 
-class Project(pitz.Blob):
-    plural_name = 'projects'
+tasks = [
+    pitz.Entity({'entity':'task-1', 'title':'Clean cat box!'}),
+    pitz.Entity({'entity':'task-2', 'title':'Shovel driveway'}),
+]
 
-class Issue(pitz.Blob):
-    plural_name = 'issues'
-
-class Person(pitz.Blob):
-    plural_name = 'people'
-
-class Milestone(pitz.Blob):
-    plural_name = 'milestones'
-    
-class Component(pitz.Blob):
-    plural_name = 'components'
-
-def test_blob_1():
+def test_simplest_query_1():
     """
-    Verify Blob subclasses keep references of instances.
+    Verify we can look up an entity by entity value.
     """
 
-    issues = [Issue(), Issue()]
-    people = [Person(), Person()]
-
-    assert Issue.instances == issues
-    assert Person.instances == people
-
-def test_pointers_1():
-
-    """
-    Verify we can follow pointer traits.
-    """
-
-    matt = Person()
-
-    Issue(owner=matt, title="Wash the car")
-    Issue(owner=matt, title="Take out the trash")
-
-    x = len(matt.pointers_here['issues'])
-    assert x == 2, "Counted %d, expected 2!" % x
+    t1, t2 = tasks
+    assert t1.match([('entity', 'task-1')])
+    assert not t2.match([('entity', 'task-1')])

@@ -1,39 +1,39 @@
 ---
-type: task
+!!python/object:pitz.Entity
+data: 
+    entity: task-1
+    type: task
+    title: Clean up the cat box!
+    assignedto: person-matt
+    plannedfor: milestone-1
 
-name: task-1
+    description: |-
 
-title: Clean up the cat box!
+        The cat box is a mess.  Please clean it up!
 
-assignedto: person-matt
+        Really, it is **revolting**!
 
-plannedfor: milestone-1
-
-description: |-
-
-  The cat box is a disgusting mess.  Please clean it up!
-
-  Really, it is **revolting**!
-
----
-type: person
-
-name: person-matt
-
-title: Matthew Wilson
-
-description: |-
-
-  33 years old, lives in Cleveland Heights, OH, loves that chicken from
-  Popeyes.
 
 ---
-type: milestone
+!!python/object:pitz.Entity
+data: 
+    entity: person-matt
+    type: person
+    title: Matthew Wilson
 
-name:milestone-1
+    description: |-
 
-title: Short-run goals
+        33 years old, lives in Cleveland Heights, OH, loves that chicken from
+        Popeyes.
 
-description: |-
+---
+!!python/object:pitz.Entity
+data:
+    entity: milestone-1
+    type: milestone
+    title: Short-run goals
 
-  This is a list of stuff to do in the short run.
+    description: |-
+
+        This is a list of stuff to do in the short run.
+
