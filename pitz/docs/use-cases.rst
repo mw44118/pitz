@@ -14,7 +14,7 @@ List all tasks in the system::
 
 List tasks assigned to me::
 
-    $ pitz tasks --assigned-to matt
+    $ pitz tasks assigned-to:matt
 
 List all milestones::
 
@@ -22,35 +22,15 @@ List all milestones::
 
 List all tasks in the milestone named feb09::
 
-    $ pitz tasks --milestone feb09
+    $ pitz tasks milestone:feb09
 
 List just my tasks in the feb09 milestone::
 
-    $ pitz tasks --milestone feb09 --assigned-to matt
-
-By default, every filter is combined with an AND clause.  Here's how to
-get any task in milestone feb09 or assigned to me::
-
-    $ pitz tasks --or --milestone feb09 --assigned-to matt
-
-If you need to run a query like::
-
-    (OR
-
-        (AND assigned-to-matt milestone-feb09)
-        (AND assigned-to-tim milestone-feb09))
-
-Then first of all, you're crazy.  Write a function and name it foo and
-then call it like this::
-
-    $ pitz special foo
-
-Then your function will be called the parameters off the command line
-and a parameter that lets you access the data model.
+    $ pitz tasks milestone:feb09 assigned-to:matt
 
 List any task assigned to me or Tim::
 
-    $ pitz tasks --assigned-to matt,tim
+    $ pitz tasks --assigned-to:[matt,tim]
 
 See a particular milestone in detail (otice how milestone is singular in
 this command)::
@@ -66,16 +46,20 @@ Example commands
 
 Add a new task::
 
-    $ pitz add task
+    $ pitz new task
 
 Add a new milestone::
 
-    $ pitz add milestone
+    $ pitz new milestone
 
 Update a particular task::
 
-    $ pitz update task feb09
+    $ pitz update task99
 
 Delete one particular task::
 
-    $ pitz delete task task99
+    $ pitz delete task99
+
+Comment on a task::
+
+    $ pitz comment task100

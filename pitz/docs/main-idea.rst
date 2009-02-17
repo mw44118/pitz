@@ -40,7 +40,7 @@ You can make your own relations too.
 Any relation supports a singular and a plural command.  Running `pitz
 milestones` is sort of like this statement::
 
-    select name, description from milestone;
+    select title from milestone;
 
 And running `pitz milestone feb09` is sort of like::
 

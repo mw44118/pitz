@@ -3,11 +3,37 @@
 from UserDict import UserDict
 import yaml
 
+class Bag(object):
+    """
+    Really just a collection of entities and some functions to query
+    them.
+    """
+
+    def __init__(self, entities=()):
+        
+        self.entities = {}
+        for e in entities:
+            self.entities[e['entity']] = e
+
+    def matching_pairs(self, pairs):
+        """
+        For pairs like
+
+            [
+                ('type', 'task'),
+                ('assigned-to', 'person-matt'),
+            ]
+
+        return all entities that match.
+        """
+
+        return [e for e in self.entities.values() if e.match(pairs)]
+
 class Entity(UserDict):
     """
     A regular dictionary with a few extra tweaks.
     """
-    
+
     def __init__(self, d=None, **kwargs):
         """
         Make sure we get at least an entity attribute, a title, and a
@@ -76,15 +102,19 @@ class Entity(UserDict):
 
         return "\n".join(pretty_attributes)
 
-    @property 
-    def singular_view(self):
+
+    @property
+    def h1(self):
+        return "%(type)s: %(title)s" % self.data
+
+    @property
+    def plusline(self):
+        return "+" * len(self.h1)
+
+    def singular_view(self, bag):
         """
         The detail view.
         """
-
-        h1 = "%(type)s: %(title)s" % self.data
-        plusline = "+" * len(h1)
-        attribute_block = self.attribute_block
 
         return """\
 %(plusline)s
@@ -93,30 +123,38 @@ class Entity(UserDict):
 
 %(attribute_block)s
 
-""" % locals()
+""" % dict(
+        plusline=self.plusline,
+        h1=self.h1,
+        attribute_block=self.attribute_block)
 
-class Bag(object):
-    """
-    Really just a collection of entities and some functions to query
-    them.
-    """
+class Task(Entity):
 
-    def __init__(self, entities=None):
-        
-        self.entities = {}
-        for e in entities:
-            self.entities[e.entity] = e
+    def singular_view(self, bag):
 
-    def matching_pairs(self, pairs):
-        """
-        For pairs like
-
+        comments_for_this_task = bag.matching_pairs(
             [
-                ('type', 'task'),
-                ('assigned-to', 'person-matt'),
+                ('type', 'comment'),
+                ('link', self['entity']),
             ]
+        )
 
-        return all entities that match.
-        """
+        comments_block = "\n".join(['    %s' % c
+            for c in comments_for_this_task])
+ 
+        return """\
+%(plusline)s
+%(h1)s
+%(plusline)s
 
-        return [e for e in self.entities.values() if e.match(pairs)]
+%(attribute_block)s
+
+comments:
+%(comments_block)s
+
+""" % dict(
+        plusline=self.plusline,
+        h1=self.h1,
+        attribute_block=self.attribute_block,
+        comments_block=comments_block,
+    )
