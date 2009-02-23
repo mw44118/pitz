@@ -1,7 +1,9 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 import pitz
-from pitz.tests import tasks, people, comments
+from pitz.tests import tasks
+
+from nose.tools import raises
 from nose import SkipTest
 
 def test_simplest_query_1():
@@ -10,23 +12,22 @@ def test_simplest_query_1():
     """
 
     t1, t2 = tasks
-    assert t1.match([('entity', 'task-1')])
-    assert not t2.match([('entity', 'task-1')])
+    assert t1.match([('name', 'task-1')])
+    assert not t2.match([('name', 'task-1')])
 
 def test_bag_1():
     """
     Verify the bag can find all the comments.
     """
+    b = pitz.Bag(tasks)
 
-    b = pitz.Bag(tasks + people + comments)
+    found_tasks = b.matching_pairs([('type', 'task')])
 
-    found_comments = b.matching_pairs([('type', 'comment')])
+    assert len(found_tasks) == 2
 
-    assert len(found_comments) == 2
-
-    c1, c2 = found_comments
-    assert c1['type'] == 'comment'
-    assert c2['type'] == 'comment'
+    c1, c2 = found_tasks
+    assert c1['type'] == 'task'
+    assert c2['type'] == 'task'
 
 def test_show_task():
     """
@@ -35,7 +36,7 @@ def test_show_task():
 
     t1, t2 = tasks
 
-    bag = pitz.Bag(tasks + people + comments)
+    bag = pitz.Bag(tasks)
 
     singular_view = t1.singular_view(bag)
 
@@ -47,6 +48,40 @@ def test_new_task():
     """
     Verify we can make a new task.
     """
+
+    pitz.Task({'name':'task-1', 'title':'Clean cat box!', 
+        'creator':'person-matt',
+        'description':'It is gross!', 'type':'task'}),
+
+@raises(ValueError)
+def test_must_get_required_attributes():
+    
+    pitz.Task({'entity':'task-1'})
+
+def test_as_eav_tuples():
+
+    t1, t2 = tasks
+    assert isinstance(t1.as_eav_tuples, list)
+
+    assert len(t1.as_eav_tuples) == 7, \
+    "got %d tuples back!" % len(t1.as_eav_tuples)
+
+def test_plural_view():
+
+    t1, t2 = tasks
+    assert isinstance(t1.plural_view, str)
+    assert t1.data['name'] in t1.plural_view
+    assert t1.data['title'] in t1.plural_view
+
+@raises(TypeError)
+def test_match_1():
+
+    t1, t2 = tasks
+
+    t1.match([('owners', 
+        ['person-matt', 'person-tim'])])
+    
+def test_name_must_be_unique():
 
     raise SkipTest
 

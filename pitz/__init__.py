@@ -1,6 +1,8 @@
 # vim: set ts=4 sw=4 filetype=python:
 
 from UserDict import UserDict
+from datetime import datetime
+
 import yaml
 
 class Bag(object):
@@ -13,7 +15,7 @@ class Bag(object):
         
         self.entities = {}
         for e in entities:
-            self.entities[e['entity']] = e
+            self.entities[e['name']] = e
 
     def matching_pairs(self, pairs):
         """
@@ -34,23 +36,39 @@ class Entity(UserDict):
     A regular dictionary with a few extra tweaks.
     """
 
-    def __init__(self, d=None, **kwargs):
+    def __init__(self, d=None, created_date="right now",
+        description="same as title", **kwargs):
+
         """
-        Make sure we get at least an entity attribute, a title, and a
-        type.
+        Make sure we get at least the required attributes.
         """
 
         UserDict.__init__(self, d, **kwargs)
 
-        for a in ('entity', 'title', 'type'):
+        for a in ('name', 'title', 'creator', 'type'):
+
             if a not in self.data:
                 raise ValueError("I need an attribute named %s!" % a)
 
+        # Now set up the attributes that have defaults.
+        if created_date == "right now":
+            created_date = datetime.now() 
+
+        self.data['created_date'] = self.data['modified_date'] \
+        = created_date
+
+        self.data['last_modified_by'] = self.data['creator']
+        
+        if description == "same as title":
+            description = self.data['title']
+
+        self.data['description'] = description
+
     @property
     def as_eav_tuples(self):
-        return [(self.data['entity'], a, v) 
+        return [(self.data['name'], a, v) 
         for a, v in self.data.items() 
-        if a != 'entity']
+        if a != 'name']
     
     def match(self, pairs):
 
@@ -79,82 +97,15 @@ class Entity(UserDict):
         things.
         """
 
-        return "%(entity)-10s: %(title)s" % self.data
+        return "%(name)-10s: %(title)s" % self.data
 
     def __str__(self):
         return self.plural_view
 
-    @property
-    def attribute_block(self):
-
-        pretty_attributes = []
-
-        for a, v in self.data.items():
-            if isinstance(v, (list, tuple)):
-                pretty_attributes += [""]
-                pretty_attributes += ["%s:" % a]
-                for x in v:
-                    pretty_attributes += [' ' * 4 + str(x)]
-                pretty_attributes += [""]
-                
-            else:
-                pretty_attributes += ["%s: %s" % (a, v)]
-
-        return "\n".join(pretty_attributes)
-
-
-    @property
-    def h1(self):
-        return "%(type)s: %(title)s" % self.data
-
-    @property
-    def plusline(self):
-        return "+" * len(self.h1)
-
-    def singular_view(self, bag):
-        """
-        The detail view.
-        """
-
-        return """\
-%(plusline)s
-%(h1)s
-%(plusline)s
-
-%(attribute_block)s
-
-""" % dict(
-        plusline=self.plusline,
-        h1=self.h1,
-        attribute_block=self.attribute_block)
 
 class Task(Entity):
 
     def singular_view(self, bag):
 
-        comments_for_this_task = bag.matching_pairs(
-            [
-                ('type', 'comment'),
-                ('link', self['entity']),
-            ]
-        )
+        return self.plural_view
 
-        comments_block = "\n".join(['    %s' % c
-            for c in comments_for_this_task])
- 
-        return """\
-%(plusline)s
-%(h1)s
-%(plusline)s
-
-%(attribute_block)s
-
-comments:
-%(comments_block)s
-
-""" % dict(
-        plusline=self.plusline,
-        h1=self.h1,
-        attribute_block=self.attribute_block,
-        comments_block=comments_block,
-    )
