@@ -1,8 +1,6 @@
-+++++++++++++++++
-Please contribute
-+++++++++++++++++
-
-Contributions are welcome, particularly wishlists.
++++++++
+Project
++++++++
 
 =============== ===========================================
 What            Where

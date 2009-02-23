@@ -3,7 +3,7 @@ Use cases
 +++++++++
 
 These are all the things I want pitz to be able to do.  I'm not hung up
-on the exact syntax. I'm just making it up as I go along
+on the exact syntax.
 
 Example queries
 ===============

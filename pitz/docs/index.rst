@@ -5,6 +5,7 @@ Contents:
 
 .. toctree::
 
+    project.rst
     main-idea.rst
     use-cases.rst
-    contribute.rst
+    data-model.rst
