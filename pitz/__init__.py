@@ -102,7 +102,6 @@ class Entity(UserDict):
     def __str__(self):
         return self.plural_view
 
-
 class Task(Entity):
 
     def singular_view(self, bag):
