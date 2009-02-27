@@ -3,6 +3,8 @@
 from UserDict import UserDict
 from datetime import datetime
 
+import hashlib, random
+
 import yaml
 
 class Bag(object):
@@ -31,12 +33,19 @@ class Bag(object):
 
         return [e for e in self.entities.values() if e.match(pairs)]
 
-class Entity(UserDict):
+    def append(self, e):
+
+        if e['name'] in self.entities:
+            raise ValueError("I already have %(name)s in here!" % e)
+
+        self.entities[e['name']] = e
+
+class Entity(UserDict, yaml.YAMLObject):
     """
     A regular dictionary with a few extra tweaks.
     """
 
-    def __init__(self, d=None, created_date="right now",
+    def __init__(self, bag, d=None, created_date="right now",
         description="same as title", **kwargs):
 
         """
@@ -45,10 +54,19 @@ class Entity(UserDict):
 
         UserDict.__init__(self, d, **kwargs)
 
-        for a in ('name', 'title', 'creator', 'type'):
+        # Verify we got all the keys we want.
+        for a in ('title', 'creator'):
 
             if a not in self.data:
                 raise ValueError("I need an attribute named %s!" % a)
+
+
+        # Make a name attribute.
+        a = str(datetime.now())
+        b = str(random.random())
+        c = hashlib.sha1(a+b).hexdigest()
+
+        self['name'] = '%s-%s' % (self.__class__.__name__.lower(), c)
 
         # Now set up the attributes that have defaults.
         if created_date == "right now":
@@ -63,6 +81,10 @@ class Entity(UserDict):
             description = self.data['title']
 
         self.data['description'] = description
+
+        # Finally, add ourself to the bag.
+        self.bag = bag
+        self.bag.append(self)
 
     @property
     def as_eav_tuples(self):
@@ -102,9 +124,17 @@ class Entity(UserDict):
     def __str__(self):
         return self.plural_view
 
+    @classmethod
+    def load(cls, document):
+        obj = yaml.load(document)
+        assert isinstance(obj, cls)
+        return obj
+
+    def dump(self):
+        return yaml.dump(self)
+
 class Task(Entity):
 
     def singular_view(self, bag):
 
         return self.plural_view
-

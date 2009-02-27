@@ -3,12 +3,14 @@
 from datetime import datetime
 import pitz
 
+b = pitz.Bag()
+
 tasks = [
 
-    pitz.Task({'name':'task-1', 'title':'Clean cat box!', 
+    pitz.Task(b, {'title':'Clean cat box!', 
         'type':'task', 'creator':'person-matt'}),
 
-    pitz.Task({'name':'task-2', 'title':'Shovel driveway', 
+    pitz.Task(b, {'title':'Shovel driveway', 
         'type':'task', 'creator':'person-matt'}),
 ]
 

@@ -12,8 +12,8 @@ def test_simplest_query_1():
     """
 
     t1, t2 = tasks
-    assert t1.match([('name', 'task-1')])
-    assert not t2.match([('name', 'task-1')])
+    assert t1.match([('title', 'Clean cat box!')])
+    assert not t2.match([('title', 'Clean cat box!')])
 
 def test_bag_1():
     """
@@ -49,7 +49,9 @@ def test_new_task():
     Verify we can make a new task.
     """
 
-    pitz.Task({'name':'task-1', 'title':'Clean cat box!', 
+    b = pitz.Bag()
+
+    pitz.Task(b, {'title':'Clean cat box!', 
         'creator':'person-matt',
         'description':'It is gross!', 'type':'task'}),
 
