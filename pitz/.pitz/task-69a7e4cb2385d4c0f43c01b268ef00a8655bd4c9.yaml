@@ -1,0 +1,8 @@
+created_date: &id001 2009-03-01 12:56:40.795605
+creator: Matt
+description: Allow comments on all entities (tasks, comments, milestones, etc)
+last_modified_by: Matt
+modified_date: *id001
+name: task-69a7e4cb2385d4c0f43c01b268ef00a8655bd4c9
+title: Allow comments on all entities (tasks, comments, milestones, etc)
+type: task

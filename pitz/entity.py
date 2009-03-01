@@ -53,9 +53,9 @@ class Entity(UserDict):
         if 'description' not in kwargs:
             self.data['description'] = self.data['title']
 
-        # Finally, add this entity to the bag (if we got one).
+        # Finally, add this entity to the bag (if we got a bag).
+        self.bag = bag
         if bag:
-            self.bag = bag
             self.bag.append(self)
 
     @property
@@ -116,16 +116,13 @@ class Entity(UserDict):
             type: {{type}}
             name: {{name}}
            title: {{title}}
-     description: {{description}}
     created date: {{created_date}}
    modified date: {{modified_date}}
          creator: {{creator}}
 last modified by: {{last_modified_by}}
 
-Comments:
-{% for c in comments %}
-  {{c}}
-{% endfor %}
+     description: 
+{{description}}
 """)
         
         return t.render(**d)
@@ -145,13 +142,9 @@ Comments:
         """
 
         fp = os.path.join(pathname, '%s.yaml' % (self.name)) 
-
         f = open(fp, 'w')
-
         f.write(self.yaml)
-
         f.close()
-
         logging.debug("Saved file %s" % fp)
 
         return fp

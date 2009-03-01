@@ -3,6 +3,8 @@
 import logging, os
 from glob import glob
 
+import jinja2
+
 from pitz.task import Task
 
 class Bag(object):
@@ -26,17 +28,22 @@ class Bag(object):
                 ('assigned-to', 'person-matt'),
             ]
 
-        return all entities that match.
+        return a new bag instance containing all entities that match.
         """
 
-        return [e for e in self.entities.values() if e.match(pairs)]
+        matches = [e for e in self.entities.values() if e.match(pairs)]
+        return self.__class__(matches)
 
     def append(self, e):
+        """
+        Link an entity to this bag.
+        """
 
         if e['name'] in self.entities:
             raise ValueError("I already have %(name)s in here!" % e)
 
         self.entities[e['name']] = e
+        e.bag = self
 
     def to_yaml_files(self, pathname):
         """
@@ -60,3 +67,11 @@ class Bag(object):
             else:
                 raise ValueError("I can't parse %s yet." % bn)
                 
+    def __str__(self):
+        
+        t = jinja2.Template("""\
+{% for e in entities %}
+    {{e.plural_view}}
+{% endfor %}""")
+
+        return t.render(entities=self.entities.values())
