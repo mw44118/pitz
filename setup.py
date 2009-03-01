@@ -26,6 +26,7 @@ interface.""",
         'PyYAML',
         'sphinx',
         'nose',
+        'jinja2',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

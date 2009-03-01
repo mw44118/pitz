@@ -3,6 +3,7 @@
 import logging
 from UserDict import UserDict
 from datetime import datetime
+import os
 
 import hashlib, random
 
@@ -10,51 +11,52 @@ import yaml
 
 import jinja2
 
-class Entity(UserDict, yaml.YAMLObject):
+class Entity(UserDict):
     """
     A regular dictionary with a few extra tweaks.
     """
 
-    def __init__(self, bag, created_date="right now",
-        description="same as title", **kwargs):
+    required_fields = ['title', 'creator']
+
+    def __init__(self, bag=None, **kwargs):
 
         """
-        Make sure we get at least the required attributes.
+        At least needs title and creator in kwargs.
         """
+
+        for rf in self.required_fields:
+            if rf not in kwargs:
+                raise ValueError("I need these required fields %s" 
+                    % self.required_fields)
 
         UserDict.__init__(self, **kwargs)
+        self.data['type'] = self.__class__.__name__.lower()
 
-        # Verify we got all the keys we want.
-        for a in ('title', 'creator'):
+        # Make a name if it wasn't provided.
+        if 'name' not in kwargs:
+            a = str(datetime.now())
+            b = str(random.random())
+            c = hashlib.sha1(a+b).hexdigest()
 
-            if a not in self.data:
-                raise ValueError("I need an attribute named %s!" % a)
+            self['name'] = '%s-%s' % (self.data['type'], c)
 
+        # Handle attributes with defaults.
+        if 'created_date' not in kwargs:
+            self.data['created_date'] = datetime.now() 
 
-        # Make a name attribute.
-        a = str(datetime.now())
-        b = str(random.random())
-        c = hashlib.sha1(a+b).hexdigest()
+        if 'modified_date' not in kwargs:
+            self['modified_date'] = self.data['created_date']
 
-        self['name'] = '%s-%s' % (self.__class__.__name__.lower(), c)
-
-        # Now set up the attributes that have defaults.
-        if created_date == "right now":
-            created_date = datetime.now() 
-
-        self.data['created_date'] = self.data['modified_date'] \
-        = created_date
-
-        self.data['last_modified_by'] = self.data['creator']
+        if 'last_modified_by' not in kwargs:
+            self.data['last_modified_by'] = self.data['creator']
         
-        if description == "same as title":
-            description = self.data['title']
+        if 'description' not in kwargs:
+            self.data['description'] = self.data['title']
 
-        self.data['description'] = description
-
-        # Finally, add ourself to the bag.
-        self.bag = bag
-        self.bag.append(self)
+        # Finally, add this entity to the bag (if we got one).
+        if bag:
+            self.bag = bag
+            self.bag.append(self)
 
     @property
     def name(self):
@@ -131,18 +133,18 @@ Comments:
     def __str__(self):
         return self.plural_view
 
-
     @property
     def yaml(self):
-        return yaml.dump(self, default_flow_style=False)
+        return yaml.dump(self.data, default_flow_style=False)
 
-    def to_yaml_file(self):
+    def to_yaml_file(self, pathname):
         """
         Returns the path of the file saved.
+
+        The pathname specifies where to save it.
         """
 
-        fp = '/home/matt/projects/pitz/pitz/junkyard/%s.yaml' \
-        % (self.name) 
+        fp = os.path.join(pathname, '%s.yaml' % (self.name)) 
 
         f = open(fp, 'w')
 
@@ -155,21 +157,10 @@ Comments:
         return fp
 
     @classmethod
-    def from_yaml_file(cls, fp):
+    def from_yaml_file(cls, bag, fp):
         """
-        Loads the file at file path fp and returns it.
+        Loads the file at file path fp into the bag and returns it.
         """
 
-        return cls.load(open(fp))
-    
-    @classmethod
-    def load(cls, document):
-        obj = yaml.load(document)
-        assert isinstance(obj, cls)
-        return obj
-
-
-        
-
-
-
+        d = yaml.load(open(fp))
+        return cls(bag, **d)
