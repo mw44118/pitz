@@ -1,0 +1,10 @@
+created_date: &id001 2009-03-01 12:34:57.832302
+creator: Matt Wilson
+description: 'Figure out how to group tasks into milestones.  Some people call
+
+  these releases, or iterations, or versions.'
+last_modified_by: Matt Wilson
+modified_date: *id001
+name: task-f8a13832-abce-4ec7-a53f-4708821d585a
+title: Write code for milestones
+type: task

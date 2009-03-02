@@ -3,13 +3,13 @@
 import logging
 from UserDict import UserDict
 from datetime import datetime
-import os
-
-import hashlib, random
+import os, uuid
 
 import yaml
 
 import jinja2
+
+logging.basicConfig(level=logging.INFO)
 
 class Entity(UserDict):
     """
@@ -24,6 +24,8 @@ class Entity(UserDict):
         At least needs title and creator in kwargs.
         """
 
+        logging.debug("inside __init__ with bag %s" % bag)
+
         for rf in self.required_fields:
             if rf not in kwargs:
                 raise ValueError("I need these required fields %s" 
@@ -34,11 +36,7 @@ class Entity(UserDict):
 
         # Make a name if it wasn't provided.
         if 'name' not in kwargs:
-            a = str(datetime.now())
-            b = str(random.random())
-            c = hashlib.sha1(a+b).hexdigest()
-
-            self['name'] = '%s-%s' % (self.data['type'], c)
+            self['name'] = '%s-%s' % (self.data['type'], uuid.uuid4())
 
         # Handle attributes with defaults.
         if 'created_date' not in kwargs:
@@ -55,7 +53,7 @@ class Entity(UserDict):
 
         # Finally, add this entity to the bag (if we got a bag).
         self.bag = bag
-        if bag:
+        if bag is not None:
             self.bag.append(self)
 
     @property
@@ -95,7 +93,7 @@ class Entity(UserDict):
         things.
         """
 
-        return "%(name)-10s: %(title)s" % self.data
+        return "%(title)s" % self.data
 
     @property
     def singular_view(self):
@@ -127,8 +125,9 @@ last modified by: {{last_modified_by}}
         
         return t.render(**d)
 
+
     def __str__(self):
-        return self.plural_view
+        return self.singular_view
 
     @property
     def yaml(self):
@@ -150,7 +149,7 @@ last modified by: {{last_modified_by}}
         return fp
 
     @classmethod
-    def from_yaml_file(cls, bag, fp):
+    def from_yaml_file(cls, fp, bag=None):
         """
         Loads the file at file path fp into the bag and returns it.
         """

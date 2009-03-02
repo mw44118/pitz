@@ -46,7 +46,7 @@ def test_new_bag():
     global tasks
     t1, t2 = tasks
 
-    b = pitz.Bag(tasks)
+    b = pitz.Bag(entities=tasks)
 
     assert b.entities[t1.name] == t1
     assert b.entities[t2.name] == t2
@@ -97,7 +97,6 @@ def test_plural_view():
     global tasks
     t1, t2 = tasks
     assert isinstance(t1.plural_view, str)
-    assert t1.data['name'] in t1.plural_view
     assert t1.data['title'] in t1.plural_view
 
     print(str(t1))
@@ -149,7 +148,7 @@ def test_yaml_file():
     b = pitz.Bag()
 
     fp = t1.to_yaml_file('/home/matt/projects/pitz/pitz/junkyard')
-    pitz.Entity.from_yaml_file(b, fp)
+    pitz.Entity.from_yaml_file(fp, b)
 
 
 def test_to_html():

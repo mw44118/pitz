@@ -23,7 +23,13 @@ def test_matching_pairs():
 
     found_tasks = b.matching_pairs([('type', 'task')])
 
-    assert len(found_tasks) == 2
+    t1, t2 = tasks
+    print "t1's type is %(type)s" % t1
+    print "t1's bag is %s" % t1.bag
+    print "len(b) is %d" % len(b)
+    print "len(b.entities) is %d" % len(b.entities)
+
+    assert len(found_tasks) == 2, "Expected 2, counted %d" % len(b)
 
     t1, t2 = found_tasks
     assert t1['type'] == 'task'
@@ -34,7 +40,7 @@ def test_new_bag():
     global tasks
     t1, t2 = tasks
 
-    b2 = pitz.Bag(tasks)
+    b2 = pitz.Bag(entities=tasks)
 
     assert b2.entities[t1.name] == t1
     assert b2.entities[t2.name] == t2
@@ -48,15 +54,4 @@ def test_from_yaml_files_1():
 
     b2.from_yaml_files(
         '/home/matt/projects/pitz/pitz/junkyard/task-*.yaml')
-    
-@raises(ValueError)
-def test_from_yaml_files_2():
-
-    global b
-    b.to_yaml_files('/home/matt/projects/pitz/pitz/junkyard/')
-
-    b2 = pitz.Bag()
-
-    b2.from_yaml_files(
-        '/home/matt/projects/pitz/pitz/junkyard/ditz-*.yaml')
     
