@@ -4,6 +4,9 @@
 A bunch of experimental crap.
 """
 
+import os
+from glob import glob
+
 import yaml
 
 class Project(yaml.YAMLObject):
@@ -17,6 +20,24 @@ class Release(yaml.YAMLObject):
 
 class Issue(yaml.YAMLObject):
     yaml_tag = u'!ditz.rubyforge.org,2008-03-06/issue'
+
+def load_ditz_issues(where_they_live):
+
+    """
+    Give me the path to where your ditz issues are and I'll yield them
+    all to you.
+    """
+
+    if not os.path.isdir(where_they_live):
+        raise ValueError("Sorry, %s must be a directory.")
+
+    for issue_file in \
+    glob(os.path.join(where_they_live, 'issue-*.yaml')):    
+
+        yield yaml.load(open(issue_file))
+
+
+
 
 # Everything below here is test code.
 
