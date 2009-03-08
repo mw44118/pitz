@@ -10,8 +10,8 @@ from nose import SkipTest
 b = pitz.Bag()
 
 tasks = [
-    pitz.Task(b, title='Clean cat box!', creator='person-matt'),
-    pitz.Task(b, title='Shovel driveway', creator='person-matt'),
+    pitz.Task(b, title='Clean cat box!', creator='Matt'),
+    pitz.Task(b, title='Shovel driveway', creator='Matt'),
 ]
 
 
@@ -25,6 +25,7 @@ def test_simplest_query_1():
     t1, t2 = tasks
     assert t1.matches_pairs([('title', 'Clean cat box!')])
     assert not t2.matches_pairs([('title', 'Clean cat box!')])
+
 
 def test_matching_pairs():
     """
@@ -41,6 +42,7 @@ def test_matching_pairs():
     assert c1['type'] == 'task'
     assert c2['type'] == 'task'
 
+
 def test_new_bag():
 
     global tasks
@@ -48,8 +50,8 @@ def test_new_bag():
 
     b = pitz.Bag(entities=tasks)
 
-    assert b.entities[t1.name] == t1
-    assert b.entities[t2.name] == t2
+    assert t1 in b
+    assert t2 in b
 
 
 def test_show_task():
@@ -72,7 +74,7 @@ def test_new_task():
     b = pitz.Bag()
 
     t = pitz.Task(b, title='Clean cat box!', 
-        creator='person-matt',
+        creator='Matt',
         description='It is gross!')
 
     assert t.name == t['name']
@@ -111,7 +113,7 @@ def test_match_1():
     global tasks
     t1, t2 = tasks
 
-    t1.matches_pairs([('owners', ['person-matt', 'person-tim'])])
+    t1.matches_pairs([('owners', ['Matt', 'Tim'])])
     
 def test_name_must_be_unique():
 

@@ -42,8 +42,8 @@ def test_new_bag():
 
     b2 = pitz.Bag(entities=tasks)
 
-    assert b2.entities[t1.name] == t1
-    assert b2.entities[t2.name] == t2
+    assert t1 in b2
+    assert t2 in b2
 
 def test_from_yaml_files_1():
 

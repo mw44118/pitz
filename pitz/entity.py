@@ -39,11 +39,11 @@ class Entity(UserDict):
             self['name'] = '%s-%s' % (self.data['type'], uuid.uuid4())
 
         # Handle attributes with defaults.
-        if 'created_date' not in kwargs:
-            self.data['created_date'] = datetime.now() 
+        if 'created_time' not in kwargs:
+            self.data['created_time'] = datetime.now() 
 
-        if 'modified_date' not in kwargs:
-            self['modified_date'] = self.data['created_date']
+        if 'modified_time' not in kwargs:
+            self['modified_time'] = self.data['created_time']
 
         if 'last_modified_by' not in kwargs:
             self.data['last_modified_by'] = self.data['creator']
@@ -92,6 +92,28 @@ class Entity(UserDict):
 
         return self
 
+    def matches_dict(self, **d):
+        """
+        Just like self.matches_pairs, except accepts keyword args.
+
+        >>> e = Entity(title='Clean cat box', creator='Matt')
+        >>> e == e.matches_dict(creator='Matt')
+        True
+        >>> None == e.matches_dict(creator='Nobody')
+        True
+        """
+
+        for a, v in d.items():
+
+            if isinstance(v, (list, tuple)):
+                raise TypeError("Sorry, values can't be lists (yet)")
+
+            if a not in self.data or self.data[a] != v:
+                return
+
+        return self
+
+
     def __repr__(self):
         return "%s(%s)" % (self.__class__.__name__, self.data)
 
@@ -122,8 +144,8 @@ class Entity(UserDict):
             type: {{type}}
             name: {{name}}
            title: {{title}}
-    created date: {{created_date}}
-   modified date: {{modified_date}}
+    created date: {{created_time}}
+   modified date: {{modified_time}}
          creator: {{creator}}
 last modified by: {{last_modified_by}}
 
