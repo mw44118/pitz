@@ -53,7 +53,7 @@ class Bag(object):
         return a new bag instance containing all entities that match.
         """
 
-        matches = [e for e in self.entities.values() if e.match(pairs)]
+        matches = [e for e in self.entities.values() if e.matches_pairs(pairs)]
         return self.__class__(entities=matches)
 
     def append(self, e):
@@ -97,7 +97,7 @@ class Bag(object):
         
         t = jinja2.Template("""\
 {% for e in entities -%}
-    {{e.plural_view}}
+    {{e.summarized_view}}
 {% endfor %}""")
 
         return t.render(entities=self)

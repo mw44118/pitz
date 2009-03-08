@@ -23,8 +23,8 @@ def test_simplest_query_1():
     global tasks
 
     t1, t2 = tasks
-    assert t1.match([('title', 'Clean cat box!')])
-    assert not t2.match([('title', 'Clean cat box!')])
+    assert t1.matches_pairs([('title', 'Clean cat box!')])
+    assert not t2.matches_pairs([('title', 'Clean cat box!')])
 
 def test_matching_pairs():
     """
@@ -61,7 +61,7 @@ def test_show_task():
     t1, t2 = tasks
 
     print
-    print(t1.singular_view)
+    print(t1.detailed_view)
 
 
 def test_new_task():
@@ -92,23 +92,26 @@ def test_as_eav_tuples():
     assert len(t1.as_eav_tuples) == 7, \
     "got %d tuples back!" % len(t1.as_eav_tuples)
 
-def test_plural_view():
+def test_summarized_view():
 
     global tasks
     t1, t2 = tasks
-    assert isinstance(t1.plural_view, str)
-    assert t1.data['title'] in t1.plural_view
+    assert isinstance(t1.summarized_view, str)
+    assert t1.data['title'] in t1.summarized_view
 
     print(str(t1))
 
 @raises(TypeError)
 def test_match_1():
 
+    """
+    Test against a list of values.
+    """
+
     global tasks
     t1, t2 = tasks
 
-    t1.match([('owners', 
-        ['person-matt', 'person-tim'])])
+    t1.matches_pairs([('owners', ['person-matt', 'person-tim'])])
     
 def test_name_must_be_unique():
 

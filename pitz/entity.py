@@ -65,8 +65,17 @@ class Entity(UserDict):
         return [(self.data['name'], a, v) 
         for a, v in self.data.items() 
         if a != 'name']
+
+    @property
+    def bag(self):
+        return self.data.get('bag')
+
+    @bag.setter
+    def bag(self, b):
+        b.append(self)
+        self.data['bag'] = b
     
-    def match(self, pairs):
+    def matches_pairs(self, pairs):
 
         """
         Return self or None, depending on whether this entity matches
@@ -87,28 +96,27 @@ class Entity(UserDict):
         return "%s(%s)" % (self.__class__.__name__, self.data)
 
     @property
-    def plural_view(self):
+    def summarized_view(self):
         """
-        This is what the entity looks like when it is one of many
-        things.
+        Short description of the entity.
         """
 
         return "%(title)s" % self.data
 
     @property
-    def singular_view(self):
+    def detailed_view(self):
         """
-        The detailed view.
+        The detailed view of the entity.
         """
 
         d = dict()
         d.update(self.data)
-        d['plural_view'] = self.plural_view
-        d['line_of_dashes'] = "-" * len(self.plural_view)
+        d['summarized_view'] = self.summarized_view
+        d['line_of_dashes'] = "-" * len(self.summarized_view)
         d['type'] = self.__class__.__name__
 
         t = jinja2.Template("""\
-{{plural_view}}
+{{summarized_view}}
 {{line_of_dashes}}
 
             type: {{type}}
@@ -127,7 +135,7 @@ last modified by: {{last_modified_by}}
 
 
     def __str__(self):
-        return self.singular_view
+        return self.detailed_view
 
     @property
     def yaml(self):
