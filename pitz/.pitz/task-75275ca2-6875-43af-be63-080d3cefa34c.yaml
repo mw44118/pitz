@@ -1,0 +1,12 @@
+created_date: &id001 2009-03-07 20:31:27.023572
+creator: Matt
+description: 'Right now, I''m storing a creator attribute on all tasks.  The value
+  is just a string.  At some point, the value really will be more than a string.  Instead,
+  it should be used as a key to go lookup the person object.
+
+  '
+last_modified_by: Matt
+modified_date: *id001
+name: task-75275ca2-6875-43af-be63-080d3cefa34c
+title: Write code to use strings as keys
+type: task

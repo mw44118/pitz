@@ -1,0 +1,8 @@
+created_date: &id001 2009-03-07 20:57:44.560163
+creator: Matt
+description: Add support for something like 'ditz grep'
+last_modified_by: Matt
+modified_date: *id001
+name: task-c97b1b55-21de-428a-886c-5fac99a3de96
+title: Add support for something like 'ditz grep'
+type: task
