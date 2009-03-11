@@ -1,5 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+from copy import copy
 import logging
 from UserDict import UserDict
 from datetime import datetime
@@ -16,15 +17,14 @@ class Entity(UserDict):
     A regular dictionary with a few extra tweaks.
     """
 
-    required_fields = ['title', 'creator']
+    required_fields = ['title']
+    pointers = []
 
     def __init__(self, bag=None, **kwargs):
 
         """
-        At least needs title and creator in kwargs.
-        """
-
-        logging.debug("inside __init__ with bag %s" % bag)
+        At least needs required_fields.
+        """ 
 
         for rf in self.required_fields:
             if rf not in kwargs:
@@ -45,13 +45,7 @@ class Entity(UserDict):
         if 'modified_time' not in kwargs:
             self['modified_time'] = self.data['created_time']
 
-        if 'last_modified_by' not in kwargs:
-            self.data['last_modified_by'] = self.data['creator']
-        
-        if 'description' not in kwargs:
-            self.data['description'] = self.data['title']
-
-        # Finally, add this entity to the bag (if we got a bag).
+        # Add this entity to the bag (if we got a bag).
         self.bag = bag
         if bag is not None:
             self.bag.append(self)
@@ -123,7 +117,7 @@ class Entity(UserDict):
         Short description of the entity.
         """
 
-        return "%(title)s" % self.data
+        return "%(type)10s %(title)s" % self.data
 
     @property
     def detailed_view(self):
@@ -146,7 +140,7 @@ class Entity(UserDict):
            title: {{title}}
     created date: {{created_time}}
    modified date: {{modified_time}}
-         creator: {{creator}}
+         creator: {{creator.summarized_view}}
 last modified by: {{last_modified_by}}
 
      description: 
@@ -161,7 +155,15 @@ last modified by: {{last_modified_by}}
 
     @property
     def yaml(self):
-        return yaml.dump(self.data, default_flow_style=False)
+
+        self.replace_objects_with_pointers()
+        y = yaml.dump(self.data, default_flow_style=False)
+
+        # Now switch the pointers with the objects.
+        if self.bag:
+            self.replace_pointers_with_objects(self.bag)
+
+        return y
 
     def to_yaml_file(self, pathname):
         """
@@ -178,6 +180,43 @@ last modified by: {{last_modified_by}}
 
         return fp
 
+    def replace_pointers_with_objects(self, bag):
+
+        """
+        Replace pointer to entities with the entities that are pointed
+        to.
+
+        In other words, replaces the string "matt" with the object with
+        "matt" as its name.
+        """
+
+        for p in self.pointers:
+            if p in self:
+                b2 = bag.matches_dict(name=self[p])
+
+                if b2 and len(b2) == 1:
+                    self[p] = b2[0]
+
+
+    def replace_objects_with_pointers(self):
+        """
+        Replaces the value of an entity with just the string of the
+        entity's name.
+
+        In other words, replaces the object stored at sef['creator']
+        with just the name of that object.
+        """
+
+        for p in self.pointers:
+            if p in self:
+                o = self[p]
+
+                # Remember that all subclasses of Entity will return
+                # True for isinstance(o, Entity).
+                if isinstance(o, Entity):
+                    self[p] = o.name
+
+
     @classmethod
     def from_yaml_file(cls, fp, bag=None):
         """
@@ -185,4 +224,14 @@ last modified by: {{last_modified_by}}
         """
 
         d = yaml.load(open(fp))
-        return cls(bag, **d)
+
+        if not d:
+            return
+
+        e = cls(bag, **d)
+
+        # If we have a bag, try to replace literals with pointers.
+        if bag:
+            e.replace_pointers_with_objects(bag)
+
+        return e

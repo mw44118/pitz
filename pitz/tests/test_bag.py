@@ -50,8 +50,5 @@ def test_from_yaml_files_1():
     global b
     b.to_yaml_files('/home/matt/projects/pitz/pitz/junkyard/')
 
-    b2 = pitz.Bag()
-
-    b2.from_yaml_files(
-        '/home/matt/projects/pitz/pitz/junkyard/task-*.yaml')
+    pitz.Bag().from_yaml_files('/home/matt/projects/pitz/pitz/junkyard/')
     

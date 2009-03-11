@@ -91,7 +91,9 @@ def test_as_eav_tuples():
     t1, t2 = tasks
     assert isinstance(t1.as_eav_tuples, list)
 
-    assert len(t1.as_eav_tuples) == 7, \
+    print t1.as_eav_tuples
+
+    assert len(t1.as_eav_tuples) == 5, \
     "got %d tuples back!" % len(t1.as_eav_tuples)
 
 def test_summarized_view():

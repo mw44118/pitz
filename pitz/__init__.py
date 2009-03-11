@@ -3,3 +3,4 @@
 from bag import *
 from entity import Entity
 from task import Task
+from person import Person
