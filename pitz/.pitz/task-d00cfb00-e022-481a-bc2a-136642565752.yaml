@@ -1,0 +1,5 @@
+created_time: &id001 2009-03-13 09:32:16.242335
+modified_time: *id001
+name: task-d00cfb00-e022-481a-bc2a-136642565752
+title: Support intersection, union, and other set operations on bags
+type: task

@@ -1,0 +1,5 @@
+created_time: &id001 2009-03-13 09:31:26.171691
+modified_time: *id001
+name: task-91cd201a-6b0e-45ff-8534-39c698a548a1
+title: Allow two bags to be compared for equality by using their entities
+type: task
