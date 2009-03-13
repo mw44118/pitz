@@ -35,6 +35,13 @@ def test_matching_pairs():
     assert t1['type'] == 'task'
     assert t2['type'] == 'task'
 
+def test_matches_dict():
+
+    global b, tasks
+
+    assert b.matching_pairs([('type', 'task')]).entities \
+    == b.matches_dict(type='task').entities
+
 def test_new_bag():
 
     global tasks
@@ -45,10 +52,18 @@ def test_new_bag():
     assert t1 in b2
     assert t2 in b2
 
-def test_from_yaml_files_1():
+    b.order()
+
+def test_to_and_from_yaml_files_1():
 
     global b
     b.to_yaml_files('/home/matt/projects/pitz/pitz/junkyard/')
 
     pitz.Bag().from_yaml_files('/home/matt/projects/pitz/pitz/junkyard/')
+    
+def test_append_1():
+
+    b = pitz.Bag()
+    b.append(pitz.Task(title='blah'))
+
     

@@ -140,7 +140,6 @@ class Entity(UserDict):
            title: {{title}}
     created date: {{created_time}}
    modified date: {{modified_time}}
-         creator: {{creator.summarized_view}}
 last modified by: {{last_modified_by}}
 
      description: 
@@ -192,10 +191,7 @@ last modified by: {{last_modified_by}}
 
         for p in self.pointers:
             if p in self:
-                b2 = bag.matches_dict(name=self[p])
-
-                if b2 and len(b2) == 1:
-                    self[p] = b2[0]
+                self[p] = bag.by_name(self[p])
 
 
     def replace_objects_with_pointers(self):

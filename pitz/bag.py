@@ -42,6 +42,7 @@ class Bag(object):
         order_method=by_created_time):
 
         self.entities = list(entities)
+        self.entities_by_name = dict([(e.name, e) for e in entities])
         self.pathname = pathname
         self.order_method = order_method
 
@@ -53,10 +54,18 @@ class Bag(object):
         for e in self.entities:
             yield e
 
+    def __getitem__(self, i):
+        return self.entities[i]
+
     def __len__(self):
         return len(self.entities)
 
-    def reorder(self, order_method=None):
+    def order(self, order_method=None):
+
+        """
+        Put all the entities into order based on either the order_method
+        parameter or self.order_method.
+        """
 
         if order_method:
             self.order_method = order_method
@@ -71,6 +80,13 @@ class Bag(object):
         matches = [e for e in self if e.matches_dict(**d)]
         return self.__class__(pathname=self.pathname, entities=matches,
             order_method=self.order_method)
+
+    def __call__(self, **d):
+        """
+        Now can just pass the filters right into the bag.
+        """
+
+        return self.matches_dict(**d)
 
     def matching_pairs(self, pairs):
         """
@@ -88,6 +104,14 @@ class Bag(object):
         return self.__class__(pathname=self.pathname, entities=matches,
             order_method=self.order_method)
 
+    def by_name(self, name):
+        """
+        Return an entity named name if we can.  Otherwise, return name.
+        """
+
+        return self.entities_by_name.get(name, name)
+        
+
     def append(self, e):
         """
         Link an entity to this bag.
@@ -100,6 +124,7 @@ class Bag(object):
         self.entities.append(e)
         e.bag = self
         self.entities.sort(self.order_method)
+        self.entities_by_name[e.name] = e
 
     def to_yaml_files(self, pathname=None):
         """
@@ -161,3 +186,23 @@ class Bag(object):
 {% endfor %}""")
 
         return t.render(entities=self)
+
+    def __repr__(self):
+        return "<pitz.Bag object with %d entities inside>" % len(self)
+
+    def replace_pointers_with_objects(self):
+        """
+        Tell all the entities inside to replace their pointers to
+        objects with the objects themselves.
+        """
+
+        for e in self:
+            e.replace_pointers_with_objects(e)
+            
+
+    def replace_objects_with_pointers(self):
+        """
+        Just like replace_pointers_with_objects, but reversed.
+        """
+        for e in self:
+            e.replace_objects_with_pointers()
