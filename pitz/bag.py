@@ -178,8 +178,13 @@ class Bag(object):
                 Component.from_yaml_file(fp, self)
 
         return self
-                
-    def __str__(self):
+
+    @property
+    def summarized_view(self):
+        return "<pitz.Bag object with %d entities inside>" % len(self)
+
+    @property
+    def detailed_view(self):
 
         # First reorder the entitities.
         self.entities.sort(self.order_method)
@@ -191,8 +196,11 @@ class Bag(object):
 
         return t.render(entities=self)
 
+    def __str__(self):
+        return self.detailed_view
+
     def __repr__(self):
-        return "<pitz.Bag object with %d entities inside>" % len(self)
+        return self.summarized_view
 
     def replace_pointers_with_objects(self):
         """

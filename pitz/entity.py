@@ -18,7 +18,7 @@ class Entity(UserDict):
     """
 
     required_fields = ['title']
-    pointers = []
+    pointers = dict()
 
     def __init__(self, bag=None, **kwargs):
 
