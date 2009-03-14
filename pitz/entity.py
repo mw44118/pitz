@@ -107,9 +107,9 @@ class Entity(UserDict):
 
         return self
 
-
     def __repr__(self):
-        return "%s(%s)" % (self.__class__.__name__, self.data)
+        return "<pitz.%s object '%s'>" \
+        % (self.__class__.__name__, self['title'])
 
     @property
     def summarized_view(self):
@@ -117,7 +117,7 @@ class Entity(UserDict):
         Short description of the entity.
         """
 
-        return "%(type)10s %(title)s" % self.data
+        return "%(title)s (%(type)s)" % self
 
     @property
     def detailed_view(self):
