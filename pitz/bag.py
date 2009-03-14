@@ -46,6 +46,10 @@ class Bag(object):
         self.pathname = pathname
         self.order_method = order_method
 
+        # Only load from the file system if we don't have anything.
+        if not entities and self.pathname:
+            self.from_yaml_files()
+
     def __iter__(self):
         """
         Make it possible to do "for entity in bag".
@@ -117,14 +121,13 @@ class Bag(object):
         Link an entity to this bag.
         """
 
-        # TODO: replace this O(n) scan with something better.
-        if e in self.entities:
-            raise ValueError("I already have %(name)s in here!" % e)
+        # Don't add the same entity twice.
+        if e.name not in self.entities_by_name:
 
-        self.entities.append(e)
-        e.bag = self
-        self.entities.sort(self.order_method)
-        self.entities_by_name[e.name] = e
+            self.entities.append(e)
+            e.bag = self
+            self.entities.sort(self.order_method)
+            self.entities_by_name[e.name] = e
 
     def to_yaml_files(self, pathname=None):
         """
@@ -140,6 +143,7 @@ class Bag(object):
 
         return [e.to_yaml_file(pathname) 
             for e in self.entities]
+
 
     def from_yaml_files(self, pathname=None):
         """
