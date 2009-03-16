@@ -10,6 +10,8 @@ import yaml
 
 import jinja2
 
+from pitz.exceptions import NoProject
+
 logging.basicConfig(level=logging.INFO)
 
 class Entity(UserDict):
@@ -20,11 +22,7 @@ class Entity(UserDict):
     required_fields = ['title']
     pointers = dict()
 
-    def __init__(self, bag=None, **kwargs):
-
-        """
-        At least needs required_fields.
-        """ 
+    def __init__(self, project=None, **kwargs):
 
         for rf in self.required_fields:
             if rf not in kwargs:
@@ -45,10 +43,13 @@ class Entity(UserDict):
         if 'modified_time' not in kwargs:
             self['modified_time'] = self.data['created_time']
 
-        # Add this entity to the bag (if we got a bag).
-        self.bag = bag
-        if bag is not None:
-            self.bag.append(self)
+        if 'comments' not in kwargs:
+            self['comments'] = list()
+
+        # Add this entity to the project (if we got a project).
+        self.project = project
+        if project is not None:
+            self.project.append(self)
 
     @property
     def name(self):
@@ -60,15 +61,6 @@ class Entity(UserDict):
         for a, v in self.data.items() 
         if a != 'name']
 
-    @property
-    def bag(self):
-        return self.data.get('bag')
-
-    @bag.setter
-    def bag(self, b):
-        b.append(self)
-        self.data['bag'] = b
-    
     def matches_pairs(self, pairs):
 
         """
@@ -150,17 +142,18 @@ last modified by: {{last_modified_by}}
 
 
     def __str__(self):
-        return self.detailed_view
+        return self.summarized_view
 
     @property
     def yaml(self):
 
         self.replace_objects_with_pointers()
+
         y = yaml.dump(self.data, default_flow_style=False)
 
         # Now switch the pointers with the objects.
-        if self.bag:
-            self.replace_pointers_with_objects(self.bag)
+        if self.project:
+            self.replace_pointers_with_objects()
 
         return y
 
@@ -179,7 +172,7 @@ last modified by: {{last_modified_by}}
 
         return fp
 
-    def replace_pointers_with_objects(self, bag):
+    def replace_pointers_with_objects(self):
 
         """
         Replace pointer to entities with the entities that are pointed
@@ -189,9 +182,12 @@ last modified by: {{last_modified_by}}
         "matt" as its name.
         """
 
+        if not self.project:
+            raise NoProject("I need a project first!")
+
         for p in self.pointers:
             if p in self:
-                self[p] = bag.by_name(self[p])
+                self[p] = self.project.by_name(self[p])
 
 
     def replace_objects_with_pointers(self):
@@ -212,11 +208,16 @@ last modified by: {{last_modified_by}}
                 if isinstance(o, Entity):
                     self[p] = o.name
 
+    def comment(self, who_said_it, when_they_said_it, what_they_said):
+        
+        self['comments'].append(
+            (who_said_it, when_they_said_it, what_they_said))
+
 
     @classmethod
-    def from_yaml_file(cls, fp, bag=None):
+    def from_yaml_file(cls, fp, project=None):
         """
-        Loads the file at file path fp into the bag and returns it.
+        Loads the file at file path fp into the project and returns it.
         """
 
         d = yaml.load(open(fp))
@@ -224,10 +225,10 @@ last modified by: {{last_modified_by}}
         if not d:
             return
 
-        e = cls(bag, **d)
+        e = cls(project, **d)
 
-        # If we have a bag, try to replace literals with pointers.
-        if bag:
-            e.replace_pointers_with_objects(bag)
+        # If we have a project, try to replace literals with pointers.
+        if project:
+            e.replace_pointers_with_objects()
 
         return e

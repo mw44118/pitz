@@ -7,7 +7,7 @@ import pitz
 from nose.tools import raises
 from nose import SkipTest
 
-b = pitz.Bag()
+b = pitz.Bag("Testing bag")
 
 tasks = [
     pitz.Task(b, title='Clean cat box!', creator='person-matt'),
@@ -25,7 +25,6 @@ def test_matching_pairs():
 
     t1, t2 = tasks
     print "t1's type is %(type)s" % t1
-    print "t1's bag is %s" % t1.bag
     print "len(b) is %d" % len(b)
     print "len(b.entities) is %d" % len(b.entities)
 
@@ -65,5 +64,15 @@ def test_append_1():
 
     b = pitz.Bag()
     b.append(pitz.Task(title='blah'))
-
     
+def test_values():
+
+    b = pitz.Bag()
+    b.append(pitz.Task(title='blah', difficulty='easy'))
+    b.append(pitz.Task(title='blah', difficulty='hard'))
+
+    s = b.values('difficulty')
+    assert len(s) == 2
+    assert 'easy' in s
+    assert 'hard' in s
+

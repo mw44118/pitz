@@ -5,3 +5,4 @@ from entity import Entity
 from task import Task
 from person import Person
 from milestone import Milestone
+from project import Project

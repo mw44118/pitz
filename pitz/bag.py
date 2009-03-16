@@ -34,20 +34,26 @@ by_created_time = by_whatever('created_time')
 
 class Bag(object):
     """
-    Really just a collection of entities and some functions to query
-    them.
+    Really just a collection of entities with a name on it.  
     """
 
-    def __init__(self, pathname=None, entities=(), 
-        order_method=by_created_time):
+    def __init__(self, title='', pathname=None, entities=(), 
+        order_method=by_created_time, load_yaml_files=True):
 
-        self.entities = list(entities)
-        self.entities_by_name = dict([(e.name, e) for e in entities])
+        self.title = title
+        self.entities = list()
+        self.entities_by_name = dict()
         self.pathname = pathname
         self.order_method = order_method
 
+        for e in entities:
+            self.append(e)
+
+        self.entities_by_name = dict([(e.name, e) for e in entities])
+
+
         # Only load from the file system if we don't have anything.
-        if not entities and self.pathname:
+        if self.pathname and load_yaml_files:
             self.from_yaml_files()
 
     def __iter__(self):
@@ -82,8 +88,8 @@ class Bag(object):
     def matches_dict(self, **d):
         
         matches = [e for e in self if e.matches_dict(**d)]
-        return self.__class__(pathname=self.pathname, entities=matches,
-            order_method=self.order_method)
+        return Bag(pathname=self.pathname, entities=matches,
+            order_method=self.order_method, load_yaml_files=False)
 
     def __call__(self, **d):
         """
@@ -105,7 +111,7 @@ class Bag(object):
         """
 
         matches = [e for e in self if e.matches_pairs(pairs)]
-        return self.__class__(pathname=self.pathname, entities=matches,
+        return Bag(pathname=self.pathname, entities=matches,
             order_method=self.order_method)
 
     def by_name(self, name):
@@ -114,7 +120,6 @@ class Bag(object):
         """
 
         return self.entities_by_name.get(name, name)
-        
 
     def append(self, e):
         """
@@ -125,9 +130,9 @@ class Bag(object):
         if e.name not in self.entities_by_name:
 
             self.entities.append(e)
-            e.bag = self
             self.entities.sort(self.order_method)
             self.entities_by_name[e.name] = e
+
 
     def to_yaml_files(self, pathname=None):
         """
@@ -181,7 +186,8 @@ class Bag(object):
 
     @property
     def summarized_view(self):
-        return "<pitz.Bag object with %d entities inside>" % len(self)
+        return "<pitz.Bag object '%s' with %d entities inside>" % (
+            self.title, len(self))
 
     @property
     def detailed_view(self):
@@ -218,3 +224,16 @@ class Bag(object):
         """
         for e in self:
             e.replace_objects_with_pointers()
+
+
+    def values(self, attr):
+        """
+        Return a set of all the values for the attr.
+
+        For example, p.values('difficulty') will return all the values
+        linked to any entity's "difficulty" attribute.
+        """
+
+        return set([e[attr] for e in self.entities if attr in e])
+
+

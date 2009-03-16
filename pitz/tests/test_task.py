@@ -1,5 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+from datetime import datetime
 import yaml
 
 import pitz
@@ -29,7 +30,7 @@ def test_simplest_query_1():
 
 def test_matching_pairs():
     """
-    Verify the bag can find all the comments.
+    Verify the bag can find some entities
     """
 
     global b, tasks
@@ -93,7 +94,7 @@ def test_as_eav_tuples():
 
     print t1.as_eav_tuples
 
-    assert len(t1.as_eav_tuples) == 5, \
+    assert len(t1.as_eav_tuples) == 6, \
     "got %d tuples back!" % len(t1.as_eav_tuples)
 
 def test_summarized_view():
@@ -121,24 +122,50 @@ def test_name_must_be_unique():
 
     raise SkipTest
 
-def test_group_tasks_into_milestones():
-    """
-    Verify we can put numerous tasks into milestones.
-    """
-
-    raise SkipTest
-
 def test_update_task_status():
-    raise SkipTest
+
+    global tasks
+    t1, t2 = tasks
+
+    t1['status'] = 'unstarted'
+    t1['status'] = 'finished'
+
 
 def test_comment_on_task():
-    raise SkipTest
+
+    global tasks
+    t1, t2 = tasks
+
+    t1.comment(
+        pitz.Person(title="Matt"),
+        datetime.now(),
+        "This is a bogus comment")
+
 
 def test_view_tasks_for_matt():
-    raise SkipTest
+
+    p = pitz.Project("Matt's stuff")
+    matt = pitz.Person(p, title='Matt')
+
+    t = pitz.Task(p, title='Clean cat box', owner=matt)
+
+    tasks_for_matt = p(type='task', owner=matt)
+    assert t in tasks_for_matt
+
     
 def test_view_tasks_for_matt_and_in_next_milestone():
-    raise SkipTest
+
+    p = pitz.Project("Matt's stuff")
+    matt = pitz.Person(p, title='Matt')
+    m = pitz.Milestone(p, title='Next Milestone')
+
+    t = pitz.Task(p, title='Clean cat box', owner=matt, milestone=m)
+
+    tasks_for_matt_in_next_milestone = p(type='task', owner=matt, 
+        milestone=m)
+
+    assert t in tasks_for_matt_in_next_milestone
+
 
 def test_yaml():
 
