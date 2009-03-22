@@ -40,7 +40,7 @@ class Task(Entity):
            title: {{title}}
     created date: {{created_time}}
    modified date: {{modified_time}}
-         creator: {{creator.summarized_view or creator}}
+         creator: {{getattr(creator, 'summarized_view', creator)}}
 last modified by: {{last_modified_by}}
        milestone: {{milestone}}
 

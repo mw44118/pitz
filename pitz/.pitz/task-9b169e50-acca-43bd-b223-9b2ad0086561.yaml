@@ -1,0 +1,8 @@
+comments: []
+created_time: &id001 2009-03-18 15:07:28.123646
+details: It would be nice to be able to go straight from the command line into ipython
+  and already have pitz imported and my project loaded.
+modified_time: *id001
+name: task-9b169e50-acca-43bd-b223-9b2ad0086561
+title: Start an ipython session loaded with a project
+type: task
