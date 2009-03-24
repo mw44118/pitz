@@ -4,7 +4,7 @@
 A bunch of experimental crap.
 """
 
-import os
+import csv, os
 from glob import glob
 
 import yaml
@@ -36,7 +36,15 @@ def load_ditz_issues(where_they_live):
 
         yield yaml.load(open(issue_file))
 
+def to_csv(issues, csvpath):
+    """
+    Write out the issues to a CSV file.
+    """
 
+    w = csv.writer(open(csvpath, 'w'))
+    w.writerow(['TITLE', 'STATUS'])
+    for iss in issues:
+        w.writerow([iss.title, iss.status])
 
 
 # Everything below here is test code.

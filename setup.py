@@ -29,9 +29,12 @@ interface.""",
         'jinja2',
           # -*- Extra requirements: -*-
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
+
+      entry_points= {
+        'console_scripts': [
+            'pitz = pitz.cmdline:main',
+        ]
+      },
 
       test_suite = 'nose.collector',
 
