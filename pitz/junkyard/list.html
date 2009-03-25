@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    {{ label }}
+{% endblock %}
+
+{% block content %}
+    <table id="bug-list">
+        <tr>
+            <th>ID</th>
+            <th>Summary</th>
+            <th>Status</th>
+            <th>Target</th>
+            <th>Assigned To</th>
+        </tr>
+        {% for bug in bugs %}
+        <tr>
+            <td>{{ bd.bug_shortname(bug) }}</td>
+            <td><a href="/bug?id={{ bd.bug_shortname(bug)}}">{{ bug.summary|e|truncate(60) }}</a></td>
+            <td>{{ bug.status }}</td>
+            <td>{{ bug.target }}</td>
+            <td>{{ bug.assigned|striptags }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

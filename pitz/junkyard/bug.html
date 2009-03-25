@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Bug {{ bd.bug_shortname(bug) }} &ndash; {{ bug.summary|truncate(50) }}
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function() {
+            function set_current_detail_default_values() {
+                $('#bug-details-edit-status option[value="{{ bug.status }}"]').attr('selected', 'yes');
+                $('#bug-details-edit-target option[value="{{ bug.target|e }}"]').attr('selected', 'yes');
+                $('#bug-details-edit-assignee option[value^="{{ bug.assigned|striptags }}"]').attr('selected', 'yes');
+                $('#bug-details-edit-severity option[value="{{ bug.severity }}"]').attr('selected', 'yes');
+            }
+            
+            $('#add-comment').click(function(e) {
+                $('#add-comment-link').hide();
+                $('#add-comment-form').fadeIn('fast');
+                e.preventDefault();
+            });
+            
+            $('#edit-bug-details').click(function(e) {
+                $('#bug-details').hide();
+                $('#bug-details-edit-form').fadeIn('fast');
+                e.preventDefault();
+            });
+            
+            $('#bug-details-edit-form button[type="reset"]').click(function(e) {
+                $('#bug-details-edit-form').hide();
+                $('#bug-details').fadeIn('fast', function() { set_current_detail_default_values(); } );
+            });
+            
+            $('#edit-bug-summary').click(function(e) {
+                $('#bug-summary').hide();
+                $('#bug-summary-edit-form').fadeIn('fast');
+                e.preventDefault();
+            });
+            
+            $('#bug-summary-edit-form button[type="reset"]').click(function(e) {
+                $('#bug-summary-edit-form').hide();
+                $('#bug-summary').fadeIn('fast', function() { set_current_detail_default_values(); } );
+            });
+            
+            set_current_detail_default_values();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <p class="creation-info">Created on {{ bug.time|datetimeformat }} by {{ bug.creator|e }}</p>
+    
+    <h3 class="header-with-link">Bug Details</h3>
+    <span class="header-link">
+        <a href="" id="edit-bug-details">edit</a>
+    </span>
+    
+    <p id="bug-details">
+        <span class="detail-field-header">Status:</span>
+        <span class="detail-field-contents">{{ bug.status }}</span><br />
+        
+        <span class="detail-field-header">Severity:</span>
+        <span class="detail-field-contents">{{ bug.severity }}</span><br />
+        
+        <span class="detail-field-header">Scheduled for:</span>
+        <span class="detail-field-contents">{{ bug.target }}</span><br />
+        
+        <span class="detail-field-header">Assigned to:</span>
+        <span class="detail-field-contents">{{ bug.assigned|e }}</span><br />
+        
+        <span class="detail-field-header">Permanent ID:</span>
+        <span class="detail-field-contents">{{ bug.uuid }}</span><br />
+    </p>
+    
+    <form id="bug-details-edit-form" class="horizontal" action="/edit" method="post">
+        <fieldset>
+            <input type="hidden" name="id" value="{{ bug.uuid }}" />
+            <div class="field">
+                <label for="bug-details-edit-status">Status:</label>
+                <select id="bug-details-edit-status" name="status">
+                    {% for status in statuses %}
+                        <option value="{{ status }}">{{ status }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+                <label for="bug-details-edit-severity">Severity:</label>
+                <select id="bug-details-edit-severity" name="severity">
+                    {% for severity in severities %}
+                        <option value="{{ severity }}">{{ severity }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+                <label for="bug-details-edit-target">Scheduled for:</label>
+                <select id="bug-details-edit-target" name="target">
+                    <option value="None">Unscheduled</option>
+                    {% for target in targets %}
+                        <option value="{{ target|e }}">{{ target }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+                <label for="bug-details-edit-assignee">Assigned to:</label>
+                <select id="bug-details-edit-assignee" name="assignee">
+                    <option value="None">Unassigned</option>
+                    {% for assignee in assignees %}
+                        <option value="{{ assignee|e }}">{{ assignee|e }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="buttons">
+                <button type="submit">Save Changes</button>
+                <button type="reset">Discard Changes</button>
+            </div>
+        </fieldset>
+    </form>
+    
+    <h3 class="header-with-link">Summary</h3>
+    <span class="header-link">
+        <a href="" id="edit-bug-summary">edit</a>
+    </span>
+    <p id="bug-summary">
+        {{ bug.summary }}
+    </p>
+    
+    <form id="bug-summary-edit-form" class="vertical" action="/edit" method="post">
+        <fieldset>
+            <input type="hidden" name="id" value="{{ bug.uuid }}" />
+            <div class="field">
+                <input type="text" class="text" id="bug-summary-edit-body" name="summary" value="{{ bug.summary }}" />
+            </div>
+            <div class="buttons">
+                <button type="submit">Save Changes</button>
+                <button type="reset">Discard Changes</button>
+            </div>
+        </fieldset>
+    </form>
+    
+    <h3>Comments</h3>
+    {% for comment in bug.comments() %}
+        <div class="bug-comment">
+            <h4 class="bug-comment-header">{{ comment.From|striptags|e }} said:</h4>
+            <p class="bug-comment-body">{{ comment.body|trim|e }}</p>
+            <p class="bug-comment-footer">on {{ comment.time|datetimeformat }}</p>
+        </div>
+    {% endfor %}
+    <form id="add-comment-form" class="vertical" action="/comment" method="post">
+        <fieldset>
+            <input type="hidden" name="id" value="{{ bug.uuid }}" />
+            <div class="field">
+                <textarea cols="60" rows="6" id="add-comment-body" name="body"></textarea>
+            </div>
+            <div class="buttons">
+                <button type="submit">Submit</button>
+            </div>
+        </fieldset>
+    </form>
+    <p id="add-comment-link"><a href="" id="add-comment">&#43; Add a comment</a></p>
+{% endblock %}

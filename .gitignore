@@ -4,4 +4,4 @@
 pitz.egg-info
 .*swp
 .coverage
-pitz/junkyard/*
+pitz/junkyard/*.yaml

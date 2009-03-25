@@ -32,21 +32,13 @@ class Task(Entity):
 {{summarized_view}}
 {{line_of_dashes}}
 
-     description: 
+description:
 {{description}}
 
-            type: {{type}}
-            name: {{name}}
-           title: {{title}}
-    created date: {{created_time}}
-   modified date: {{modified_time}}
-         creator: {{getattr(creator, 'summarized_view', creator)}}
-last modified by: {{last_modified_by}}
-       milestone: {{milestone}}
-
-      All fields:
+All fields:
 {% for k in data %}
-{{ k }}: {{ data[k] }}
+{{ k }}:
+{{ data[k] }}
 {% endfor %}
 """)
         

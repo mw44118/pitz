@@ -1,0 +1,155 @@
+diff --git a/pitz/cmdline.py b/pitz/cmdline.py
+new file mode 100644
+index 0000000..906d364
+--- /dev/null
++++ b/pitz/cmdline.py
+@@ -0,0 +1,126 @@
++# Copyright 07-Mar-2009 Evertz Microsystems Ltd. All rights reserved.
++"""
++    Examples:
++
++    pitz new
++    pitz tasks
++    pitz tasks --milestone=somemilestone
++    pitz update --creator=username milestone
++    pitz update --milestone=today description
++
++"""
++from pitz.task import Task
++from pitz.bag import Bag
++
++import paver.tasks
++from paver.easy import path
++
++import sys
++import getpass
++
++@paver.tasks.task
++@paver.tasks.cmdopts([
++    ('pitzdir=', 'p', 'directory for pitz data'),
++])
++def pitz(options):
++    if 'pitzdir' in options:
++        options.pitzdir = path(options.pitzdir)
++    else:
++        options.pitzdir = path('.pitz')
++    load()
++
++
++@paver.tasks.task
++def store(options):
++    options.defaultbag.to_yaml_files()
++
++
++@paver.tasks.task
++def load(options):
++    options.defaultbag = Bag(options.pitzdir)
++
++
++@paver.tasks.task
++@paver.tasks.cmdopts((
++    ('title=', 't', 'Title'),
++    ('description=', 's', 'Description'),
++))
++def new(options):
++    options.new.creator = getpass.getuser()
++    for opt in new.user_options:
++        name = opt[0][:-1]
++        longname = opt[2]
++        print 'Enter %s:' % (longname),
++        options.new[name] = raw_input()
++
++    t = Task(options.defaultbag, **options.new)
++    print 'Created', t
++
++
++@paver.tasks.task
++@paver.tasks.cmdopts((
++    ('milestone=', 'm', 'filter by milestone'),
++    ('assigned-to=', 'o', 'filter by assigned-to'),
++    ('creator=', 'c', 'filter by creator'),
++    ('name=', 'n', 'filter by name'),
++))
++def selecttasks(options):
++    bag = options.defaultbag
++    taskopts = options.selecttasks
++    for prop in [o[0][:-1] for o in selecttasks.user_options]:
++        if prop in taskopts:
++            bag = bag.matching_pairs([(prop, taskopts[prop.replace('-','_')])])
++
++    options.bag = bag
++
++
++@paver.tasks.task
++@paver.tasks.needs('selecttasks')
++def tasks(options):
++    for t in options.bag:
++        print t
++
++
++@paver.tasks.task
++@paver.tasks.needs('selecttasks')
++@paver.tasks.consume_args
++def update(options, args):
++    """ Update the properties of a task
++
++        pitz update [filter options] property1 property2
++    """
++    print options['update']
++
++    if not args:
++        print 'no attributes to update provided'
++        sys.exit(1)
++
++    if not options.bag:
++        print 'no tasks to update'
++        sys.exit(1)
++
++    print 'Updating:'
++    for ix, t in enumerate(options.bag):
++        print '\t%d: %s, %s' % (ix + 1, t.name[:8], t.plural_view)
++
++    print ''
++    attrs = {}
++    for arg in args:
++        print 'Enter new %s:' % arg,
++        attrs[arg] = raw_input()
++
++    for t in options.bag:
++        for attr, value in attrs.iteritems():
++            t[attr] =  value
++
++
++def main():
++    pavement_file = __file__
++    if pavement_file.endswith('.pyc'):
++        pavement_file = pavement_file[:-1]
++    paver.tasks.main(['-q', '-f', pavement_file, 'pitz'] + sys.argv[1:])
++    store()
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/setup.py b/setup.py
+index 6992e87..3481e88 100644
+--- a/setup.py
++++ b/setup.py
+@@ -27,12 +27,15 @@ interface.""",
+         'sphinx',
+         'nose',
+         'jinja2',
++        'Paver',
+           # -*- Extra requirements: -*-
+       ],
+-      entry_points="""
++      entry_points= {
++        'console_scripts': [
++            'pitz = pitz.cmdline:main',
++        ],
+       # -*- Entry points: -*-
+-      """,
+-
++      },
+       test_suite = 'nose.collector',
+ 
+       )
