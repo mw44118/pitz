@@ -9,5 +9,6 @@ last_modified_by: Matt Wilson
 modified_date: *id001
 modified_time: *id002
 name: task-f8a13832-abce-4ec7-a53f-4708821d585a
+status: finished
 title: Write code for milestones
 type: task

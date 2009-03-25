@@ -8,7 +8,7 @@ class Project(Bag):
     The project is the bag that everybody should track.
     """
     
-    # TODO: consider using some metaclass nonsense to automate creation
+    # TODO: Use some metaclass nonsense to automate creation
     # of all these properties.
 
     @property
@@ -49,5 +49,3 @@ class Project(Bag):
 
         super(Project, self).append(e)
         e.project = self
-
-

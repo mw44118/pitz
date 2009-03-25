@@ -1,5 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+from collections import defaultdict
 import logging, os
 from glob import glob
 
@@ -228,12 +229,14 @@ class Bag(object):
 
     def values(self, attr):
         """
-        Return a set of all the values for the attr.
-
-        For example, p.values('difficulty') will return all the values
-        linked to any entity's "difficulty" attribute.
+        Return a sorted list of tuples like (value, count) for all the
+        values for the attr.
         """
+        dd = defaultdict(int)
 
-        return set([e[attr] for e in self.entities if attr in e])
+        for e in self.entities:
+            if attr in e:
+                dd[e[attr]] += 1
 
+        return sorted(dd.items(), key=lambda t: t[1], reverse=True)
 

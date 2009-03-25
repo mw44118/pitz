@@ -48,5 +48,3 @@ def test_tasks_property():
 
     assert t1 in m1.tasks
     assert t2 in m2.tasks
-
-

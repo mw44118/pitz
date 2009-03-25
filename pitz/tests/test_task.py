@@ -94,7 +94,7 @@ def test_as_eav_tuples():
 
     print t1.as_eav_tuples
 
-    assert len(t1.as_eav_tuples) == 6, \
+    assert len(t1.as_eav_tuples) == 5, \
     "got %d tuples back!" % len(t1.as_eav_tuples)
 
 def test_summarized_view():

@@ -24,6 +24,10 @@ class Entity(UserDict):
 
     def __init__(self, project=None, **kwargs):
 
+        # First set up a few instance variables.
+        self.comments = []
+
+        # Now make sure we got all the required fields.
         for rf in self.required_fields:
             if rf not in kwargs:
                 raise ValueError("I need these required fields %s" 
@@ -43,13 +47,14 @@ class Entity(UserDict):
         if 'modified_time' not in kwargs:
             self['modified_time'] = self.data['created_time']
 
-        if 'comments' not in kwargs:
-            self['comments'] = list()
-
         # Add this entity to the project (if we got a project).
         self.project = project
         if project is not None:
             self.project.append(self)
+
+    @property
+    def comments(self):
+        return self.comments
 
     @property
     def name(self):
@@ -127,17 +132,16 @@ class Entity(UserDict):
 {{summarized_view}}
 {{line_of_dashes}}
 
-            type: {{type}}
-            name: {{name}}
-           title: {{title}}
-    created date: {{created_time}}
-   modified date: {{modified_time}}
-last modified by: {{last_modified_by}}
-
-     description: 
+description: 
 {{description}}
+
+All fields:
+{% for k in data %}
+{{ k }}:
+{{ data[k] }}
+{% endfor %}
 """)
-        
+
         return t.render(**d)
 
 
@@ -208,9 +212,12 @@ last modified by: {{last_modified_by}}
                 if isinstance(o, Entity):
                     self[p] = o.name
 
-    def comment(self, who_said_it, when_they_said_it, what_they_said):
+    def comment(self, who_said_it, what_they_said, when_they_said_it='right now'):
+
+        if when_they_said_it == 'right now':
+            when_they_said_it = datetime.now()
         
-        self['comments'].append(
+        self.comments.append(
             (who_said_it, when_they_said_it, what_they_said))
 
 

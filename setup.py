@@ -32,10 +32,12 @@ interface.""",
 
       entry_points= {
         'console_scripts': [
-            'pitz = pitz.cmdline:main',
+            'pitz-shell = pitz.cmdline:shell',
         ]
       },
 
+      scripts = ['scripts/f.py'],
+
       test_suite = 'nose.collector',
 
-      )
+)

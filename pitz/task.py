@@ -14,32 +14,3 @@ class Task(Entity):
         owner='person',
         component='component',
     )
-
-    @property
-    def detailed_view(self):
-        """
-        The detailed view of a task.
-        """
-
-        d = dict()
-        d.update(self.data)
-        d['summarized_view'] = self.summarized_view
-        d['line_of_dashes'] = "-" * len(self.summarized_view)
-        d['type'] = self.__class__.__name__
-        d['data'] = self.data
-
-        t = jinja2.Template("""\
-{{summarized_view}}
-{{line_of_dashes}}
-
-description:
-{{description}}
-
-All fields:
-{% for k in data %}
-{{ k }}:
-{{ data[k] }}
-{% endfor %}
-""")
-        
-        return t.render(**d)
