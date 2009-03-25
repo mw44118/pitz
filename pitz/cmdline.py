@@ -8,11 +8,11 @@ def main():
     p = Project('Pitz', 
         '/home/matt/projects/pitz/pitz/.pitz')
 
-    tampered = False
-    p.tampered = False
     s = IPShellEmbed(['-colors', 'Linux'])
     s()
 
-    print("p.tampered is %s" % p.tampered)
-    print("tampered is %s" % tampered)
+    answer = raw_input("Write out updated yaml files? ")
+    if answer.lower() in ['y', 'yes']:
+        p.to_yaml_files()
 
+    
