@@ -6,8 +6,7 @@ from pitz.entity import Entity
 
 class Task(Entity):
 
-    # This is a dictionary that maps keys in self.data to the type it
-    # should hold.
+    # This dictionary maps keys in self.data to the types they hold.
     pointers = dict(
         milestone='milestone',
         creator='person',
