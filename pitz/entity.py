@@ -54,7 +54,15 @@ class Entity(UserDict):
 
     @property
     def comments(self):
-        return self.comments
+        """
+        Return a list of comments for this entity.
+        """
+
+        if not self.project:
+            raise NoProject("I need a project to find related comments")
+
+        else:
+            return self.project(type='comment', entity=self)
 
     @property
     def name(self):
@@ -105,7 +113,7 @@ class Entity(UserDict):
         return self
 
     def __repr__(self):
-        return "<pitz.%s object '%s'>" \
+        return "<pitz.%s '%s'>" \
         % (self.__class__.__name__, self['title'])
 
     @property
@@ -127,6 +135,7 @@ class Entity(UserDict):
         d['summarized_view'] = self.summarized_view
         d['line_of_dashes'] = "-" * len(self.summarized_view)
         d['type'] = self.__class__.__name__
+        d['data'] = self.data
 
         t = jinja2.Template("""\
 {{summarized_view}}

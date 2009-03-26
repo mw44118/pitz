@@ -27,6 +27,8 @@ def by_whatever(*whatever):
         return cmp(
             [e1.get(w) for w in whatever],
             [e2.get(w) for w in whatever])
+
+    f.__doc__ = "by_whatever(%s)" % list(whatever)
         
     return f
 
@@ -43,15 +45,14 @@ class Bag(object):
 
         self.title = title
         self.entities = list()
-        self.entities_by_name = dict()
         self.pathname = pathname
         self.order_method = order_method
 
+        # These will get populated in self.append.
+        self.entities_by_name = dict()
+
         for e in entities:
             self.append(e)
-
-        self.entities_by_name = dict([(e.name, e) for e in entities])
-
 
         # Only load from the file system if we don't have anything.
         if self.pathname and load_yaml_files:
@@ -88,7 +89,8 @@ class Bag(object):
 
     def matches_dict(self, **d):
         
-        matches = [e for e in self if e.matches_dict(**d)]
+        matches = [e for e in self.entities if e.matches_dict(**d)]
+
         return Bag(pathname=self.pathname, entities=matches,
             order_method=self.order_method, load_yaml_files=False)
 
@@ -124,7 +126,10 @@ class Bag(object):
 
     def append(self, e):
         """
-        Link an entity to this bag.
+        Put an entity in this bag.
+
+        This possibly destroys the sorted order, so you may want to run
+        self.order() next.
         """
 
         # Don't add the same entity twice.
@@ -137,7 +142,7 @@ class Bag(object):
 
     def to_yaml_files(self, pathname=None):
         """
-        Tell every entity in the bag to write itself out.
+        Tell every entity to write itself out to YAML.
         """
 
         if not pathname \
@@ -187,21 +192,23 @@ class Bag(object):
 
     @property
     def summarized_view(self):
-        return "<pitz.Bag object '%s' with %d entities inside>" % (
+        return "<pitz.Bag '%s' with %d entities inside>" % (
             self.title, len(self))
 
     @property
     def detailed_view(self):
 
-        # First reorder the entitities.
+        # First sort the entitities just in case we've appended new
+        # entities since the last time we sorted.
         self.entities.sort(self.order_method)
-        
+
         t = jinja2.Template("""\
-{% for e in entities -%}
-    {{e.summarized_view}}
+{% for i, e in enumerate(entities) -%}
+{{ i }}: {{e.summarized_view}}
 {% endfor %}""")
 
-        return t.render(entities=self)
+        return t.render(project=self, entities=self.entities, 
+            enumerate=enumerate)
 
     def __str__(self):
         return self.detailed_view

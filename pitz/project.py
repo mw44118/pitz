@@ -8,12 +8,17 @@ class Project(Bag):
     The project is the bag that everybody should track.
     """
     
-    # TODO: Use some metaclass nonsense to automate creation
-    # of all these properties.
+    # TODO: Use some dynamic nonsense to automate creation
+    # of all these properties based on all subclasses of Entity in
+    # this project.
 
     @property
     def tasks(self):
-        return self.matches_dict(type='task')
+
+        b = self.matches_dict(type='task')
+        b.title ='Tasks in project %s' % self.title
+
+        return b
 
     @property
     def milestones(self):
@@ -32,14 +37,16 @@ class Project(Bag):
     @property
     def summarized_view(self):
 
-        s = "<pitz.Project '%s' (%d tasks, %d milestones, %d people, %d components)>"
+        s = "<pitz.Project '%s' (%d tasks, %d milestones, %d people, %d components, sorted by %s)>"
 
         return s % (
             self.title,
             len(self.tasks),
             len(self.milestones),
             len(self.people),
-            len(self.components))
+            len(self.components),
+            self.order_method.__doc__,
+            )
 
 
     def append(self, e):

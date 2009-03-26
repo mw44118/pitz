@@ -71,8 +71,8 @@ def test_values():
     b.append(pitz.Task(title='blah', difficulty='easy'))
     b.append(pitz.Task(title='blah', difficulty='hard'))
 
-    s = b.values('difficulty')
-    assert len(s) == 2
-    assert 'easy' in s
-    assert 'hard' in s
+    v = b.values('difficulty')
+    assert len(v) == 2
+    assert ('easy', 1) in v
+    assert ('hard', 1) in v
 
