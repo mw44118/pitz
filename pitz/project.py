@@ -5,19 +5,17 @@ from pitz.bag import Bag
 class Project(Bag):
 
     """
-    The project is the bag that everybody should track.
+    The project is the bag that everybody should track, because it is
+    the only thing that keeps references to every other thing.
     """
     
     # TODO: Use some dynamic nonsense to automate creation
     # of all these properties based on all subclasses of Entity in
     # this project.
-
     @property
     def tasks(self):
-
         b = self.matches_dict(type='task')
         b.title ='Tasks in project %s' % self.title
-
         return b
 
     @property
@@ -34,19 +32,22 @@ class Project(Bag):
 
     # End of stuff to somehow figure out dynamically.
 
-    @property
-    def summarized_view(self):
+    def __repr__(self):
 
-        s = "<pitz.Project '%s' (%d tasks, %d milestones, %d people, %d components, sorted by %s)>"
+        s = ', '.join(['%d %s entities' % (typecount, typename) 
+            for typename, typecount in self.values('type')])
+            
+        s2 = "<pitz.Project '%s' (%s, sorted by %s)>"
 
-        return s % (
+        return s2 % (
             self.title,
-            len(self.tasks),
-            len(self.milestones),
-            len(self.people),
-            len(self.components),
+            s,
             self.order_method.__doc__,
             )
+
+    @property
+    def summarized_view(self):
+        return repr(self)
 
 
     def append(self, e):

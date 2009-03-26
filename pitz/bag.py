@@ -192,8 +192,7 @@ class Bag(object):
 
     @property
     def summarized_view(self):
-        return "<pitz.Bag '%s' with %d entities inside>" % (
-            self.title, len(self))
+        return repr(self)
 
     @property
     def detailed_view(self):
@@ -214,7 +213,8 @@ class Bag(object):
         return self.detailed_view
 
     def __repr__(self):
-        return self.summarized_view
+        return "<pitz.Bag '%s' with %d entities inside>" % (
+            self.title, len(self))
 
     def replace_pointers_with_objects(self):
         """
