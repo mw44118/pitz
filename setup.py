@@ -30,13 +30,9 @@ interface.""",
           # -*- Extra requirements: -*-
       ],
 
-      entry_points= {
-        'console_scripts': [
-            'pitz-shell = pitz.cmdline:shell',
-        ]
-      },
-
-      scripts = ['scripts/f.py'],
+      # I know about the much fancier entry points, but I prefer this
+      # solution.
+      scripts = ['scripts/pitz-shell'],
 
       test_suite = 'nose.collector',
 
