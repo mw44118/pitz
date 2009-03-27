@@ -1,0 +1,7 @@
+created_time: &id001 2009-03-26 16:55:47.430190
+importance: high
+modified_time: *id001
+name: task-eda3a18b-e0fe-435d-9a05-896a6c86d49b
+title: Figure out why some tasks are not converting pointers to objects
+type: task
+whatami: bug

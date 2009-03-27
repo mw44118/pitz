@@ -1,0 +1,5 @@
+created_time: &id001 2009-03-26 11:10:21.549393
+modified_time: *id001
+name: task-def6e8c6-10f4-497a-a479-f842369da684
+title: Support a .pitz config file with all pitz scripts
+type: task

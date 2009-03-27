@@ -1,3 +1,7 @@
+abc: !!python/tuple
+- 1
+- 2
+- 3
 comments: []
 created_time: &id001 2009-03-10 22:25:32.240143
 modified_time: *id001

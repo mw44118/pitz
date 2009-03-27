@@ -1,0 +1,16 @@
+created_time: &id001 2009-03-26 13:55:10.441998
+description: 'It would be nice to be able to have user-specified actions fire when
+
+  certain events happen.
+
+
+  For example, it would be nice to be able to automatically add a new task
+
+  yaml file into git.
+
+
+  '
+modified_time: *id001
+name: task-b442e8a2-e56c-4ab9-b699-32c5f20fd9b4
+title: Support hooks
+type: task
