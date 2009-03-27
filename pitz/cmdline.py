@@ -3,15 +3,14 @@
 from IPython.Shell import IPShellEmbed
 from pitz import *
 
-def shell():
+def shell(pitzdir):
 
-    p = Project('Pitz', 
-        '/home/matt/projects/pitz/pitz/.pitz')
+    p = Project('Pitz', pitzdir)
 
     s = IPShellEmbed(['-colors', 'Linux'])
     s()
 
-    answer = raw_input("Write out updated yaml files? (y/[n]) ")
-    if answer.lower() in ['y', 'yes']:
+    answer = raw_input("Write out updated yaml files? ([y]/n) ")
+    if answer.lower() not in ['n', 'no']:
         p.to_yaml_files()
 

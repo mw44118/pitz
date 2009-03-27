@@ -6,6 +6,7 @@ from glob import glob
 
 import jinja2
 
+from pitz.entity import Entity
 from pitz.task import Task
 from pitz.person import Person
 
@@ -57,6 +58,10 @@ class Bag(object):
         # Only load from the file system if we don't have anything.
         if self.pathname and load_yaml_files:
             self.from_yaml_files()
+
+        # Finally, tell all the entities to replace pointers with
+        # objects.
+        self.replace_pointers_with_objects()
 
     def __iter__(self):
         """
@@ -121,6 +126,9 @@ class Bag(object):
         """
         Return an entity named name if we can.  Otherwise, return name.
         """
+
+        if isinstance(name, Entity):
+            name = name.name
 
         return self.entities_by_name.get(name, name)
 
@@ -202,19 +210,41 @@ class Bag(object):
         self.entities.sort(self.order_method)
 
         t = jinja2.Template("""\
+{%  for dash in bag.title -%}={% endfor %}
+{{ bag.title }}
+{%  for dash in bag.title -%}={% endfor %}
+
+{{ bag.contents }}
+{%  for dash in bag.contents -%}-{% endfor %}
+
 {% for i, e in enumerate(entities) -%}
-{{ i }}: {{e.summarized_view}}
+{{ "%4d" | format(i) }}: {{e.summarized_view}}
 {% endfor %}""")
 
-        return t.render(project=self, entities=self.entities, 
-            enumerate=enumerate)
+        return t.render(bag=self, entities=self.entities, 
+            enumerate=enumerate, len=len)
+
+    @property
+    def contents(self):
+        
+
+        return ', '.join(['%d %s entities' % (typecount, typename) 
+            for typename, typecount in self.values('type')])
 
     def __str__(self):
         return self.detailed_view
 
     def __repr__(self):
-        return "<pitz.Bag '%s' with %d entities inside>" % (
-            self.title, len(self))
+
+        s2 = "<pitz.%s '%s' (%s, sorted by %s)>"
+
+        return s2 % (
+            self.__class__.__name__,
+            self.title,
+            self.contents,
+            self.order_method.__doc__,
+            )
+
 
     def replace_pointers_with_objects(self):
         """
@@ -223,7 +253,7 @@ class Bag(object):
         """
 
         for e in self:
-            e.replace_pointers_with_objects(e)
+            e.replace_pointers_with_objects()
             
 
     def replace_objects_with_pointers(self):
@@ -233,6 +263,20 @@ class Bag(object):
         for e in self:
             e.replace_objects_with_pointers()
 
+    @property
+    def attributes(self):
+        """
+        Return a sorted list of tuplies like (attribute, count) for all
+        attributes in any entity in this bag.
+        """
+
+        dd = defaultdict(int)
+
+        for e in self.entities:
+            for a in e.keys():
+                dd[a] += 1
+
+        return sorted(dd.items(), key=lambda t: t[1], reverse=True)
 
     def values(self, attr):
         """

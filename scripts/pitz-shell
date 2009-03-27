@@ -4,4 +4,4 @@
 
 from pitz.cmdline import shell
 
-shell()
+shell('/home/matt/projects/pitz/pitz/.pitz')

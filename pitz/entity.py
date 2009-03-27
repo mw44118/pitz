@@ -243,8 +243,4 @@ All fields:
 
         e = cls(project, **d)
 
-        # If we have a project, try to replace literals with pointers.
-        if project:
-            e.replace_pointers_with_objects()
-
         return e

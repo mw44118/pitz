@@ -19,8 +19,12 @@ class Project(Bag):
         return b
 
     @property
-    def milestones(self):
-        return self.matches_dict(type='milestone')
+    def releases(self):
+        return self.matches_dict(type='release')
+
+    @property
+    def iterations(self):
+        return self.matches_dict(type='iteration')
 
     @property
     def people(self):
@@ -32,27 +36,10 @@ class Project(Bag):
 
     # End of stuff to somehow figure out dynamically.
 
-    def __repr__(self):
-
-        s = ', '.join(['%d %s entities' % (typecount, typename) 
-            for typename, typecount in self.values('type')])
-            
-        s2 = "<pitz.Project '%s' (%s, sorted by %s)>"
-
-        return s2 % (
-            self.title,
-            s,
-            self.order_method.__doc__,
-            )
-
-    @property
-    def summarized_view(self):
-        return repr(self)
-
-
     def append(self, e):
         """
-        Link an entity to this project.
+        Do a regular append and also set the entity's project attribute
+        to this project.
         """
 
         super(Project, self).append(e)
