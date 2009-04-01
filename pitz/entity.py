@@ -96,18 +96,37 @@ class Entity(UserDict):
         Just like self.matches_pairs, except accepts keyword args.
 
         >>> e = Entity(title='Clean cat box', creator='Matt')
-        >>> e == e.matches_dict(creator='Matt')
+        >>> e.matches_dict(creator='Matt') == e
         True
-        >>> None == e.matches_dict(creator='Nobody')
+        >>> e.matches_dict(creator='Nobody') == None
         True
         """
 
         for a, v in d.items():
 
-            if isinstance(v, (list, tuple)):
-                raise TypeError("Sorry, values can't be lists (yet)")
-
             if a not in self.data or self.data[a] != v:
+                return
+
+        return self
+
+    def does_not_match_dict(self, **d):
+        """
+        Returns self if ALL of the key-value pairs do not match.
+
+        >>> e = Entity(title="blah", a=1, b=2)
+        >>> e.does_not_match_dict(a=99, b=99, c=99) == e
+        True
+        >>> e.does_not_match_dict(a=1, b=1) == None
+        True
+        >>> e.does_not_match_dict(a=1) == None
+        True
+        >>> e.does_not_match_dict(c=1) == e
+        True
+        """
+
+        for a, v in d.items():
+
+            if a in self.data and self.data[a] == v:
                 return
 
         return self
@@ -115,6 +134,8 @@ class Entity(UserDict):
     def __repr__(self):
         return "<pitz.%s '%s'>" \
         % (self.__class__.__name__, self['title'])
+
+
 
     @property
     def summarized_view(self):
