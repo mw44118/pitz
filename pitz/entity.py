@@ -74,23 +74,6 @@ class Entity(UserDict):
         for a, v in self.data.items() 
         if a != 'name']
 
-    def matches_pairs(self, pairs):
-
-        """
-        Return self or None, depending on whether this entity matches
-        everything in the pairs.
-        """
-
-        for a, v in pairs:
-            
-            if isinstance(v, (list, tuple)):
-                raise TypeError("Sorry, values can't be lists (yet)")
-
-            if a not in self.data or self.data[a] != v:
-                return
-
-        return self
-
     def matches_dict(self, **d):
         """
         Just like self.matches_pairs, except accepts keyword args.
@@ -162,10 +145,6 @@ class Entity(UserDict):
 {{summarized_view}}
 {{line_of_dashes}}
 
-description: 
-{{description}}
-
-All fields:
 {% for k in data %}
 {{ k }}:
 {{ data[k] }}
@@ -216,12 +195,10 @@ All fields:
         "matt" as its name.
         """
 
-        if not self.project:
-            raise NoProject("I need a project first!")
-
-        for p in self.pointers:
-            if p in self:
-                self[p] = self.project.by_name(self[p])
+        if self.project:
+            for p in self.pointers:
+                if p in self:
+                    self[p] = self.project.by_name(self[p])
 
 
     def replace_objects_with_pointers(self):

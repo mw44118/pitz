@@ -14,7 +14,7 @@ Pitz is (going to be) yet another bugtracking system, with these goals:
 
 * Your to-do list lives right next to the code in your source control.
 
-* The to-do list objects serialize and deserialize to some plain-text
+* The to-do list objects serialize and deserialize to a plain-text
   format, so that standard diff tools can expose how issues evolved over
   time and objects can be edited with any editor.
 
@@ -22,14 +22,15 @@ Pitz is (going to be) yet another bugtracking system, with these goals:
   track history.
 
 * Interesting queries are straightforward.  This is my main beef with
-  ditz -- I find it difficult to get information like all tickets in the
-  next release that have a certain status.  Use a command-line program
-  to do simple queries, like:
+  ditz and every other bug tracker -- I find it difficult to get
+  information that involves lots of filters.  
+
+  With pitz, you can do arbitrary queries like:
 
     * Show all the tasks assigned to Matt and linked to milestone 2.0;
     * Show all the milestones with release dates in 2008 or 2009.
 
-* Let every issue render itself to HTML for both a singular view (one
+* Every issue can render itself to HTML for both a singular view (one
   thing per page, with links to related things) and a plural view (all
   things in a certain relation, with links to singular view for each).
 
@@ -45,9 +46,6 @@ This list keeps changing, but this is the current idea:
   everything in one big file, spread stuff out across lots and lots of
   files.  This will make tracking revisions with whatever SCM you use
   much easier.
-
-* For all the data stored in yaml files, pitz will build a big fat EAV
-  (entity-attribute-value) data structure.
 
 * All queries can be thought of lists of attribute-value pairs.  Here is
   how to ask for all milestones with release dates in 2008 or 2009:
