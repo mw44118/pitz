@@ -6,29 +6,28 @@ import optparse, os, sys
 
 p = optparse.OptionParser()
 
-def verify_pitzdir(option, opt_str, value, parser):
+def verify_projectfile(option, opt_str, value, parser):
 
-    if not os.path.isdir(value):
-        raise optparse.OptionValueError(
-            "%s is not a directory!" 
-            % value)
+    if not os.path.isfile(value):
+        raise optparse.OptionValueError("%s is not a file!" % value)
 
     else:
-        parser.values.pitzdir = value
+        parser.values.projectfile = value
+        
 
-p.add_option('--pitz-dir', 
-    help='path to directory containing pitz files',
-    action="callback", 
-    callback=verify_pitzdir,
-    dest="pitzdir",
+p.add_option('--project-file',
+    help='path to project yaml file',
+    action="callback",
+    callback=verify_projectfile,
+    dest="projectfile",
     type="string")
 
 options, args = p.parse_args()
 
-if not options.pitzdir:
+if not options.projectfile:
     p.print_help()
     sys.exit(1)
 
 from pitz.cmdline import shell
 
-shell(options.pitzdir)
+shell(options.projectfile)

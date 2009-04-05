@@ -1,9 +1,10 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 from collections import defaultdict
-import logging, os
+import logging, os, uuid
 from glob import glob
 
+import yaml
 import jinja2
 
 from pitz.entity import Entity
@@ -12,14 +13,14 @@ from pitz.person import Person
 
 logging.basicConfig(level=logging.INFO)
 
-def by_whatever(*whatever):
+def by_whatever(func_name, *whatever):
     """
     Returns a function suitable for sorting, using whatever.
 
     >>> e1, e2 = {'a':1, 'b':1, 'c':2}, {'a':2, 'b':2, 'c':1}
-    >>> by_whatever('a')(e1, e2)
+    >>> by_whatever('xxx', 'a')(e1, e2)
     -1
-    >>> by_whatever('c', 'a')(e1, e2)
+    >>> by_whatever('xxx', 'c', 'a')(e1, e2)
     1
     """
 
@@ -29,26 +30,39 @@ def by_whatever(*whatever):
             [e1.get(w) for w in whatever],
             [e2.get(w) for w in whatever])
 
-    f.func_name = f.__doc__ = "by_whatever(%s)" % list(whatever)
+    f.__doc__ = "by_whatever(%s)" % list(whatever)
+    f.func_name = func_name
         
     return f
 
-by_spiciness = by_whatever('peppers')
-by_created_time = by_whatever('created_time')
-by_type_status_created_time = by_whatever('type', 'status', 'created time')
+by_spiciness = by_whatever('by_spiciness', 'peppers')
+by_created_time = by_whatever('by_created_time', 'created_time')
+
+by_type_status_created_time = by_whatever('by_type_status_created_time', 
+    'type', 'status', 'created time')
 
 class Bag(object):
     """
     Really just a collection of entities with a name on it.  
     """
 
-    def __init__(self, title='', pathname=None, entities=(), 
+    def __init__(self, title='', name=None, pathname=None, entities=(), 
         order_method=by_created_time, load_yaml_files=True):
+
+        # print("Locals in Bag.__init__: %s" % locals())
 
         self.title = title
         self.entities = list()
         self.pathname = pathname
         self.order_method = order_method
+        
+        if name:
+            self.name = name
+
+        # Make a unique name if we didn't get one.
+        if not name:
+            self.name = '%s-%s' % (self.__class__.__name__.lower(), 
+                uuid.uuid4())
 
         # These will get populated in self.append.
         self.entities_by_name = dict()
@@ -58,11 +72,27 @@ class Bag(object):
 
         # Only load from the file system if we don't have anything.
         if self.pathname and load_yaml_files:
-            self.from_yaml_files()
+            self.load_entities_from_yaml_files()
 
         # Finally, tell all the entities to replace pointers with
         # objects.
         self.replace_pointers_with_objects()
+
+    @property
+    def yaml(self):
+        """
+        Return a block of yaml.
+        """
+
+        data = dict(
+            title=self.title,
+            order_method_name=self.order_method.func_name,
+            name=self.name,
+            pathname=self.pathname,
+            )
+
+        return yaml.dump(data, default_flow_style=False)
+
 
     def __iter__(self):
         """
@@ -148,8 +178,40 @@ class Bag(object):
             self.entities.sort(self.order_method)
             self.entities_by_name[e.name] = e
 
+    def to_yaml_file(self, pathname=None):
+        """
+        Save this bag to a YAML file.
+        """
 
-    def to_yaml_files(self, pathname=None):
+        if not pathname \
+        and not self.pathname \
+        and not os.path.isdir(self.pathname):
+            raise ValueError("I need a pathname!")
+
+        pathname = pathname or self.pathname
+
+        fp = os.path.join(pathname, '%s.yaml' % (self.name)) 
+        f = open(fp, 'w')
+        f.write(self.yaml)
+        f.close()
+        logging.debug("Saved file %s" % fp)
+
+        return fp
+
+    @classmethod
+    def from_yaml_file(cls, fp): 
+        d = yaml.load(open(fp))
+
+        # Dig out the string that points to the order method and replace
+        # it with the actual function.
+
+        d['order_method'] = globals()[d['order_method_name']]
+        d.pop('order_method_name')
+
+        return cls(**d)
+        
+
+    def save_entities_to_yaml_files(self, pathname=None):
         """
         Tell every entity to write itself out to YAML.
         """
@@ -161,11 +223,12 @@ class Bag(object):
 
         pathname = pathname or self.pathname
 
+        # Send all the entities to the filesystem.
         return [e.to_yaml_file(pathname) 
             for e in self.entities]
 
 
-    def from_yaml_files(self, pathname=None):
+    def load_entities_from_yaml_files(self, pathname=None):
         """
         Loads all the files matching pathglob into this bag.
         """

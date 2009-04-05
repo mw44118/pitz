@@ -40,7 +40,7 @@ class Entity(UserDict):
         UserDict.__init__(self, **kwargs)
         self.data['type'] = self.__class__.__name__.lower()
 
-        # Make a name if it wasn't provided.
+        # Make a unique name if we didn't get one.
         if 'name' not in kwargs:
             self['name'] = '%s-%s' % (self.data['type'], uuid.uuid4())
 

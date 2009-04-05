@@ -8,7 +8,7 @@ class Project(Bag):
     The project is the bag that everybody should track, because it is
     the only thing that keeps references to every other thing.
     """
-    
+
     def append(self, e):
         """
         Do a regular append and some other stuff too.
@@ -18,3 +18,4 @@ class Project(Bag):
 
         # Make sure the entity remembers this project.
         e.project = self
+

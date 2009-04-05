@@ -38,9 +38,9 @@ def test_new_bag():
 def test_to_and_from_yaml_files_1():
 
     global b
-    b.to_yaml_files('/home/matt/projects/pitz/pitz/junkyard/')
+    b.save_entities_to_yaml_files('/home/matt/projects/pitz/pitz/junkyard/')
 
-    pitz.Bag().from_yaml_files('/home/matt/projects/pitz/pitz/junkyard/')
+    pitz.Bag().load_entities_from_yaml_files('/home/matt/projects/pitz/pitz/junkyard/')
     
 def test_append_1():
 
