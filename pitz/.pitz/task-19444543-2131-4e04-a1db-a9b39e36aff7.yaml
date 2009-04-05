@@ -1,5 +1,6 @@
 created_time: &id001 2009-03-26 11:09:26.293399
 modified_time: *id001
 name: task-19444543-2131-4e04-a1db-a9b39e36aff7
+status: unknown status
 title: Support a $PITZDIR env var to tell where yaml files live
 type: task

@@ -7,5 +7,6 @@ last_modified_by: Matt
 modified_date: *id001
 modified_time: *id002
 name: task-e2bb2ae6-1d22-4da2-a1b9-b20ad32e18fd
+status: finished
 title: Support grouping tasks by component
 type: task
