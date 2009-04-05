@@ -6,10 +6,16 @@ from pitz.entity import Entity
 
 class Task(Entity):
 
-    # This dictionary maps keys in self.data to the types they hold.
-    pointers = dict(
-        milestone='milestone',
-        creator='person',
-        owner='person',
-        component='component',
-    )
+    required_fields = dict(
+        title='no title',
+        status='unknown status')
+
+    pointers = ['milestone', 'person', 'component']
+
+    @property
+    def summarized_view(self):
+        """
+        Short description of the task.
+        """
+
+        return "%(title)s (%(status)s)" % self

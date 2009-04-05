@@ -11,15 +11,18 @@ from nose import SkipTest
 b = pitz.Bag()
 
 tasks = [
-    pitz.Task(b, title='Clean cat box!', creator='Matt'),
-    pitz.Task(b, title='Shovel driveway', creator='Matt'),
+    pitz.Task(b, title='Clean cat box!', creator='Matt',
+        status='unstarted'),
+    pitz.Task(b, title='Shovel driveway', creator='Matt',
+        status='unstarted'),
 ]
+
+t1, t2 = tasks
 
 
 def test_new_bag():
 
-    global tasks
-    t1, t2 = tasks
+    global t1, t2, tasks
 
     b = pitz.Bag(entities=tasks)
 
@@ -47,16 +50,21 @@ def test_new_task():
     b = pitz.Bag()
 
     t = pitz.Task(b, title='Clean cat box!', 
+        status='unstarted',
         creator='Matt',
         description='It is gross!')
 
     assert t.name == t['name']
 
-@raises(ValueError)
-def test_must_get_required_attributes():
-    
-    b = pitz.Bag()
-    pitz.Task(b)
+def test_missing_attributes_replaced_with_defaults():
+    """
+    Verify we fill in missing attributes with defaults.
+    """
+
+    t = pitz.Task()
+    assert t['title'] == 'no title'
+    assert t['status'] == 'unknown status'
+
 
 def test_as_eav_tuples():
 
@@ -64,10 +72,6 @@ def test_as_eav_tuples():
     t1, t2 = tasks
     assert isinstance(t1.as_eav_tuples, list)
 
-    print t1.as_eav_tuples
-
-    assert len(t1.as_eav_tuples) == 5, \
-    "got %d tuples back!" % len(t1.as_eav_tuples)
 
 def test_summarized_view():
 
@@ -93,13 +97,15 @@ def test_update_task_status():
 
 def test_comment_on_task():
 
-    global tasks
-    t1, t2 = tasks
+    global b, t1, t2, tasks
 
-    t1.comment(
-        pitz.Person(title="Matt"),
-        datetime.now(),
-        "This is a bogus comment")
+    c = pitz.Comment(b, who_said_it="matt",
+        entity=t1,
+        text="blah blah")
+
+    comments_on_t1 = b(type='comment', entity=t1)
+    assert len(comments_on_t1) == 1
+    assert comments_on_t1[0]['text'] == 'blah blah'
 
 
 def test_view_tasks_for_matt():
@@ -107,7 +113,7 @@ def test_view_tasks_for_matt():
     p = pitz.Project("Matt's stuff")
     matt = pitz.Person(p, title='Matt')
 
-    t = pitz.Task(p, title='Clean cat box', owner=matt)
+    t = pitz.Task(p, title='Clean cat box', owner=matt, status='unstarted')
 
     tasks_for_matt = p(type='task', owner=matt)
     assert t in tasks_for_matt
@@ -119,7 +125,8 @@ def test_view_tasks_for_matt_and_in_next_milestone():
     matt = pitz.Person(p, title='Matt')
     m = pitz.Milestone(p, title='Next Milestone')
 
-    t = pitz.Task(p, title='Clean cat box', owner=matt, milestone=m)
+    t = pitz.Task(p, title='Clean cat box', owner=matt, milestone=m,
+        status='unstarted')
 
     tasks_for_matt_in_next_milestone = p(type='task', owner=matt, 
         milestone=m)

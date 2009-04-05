@@ -10,8 +10,12 @@ from nose import SkipTest
 b = pitz.Bag("Testing bag")
 
 tasks = [
-    pitz.Task(b, title='Clean cat box!', creator='person-matt'),
-    pitz.Task(b, title='Shovel driveway', creator='person-matt'),
+
+    pitz.Task(b, title='Clean cat box!', creator='person-matt',
+        status='really important'),
+
+    pitz.Task(b, title='Shovel driveway', creator='person-matt',
+        status='not very important'),
 ]
 
 def test_matches_dict():
@@ -41,13 +45,17 @@ def test_to_and_from_yaml_files_1():
 def test_append_1():
 
     b = pitz.Bag()
-    b.append(pitz.Task(title='blah'))
+    b.append(pitz.Task(title='blah', status='irrelevant'))
     
 def test_values():
 
     b = pitz.Bag()
-    b.append(pitz.Task(title='blah', difficulty='easy'))
-    b.append(pitz.Task(title='blah', difficulty='hard'))
+
+    b.append(pitz.Task(title='blah', difficulty='easy',
+        status='unstarted'))
+
+    b.append(pitz.Task(title='blah', difficulty='hard',
+        status='unstarted'))
 
     v = b.values('difficulty')
     assert len(v) == 2

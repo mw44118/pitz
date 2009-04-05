@@ -4,3 +4,4 @@ from pitz.entity import Entity
 
 class Person(Entity):
     pass
+

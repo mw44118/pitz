@@ -4,7 +4,7 @@ from copy import copy
 import logging
 from UserDict import UserDict
 from datetime import datetime
-import os, uuid
+import os, uuid, warnings
 
 import yaml
 
@@ -19,19 +19,23 @@ class Entity(UserDict):
     A regular dictionary with a few extra tweaks.
     """
 
-    required_fields = ['title']
-    pointers = dict()
+    required_fields = dict(title='no title')
+    pointers = list()
 
     def __init__(self, project=None, **kwargs):
 
-        # First set up a few instance variables.
-        self.comments = []
-
         # Now make sure we got all the required fields.
-        for rf in self.required_fields:
+        for rf, default_value in self.required_fields.items():
+
             if rf not in kwargs:
-                raise ValueError("I need these required fields %s" 
-                    % self.required_fields)
+
+                # Use a default value if we got one.  
+                if default_value:
+                    kwargs[rf] = default_value
+
+                # Otherwise, raise an exception.
+                else:
+                    raise ValueError("I need a value for %s!" % rf)
 
         UserDict.__init__(self, **kwargs)
         self.data['type'] = self.__class__.__name__.lower()
@@ -51,18 +55,6 @@ class Entity(UserDict):
         self.project = project
         if project is not None:
             self.project.append(self)
-
-    @property
-    def comments(self):
-        """
-        Return a list of comments for this entity.
-        """
-
-        if not self.project:
-            raise NoProject("I need a project to find related comments")
-
-        else:
-            return self.project(type='comment', entity=self)
 
     @property
     def name(self):
@@ -218,15 +210,6 @@ class Entity(UserDict):
                 # True for isinstance(o, Entity).
                 if isinstance(o, Entity):
                     self[p] = o.name
-
-    def comment(self, who_said_it, what_they_said, when_they_said_it='right now'):
-
-        if when_they_said_it == 'right now':
-            when_they_said_it = datetime.now()
-        
-        self.comments.append(
-            (who_said_it, when_they_said_it, what_they_said))
-
 
     @classmethod
     def from_yaml_file(cls, fp, project=None):

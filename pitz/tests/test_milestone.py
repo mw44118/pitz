@@ -16,8 +16,8 @@ def setup():
         entities=[
             pitz.Milestone(title="Bogus Milestone 1"),
             pitz.Milestone(title="Bogus Milestone 2"),
-            pitz.Task(title='Clean cat box!', creator=matt),
-            pitz.Task(title='Shovel driveway', creator=matt),
+            pitz.Task(title='Clean cat box!', creator=matt, status='unstarted'),
+            pitz.Task(title='Shovel driveway', creator=matt, status='unstarted'),
         ])
 
 @with_setup(setup)

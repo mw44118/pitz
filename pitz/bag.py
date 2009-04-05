@@ -29,12 +29,13 @@ def by_whatever(*whatever):
             [e1.get(w) for w in whatever],
             [e2.get(w) for w in whatever])
 
-    f.__doc__ = "by_whatever(%s)" % list(whatever)
+    f.func_name = f.__doc__ = "by_whatever(%s)" % list(whatever)
         
     return f
 
 by_spiciness = by_whatever('peppers')
 by_created_time = by_whatever('created_time')
+by_type_status_created_time = by_whatever('type', 'status', 'created time')
 
 class Bag(object):
     """
@@ -290,4 +291,3 @@ class Bag(object):
                 dd[e[attr]] += 1
 
         return sorted(dd.items(), key=lambda t: t[1], reverse=True)
-
