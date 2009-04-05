@@ -2,6 +2,33 @@
 
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import optparse, os, sys
+
+p = optparse.OptionParser()
+
+def verify_pitzdir(option, opt_str, value, parser):
+
+    if not os.path.isdir(value):
+        raise optparse.OptionValueError(
+            "%s is not a directory!" 
+            % value)
+
+    else:
+        parser.values.pitzdir = value
+
+p.add_option('--pitz-dir', 
+    help='path to directory containing pitz files',
+    action="callback", 
+    callback=verify_pitzdir,
+    dest="pitzdir",
+    type="string")
+
+options, args = p.parse_args()
+
+if not options.pitzdir:
+    p.print_help()
+    sys.exit(1)
+
 from pitz.cmdline import shell
 
-shell('/home/matt/projects/pitz/pitz/.pitz')
+shell(options.pitzdir)

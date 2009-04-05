@@ -14,32 +14,10 @@ tasks = [
     pitz.Task(b, title='Shovel driveway', creator='person-matt'),
 ]
 
-def test_matching_pairs():
-    """
-    Verify the bag can find all the comments.
-    """
-
-    global b, tasks
-
-    found_tasks = b.matching_pairs([('type', 'task')])
-
-    t1, t2 = tasks
-    print "t1's type is %(type)s" % t1
-    print "len(b) is %d" % len(b)
-    print "len(b.entities) is %d" % len(b.entities)
-
-    assert len(found_tasks) == 2, "Expected 2, counted %d" % len(b)
-
-    t1, t2 = found_tasks
-    assert t1['type'] == 'task'
-    assert t2['type'] == 'task'
-
 def test_matches_dict():
 
     global b, tasks
-
-    assert b.matching_pairs([('type', 'task')]).entities \
-    == b.matches_dict(type='task').entities
+    b.matches_dict(type='task')
 
 def test_new_bag():
 

@@ -16,34 +16,6 @@ tasks = [
 ]
 
 
-def test_simplest_query_1():
-    """
-    Verify we can look up an entity by entity value.
-    """
-
-    global tasks
-
-    t1, t2 = tasks
-    assert t1.matches_pairs([('title', 'Clean cat box!')])
-    assert not t2.matches_pairs([('title', 'Clean cat box!')])
-
-
-def test_matching_pairs():
-    """
-    Verify the bag can find some entities
-    """
-
-    global b, tasks
-
-    found_tasks = b.matching_pairs([('type', 'task')])
-
-    assert len(found_tasks) == 2
-
-    c1, c2 = found_tasks
-    assert c1['type'] == 'task'
-    assert c2['type'] == 'task'
-
-
 def test_new_bag():
 
     global tasks
@@ -106,18 +78,6 @@ def test_summarized_view():
 
     print(str(t1))
 
-@raises(TypeError)
-def test_match_1():
-
-    """
-    Test against a list of values.
-    """
-
-    global tasks
-    t1, t2 = tasks
-
-    t1.matches_pairs([('owners', ['Matt', 'Tim'])])
-    
 def test_name_must_be_unique():
 
     raise SkipTest

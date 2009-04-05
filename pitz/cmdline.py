@@ -13,4 +13,3 @@ def shell(pitzdir):
     answer = raw_input("Write out updated yaml files? ([y]/n) ")
     if answer.lower() not in ['n', 'no']:
         p.to_yaml_files()
-
