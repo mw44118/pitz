@@ -1,11 +1,24 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import yaml
+
 from IPython.Shell import IPShellEmbed
-from pitz import *
+
+import pitz
 
 def shell(projectfile):
 
-    p = Project.from_yaml_file(projectfile)
+    projectdata = yaml.load(open(projectfile))
+
+    # Read the section on __import__ at
+    # http://docs.python.org/library/functions.html
+    # to make sense out of this.
+    m = __import__(projectdata['module'],
+        fromlist=projectdata['classname'])
+
+    P = getattr(m, projectdata['classname'])
+
+    p = P.from_yaml_file(projectfile)
 
     s = IPShellEmbed(['-colors', 'Linux'])
     s()

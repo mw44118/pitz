@@ -3,21 +3,22 @@
 import yaml
 
 import pitz
+from pitz.junkyard import Milestone, Person, Task
 
 from nose.tools import raises, with_setup
 from nose import SkipTest
 
 p = None
-matt = pitz.Person(title="Matt")
+matt = Person(title="Matt")
 
 def setup():
     global p
     p = pitz.Project('Milestone Testing',
         entities=[
-            pitz.Milestone(title="Bogus Milestone 1"),
-            pitz.Milestone(title="Bogus Milestone 2"),
-            pitz.Task(title='Clean cat box!', creator=matt, status='unstarted'),
-            pitz.Task(title='Shovel driveway', creator=matt, status='unstarted'),
+            Milestone(title="Bogus Milestone 1"),
+            Milestone(title="Bogus Milestone 2"),
+            Task(title='Clean cat box!', creator=matt, status='unstarted'),
+            Task(title='Shovel driveway', creator=matt, status='unstarted'),
         ])
 
 @with_setup(setup)

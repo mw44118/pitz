@@ -13,7 +13,6 @@ def verify_projectfile(option, opt_str, value, parser):
 
     else:
         parser.values.projectfile = value
-        
 
 p.add_option('--project-file',
     help='path to project yaml file',

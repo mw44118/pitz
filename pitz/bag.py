@@ -47,9 +47,7 @@ class Bag(object):
     """
 
     def __init__(self, title='', name=None, pathname=None, entities=(), 
-        order_method=by_created_time, load_yaml_files=True):
-
-        # print("Locals in Bag.__init__: %s" % locals())
+        order_method=by_created_time, load_yaml_files=True, **kwargs):
 
         self.title = title
         self.entities = list()
@@ -85,6 +83,8 @@ class Bag(object):
         """
 
         data = dict(
+            module=self.__module__,
+            classname=self.__class__.__name__,
             title=self.title,
             order_method_name=self.order_method.func_name,
             name=self.name,
@@ -273,7 +273,14 @@ class Bag(object):
 
     @property
     def summarized_view(self):
-        return repr(self)
+        s2 = "<pitz.%s '%s' %s sorted by %s>"
+
+        return s2 % (
+            self.__class__.__name__,
+            self.title,
+            self.contents,
+            self.order_method.__doc__,
+            )
 
     @property
     def detailed_view(self):
@@ -311,16 +318,7 @@ class Bag(object):
         return self.detailed_view
 
     def __repr__(self):
-
-        s2 = "<pitz.%s '%s' %s sorted by %s>"
-
-        return s2 % (
-            self.__class__.__name__,
-            self.title,
-            self.contents,
-            self.order_method.__doc__,
-            )
-
+        return self.detailed_view
 
     def replace_pointers_with_objects(self):
         """
