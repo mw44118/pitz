@@ -127,7 +127,16 @@ class Bag(object):
         
         matches = [e for e in self.entities if e.matches_dict(**d)]
 
-        return Bag(pathname=self.pathname, entities=matches,
+        return Bag(title='subset of %s' % self.title, 
+            pathname=self.pathname, entities=matches,
+            order_method=self.order_method, load_yaml_files=False)
+
+    def does_not_match_dict(self, **d):
+
+        matches = [e for e in self.entities if e.does_not_match_dict(**d)]
+
+        return Bag(title='subset of %s' % self.title, 
+            pathname=self.pathname, entities=matches,
             order_method=self.order_method, load_yaml_files=False)
 
     def __call__(self, **d):
@@ -290,17 +299,20 @@ class Bag(object):
 
     @property
     def contents(self):
-        
 
-        return ', '.join(['%d %s entities' % (typecount, typename) 
-            for typename, typecount in self.values('type')])
+        if self:
+            return '(' + ', '.join(['%d %s entities' % (typecount, typename) 
+                for typename, typecount in self.values('type')]) +')'
+
+        else:
+            return '(empty)'
 
     def __str__(self):
         return self.detailed_view
 
     def __repr__(self):
 
-        s2 = "<pitz.%s '%s' (%s, sorted by %s)>"
+        s2 = "<pitz.%s '%s' %s sorted by %s>"
 
         return s2 % (
             self.__class__.__name__,

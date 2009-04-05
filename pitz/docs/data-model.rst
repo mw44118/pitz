@@ -32,16 +32,6 @@ You can look up a value for any attribute like this::
     >>> e['type']
     'entity'
 
-You have to give each Entity instance at least a title attribute::
-
-    >>> Entity(a=1, b=2)
-    Traceback (most recent call last):
-    ...
-    ValueError: I need these required fields ['title']
-
-Part of the reason to subclass entities is to specify different required
-fields.
-
 Viewing them
 ------------
 
@@ -78,7 +68,8 @@ entities, and a detailed view that shows all the boring detail::
 
 Notice how our entity has some attributes we never set, like name, type,
 created_time, and modified_time.  I make these in the __init__ method of
-the entity class.
+the entity class.  If you want to specify your own required fields with
+optional defaults, you can subclass Entity.
 
 By the way, you can ignore the #doctest: +SKIP comment.  That is there
 so the doctests will skip trying to running this example, which will
@@ -155,8 +146,8 @@ Now I'll make a new bag that has both of these new entities::
     Everything
     ==========
     <BLANKLINE>
-    2 entity entities
-    -----------------
+    (2 entity entities)
+    -------------------
     <BLANKLINE>
        0: example #1 (entity)
        1: example #2 (entity)
@@ -177,14 +168,20 @@ works just as well::
 
     >>> not_very_important = b(importance="not very")
 
+I wrote a does_not_match_dict method on bags.  Using these together
+covers all the weird queries I have needed so far.  For example, here is
+how I found all the tasks assigned to me with any status except
+'finished'::
+
+    >>> todo_for_matt = b(type='task', assigned_to='Matt')\
+    ... .does_not_match_dict(status='finished')
+
 Saving and loading them
 -----------------------
 
 Bags can send all contained entities to yaml files with to_yaml_files,
 and bags can load a bunch of entities from yaml files with
 from_yaml_files.
-
-Right now, there is no way for a bag to save itself to yaml.
 
 The Special Project Bag
 =======================
@@ -263,7 +260,7 @@ This is dry stuff, so here's an example::
     ...             assigned_to=lindsey)
 
 Not much is different, but instead of matt, lindsey, and the various
-chores all being entities, they're now subclasses.  But here's the
+chores all being entities, they're now subclasses.  But here's one
 advantage of defining pointers on Chore::
 
     >>> ch1['assigned_to']
