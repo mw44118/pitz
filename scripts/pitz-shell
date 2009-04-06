@@ -14,19 +14,10 @@ def verify_projectfile(option, opt_str, value, parser):
     else:
         parser.values.projectfile = value
 
-p.add_option('--project-file',
-    help='path to project yaml file',
-    action="callback",
-    callback=verify_projectfile,
-    dest="projectfile",
-    type="string")
+p.set_usage('%prog [path to project file]')
 
 options, args = p.parse_args()
 
-if not options.projectfile:
-    p.print_help()
-    sys.exit(1)
-
 from pitz.cmdline import shell
 
-shell(options.projectfile)
+shell(*args)

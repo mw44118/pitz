@@ -6,26 +6,35 @@ from IPython.Shell import IPShellEmbed
 
 import pitz
 
-def shell(projectfile):
+def shell(projectfile=None):
 
-    projectdata = yaml.load(open(projectfile))
+    """
+    Start an ipython session and possibly load in a project.
+    """
 
-    # Read the section on __import__ at
-    # http://docs.python.org/library/functions.html
-    # to make sense out of this.
-    m = __import__(projectdata['module'],
-        fromlist=projectdata['classname'])
+    if projectfile:
+        projectdata = yaml.load(open(projectfile))
 
-    P = getattr(m, projectdata['classname'])
+        # Read the section on __import__ at
+        # http://docs.python.org/library/functions.html
+        # to make sense out of this.
+        m = __import__(projectdata['module'],
+            fromlist=projectdata['classname'])
 
-    p = P.from_yaml_file(projectfile)
+        P = getattr(m, projectdata['classname'])
+
+        p = P.from_yaml_file(projectfile)
+
+    else:
+        p = None
 
     s = IPShellEmbed(['-colors', 'Linux'])
     s()
 
 
     # This stuff happens when you close the IPython session.
-    answer = raw_input("Write out updated yaml files? ([y]/n) ")
-    if answer.lower() not in ['n', 'no']:
-        p.to_yaml_file()
-        p.save_entities_to_yaml_files()
+    if p:
+        answer = raw_input("Write out updated yaml files? ([y]/n) ")
+        if answer.lower() not in ['n', 'no']:
+            p.to_yaml_file()
+            p.save_entities_to_yaml_files()
