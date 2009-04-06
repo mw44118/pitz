@@ -148,7 +148,7 @@ def test_yaml_file():
 
     b = pitz.Bag()
 
-    fp = t1.to_yaml_file('/home/matt/projects/pitz/pitz/junkyard')
+    fp = t1.to_yaml_file('/tmp')
     pitz.Entity.from_yaml_file(fp, b)
 
 
