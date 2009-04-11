@@ -7,9 +7,9 @@ from glob import glob
 import yaml
 import jinja2
 
-from pitz.entity import Entity
-from pitz.task import Task
-from pitz.person import Person
+from .entity import Entity
+from .junkyard import Task
+from .junkyard import Person
 
 logging.basicConfig(level=logging.INFO)
 
@@ -256,6 +256,8 @@ class Bag(object):
         for fp in glob(pathglob):
 
             bn = os.path.basename(fp)
+
+            # TODO: Figure out how to find the class to instantiate.
 
             if bn.startswith('task-'):
                 Task.from_yaml_file(fp, self)

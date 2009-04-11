@@ -10,7 +10,7 @@ import yaml
 
 import jinja2
 
-from pitz.exceptions import NoProject
+from .exceptions import NoProject
 
 logging.basicConfig(level=logging.INFO)
 
