@@ -1,5 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import glob, os
 from datetime import datetime
 import yaml
 
@@ -20,6 +21,13 @@ tasks = [
 ]
 
 t1, t2 = tasks
+
+def teardown():
+    """
+    Delete any files we created.
+    """
+    for f in glob.glob('/tmp/task-*.yaml'):
+        os.unlink(f)
 
 
 def test_new_bag():

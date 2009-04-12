@@ -6,27 +6,6 @@ from pitz.entity import Entity
 from pitz.project import Project
 from pitz.exceptions import NoProject
 
-class PitzProject(Project):
-    """
-    Just like the regular project, but with some queries as properties.
-    This is the project type used by pitz itself (hence the name).
-    """
-
-    @property
-    def todo(self):
-        b = self(type='task').does_not_match_dict(status='finished')
-        b.title = 'Stuff to do'
-        return b
-
-    @property
-    def milestones(self):
-        b = self(type='milestone')
-        b.title = 'Milestones'
-        return b
-
-    def __repr__(self):
-        return self.detailed_view
-
 class Milestone(Entity):
 
     @property
@@ -100,3 +79,27 @@ class EntityWithFixedValues(Entity):
         else:
             self.data[attr] = val
 
+class PitzProject(Project):
+    """
+    Just like the regular project, but with some queries as properties.
+    This is the project type used by pitz itself (hence the name).
+    """
+
+    classes = dict(
+        task=Task,
+        person=Person)
+
+    @property
+    def todo(self):
+        b = self(type='task').does_not_match_dict(status='finished')
+        b.title = 'Stuff to do'
+        return b
+
+    @property
+    def milestones(self):
+        b = self(type='milestone')
+        b.title = 'Milestones'
+        return b
+
+    def __repr__(self):
+        return self.detailed_view
