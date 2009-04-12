@@ -4,16 +4,18 @@ from datetime import datetime
 import yaml
 
 import pitz
+from pitz.bag import Bag
+from pitz.junkyard import *
 
 from nose.tools import raises
 from nose import SkipTest
 
-b = pitz.Bag()
+b = Bag()
 
 tasks = [
-    pitz.Task(b, title='Clean cat box!', creator='Matt',
+    Task(b, title='Clean cat box!', creator='Matt',
         status='unstarted'),
-    pitz.Task(b, title='Shovel driveway', creator='Matt',
+    Task(b, title='Shovel driveway', creator='Matt',
         status='unstarted'),
 ]
 
@@ -24,7 +26,7 @@ def test_new_bag():
 
     global t1, t2, tasks
 
-    b = pitz.Bag(entities=tasks)
+    b = Bag(entities=tasks)
 
     assert t1 in b
     assert t2 in b
@@ -47,9 +49,9 @@ def test_new_task():
     Verify we can make a new task.
     """
 
-    b = pitz.Bag()
+    b = Bag()
 
-    t = pitz.Task(b, title='Clean cat box!', 
+    t = Task(b, title='Clean cat box!', 
         status='unstarted',
         creator='Matt',
         description='It is gross!')
@@ -61,16 +63,9 @@ def test_missing_attributes_replaced_with_defaults():
     Verify we fill in missing attributes with defaults.
     """
 
-    t = pitz.Task()
+    t = Task()
     assert t['title'] == 'no title'
     assert t['status'] == 'unknown status'
-
-
-def test_as_eav_tuples():
-
-    global tasks
-    t1, t2 = tasks
-    assert isinstance(t1.as_eav_tuples, list)
 
 
 def test_summarized_view():
@@ -99,7 +94,7 @@ def test_comment_on_task():
 
     global b, t1, t2, tasks
 
-    c = pitz.Comment(b, who_said_it="matt",
+    c = Comment(b, who_said_it="matt",
         entity=t1,
         text="blah blah")
 
@@ -110,10 +105,10 @@ def test_comment_on_task():
 
 def test_view_tasks_for_matt():
 
-    p = pitz.Project("Matt's stuff")
-    matt = pitz.Person(p, title='Matt')
+    p = Project("Matt's stuff")
+    matt = Person(p, title='Matt')
 
-    t = pitz.Task(p, title='Clean cat box', owner=matt, status='unstarted')
+    t = Task(p, title='Clean cat box', owner=matt, status='unstarted')
 
     tasks_for_matt = p(type='task', owner=matt)
     assert t in tasks_for_matt
@@ -121,11 +116,11 @@ def test_view_tasks_for_matt():
     
 def test_view_tasks_for_matt_and_in_next_milestone():
 
-    p = pitz.Project("Matt's stuff")
-    matt = pitz.Person(p, title='Matt')
-    m = pitz.Milestone(p, title='Next Milestone')
+    p = Project("Matt's stuff")
+    matt = Person(p, title='Matt')
+    m = Milestone(p, title='Next Milestone')
 
-    t = pitz.Task(p, title='Clean cat box', owner=matt, milestone=m,
+    t = Task(p, title='Clean cat box', owner=matt, milestone=m,
         status='unstarted')
 
     tasks_for_matt_in_next_milestone = p(type='task', owner=matt, 
@@ -146,10 +141,10 @@ def test_yaml_file():
     global tasks
     t1, t2 = tasks
 
-    b = pitz.Bag()
+    b = Bag()
 
     fp = t1.to_yaml_file('/tmp')
-    pitz.Entity.from_yaml_file(fp, b)
+    Entity.from_yaml_file(fp, b)
 
 
 def test_to_html():

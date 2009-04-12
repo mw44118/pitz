@@ -2,7 +2,7 @@
 
 import yaml
 
-import pitz
+import pitz, pitz.project
 from pitz.junkyard import Milestone, Person, Task
 
 from nose.tools import raises, with_setup
@@ -13,7 +13,7 @@ matt = Person(title="Matt")
 
 def setup():
     global p
-    p = pitz.Project('Milestone Testing',
+    p = pitz.project.Project('Milestone Testing',
         entities=[
             Milestone(title="Bogus Milestone 1"),
             Milestone(title="Bogus Milestone 2"),

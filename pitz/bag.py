@@ -7,39 +7,11 @@ from glob import glob
 import yaml
 import jinja2
 
-from .entity import Entity
-from .junkyard import Task
-from .junkyard import Person
+from pitz import by_created_time
+import pitz.entity
 
 logging.basicConfig(level=logging.INFO)
 
-def by_whatever(func_name, *whatever):
-    """
-    Returns a function suitable for sorting, using whatever.
-
-    >>> e1, e2 = {'a':1, 'b':1, 'c':2}, {'a':2, 'b':2, 'c':1}
-    >>> by_whatever('xxx', 'a')(e1, e2)
-    -1
-    >>> by_whatever('xxx', 'c', 'a')(e1, e2)
-    1
-    """
-
-    def f(e1, e2):
-
-        return cmp(
-            [e1.get(w) for w in whatever],
-            [e2.get(w) for w in whatever])
-
-    f.__doc__ = "by_whatever(%s)" % list(whatever)
-    f.func_name = func_name
-        
-    return f
-
-by_spiciness = by_whatever('by_spiciness', 'peppers')
-by_created_time = by_whatever('by_created_time', 'created_time')
-
-by_type_status_created_time = by_whatever('by_type_status_created_time', 
-    'type', 'status', 'created time')
 
 class Bag(object):
     """
@@ -89,7 +61,7 @@ class Bag(object):
             order_method_name=self.order_method.func_name,
             name=self.name,
             pathname=self.pathname,
-            )
+        )
 
         return yaml.dump(data, default_flow_style=False)
 
@@ -146,28 +118,13 @@ class Bag(object):
 
         return self.matches_dict(**d)
 
-    def matching_pairs(self, pairs):
-        """
-        For pairs like
-
-            [
-                ('type', 'task'),
-                ('assigned-to', 'person-matt'),
-            ]
-
-        return a new bag instance containing all entities that match.
-        """
-
-        matches = [e for e in self if e.matches_pairs(pairs)]
-        return Bag(pathname=self.pathname, entities=matches,
-            order_method=self.order_method)
 
     def by_name(self, name):
         """
         Return an entity named name if we can.  Otherwise, return name.
         """
 
-        if isinstance(name, Entity):
+        if hasattr(name, 'name'):
             name = name.name
 
         return self.entities_by_name.get(name, name)
@@ -219,60 +176,6 @@ class Bag(object):
 
         return cls(**d)
         
-
-    def save_entities_to_yaml_files(self, pathname=None):
-        """
-        Tell every entity to write itself out to YAML.
-        """
-
-        if not pathname \
-        and not self.pathname \
-        and not os.path.isdir(self.pathname):
-            raise ValueError("I need a pathname!")
-
-        pathname = pathname or self.pathname
-
-        # Send all the entities to the filesystem.
-        return [e.to_yaml_file(pathname) 
-            for e in self.entities]
-
-
-    def load_entities_from_yaml_files(self, pathname=None):
-        """
-        Loads all the files matching pathglob into this bag.
-        """
-
-        if pathname:
-            self.pathname = pathname
-
-        if not self.pathname:
-            raise ValueError("I need a path to the files!")
-
-        if not os.path.isdir(self.pathname):
-            raise ValueError("%s isn't a directory." % self.pathname)
-
-        pathglob = os.path.join(self.pathname, '*.yaml')
-
-        for fp in glob(pathglob):
-
-            bn = os.path.basename(fp)
-
-            # TODO: Figure out how to find the class to instantiate.
-
-            if bn.startswith('task-'):
-                Task.from_yaml_file(fp, self)
-
-            elif bn.startswith('person-'):
-                Person.from_yaml_file(fp, self)
-
-            elif bn.startswith('milestone-'):
-                Milestone.from_yaml_file(fp, self)
-
-            elif bn.startswith('component-'):
-                Component.from_yaml_file(fp, self)
-
-        return self
-
     @property
     def summarized_view(self):
         s2 = "<pitz.%s '%s' %s sorted by %s>"

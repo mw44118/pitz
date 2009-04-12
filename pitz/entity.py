@@ -10,7 +10,7 @@ import yaml
 
 import jinja2
 
-from .exceptions import NoProject
+from pitz.exceptions import NoProject
 
 logging.basicConfig(level=logging.INFO)
 
@@ -59,12 +59,6 @@ class Entity(UserDict):
     @property
     def name(self):
         return self.data['name']
-
-    @property
-    def as_eav_tuples(self):
-        return [(self.data['name'], a, v) 
-        for a, v in self.data.items() 
-        if a != 'name']
 
     def matches_dict(self, **d):
         """
