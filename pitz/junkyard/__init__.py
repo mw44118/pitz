@@ -48,6 +48,16 @@ class Task(Entity):
 
         return "%(title)s (%(status)s)" % self
 
+    @property
+    def comments(self):
+        """
+        Return all comments on this task.
+        """
+    
+        b = self.project(type='comment', entity=self)
+        b.title = 'Comments on %(title)s' % self.data
+        return b
+
 
 class Comment(Entity):
     
@@ -58,6 +68,17 @@ class Comment(Entity):
         title='no title')
 
     pointers = ['who_said_it', 'entity']
+
+    @property
+    def summarized_view(self):
+
+        t = self.data['text'].strip().replace('\n', ' ')
+        
+        return "%(author)s at %(time)s said: %(text)s" % dict(
+            author=self.data['who_said_it']['title'],
+            time=self.data['created_time'].strftime("%I:%M %P, %a, %m/%d/%y"),
+            text="%s..." % t[:60] if len(t) > 60 else t,
+        )
 
 class Person(Entity):
     pass
@@ -102,4 +123,10 @@ class PitzProject(Project):
     def people(self):
         b = self(type='person')
         b.title = 'People'
+        return b
+
+    @property
+    def comments(self):
+        b = self(type='comment')
+        b.title = 'Comments'
         return b
