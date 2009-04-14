@@ -1,5 +1,12 @@
 # vim: set ts=4 sw=4 filetype=python:
 
+"""
+Stuff that is useful in lots of different places goes in here.
+"""
+
+import os, subprocess, tempfile
+
+
 def by_whatever(func_name, *whatever, **kwargs):
     """
     Returns a function suitable for sorting, using whatever.
@@ -27,8 +34,27 @@ def by_whatever(func_name, *whatever, **kwargs):
         
     return f
 
+# Should I use functools.partial instead?
 by_spiciness = by_whatever('by_spiciness', 'peppers')
 by_created_time = by_whatever('by_created_time', 'created_time')
 
 by_type_status_created_time = by_whatever('by_type_status_created_time', 
     'type', 'status', 'created time')
+
+def edit_with_editor(s=None):
+    """
+    Open os.environ['EDITOR'] and load in text s.
+    
+    Returns the text typed in the editor.
+    """
+
+    # This is the first time I've used with!
+    with tempfile.NamedTemporaryFile() as t:
+
+        if s:
+            t.write(s)
+            t.seek(0)
+
+        subprocess.call([os.environ.get('EDITOR', 'vi'), t.name])
+        return t.read()
+    

@@ -5,3 +5,5 @@ pitz.egg-info
 .*swp
 .coverage
 pitz/junkyard/*.yaml
+build
+dist

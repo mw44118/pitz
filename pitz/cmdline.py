@@ -21,9 +21,16 @@ def shell(projectfile=None):
         m = __import__(projectdata['module'],
             fromlist=projectdata['classname'])
 
+        # This big P is the class.
         P = getattr(m, projectdata['classname'])
 
+        # This little p is an instance of the class.
         p = P.from_yaml_file(projectfile)
+
+        # Normally, I hate stuff like this, but I want to put all the
+        # classes for this project into the  namespace, and I can't
+        # predict the names for the classes.
+        locals().update([(C.__name__, C) for C in P.classes.values()])
 
     else:
         p = None

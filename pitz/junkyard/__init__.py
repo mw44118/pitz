@@ -69,10 +69,12 @@ class PitzProject(Project):
     This is the project type used by pitz itself (hence the name).
     """
 
+    # These
     classes = dict(
         task=Task,
         person=Person,
-        milestone=Milestone)
+        milestone=Milestone,
+        comment=Comment)
 
     @property
     def todo(self):
@@ -80,6 +82,10 @@ class PitzProject(Project):
         b.title = 'Stuff to do'
         return b
 
+    # I know I COULD make all these properties in the __init__ method
+    # based on the classes dictionary, but this way is hopefully much
+    # more obvious and solves the hassle of indicating that the plural
+    # of "person" is "people".
     @property
     def milestones(self):
         b = self(type='milestone')
@@ -92,3 +98,8 @@ class PitzProject(Project):
         b.title = 'Tasks'
         return b
         
+    @property
+    def people(self):
+        b = self(type='person')
+        b.title = 'People'
+        return b

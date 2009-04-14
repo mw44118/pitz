@@ -13,10 +13,12 @@ class Project(Bag):
     the only thing that keeps references to every other thing.
     """
 
-    # These are all the standard classes.
+    # These are all the classes that I will try to instantiate when
+    # reading yaml files.
     classes = dict(
         entity = pitz.entity.Entity
     )
+
 
     def append(self, e):
         """
@@ -74,3 +76,4 @@ class Project(Bag):
         # Send all the entities to the filesystem.
         return [e.to_yaml_file(pathname) 
             for e in self.entities]
+
