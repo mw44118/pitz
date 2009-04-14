@@ -2,6 +2,6 @@ created_time: &id001 2009-03-26 11:09:26.293399
 milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
 name: task-19444543-2131-4e04-a1db-a9b39e36aff7
-status: unknown status
+status: unstarted
 title: Support a $PITZDIR env var to tell where yaml files live
 type: task

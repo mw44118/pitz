@@ -4,6 +4,6 @@ creator: person-a385659b-8610-4650-8aa5-7fc04ea7fcb1
 milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
 name: task-91cd201a-6b0e-45ff-8534-39c698a548a1
-status: unknown status
+status: unstarted
 title: Allow two bags to be compared for equality by using their entities
 type: task

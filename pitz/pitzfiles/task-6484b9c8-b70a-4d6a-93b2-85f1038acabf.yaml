@@ -1,7 +1,7 @@
 created_time: &id001 2009-03-27 10:00:08.811359
-milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+milestone: milestone-b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_time: *id001
 name: task-6484b9c8-b70a-4d6a-93b2-85f1038acabf
-status: unknown status
+status: unstarted
 title: Load new entities from a CSV file
 type: task

@@ -73,7 +73,7 @@ def test_missing_attributes_replaced_with_defaults():
 
     t = Task()
     assert t['title'] == 'no title'
-    assert t['status'] == 'unknown status'
+    assert t['status'] == 'unstarted'
 
 
 def test_summarized_view():

@@ -2,6 +2,6 @@ created_time: &id001 2009-04-01 09:30:44.514573
 milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
 name: task-c7ca926d-6421-4ea8-b559-159eab934dea
-status: unknown status
+status: unstarted
 title: Add a todo property on project (or maybe bag)
 type: task

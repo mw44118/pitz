@@ -13,6 +13,6 @@ description: 'It would be nice to be able to have user-specified actions fire wh
 milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
 name: task-b442e8a2-e56c-4ab9-b699-32c5f20fd9b4
-status: unknown status
+status: unstarted
 title: Support hooks
 type: task

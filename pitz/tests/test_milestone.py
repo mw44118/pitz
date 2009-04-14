@@ -44,8 +44,8 @@ def test_tasks_property():
     m1, m2 = p(type='milestone')
     t1, t2 = p(type='task')
 
-    t1['milestone'] = m1.name
-    t2['milestone'] = m2.name
+    t1['milestone'] = m1
+    t2['milestone'] = m2
 
     assert t1 in m1.tasks
     assert t2 in m2.tasks

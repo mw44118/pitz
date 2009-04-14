@@ -117,8 +117,8 @@ class Entity(UserDict):
         return self
 
     def __repr__(self):
-        return "<pitz.%s '%s'>" \
-        % (self.__class__.__name__, self['title'])
+        return "<pitz.%s %s>" \
+        % (self.__class__.__name__, self.summarized_view)
 
 
 
@@ -149,11 +149,15 @@ class Entity(UserDict):
 
 {% for k in data %}
 {{ k }}:
-{{ data[k] }}
+{% if hasattr(data[k], 'summarized_view') -%} 
+{{ data[k].summarized_view -}}
+{% else -%} 
+{{ data[k] -}}
+{% endif %}
 {% endfor %}
 """)
 
-        return t.render(**d)
+        return t.render(hasattr=hasattr, **d)
 
 
     def __str__(self):

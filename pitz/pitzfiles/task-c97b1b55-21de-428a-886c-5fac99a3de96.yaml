@@ -4,10 +4,10 @@ created_time: &id002 2009-03-07 22:27:57.588808
 creator: person-a385659b-8610-4650-8aa5-7fc04ea7fcb1
 description: Add support for something like 'ditz grep'
 last_modified_by: Matt
-milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+milestone: milestone-b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_date: *id001
 modified_time: *id002
 name: task-c97b1b55-21de-428a-886c-5fac99a3de96
-status: unknown status
+status: unstarted
 title: Add support for something like 'ditz grep'
 type: task

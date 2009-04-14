@@ -14,14 +14,16 @@ class Milestone(Entity):
         if not self.project:
             raise NoProject("I need a project before I can look up tasks!")
 
-        tasks = self.project(type='task', milestone=self.name)
+        tasks = self.project(type='task', milestone=self)
         tasks.title = 'Tasks in %(title)s' % self
         return tasks
 
     @property
     def todo(self):
 
-        unfinished = self.tasks.does_not_match_dict(status='finished')
+        unfinished = self.tasks.does_not_match_dict(status='finished')\
+        .does_not_match_dict(status='abandoned')
+
         unfinished.title = "Unfinished tasks in %(title)s" % self
         return unfinished
         
@@ -30,7 +32,11 @@ class Task(Entity):
 
     required_fields = dict(
         title='no title',
-        status='unknown status')
+        status='unstarted')
+
+    allowed_values = dict(
+        status=['unstarted', 'started', 'abandoned', 'finished'],
+    )
 
     pointers = ['milestone', 'person', 'component']
 
@@ -79,3 +85,10 @@ class PitzProject(Project):
         b = self(type='milestone')
         b.title = 'Milestones'
         return b
+
+    @property
+    def tasks(self):
+        b = self(type='task')
+        b.title = 'Tasks'
+        return b
+        
