@@ -2,7 +2,6 @@
 
 from copy import copy
 import logging
-from UserDict import UserDict
 from datetime import datetime
 import os, uuid, warnings
 
@@ -14,9 +13,9 @@ from pitz.exceptions import NoProject
 
 logging.basicConfig(level=logging.INFO)
 
-class Entity(UserDict):
+class Entity(object):
     """
-    A regular dictionary with a few extra tweaks.
+    Acts like a regular dictionary with a few extra tweaks.
     """
 
     required_fields = dict(title='no title')
@@ -38,25 +37,27 @@ class Entity(UserDict):
                 else:
                     raise ValueError("I need a value for %s!" % rf)
 
-        UserDict.__init__(self, **kwargs)
+        self.data = dict(**kwargs)
         self.data['type'] = self.__class__.__name__.lower()
 
         # Make a unique name if we didn't get one.
         if 'name' not in kwargs:
-            self['name'] = '%s-%s' % (self.data['type'], uuid.uuid4())
+            self.data['name'] = '%s-%s' % (self.data['type'], uuid.uuid4())
 
         # Handle attributes with defaults.
         if 'created_time' not in kwargs:
             self.data['created_time'] = datetime.now() 
 
         if 'modified_time' not in kwargs:
-            self['modified_time'] = self.data['created_time']
+            self.data['modified_time'] = self.data['created_time']
 
         # Add this entity to the project (if we got a project).
         self.project = project
         if project is not None:
             self.project.append(self)
 
+    def __getitem__(self, attr):
+        return self.data[attr]
 
     def __setitem__(self, attr, val):
         """
@@ -70,6 +71,19 @@ class Entity(UserDict):
 
         else:
             self.data[attr] = val
+
+    def get(self, k, d=None):
+        return self.data.get(k, d)
+
+    def pop(self, k, d='not passed in'):
+
+        if d is 'not passed in':
+            return self.data.pop(k)
+        else:
+            return self.data.pop(k, d)
+
+    def __iter__(self):
+        return iter(self.data)
 
 
     @property
@@ -203,7 +217,7 @@ class Entity(UserDict):
 
         if self.project:
             for p in self.pointers:
-                if p in self:
+                if p in self.data:
                     self[p] = self.project.by_name(self[p])
 
 

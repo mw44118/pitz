@@ -54,10 +54,10 @@ class Comment(Entity):
     required_fields = dict(
         who_said_it=None,
         text=None,
-        entity=None)
+        entity=None,
+        title='no title')
 
     pointers = ['who_said_it', 'entity']
-
 
 class Person(Entity):
     pass
