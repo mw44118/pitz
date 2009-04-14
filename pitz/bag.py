@@ -223,7 +223,7 @@ class Bag(object):
         return self.detailed_view
 
     def __repr__(self):
-        return self.detailed_view
+        return self.summarized_view
 
     def replace_pointers_with_objects(self):
         """

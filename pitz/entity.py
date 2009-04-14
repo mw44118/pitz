@@ -21,6 +21,7 @@ class Entity(UserDict):
 
     required_fields = dict(title='no title')
     pointers = list()
+    allowed_values = dict()
 
     def __init__(self, project=None, **kwargs):
 
@@ -55,6 +56,21 @@ class Entity(UserDict):
         self.project = project
         if project is not None:
             self.project.append(self)
+
+
+    def __setitem__(self, attr, val):
+        """
+        Make sure that the value is allowed for this attr before going
+        any further.
+        """
+
+        if attr in self.allowed_values and val not in self.allowed_values[attr]:
+            raise ValueError("%s must be in %s, not %s!" 
+                % (attr, self.allowed_values[attr], val))
+
+        else:
+            self.data[attr] = val
+
 
     @property
     def name(self):
@@ -141,7 +157,7 @@ class Entity(UserDict):
 
 
     def __str__(self):
-        return self.summarized_view
+        return self.detailed_view
 
     @property
     def yaml(self):

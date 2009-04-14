@@ -42,6 +42,7 @@ class Task(Entity):
 
         return "%(title)s (%(status)s)" % self
 
+
 class Comment(Entity):
     
     required_fields = dict(
@@ -55,29 +56,6 @@ class Comment(Entity):
 class Person(Entity):
     pass
 
-class EntityWithFixedValues(Entity):
-    
-    """
-    Just like a regular entity, but requires that some attributes have a
-    value that belongs to a set.
-    """
-
-    allowed_values = dict(
-        alignment=["good", "evil"],
-    )
-
-    def __setitem__(self, attr, val):
-        """
-        Make sure that the value is allowed for this attr before going
-        any further.
-        """
-
-        if attr in self.allowed_values and val not in self.allowed_values[attr]:
-            raise ValueError("%s must be in %s, not %s!" 
-                % (attr, self.allowed_values[attr], val))
-
-        else:
-            self.data[attr] = val
 
 class PitzProject(Project):
     """
@@ -87,7 +65,8 @@ class PitzProject(Project):
 
     classes = dict(
         task=Task,
-        person=Person)
+        person=Person,
+        milestone=Milestone)
 
     @property
     def todo(self):
@@ -100,6 +79,3 @@ class PitzProject(Project):
         b = self(type='milestone')
         b.title = 'Milestones'
         return b
-
-    def __repr__(self):
-        return self.detailed_view

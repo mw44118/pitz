@@ -1,6 +1,6 @@
 # vim: set ts=4 sw=4 filetype=python:
 
-def by_whatever(func_name, *whatever):
+def by_whatever(func_name, *whatever, **kwargs):
     """
     Returns a function suitable for sorting, using whatever.
 
@@ -13,9 +13,14 @@ def by_whatever(func_name, *whatever):
 
     def f(e1, e2):
 
-        return cmp(
+        y = cmp(
             [e1.get(w) for w in whatever],
             [e2.get(w) for w in whatever])
+
+        if kwargs.get('reverse'):
+            y *= -1
+            
+        return y
 
     f.__doc__ = "by_whatever(%s)" % list(whatever)
     f.func_name = func_name
