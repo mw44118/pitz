@@ -1,7 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 from collections import defaultdict
-import logging, os, uuid
+import csv, logging, os, uuid
 from glob import glob
 
 import yaml
@@ -65,6 +65,25 @@ class Bag(object):
 
         return yaml.dump(data, default_flow_style=False)
 
+    
+    def to_csv(self, filepath, *columns):
+        """
+        Write out a CSV file for this bag listing the columns specified,
+        AND the name at the very end.
+        """
+
+        w = csv.writer(open(filepath, 'w'))
+        w.writerow(columns)
+
+        # I'm adding a blank line here between the column titles and the
+        # data.
+        w.writerow([])
+
+        for e in self.entities:
+            row = []
+            for col in columns:
+                row += [e[col]]
+            w.writerow(row)
 
     def __iter__(self):
         """
@@ -252,7 +271,7 @@ class Bag(object):
         dd = defaultdict(int)
 
         for e in self.entities:
-            for a in e.keys():
+            for a in e:
                 dd[a] += 1
 
         return sorted(dd.items(), key=lambda t: t[1], reverse=True)

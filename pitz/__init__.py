@@ -16,6 +16,9 @@ def by_whatever(func_name, *whatever, **kwargs):
     -1
     >>> by_whatever('xxx', 'c', 'a')(e1, e2)
     1
+    >>> by_whatever('xxx', 'c', 'a', reverse=True)(e1, e2)
+    -1
+
     """
 
     def f(e1, e2):
