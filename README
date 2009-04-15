@@ -1,7 +1,5 @@
 Pitz is a lot like ditz [1] except with a few changes here and there.  
 
-Read the files in pitz/docs for more background.
+Read pitz/docs for more background.
 
 [1] http://ditz.rubyforge.org
-
-Read the tasks in pitz/.pitz to find something to do.
