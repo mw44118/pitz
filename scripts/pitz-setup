@@ -1,0 +1,23 @@
+#! /usr/bin/env python
+
+# vim: set expandtab ts=4 sw=4 filetype=python:
+
+"""
+Run this script to start using pitz.
+"""
+
+from pitz.cmdline import *
+
+# List all the possible project modules and wait for a choice.
+raise NotImplementedError("I'm still working on this!")
+
+
+mk_pitzfiles_folder()
+
+# Create a project object based on the chosen class.
+
+# Save the project as a yaml file in the pitzfiles folder.
+raise NotImplementedError("I'm still working on this!")
+
+# Copy the selected project module over to the new directory.
+

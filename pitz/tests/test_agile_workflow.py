@@ -11,7 +11,7 @@ Verify we can use pitz for an agile workflow, where "agile" means:
   during recent iterations.
 """
 
-from nose.tools import with_setup
+from nose.tools import raises, with_setup
 
 from pitz.junkyard.agilepitz import *
 
@@ -143,3 +143,19 @@ def test_plan_iteration_3():
     s2.send_to_backlog()
 
     assert it99.slack, "it99.slack is %s" % it99.slack
+
+@raises(Exception)
+def test_add_story():
+    """
+    Try to add another story after using up the slack.
+    """
+
+    global ap
+    ap.order()
+    it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
+    it99.plan_iteration()
+
+    assert it99.points == it99['velocity']
+    assert not it99.slack
+
+    it99.add_story(UserStory(ap, title="Bogus extra story"))

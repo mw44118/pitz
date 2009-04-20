@@ -1,0 +1,27 @@
+created_time: &id001 2009-04-17 14:03:55.341777
+description: 'The pitz-setup script is what somebody should run to start using pitz.
+
+
+  First it should list all the possible pitz project types (AgileProject,
+
+  SimpleProject, etc) and ask which to use.  For each project type, the
+
+  script should list the module docstring.
+
+
+  Then the script should make a pitzfiles directory and copy the module
+
+  for that project into that pitzfiles dir.
+
+
+  The script should do this so that people can alter their pitz project
+
+  without needing to alter the core pitz code.
+
+  '
+milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+modified_time: *id001
+name: task-d936ad62-a0dd-4958-828f-9c65c6819ecc
+status: unstarted
+title: Write a pitz-setup script
+type: task

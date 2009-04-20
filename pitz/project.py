@@ -67,9 +67,13 @@ class Project(Bag):
         """
 
         if not pathname \
-        and not self.pathname \
-        and not os.path.isdir(self.pathname):
+        and not self.pathname:
             raise ValueError("I need a pathname!")
+
+        self.pathname = pathname
+
+        if not os.path.isdir(self.pathname):
+            raise ValueError("%s is not a directory!")
 
         pathname = pathname or self.pathname
 

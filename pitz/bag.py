@@ -169,8 +169,8 @@ class Bag(object):
         """
 
         if not pathname \
-        and not self.pathname \
-        and not os.path.isdir(self.pathname):
+        and (self.pathname is None or not os.path.isdir(self.pathname)):
+
             raise ValueError("I need a pathname!")
 
         pathname = pathname or self.pathname
@@ -188,8 +188,8 @@ class Bag(object):
         d = yaml.load(open(fp))
 
         # Dig out the string that points to the order method and replace
-        # it with the actual function.
-
+        # it with the actual function.  This is really ugly, so feel
+        # free to fix it.
         d['order_method'] = globals()[d['order_method_name']]
         d.pop('order_method_name')
 

@@ -79,6 +79,7 @@ class Iteration(pitz.entity.Entity):
 class UserStory(pitz.entity.Entity):
 
     required_fields = dict(
+        title=None,
         priority=5,
         status='backlog',
         estimate='unknown',

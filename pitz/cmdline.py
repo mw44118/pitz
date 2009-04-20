@@ -1,5 +1,12 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+"""
+These functions do the interesting stuff after options and arguments
+have been parsed.
+"""
+
+import os
+
 import yaml
 
 from IPython.Shell import IPShellEmbed
@@ -28,7 +35,7 @@ def shell(projectfile=None):
         p = P.from_yaml_file(projectfile)
 
         # Normally, I hate stuff like this, but I want to put all the
-        # classes for this project into the  namespace, and I can't
+        # classes for this project into the namespace, and I can't
         # predict the names for the classes.
         locals().update([(C.__name__, C) for C in P.classes.values()])
 
@@ -38,10 +45,49 @@ def shell(projectfile=None):
     s = IPShellEmbed(['-colors', 'Linux'])
     s()
 
-
     # This stuff happens when you close the IPython session.
     if p:
         answer = raw_input("Write out updated yaml files? ([y]/n) ")
         if answer.lower() not in ['n', 'no']:
             p.to_yaml_file()
             p.save_entities_to_yaml_files()
+
+# List all the possible project modules and wait for a choice.
+
+def mk_pitzfiles_folder():
+    """
+    Returns the path to the newly created folder.
+    """
+
+    msg = """\
+I need to make a directory named 'pitzfiles'.  Where should I put it?
+The default place is right here (.)."""
+
+    x = raw_input(msg)
+
+    if not x:
+        x = '.'
+
+    if not os.access(x, os.W_OK):
+        raise ValueError("I can't write to path %s!" % x)
+
+    pitzfiles_dir = os.path.join(x, 'pitzfiles')
+
+    os.mkdir(pitzfiles_dir)
+
+    return pitzfiles_dir
+
+
+
+# Create a project object and then save it out as a yaml file in the
+# pitzfiles folder.
+
+# Copy the selected project module over to the new directory.
+
+
+
+
+
+
+
+

@@ -4,6 +4,8 @@
 Stuff that is useful in lots of different places goes in here.
 """
 
+from __future__ import with_statement
+
 import os, subprocess, tempfile
 
 

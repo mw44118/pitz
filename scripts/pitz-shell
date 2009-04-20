@@ -2,6 +2,10 @@
 
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+"""
+Start IPython and load up your project.
+"""
+
 import optparse, os, sys
 
 p = optparse.OptionParser()
