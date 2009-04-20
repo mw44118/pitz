@@ -66,11 +66,11 @@ class Project(Bag):
         Tell every entity to write itself out to YAML.
         """
 
-        if not pathname \
-        and not self.pathname:
+        if pathname is None and self.pathname is None:
             raise ValueError("I need a pathname!")
 
-        self.pathname = pathname
+        if self.pathname is None and pathname is not None:
+            self.pathname = pathname
 
         if not os.path.isdir(self.pathname):
             raise ValueError("%s is not a directory!")

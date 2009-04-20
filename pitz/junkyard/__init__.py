@@ -1,5 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+from copy import copy
+
 import jinja2
 
 from pitz.entity import Entity
@@ -26,11 +28,16 @@ class Milestone(Entity):
 
         unfinished.title = "Unfinished tasks in %(title)s" % self
         return unfinished
+
+    @property
+    def summarized_view(self):
+        return "%(title)s" % self.data
         
 
 class Task(Entity):
 
     required_fields = dict(
+        milestone='unscheduled',
         title='no title',
         status='unstarted')
 
