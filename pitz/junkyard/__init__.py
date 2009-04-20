@@ -137,3 +137,19 @@ class PitzProject(Project):
         b = self(type='comment')
         b.title = 'Comments'
         return b
+
+    @property
+    def unscheduled(self):
+        """
+        Unfinished tasks not linked to any milestones.
+        """
+
+        b = self(type='task').does_not_match_dict(status='finished')
+
+        for m in self.milestones:
+            b = b.does_not_match_dict(milestone=m)
+
+        b.title = 'Unscheduled and unfinished tasks'
+        return b
+
+        
