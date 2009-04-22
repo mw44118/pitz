@@ -13,7 +13,7 @@ from pitz.exceptions import NoProject
 
 logging.basicConfig(level=logging.INFO)
 
-class Entity(object):
+class Entity(dict):
     """
     Acts like a regular dictionary with a few extra tweaks.
     """
@@ -37,27 +37,24 @@ class Entity(object):
                 else:
                     raise ValueError("I need a value for %s!" % rf)
 
-        self.data = dict(**kwargs)
-        self.data['type'] = self.__class__.__name__.lower()
+        self.update(**kwargs)
+        self['type'] = self.__class__.__name__.lower()
 
         # Make a unique name if we didn't get one.
         if 'name' not in kwargs:
-            self.data['name'] = '%s-%s' % (self.data['type'], uuid.uuid4())
+            self['name'] = '%s-%s' % (self['type'], uuid.uuid4())
 
         # Handle attributes with defaults.
         if 'created_time' not in kwargs:
-            self.data['created_time'] = datetime.now() 
+            self['created_time'] = datetime.now() 
 
         if 'modified_time' not in kwargs:
-            self.data['modified_time'] = self.data['created_time']
+            self['modified_time'] = self['created_time']
 
         # Add this entity to the project (if we got a project).
         self.project = project
         if project is not None:
             self.project.append(self)
-
-    def __getitem__(self, attr):
-        return self.data[attr]
 
     def __setitem__(self, attr, val):
         """
@@ -70,25 +67,11 @@ class Entity(object):
                 % (attr, self.allowed_values[attr], val))
 
         else:
-            self.data[attr] = val
-
-    def get(self, k, d=None):
-        return self.data.get(k, d)
-
-    def pop(self, k, d='not passed in'):
-
-        if d is 'not passed in':
-            return self.data.pop(k)
-        else:
-            return self.data.pop(k, d)
-
-    def __iter__(self):
-        return iter(self.data)
-
+            super(Entity, self).__setitem__(attr, val)
 
     @property
     def name(self):
-        return self.data['name']
+        return self['name']
 
     def matches_dict(self, **d):
         """
@@ -103,7 +86,7 @@ class Entity(object):
 
         for a, v in d.items():
 
-            if a not in self.data or self.data[a] != v:
+            if a not in self or self[a] != v:
                 return
 
         return self
@@ -125,7 +108,7 @@ class Entity(object):
 
         for a, v in d.items():
 
-            if a in self.data and self.data[a] == v:
+            if a in self and self[a] == v:
                 return
 
         return self
@@ -151,11 +134,11 @@ class Entity(object):
         """
 
         d = dict()
-        d.update(self.data)
+        d.update(self)
         d['summarized_view'] = self.summarized_view
         d['line_of_dashes'] = "-" * len(self.summarized_view)
         d['type'] = self.__class__.__name__
-        d['data'] = self.data
+        d['data'] = self
 
         t = jinja2.Template("""\
 {{summarized_view}}
@@ -182,7 +165,7 @@ class Entity(object):
 
         self.replace_objects_with_pointers()
 
-        y = yaml.dump(self.data, default_flow_style=False)
+        y = yaml.dump(self, default_flow_style=False)
 
         # Now switch the pointers with the objects.
         if self.project:
@@ -217,7 +200,7 @@ class Entity(object):
 
         if self.project:
             for p in self.pointers:
-                if p in self.data:
+                if p in self:
                     self[p] = self.project.by_name(self[p])
 
 

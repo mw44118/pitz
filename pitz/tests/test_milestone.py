@@ -3,7 +3,7 @@
 import yaml
 
 import pitz, pitz.project
-from pitz.pitztypes.tracpitz import Milestone, Person, Task
+from pitz.projecttypes.tracpitz import Milestone, Person, Task
 
 from nose.tools import raises, with_setup
 from nose import SkipTest

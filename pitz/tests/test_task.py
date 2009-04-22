@@ -6,7 +6,7 @@ import yaml
 
 import pitz
 from pitz.bag import Bag
-from pitz.pitztypes.tracpitz import *
+from pitz.projecttypes.tracpitz import *
 
 from nose.tools import raises
 from nose import SkipTest

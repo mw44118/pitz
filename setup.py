@@ -22,15 +22,19 @@ started pitz.""",
     include_package_data=True,
     package_dir={'pitz':'pitz'},
 
-    data_files=[('/share/pitz', 
-        ['pitz/pitztypes/agilepitz.py', 'pitz/pitztypes/tracpitz.py'])],
+    data_files=[('share/pitz', 
+        [
+            'pitz/projecttypes/agilepitz.py', 
+            'pitz/projecttypes/tracpitz.py',
+            'pitz/projecttypes/ditzpitz.py',
+        ])],
 
     zip_safe=False,
     install_requires=[
-        'PyYAML',
-        'sphinx',
-        'nose',
-        'jinja2',
+        # 'PyYAML',
+        # 'sphinx',
+        # 'nose',
+        # 'jinja2',
           # -*- Extra requirements: -*-
     ],
 
