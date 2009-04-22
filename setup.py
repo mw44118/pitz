@@ -4,36 +4,40 @@ import sys, os
 version = '0.1'
 
 setup(name='pitz',
-      version=version,
-      description="Python implementation of ditz (ditz.rubyforge.org)",
+    version=version,
+    description="Python to-do tracker inspired by ditz (ditz.rubyforge.org)",
 
-      long_description="""\
+    long_description="""\
 ditz (http://ditz.rubyforge.org) is the best distributed ticketing
-system that I know of.  It uses yaml to store all the information about
-the status of projects, so I'm going to try to write a python
-interface.""",
+system that I know of.  There's a few things I want to change, so I
+started pitz.""",
 
-      classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-      keywords='ditz',
-      author='Matt Wilson',
-      author_email='matt@tplus1.com',
-      url='http://tplus1.com',
-      license='',
-      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
-      include_package_data=True,
-      zip_safe=False,
-      install_requires=[
+    classifiers=[],
+    keywords='ditz',
+    author='Matt Wilson',
+    author_email='matt@tplus1.com',
+    url='http://tplus1.com',
+    license='',
+    packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+    include_package_data=True,
+    package_dir={'pitz':'pitz'},
+
+    data_files=[('/share/pitz', 
+        ['pitz/pitztypes/agilepitz.py', 'pitz/pitztypes/tracpitz.py'])],
+
+    zip_safe=False,
+    install_requires=[
         'PyYAML',
         'sphinx',
         'nose',
         'jinja2',
           # -*- Extra requirements: -*-
-      ],
+    ],
 
-      # I know about the much fancier entry points, but I prefer this
-      # solution.
-      scripts = ['scripts/pitz-shell'],
+    # I know about the much fancier entry points, but I prefer this
+    # solution.  Why does everything have to be zany?
+    scripts = ['scripts/pitz-shell'],
 
-      test_suite = 'nose.collector',
+    test_suite = 'nose.collector',
 
 )

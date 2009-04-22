@@ -5,7 +5,7 @@ These functions do the interesting stuff after options and arguments
 have been parsed.
 """
 
-import os
+import glob, os, sys
 
 import yaml
 
@@ -28,7 +28,7 @@ def shell(projectfile=None):
         m = __import__(projectdata['module'],
             fromlist=projectdata['classname'])
 
-        # This big P is the class.
+        # This big P is the class of the project.
         P = getattr(m, projectdata['classname'])
 
         # This little p is an instance of the class.
@@ -52,7 +52,6 @@ def shell(projectfile=None):
             p.to_yaml_file()
             p.save_entities_to_yaml_files()
 
-# List all the possible project modules and wait for a choice.
 
 def mk_pitzfiles_folder():
     """
@@ -77,17 +76,13 @@ The default place is right here (.)."""
 
     return pitzfiles_dir
 
-
-
 # Create a project object and then save it out as a yaml file in the
 # pitzfiles folder.
 
 # Copy the selected project module over to the new directory.
 
 
-
-
-
-
-
-
+# List all the possible project modules and wait for a choice.
+def list_projects():
+    
+    print("__file__ is %s" % __file__)

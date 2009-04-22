@@ -5,7 +5,7 @@ from nose import SkipTest
 from mock import Mock, patch, patch_object
 from IPython.Shell import IPShellEmbed
 
-from pitz.cmdline import shell
+from pitz.cmdline import *
 
 @patch('__builtin__.open') # m1
 @patch('yaml.load') # m2
@@ -30,3 +30,11 @@ def test_shell_1(m1, m2, m3, m4, m5):
     m5.return_value = None
 
     shell('bogus')
+
+
+def test_list_projects():
+    """
+    Verify we get a list of pitz modules that we can use.
+    """
+
+    list_projects()

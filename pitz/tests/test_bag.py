@@ -1,8 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 import pitz
-import pitz.entity
-from pitz.junkyard import Task
+from pitz.entity import Entity
 from pitz.bag import Bag
 
 from nose.tools import raises
@@ -14,10 +13,10 @@ b = Bag("Testing bag")
 
 tasks = [
 
-    Task(b, title='Clean cat box!', creator='person-matt',
+    Entity(b, title='Clean cat box!', creator='person-matt',
         status='really important'),
 
-    Task(b, title='Shovel driveway', creator='person-matt',
+    Entity(b, title='Shovel driveway', creator='person-matt',
         status='not very important'),
 ]
 
@@ -25,7 +24,7 @@ tasks = [
 def test_matches_dict():
 
     global b, tasks
-    b.matches_dict(type='task')
+    b.matches_dict(type='entity')
 
 def test_new_bag():
 
