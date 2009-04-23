@@ -1,5 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import glob
 from nose import SkipTest
 
 from mock import Mock, patch, patch_object
@@ -32,9 +33,27 @@ def test_shell_1(m1, m2, m3, m4, m5):
     shell('bogus')
 
 
-def test_list_projects():
+def test_list_projects_1():
     """
     Verify we get a list of pitz modules that we can use.
     """
 
+    raise SkipTest
     list_projects()
+
+
+def test_list_projects_2():
+    """
+    Verify we can add our own weird modules in as ones we can use.
+    """
+
+    raise SkipTest
+
+
+def test_pitz_setup():
+    """
+    Verify we make a pitzfiles folder, copy tracpitz.py in there, and
+    write a project-abcd.yaml file that loads that trackpitz.py file.
+    """
+
+    raise SkipTest

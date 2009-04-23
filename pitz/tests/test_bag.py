@@ -59,32 +59,6 @@ def test_values():
     assert ('hard', 1) in v
 
 
-@patch('__builtin__.open')
-def test_to_yaml_file_1(o):
-    
-    global b
-    b.to_yaml_file('bogus')
-
-
-@patch('__builtin__.open')
-@raises(ValueError)
-def test_to_yaml_file_2(o):
-    
-    global b
-    b.to_yaml_file()
-
-
-@patch('__builtin__.open')
-@patch('yaml.load')
-@patch('__builtin__.globals')
-def test_from_yaml_file_1(m1, m2, m3):
-
-    m2.return_value = {'order_method_name':'bogus_method'}
-    m3.return_value = {'bogus_method': 99}
-
-    global b
-    b2 = b.from_yaml_file('aaa')
-    assert b2.order_method == 99
 
 
 @patch('__builtin__.open')

@@ -4,7 +4,6 @@ from collections import defaultdict
 import csv, logging, os, uuid
 from glob import glob
 
-import yaml
 import jinja2
 
 from pitz import *
@@ -48,22 +47,6 @@ class Bag(object):
         # objects.
         self.replace_pointers_with_objects()
 
-    @property
-    def yaml(self):
-        """
-        Return a block of yaml.
-        """
-
-        data = dict(
-            module=self.__module__,
-            classname=self.__class__.__name__,
-            title=self.title,
-            order_method_name=self.order_method.func_name,
-            name=self.name,
-            pathname=self.pathname,
-        )
-
-        return yaml.dump(data, default_flow_style=False)
 
     
     def to_csv(self, filepath, *columns):
@@ -163,37 +146,6 @@ class Bag(object):
             self.entities.sort(self.order_method)
             self.entities_by_name[e.name] = e
 
-    def to_yaml_file(self, pathname=None):
-        """
-        Save this bag to a YAML file.
-        """
-
-        if not pathname \
-        and (self.pathname is None or not os.path.isdir(self.pathname)):
-
-            raise ValueError("I need a pathname!")
-
-        pathname = pathname or self.pathname
-
-        fp = os.path.join(pathname, '%s.yaml' % (self.name)) 
-        f = open(fp, 'w')
-        f.write(self.yaml)
-        f.close()
-        logging.debug("Saved file %s" % fp)
-
-        return fp
-
-    @classmethod
-    def from_yaml_file(cls, fp): 
-        d = yaml.load(open(fp))
-
-        # Dig out the string that points to the order method and replace
-        # it with the actual function.  This is really ugly, so feel
-        # free to fix it.
-        d['order_method'] = globals()[d['order_method_name']]
-        d.pop('order_method_name')
-
-        return cls(**d)
         
     @property
     def summarized_view(self):

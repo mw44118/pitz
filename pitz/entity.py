@@ -44,6 +44,8 @@ class Entity(dict):
         if 'name' not in kwargs:
             self['name'] = '%s-%s' % (self['type'], uuid.uuid4())
 
+        self['namefrag'] = self['name'][:12]
+
         # Handle attributes with defaults.
         if 'created_time' not in kwargs:
             self['created_time'] = datetime.now() 
@@ -62,12 +64,23 @@ class Entity(dict):
         any further.
         """
 
-        if attr in self.allowed_values and val not in self.allowed_values[attr]:
+        if attr == 'name' and 'name' in self:
+            raise ValueError("No can change name!")
+
+        elif attr == 'namefrag' and 'namefrag' in self:
+            raise ValueError("No can change namefrag!")
+            
+
+        elif attr in self.allowed_values and val not in self.allowed_values[attr]:
             raise ValueError("%s must be in %s, not %s!" 
                 % (attr, self.allowed_values[attr], val))
 
         else:
             super(Entity, self).__setitem__(attr, val)
+
+    @property
+    def namefrag(self):
+        return self['namefrag']
 
     @property
     def name(self):
@@ -117,7 +130,9 @@ class Entity(dict):
         return "<pitz.%s %s>" \
         % (self.__class__.__name__, self.summarized_view)
 
-
+    @property
+    def namefrag(self):
+        return self['name'][:12]
 
     @property
     def summarized_view(self):
@@ -125,7 +140,7 @@ class Entity(dict):
         Short description of the entity.
         """
 
-        return "%(title)s (%(type)s)" % self
+        return "%(namefrag)s: %(title)s" % self
 
     @property
     def detailed_view(self):
@@ -165,7 +180,10 @@ class Entity(dict):
 
         self.replace_objects_with_pointers()
 
-        y = yaml.dump(dict(self), default_flow_style=False)
+        d = dict(self)
+        d.pop('namefrag')
+
+        y = yaml.dump(d, default_flow_style=False)
 
         # Now switch the pointers with the objects.
         if self.project:

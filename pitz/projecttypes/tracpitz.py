@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-"""
+"""\
 Like trac (http://trac.edgewall.org) with tasks bundled into milestones.
 """
 
@@ -32,10 +32,6 @@ class Milestone(Entity):
 
         unfinished.title = "Unfinished tasks in %(title)s" % self
         return unfinished
-
-    @property
-    def summarized_view(self):
-        return "%(title)s" % self.data
         
 
 class Task(Entity):
@@ -57,7 +53,7 @@ class Task(Entity):
         Short description of the task.
         """
 
-        return "%(title)s (%(status)s)" % self
+        return "%(namefrag)s %(title)s (%(status)s)" % self
 
     @property
     def comments(self):
@@ -66,7 +62,7 @@ class Task(Entity):
         """
     
         b = self.project(type='comment', entity=self)
-        b.title = 'Comments on %(title)s' % self.data
+        b.title = 'Comments on %(title)s' % self
         return b
 
 
@@ -83,11 +79,11 @@ class Comment(Entity):
     @property
     def summarized_view(self):
 
-        t = self.data['text'].strip().replace('\n', ' ')
+        t = self['text'].strip().replace('\n', ' ')
         
         return "%(author)s at %(time)s said: %(text)s" % dict(
-            author=self.data['who_said_it']['title'],
-            time=self.data['created_time'].strftime("%I:%M %P, %a, %m/%d/%y"),
+            author=self['who_said_it']['title'],
+            time=self['created_time'].strftime("%I:%M %P, %a, %m/%d/%y"),
             text="%s..." % t[:60] if len(t) > 60 else t,
         )
 
@@ -101,7 +97,7 @@ class PitzProject(Project):
     This is the project type used by pitz itself (hence the name).
     """
 
-    # These
+    # These are all the classes I deal with.
     classes = dict(
         task=Task,
         person=Person,

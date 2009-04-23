@@ -76,13 +76,34 @@ The default place is right here (.)."""
 
     return pitzfiles_dir
 
-# Create a project object and then save it out as a yaml file in the
-# pitzfiles folder.
 
-# Copy the selected project module over to the new directory.
+def list_projects(
+    modulepaths=('pitz.projecttypes.tracpitz', 'pitz.projecttypes.agilepitz')):
 
+    """
+    Print a list of modules to choose from and return the chosen one.
+    """
 
-# List all the possible project modules and wait for a choice.
-def list_projects():
-    
-    print("__file__ is %s" % __file__)
+    modules = [namedModule(mp) for mp in modulepaths]
+    for i, m in enumerate(modules):
+        print("%4d. %s: %s" % (i, m.__name__, m.__doc__))
+
+    return modules[int(raw_input("Choose one."))]
+        
+
+def namedModule(name):
+    """
+    Return a module given its name.
+
+    Copied from
+    http://twistedmatrix.com/trac/browser/trunk/twisted/python/reflect.py
+
+    Thanks to "dash" in #python for the recommendation.
+    """
+
+    topLevel = __import__(name)
+    packages = name.split(".")[1:]
+    m = topLevel
+    for p in packages:
+        m = getattr(m, p)
+    return m
