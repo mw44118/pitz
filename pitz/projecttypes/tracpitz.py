@@ -1,5 +1,9 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+"""
+Like trac (http://trac.edgewall.org) with tasks bundled into milestones.
+"""
+
 from copy import copy
 
 import jinja2

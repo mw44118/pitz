@@ -81,7 +81,7 @@ def test_summarized_view():
     global tasks
     t1, t2 = tasks
     assert isinstance(t1.summarized_view, str)
-    assert t1.data['title'] in t1.summarized_view
+    assert t1['title'] in t1.summarized_view
 
     print(str(t1))
 

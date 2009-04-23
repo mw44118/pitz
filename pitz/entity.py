@@ -165,7 +165,7 @@ class Entity(dict):
 
         self.replace_objects_with_pointers()
 
-        y = yaml.dump(self, default_flow_style=False)
+        y = yaml.dump(dict(self), default_flow_style=False)
 
         # Now switch the pointers with the objects.
         if self.project:
