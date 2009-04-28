@@ -58,9 +58,6 @@ def test_values():
     assert ('easy', 1) in v
     assert ('hard', 1) in v
 
-
-
-
 @patch('__builtin__.open')
 def test_to_csv(o):
 

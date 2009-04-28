@@ -1,0 +1,10 @@
+created_time: &id001 2009-04-28 13:42:47.763888
+description: 'blah blah blah
+
+  '
+milestone: unscheduled
+modified_time: *id001
+name: b7879184-cd41-4838-98ed-4e0797ded4c4
+status: unstarted
+title: Allow summarized vs detailed view to be configurable
+type: task

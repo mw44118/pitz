@@ -22,6 +22,6 @@ description: 'The pitz-setup script is what somebody should run to start using p
 milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
 name: d936ad62-a0dd-4958-828f-9c65c6819ecc
-status: unstarted
+status: started
 title: Write a pitz-setup script
 type: task
