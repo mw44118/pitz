@@ -4,7 +4,7 @@ details: It would be nice to be able to go straight from the command line into i
   and already have pitz imported and my project loaded.
 milestone: unscheduled
 modified_time: *id001
-name: task-9b169e50-acca-43bd-b223-9b2ad0086561
+name: 9b169e50-acca-43bd-b223-9b2ad0086561
 status: finished
 title: Start an ipython session loaded with a project
 type: task

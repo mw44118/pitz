@@ -1,7 +1,7 @@
 created_time: &id001 2009-04-01 08:54:31.472918
-milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
-name: task-0fd66e4a-5602-4055-a206-754df8406483
+name: 0fd66e4a-5602-4055-a206-754df8406483
 status: finished
 title: Make it possible to support a filter like attribute!=value
 type: task

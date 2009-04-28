@@ -1,7 +1,7 @@
 created_time: &id001 2009-03-27 10:01:02.149528
-milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
-name: task-218c3834-3540-4fe8-a371-d7884c64e456
+name: 218c3834-3540-4fe8-a371-d7884c64e456
 status: finished
 title: Write an attributes property on a bag that lists count of each attribute in
   any entities

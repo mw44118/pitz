@@ -1,9 +1,9 @@
 comments: []
 created_time: &id001 2009-03-13 09:31:26.171691
 creator: person-a385659b-8610-4650-8aa5-7fc04ea7fcb1
-milestone: milestone-b956c98f-faf0-4b4f-b01a-28662bc0ed63
+milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_time: *id001
-name: task-91cd201a-6b0e-45ff-8534-39c698a548a1
+name: 91cd201a-6b0e-45ff-8534-39c698a548a1
 status: abandoned
 title: Allow two bags to be compared for equality by using their entities
 type: task

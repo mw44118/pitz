@@ -1,7 +1,7 @@
 created_time: &id001 2009-04-14 09:52:07.311654
-milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
-name: task-84b97e8e-1537-4e94-99ff-6ab63709a578
+name: 84b97e8e-1537-4e94-99ff-6ab63709a578
 status: unstarted
 title: Demonstrate ditz workflow with pitz
 type: task

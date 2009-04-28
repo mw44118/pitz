@@ -1,7 +1,7 @@
 created_time: &id001 2009-03-26 11:10:21.549393
-milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
-name: task-def6e8c6-10f4-497a-a479-f842369da684
+name: def6e8c6-10f4-497a-a479-f842369da684
 status: unstarted
 title: Support a .pitz config file with all pitz scripts
 type: task

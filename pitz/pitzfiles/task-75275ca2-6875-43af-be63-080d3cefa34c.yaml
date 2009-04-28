@@ -8,10 +8,10 @@ description: 'Right now, I''m storing a creator attribute on all tasks.  The val
 
   '
 last_modified_by: Matt
-milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_date: *id001
 modified_time: *id002
-name: task-75275ca2-6875-43af-be63-080d3cefa34c
+name: 75275ca2-6875-43af-be63-080d3cefa34c
 status: finished
 title: Write code to use strings as keys
 type: task

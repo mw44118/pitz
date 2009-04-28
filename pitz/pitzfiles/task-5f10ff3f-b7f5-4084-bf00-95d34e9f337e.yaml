@@ -4,10 +4,10 @@ created_time: &id002 2009-03-07 22:27:57.641218
 creator: person-a385659b-8610-4650-8aa5-7fc04ea7fcb1
 description: Write code to support sorting by anything
 last_modified_by: Matt
-milestone: milestone-d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_date: *id001
 modified_time: *id002
-name: task-5f10ff3f-b7f5-4084-bf00-95d34e9f337e
+name: 5f10ff3f-b7f5-4084-bf00-95d34e9f337e
 status: finished
 title: Write code to support sorting by anything
 type: task

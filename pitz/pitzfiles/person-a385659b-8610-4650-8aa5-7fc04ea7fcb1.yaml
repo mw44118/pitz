@@ -5,6 +5,6 @@ abc: !!python/tuple
 comments: []
 created_time: &id001 2009-03-10 22:25:32.240143
 modified_time: *id001
-name: person-a385659b-8610-4650-8aa5-7fc04ea7fcb1
+name: a385659b-8610-4650-8aa5-7fc04ea7fcb1
 title: Matt
 type: person

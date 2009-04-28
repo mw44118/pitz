@@ -64,14 +64,7 @@ class Entity(dict):
         any further.
         """
 
-        if attr == 'name' and 'name' in self:
-            raise ValueError("No can change name!")
-
-        elif attr == 'frag' and 'frag' in self:
-            raise ValueError("No can change frag!")
-            
-
-        elif attr in self.allowed_values and val not in self.allowed_values[attr]:
+        if attr in self.allowed_values and val not in self.allowed_values[attr]:
             raise ValueError("%s must be in %s, not %s!" 
                 % (attr, self.allowed_values[attr], val))
 

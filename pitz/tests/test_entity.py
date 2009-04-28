@@ -41,9 +41,3 @@ def test_from_yaml_file_2(m1, m2):
     global e
 
     assert e.from_yaml_file('bogus') == None
-
-@raises(ValueError)
-def test_immutable_frag():
-
-    global e
-    e['frag'] = 'something new'
