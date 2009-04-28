@@ -53,7 +53,7 @@ class Task(Entity):
         Short description of the task.
         """
 
-        return "%(namefrag)s %(title)s (%(status)s)" % self
+        return "%(frag)s %(title)s (%(status)s)" % self
 
     @property
     def comments(self):
@@ -77,14 +77,18 @@ class Comment(Entity):
     pointers = ['who_said_it', 'entity']
 
     @property
-    def summarized_view(self):
+    def detailed_view(self):
 
-        t = self['text'].strip().replace('\n', ' ')
+        text = self['text'].strip().replace('\n', ' ')
+        text = "%s..." % text[:60] if len(text) > 60 else text
+
+        who_said_it = self['who_said_it']
+        who_said_it = getattr(who_said_it, 'title', who_said_it)
         
-        return "%(author)s at %(time)s said: %(text)s" % dict(
-            author=self['who_said_it']['title'],
+        return "%(who_said_it)s at %(time)s said: %(text)s" % dict(
+            who_said_it=who_said_it,
             time=self['created_time'].strftime("%I:%M %P, %a, %m/%d/%y"),
-            text="%s..." % t[:60] if len(t) > 60 else t,
+            text=text,
         )
 
 class Person(Entity):
@@ -106,7 +110,11 @@ class PitzProject(Project):
 
     @property
     def todo(self):
-        b = self(type='task').does_not_match_dict(status='finished')
+
+        b = self(type='task')\
+        .does_not_match_dict(status='finished')\
+        .does_not_match_dict(status='abandoned')
+
         b.title = 'Stuff to do'
         return b
 
@@ -114,6 +122,9 @@ class PitzProject(Project):
     # based on the classes dictionary, but this way is hopefully much
     # more obvious and solves the hassle of indicating that the plural
     # of "person" is "people".
+
+    # On the other hand, it may not be that hard to just ask each class
+    # for its plural name, and then use that.
     @property
     def milestones(self):
         b = self(type='milestone')

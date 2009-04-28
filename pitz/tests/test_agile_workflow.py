@@ -80,6 +80,34 @@ def test_estimate_story_1():
     us['estimate'] = 2
     assert us not in ap.backlog(estimate='unknown')
 
+@with_setup(setup)
+def test_add_story_1():
+
+    """
+    Add a single story to an iteration.
+    """
+
+    global ap
+    ap.order()
+    it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
+    s = ap.estimated_backlog[0]
+
+    assert s['status'] == 'backlog', \
+    "status for %(title)s is %(status)s!" % s
+
+    it99.add_story(s)
+
+    assert s['status'] == 'planned', \
+    "status for %(title)s is %(status)s!" % s
+    
+    assert len(it99.stories) == 1
+    assert len(it99.stories) == 1
+
+    assert it99.stories[0] == s
+
+    assert it99.points == s.points
+    assert it99.slack == it99.velocity - s.points
+
 
 def test_plan_iteration_1():
     """
@@ -91,6 +119,7 @@ def test_plan_iteration_1():
     ap.order()
 
     it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
+    print("it99 has %d points of slack." % it99.slack)
 
     it99.plan_iteration()
 
@@ -144,8 +173,10 @@ def test_plan_iteration_3():
 
     assert it99.slack, "it99.slack is %s" % it99.slack
 
+
 @raises(Exception)
-def test_add_story():
+@with_setup(setup)
+def test_add_story_2():
     """
     Try to add another story after using up the slack.
     """
@@ -156,6 +187,6 @@ def test_add_story():
     it99.plan_iteration()
 
     assert it99.points == it99['velocity']
-    assert not it99.slack
+    assert not it99.slack, "it99 has %d slack remaining!" % it99.slack
 
-    it99.add_story(UserStory(ap, title="Bogus extra story"))
+    it99.add_story(UserStory(ap, title="Bogus extra story", estimate=3))

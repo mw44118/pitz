@@ -44,7 +44,7 @@ class Entity(dict):
         if 'name' not in kwargs:
             self['name'] = '%s-%s' % (self['type'], uuid.uuid4())
 
-        self['namefrag'] = self['name'][:12]
+        self['frag'] = self['name'][:12]
 
         # Handle attributes with defaults.
         if 'created_time' not in kwargs:
@@ -67,8 +67,8 @@ class Entity(dict):
         if attr == 'name' and 'name' in self:
             raise ValueError("No can change name!")
 
-        elif attr == 'namefrag' and 'namefrag' in self:
-            raise ValueError("No can change namefrag!")
+        elif attr == 'frag' and 'frag' in self:
+            raise ValueError("No can change frag!")
             
 
         elif attr in self.allowed_values and val not in self.allowed_values[attr]:
@@ -79,8 +79,8 @@ class Entity(dict):
             super(Entity, self).__setitem__(attr, val)
 
     @property
-    def namefrag(self):
-        return self['namefrag']
+    def frag(self):
+        return self['frag']
 
     @property
     def name(self):
@@ -131,7 +131,7 @@ class Entity(dict):
         % (self.__class__.__name__, self.summarized_view)
 
     @property
-    def namefrag(self):
+    def frag(self):
         return self['name'][:12]
 
     @property
@@ -140,7 +140,7 @@ class Entity(dict):
         Short description of the entity.
         """
 
-        return "%(namefrag)s: %(title)s" % self
+        return "%(frag)s: %(title)s" % self
 
     @property
     def detailed_view(self):
@@ -181,7 +181,7 @@ class Entity(dict):
         self.replace_objects_with_pointers()
 
         d = dict(self)
-        d.pop('namefrag')
+        d.pop('frag')
 
         y = yaml.dump(d, default_flow_style=False)
 
@@ -217,9 +217,9 @@ class Entity(dict):
         """
 
         if self.project:
-            for p in self.pointers:
-                if p in self:
-                    self[p] = self.project.by_name(self[p])
+            for ptr in self.pointers:
+                if ptr in self:
+                    self[ptr] = self.project.by_name(self[ptr])
 
 
     def replace_objects_with_pointers(self):
@@ -231,14 +231,14 @@ class Entity(dict):
         with just the name of that object.
         """
 
-        for p in self.pointers:
-            if p in self:
-                o = self[p]
+        for ptr in self.pointers:
+            if ptr in self:
+                o = self[ptr]
 
                 # Remember that all subclasses of Entity will return
                 # True for isinstance(o, Entity).
                 if isinstance(o, Entity):
-                    self[p] = o.name
+                    self[ptr] = o.name
 
     @classmethod
     def from_yaml_file(cls, fp, project=None):

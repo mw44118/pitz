@@ -29,13 +29,17 @@ class Iteration(pitz.entity.Entity):
         return stories
 
     @property
+    def velocity(self):
+        return self['velocity']
+
+    @property
     def slack(self):
         """
         Return the difference between velocity and the sum of all
         planned stories.
         """
 
-        return self['velocity'] - self.points
+        return self.velocity - self.points
 
         
     @property
@@ -53,14 +57,12 @@ class Iteration(pitz.entity.Entity):
         iteration.
         """
 
-        points_used = 0
-        
         for story in self.project.estimated_backlog:
 
             # Only add the story if it will fit.
-            if self['velocity'] >= points_used + story['estimate']:
+            if self.slack >= story['estimate']:
                 self.add_story(story)
-                points_used += story['estimate']
+
 
     def add_story(self, story):
 
@@ -93,6 +95,9 @@ class UserStory(pitz.entity.Entity):
 
     pointers = ['iteration']
 
+    @property
+    def points(self):
+        return self['estimate']
 
     def send_to_backlog(self):
         """

@@ -127,3 +127,9 @@ def test_values():
     a = b.attributes[0][0]
     b.values(a)
 
+def test_getitem():
+
+    global b
+    e1 = b[0]
+
+    b[e1.frag]

@@ -35,6 +35,7 @@ class Bag(object):
 
         # These will get populated in self.append.
         self.entities_by_name = dict()
+        self.entities_by_frag = dict()
 
         for e in entities:
             self.append(e)
@@ -77,7 +78,14 @@ class Bag(object):
             yield e
 
     def __getitem__(self, i):
-        return self.entities[i]
+        """
+        Allow lookups by index or by name fragment.
+        """
+
+        try:
+            return self.entities[i]
+        except TypeError:
+            return self.by_name(i)
 
     def __len__(self):
         return len(self.entities)
@@ -121,15 +129,25 @@ class Bag(object):
         return self.matches_dict(**d)
 
 
-    def by_name(self, name):
+    def by_name(self, obj):
         """
         Return an entity named name if we can.  Otherwise, return name.
         """
 
-        if hasattr(name, 'name'):
-            name = name.name
+        name = getattr(obj, 'name', obj)
 
-        return self.entities_by_name.get(name, name)
+        try:
+            return self.entities_by_name[name]
+        except KeyError:
+            frag = getattr(obj, 'frag', obj)
+            try:
+                return self.entities_by_frag[frag]
+            except KeyError:
+                return obj
+
+    def by_frag(self, frag):
+        return self.entities_by_frag[frag]
+        
 
     def append(self, e):
         """
@@ -145,7 +163,7 @@ class Bag(object):
             self.entities.append(e)
             self.entities.sort(self.order_method)
             self.entities_by_name[e.name] = e
-
+            self.entities_by_frag[e.frag] = e.frag
         
     @property
     def summarized_view(self):

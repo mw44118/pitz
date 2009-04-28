@@ -5,8 +5,8 @@ import glob, os
 import yaml
 
 from pitz.bag import Bag
-import pitz.entity
-
+from pitz.entity import Entity
+from pitz import *
 
 class Project(Bag):
 
@@ -18,7 +18,7 @@ class Project(Bag):
     # These are all the classes that I will try to instantiate when
     # reading yaml files.
     classes = dict(
-        entity = pitz.entity.Entity
+        entity = Entity
     )
 
 
