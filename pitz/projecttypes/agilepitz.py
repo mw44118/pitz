@@ -1,5 +1,11 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+"""\
+Agile: releases, iterations, stories, tasks, and velocity.
+"""
+
+myprojectname = 'AgileProject'
+
 import pitz
 import pitz.project
 import pitz.entity

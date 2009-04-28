@@ -6,18 +6,7 @@
 Run this script to start using pitz.
 """
 
-from pitz.cmdline import *
+from pitz.cmdline import pitz_setup
 
-# List all the possible project modules and wait for a choice.
-raise NotImplementedError("I'm still working on this!")
-
-
-mk_pitzfiles_folder()
-
-# Create a project object based on the chosen class.
-
-# Save the project as a yaml file in the pitzfiles folder.
-raise NotImplementedError("I'm still working on this!")
-
-# Copy the selected project module over to the new directory.
+pitz_setup()
 

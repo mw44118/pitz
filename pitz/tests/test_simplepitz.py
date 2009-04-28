@@ -1,20 +1,20 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 """
-Verify the stuff in tracpitz works.
+Verify the stuff in simplepitz works.
 """
 
 from nose.tools import raises, with_setup
 
 from pitz.exceptions import NoProject
-from pitz.projecttypes.tracpitz import *
+from pitz.projecttypes.simplepitz import *
 
 p = None
 
 def setup():
 
     global p
-    p = PitzProject()
+    p = SimpleProject()
     p.append(Task(title='Draw new accounting report', priority=2))
     p.append(Task(title='Improve speed of search page', priority=0))
 

@@ -46,7 +46,7 @@ def shell(projectfile=None):
     s()
 
     # This stuff happens when you close the IPython session.
-    if p:
+    if p is not None:
         answer = raw_input("Write out updated yaml files? ([y]/n) ")
         if answer.lower() not in ['n', 'no']:
             p.to_yaml_file()
@@ -70,15 +70,19 @@ The default place is right here (.)."""
     if not os.access(x, os.W_OK):
         raise ValueError("I can't write to path %s!" % x)
 
-    pitzfiles_dir = os.path.join(x, 'pitzfiles')
+    pitzfiles_dir = os.path.abspath(os.path.join(x, 'pitzfiles'))
 
     os.mkdir(pitzfiles_dir)
+
+    if not os.path.isdir(pitzfiles_dir):
+        raise Exception("Arrgh!")
 
     return pitzfiles_dir
 
 
-def list_projects(
-    modulepaths=('pitz.projecttypes.tracpitz', 'pitz.projecttypes.agilepitz')):
+def list_projects(modulepaths=(
+        'pitz.projecttypes.simplepitz', 
+        'pitz.projecttypes.agilepitz')):
 
     """
     Print a list of modules to choose from and return the chosen one.
@@ -107,3 +111,19 @@ def namedModule(name):
     for p in packages:
         m = getattr(m, p)
     return m
+
+
+def pitz_setup():
+
+    pathname = mk_pitzfiles_folder()
+
+    # List all the possible project modules and wait for a choice.
+    m = list_projects()
+
+    # Create a project object based on the chosen module.
+    p = getattr(m, m.myclassname)(pathname=pathname)
+
+    # Save the project as a yaml file in the pitzfiles folder.
+    pfile = p.to_yaml_file()
+
+    print("All done!  Run pitz-shell %s to start working..." % pfile)

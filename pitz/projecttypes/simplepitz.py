@@ -1,8 +1,10 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 """\
-Like trac (http://trac.edgewall.org) with tasks bundled into milestones.
+Simple: milestones and tasks.
 """
+
+myclassname = 'SimpleProject'
 
 from copy import copy
 
@@ -95,10 +97,9 @@ class Person(Entity):
     pass
 
 
-class PitzProject(Project):
+class SimpleProject(Project):
     """
     Just like the regular project, but with some queries as properties.
-    This is the project type used by pitz itself (hence the name).
     """
 
     # These are all the classes I deal with.

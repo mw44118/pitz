@@ -54,7 +54,8 @@ class Project(Bag):
             bn = os.path.basename(fp)
 
             # Skip the project yaml file.
-            if bn.startswith('project-'): continue
+            if bn.startswith(self.__class__.__name__.lower()):
+                continue
 
             # Extract the class name and then look it up
             classname, dash, remainder = bn.partition('-')

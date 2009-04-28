@@ -52,8 +52,8 @@ def test_list_projects_2():
 
 def test_pitz_setup():
     """
-    Verify we make a pitzfiles folder, copy tracpitz.py in there, and
-    write a project-abcd.yaml file that loads that trackpitz.py file.
+    Verify we make a pitzfiles folder, copy simplepitz.py in there, and
+    write a project-abcd.yaml file that loads that simplepitz.py file.
     """
 
     raise SkipTest

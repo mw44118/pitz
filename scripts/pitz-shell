@@ -10,14 +10,6 @@ import optparse, os, sys
 
 p = optparse.OptionParser()
 
-def verify_projectfile(option, opt_str, value, parser):
-
-    if not os.path.isfile(value):
-        raise optparse.OptionValueError("%s is not a file!" % value)
-
-    else:
-        parser.values.projectfile = value
-
 p.set_usage('%prog [path to project file]')
 
 options, args = p.parse_args()

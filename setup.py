@@ -31,16 +31,19 @@ started pitz.""",
 
     zip_safe=False,
     install_requires=[
-        # 'PyYAML',
-        # 'sphinx',
-        # 'nose',
-        # 'jinja2',
+        'PyYAML',
+        'sphinx',
+        'nose',
+        'jinja2',
           # -*- Extra requirements: -*-
     ],
 
     # I know about the much fancier entry points, but I prefer this
     # solution.  Why does everything have to be zany?
-    scripts = ['scripts/pitz-shell'],
+    scripts = [
+        'scripts/pitz-shell',
+        'scripts/pitz-setup'
+    ],
 
     test_suite = 'nose.collector',
 
