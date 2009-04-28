@@ -132,4 +132,7 @@ def test_getitem():
     global b
     e1 = b[0]
 
-    b[e1.frag]
+    assert b[0] == e1
+    assert b[e1.name] == e1
+    assert b[e1.frag] == e1
+

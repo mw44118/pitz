@@ -145,6 +145,7 @@ class Bag(object):
             except KeyError:
                 return obj
 
+
     def by_frag(self, frag):
         return self.entities_by_frag[frag]
         
@@ -163,7 +164,7 @@ class Bag(object):
             self.entities.append(e)
             self.entities.sort(self.order_method)
             self.entities_by_name[e.name] = e
-            self.entities_by_frag[e.frag] = e.frag
+            self.entities_by_frag[e.frag] = e
         
     @property
     def summarized_view(self):

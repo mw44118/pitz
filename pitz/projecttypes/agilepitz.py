@@ -51,6 +51,14 @@ class Iteration(pitz.entity.Entity):
         return sum([s['estimate'] for s in self.stories])
         
 
+    @property
+    def finished_points(self):
+        """
+        Return the sum of points for all completed stories.
+        """
+
+        return sum([s['estimate'] for s in self.stories if s['status'] == 'finished'])
+
     def plan_iteration(self):
         """
         Assign enough stories from the backlog to fill up this

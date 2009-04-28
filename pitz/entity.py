@@ -124,10 +124,6 @@ class Entity(dict):
         % (self.__class__.__name__, self.summarized_view)
 
     @property
-    def frag(self):
-        return self['name'][:12]
-
-    @property
     def summarized_view(self):
         """
         Short description of the entity.

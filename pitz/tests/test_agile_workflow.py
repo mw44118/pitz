@@ -7,8 +7,6 @@ Verify we can use pitz for an agile workflow, where "agile" means:
 * each release has one or more iterations.
 * each iteration has numerous user stories.
 * each story has numerous tasks.
-* velocity is calculated by looking at the number of finished stories
-  during recent iterations.
 """
 
 from nose.tools import raises, with_setup
@@ -190,3 +188,4 @@ def test_add_story_2():
     assert not it99.slack, "it99 has %d slack remaining!" % it99.slack
 
     it99.add_story(UserStory(ap, title="Bogus extra story", estimate=3))
+
