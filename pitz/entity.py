@@ -40,8 +40,9 @@ class Entity(dict):
         self.update(**kwargs)
         self['type'] = self.__class__.__name__.lower()
 
-        # Make a unique name.
-        self['name'] = uuid.uuid4())
+        # Make a unique name if we didn't get one.
+        if 'name' not in kwargs:
+            self['name'] = str(uuid.uuid4())
 
         self['frag'] = self['name'][:6]
 
@@ -197,7 +198,7 @@ class Entity(dict):
         The pathname specifies where to save it.
         """
 
-        fp = os.path.join(pathname, '%s.yaml' % (self.name)) 
+        fp = os.path.join(pathname, '%(type)s-%(name)s.yaml' % self)
         f = open(fp, 'w')
         f.write(self.yaml)
         f.close()

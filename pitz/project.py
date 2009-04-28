@@ -102,7 +102,7 @@ class Project(Bag):
 
     def to_yaml_file(self, pathname=None):
         """
-        Save this bag to a YAML file.
+        Save this project to a YAML file.
         """
 
         if not pathname \
