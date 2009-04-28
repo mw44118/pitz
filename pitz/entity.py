@@ -40,11 +40,10 @@ class Entity(dict):
         self.update(**kwargs)
         self['type'] = self.__class__.__name__.lower()
 
-        # Make a unique name if we didn't get one.
-        if 'name' not in kwargs:
-            self['name'] = '%s-%s' % (self['type'], uuid.uuid4())
+        # Make a unique name.
+        self['name'] = uuid.uuid4())
 
-        self['frag'] = self['name'][:12]
+        self['frag'] = self['name'][:6]
 
         # Handle attributes with defaults.
         if 'created_time' not in kwargs:
