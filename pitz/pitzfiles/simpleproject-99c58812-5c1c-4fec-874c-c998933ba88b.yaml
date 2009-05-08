@@ -1,0 +1,6 @@
+classname: SimpleProject
+module: pitz.projecttypes.simplepitz
+name: simpleproject-99c58812-5c1c-4fec-874c-c998933ba88b
+order_method_name: by_type_status_created_time
+pathname: /home/matt/projects/pitz/pitz/pitzfiles
+title: Pitz
