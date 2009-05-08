@@ -21,11 +21,7 @@ Pitz is (going to be) yet another bugtracking system, with these goals:
 * Use your source control system (git, svn, zipped files, whatever) to
   track history.
 
-* Interesting queries are straightforward.  This is my main beef with
-  ditz and every other bug tracker -- I find it difficult to get
-  information that involves lots of filters.  
-
-  With pitz, you can do arbitrary queries like:
+* Using a really simple syntax, allow interesting queries like:
 
     * Show all the tasks assigned to Matt and linked to milestone 2.0;
     * Show all the milestones with release dates in 2008 or 2009.
@@ -34,13 +30,11 @@ Pitz is (going to be) yet another bugtracking system, with these goals:
   thing per page, with links to related things) and a plural view (all
   things in a certain relation, with links to singular view for each).
 
-* Use a data model backend optimized for flexibility so you can add 
-  arbitrary attributes to issues.
+* Offer a data model optimized for flexibility so you can add arbitrary
+  attributes to issues.
 
 Ingredients
 ===========
-
-This list keeps changing, but this is the current idea:
 
 * Use yaml to serialize and unserialize data.  Instead of storing
   everything in one big file, spread stuff out across lots and lots of
@@ -48,12 +42,13 @@ This list keeps changing, but this is the current idea:
   much easier.
 
 * All queries can be thought of lists of attribute-value pairs.  Here is
-  how to ask for all milestones with release dates in 2008 or 2009:
+  how to ask for all milestones with release dates in 2008 or 2009::
 
-    [
-        ('type', 'milestone')
-        ('release-date', [2008, 2009])
-    ]
+    >>> p.milestones(type='milestone', 
+    ...              release_date=[2008, 2009]) # doctest: +SKIP
+
+  By the way, every pitz install creates a variable p.  The p variable
+  is like your handle to the database of everything.
 
   All the pairs are joined by AND statements.  Using a list in the value
   spot means you accept any value in that list.

@@ -14,7 +14,7 @@ Making them
 Every entity is an object like a dictionary.  You can make an entity
 like this::
 
-    >>> from pitz import Entity
+    >>> from pitz.entity import Entity
     >>> e = Entity(title="example entity",
     ...            creator="Matt",
     ...            importance="not very")
@@ -26,9 +26,9 @@ You can look up a value for any attribute like this::
 
     >>> e['title']
     'example entity'
-    >>> e.keys() #doctest: +NORMALIZE_WHITESPACE
-    ['name', 'creator', 'importance', 'title', 'modified_time',
-    'created_time', 'type']
+    >>> sorted(e.keys()) #doctest: +NORMALIZE_WHITESPACE
+    ['created_time', 'creator', 'frag', 'importance', 'modified_time',
+    'name', 'title', 'type']
     >>> e['type']
     'entity'
 
@@ -38,8 +38,8 @@ Viewing them
 Entities have a summarized view useful when you want to see a list of
 entities, and a detailed view that shows all the boring detail::
 
-    >>> e.summarized_view 
-    'example entity (entity)'
+    >>> e.summarized_view #doctest: +SKIP
+    '86bd21: example entity'
 
     >>> print(e.detailed_view) #doctest: +SKIP
     example entity (entity)
@@ -66,10 +66,9 @@ entities, and a detailed view that shows all the boring detail::
     type:
     entity
 
-Notice how our entity has some attributes we never set, like name, type,
-created_time, and modified_time.  I make these in the __init__ method of
-the entity class.  If you want to specify your own required fields with
-optional defaults, you can subclass Entity.
+Notice the attributes I never set, like name, type, created_time, and
+modified_time.  The __init__ method of the entity class makes these
+automatically.
 
 By the way, you can ignore the #doctest: +SKIP comment.  That is there
 so the doctests will skip trying to running this example, which will
@@ -95,7 +94,7 @@ While entities are based on dictionaries, bags are based on lists.  You
 can give a bag instance a title, which is nice for remembering what it
 is you want it for.  Bags make it easy to organize a bunch of entities.
 
-    >>> from pitz import Bag
+    >>> from pitz.bag import Bag
     >>> b = Bag(title="Stuff that is not very important")
     >>> b.append(e)
 
@@ -141,17 +140,15 @@ Now I'll make a new bag that has both of these new entities::
     >>> b = Bag('Everything')
     >>> b.append(e1)
     >>> b.append(e2)
-    >>> print(b) 
-    ==========
+    >>> print(b) #doctest: +SKIP
     Everything
     ==========
-    <BLANKLINE>
+
     (2 entity entities)
     -------------------
-    <BLANKLINE>
-       0: example #1 (entity)
-       1: example #2 (entity)
-    <BLANKLINE>
+
+       0: 5fdcb0: example #1
+       1: 407b8d: example #2
 
 Here is how to get a new bag with just the entities that have an
 importance attribute set to "not very"::
@@ -206,7 +203,7 @@ Using a project is easy.  Just pass it in as the first argument when you
 make an entity.  Imagine I want to link some tasks to Matt and some
 other tasks to Lindsey.  First I make a project::
 
-    >>> from pitz import Project
+    >>> from pitz.project import Project
     >>> weekend_chores = Project(title="Weekend chores")
 
 Now I make the rest of the entities::
@@ -263,7 +260,7 @@ Not much is different, but instead of matt, lindsey, and the various
 chores all being entities, they're now subclasses.  But here's one
 advantage of defining pointers on Chore::
 
-    >>> ch1['assigned_to']
+    >>> ch1['assigned_to'] # doctest: +SKIP
     <pitz.Person 'Matt'>
     >>> matt['name'] # doctest: +SKIP
     'person-530ad3cc-14f1-491a-bdb6-ed1dd65afe46'

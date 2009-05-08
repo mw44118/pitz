@@ -8,7 +8,6 @@ from __future__ import with_statement
 
 import os, os.path, subprocess, tempfile
 
-
 def by_whatever(func_name, *whatever, **kwargs):
     """
     Returns a function suitable for sorting, using whatever.
