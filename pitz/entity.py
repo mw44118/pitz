@@ -81,19 +81,65 @@ class Entity(dict):
 
     def matches_dict(self, **d):
         """
-        Just like self.matches_pairs, except accepts keyword args.
+        Return self or None, depending on whether we match.  You gotta
+        match EVERYTHING in the passed-in dictionary.
 
-        >>> e = Entity(title='Clean cat box', creator='Matt')
+        >>> e = Entity(title='Clean cat box', creator='Matt', 
+        ...            tags=['boring', 'chore'])
         >>> e.matches_dict(creator='Matt') == e
         True
         >>> e.matches_dict(creator='Nobody') == None
+        True
+        >>> e.matches_dict(tags=['boring', 'chore']) == e
+        True
+        >>> e.matches_dict(tags='boring') == e
+        True
+        >>> e.matches_dict(tags='chore') == e
+        True
+        >>> e.matches_dict(creator=['Matt']) == e
+        True
+        >>> e.matches_dict(creator=['Matt', 'Nobody']) == e
+        True
+        >>> e.matches_dict(creator=['Matt', 'Nobody'],
+        ...                tags=['fun']) == e
+        False
+        >>> e.matches_dict(creator=['Matt', 'Nobody'],
+        ...                tags=['fun', 'boring']) == e
         True
         """
 
         for a, v in d.items():
 
-            if a not in self or self[a] != v:
+            if a not in self: 
                 return
+
+            ev = self[a]
+            
+            if ev != v: 
+
+                # Neither are lists, so don't bother doing anything else.
+                if not isinstance(ev, (list, tuple)) \
+                and not isinstance(v, (list, tuple)):
+                    return
+
+                # ev is a list, v is a scalar, so check if v is in ev.
+                if isinstance(ev, (list, tuple)) \
+                and not isinstance(v, (list, tuple)) \
+                and v not in ev:
+                    return
+
+                # ev is a scalar, v is a list.
+                if not isinstance(ev, (list, tuple)) \
+                and isinstance(v, (list, tuple)) \
+                and ev not in v:
+                    return
+        
+                # Both are lists, so test if ev intersects with v.
+                if isinstance(ev, (list, tuple)) \
+                and isinstance(v, (list, tuple)) \
+                and set(ev).isdisjoint(set(v)):
+                    return
+
 
         return self
 

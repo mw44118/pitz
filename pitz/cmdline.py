@@ -12,6 +12,7 @@ import yaml
 from IPython.Shell import IPShellEmbed
 
 import pitz
+from pitz import *
 
 def shell(projectfile=None):
 
