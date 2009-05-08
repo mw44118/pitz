@@ -6,7 +6,7 @@ Stuff that is useful in lots of different places goes in here.
 
 from __future__ import with_statement
 
-import os, subprocess, tempfile
+import os, os.path, subprocess, tempfile
 
 
 def by_whatever(func_name, *whatever, **kwargs):
@@ -63,3 +63,24 @@ def edit_with_editor(s=None):
         subprocess.call([os.environ.get('EDITOR', 'vi'), t.name])
         return t.read()
     
+
+def walkup(path):
+
+    """
+    Yield parent directory until we reach the root of the filesystem.
+
+    TODO: make this test below more generic.
+    >>> list(walkup('/home/matt'))
+    ['/home/matt', '/home', '/']
+    """
+
+    at_top = False
+    while not at_top:
+        yield path
+        parent_path = os.path.dirname(path)
+        if parent_path == path:
+            at_top = True
+        else:
+            path = parent_path
+
+
