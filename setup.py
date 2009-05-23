@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1'
+version = '0.2'
 
 setup(name='pitz',
     version=version,
@@ -22,15 +22,10 @@ started pitz.""",
     include_package_data=True,
     package_dir={'pitz':'pitz'},
 
-    data_files=[('share/pitz', 
-        [
-            'pitz/projecttypes/agilepitz.py', 
-            'pitz/projecttypes/tracpitz.py',
-            'pitz/projecttypes/ditzpitz.py',
-        ])],
-
     zip_safe=False,
+
     install_requires=[
+        'IPython',
         'PyYAML',
         'sphinx',
         'nose',
