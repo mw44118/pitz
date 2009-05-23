@@ -30,7 +30,7 @@ List just my tasks in the feb09 milestone::
 
 List any task assigned to me or Tim::
 
-    $ pitz tasks --assigned-to:[matt,tim]
+    $ pitz tasks assigned-to:[matt,tim]
 
 See a particular milestone in detail (otice how milestone is singular in
 this command)::
