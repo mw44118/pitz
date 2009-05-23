@@ -57,6 +57,7 @@ class Entity(dict):
         self.project = project
         if project is not None:
             self.project.append(self)
+            self.replace_pointers_with_objects()
 
     def __setitem__(self, attr, val):
         """
@@ -70,6 +71,10 @@ class Entity(dict):
 
         else:
             super(Entity, self).__setitem__(attr, val)
+
+    @property
+    def filename(self):
+        return '%(type)s-%(name)s.yaml' % self
 
     @property
     def frag(self):
@@ -233,7 +238,7 @@ class Entity(dict):
         The pathname specifies where to save it.
         """
 
-        fp = os.path.join(pathname, '%(type)s-%(name)s.yaml' % self)
+        fp = os.path.join(pathname, self.filename)
         f = open(fp, 'w')
         f.write(self.yaml)
         f.close()
@@ -277,15 +282,12 @@ class Entity(dict):
 
     @classmethod
     def from_yaml_file(cls, fp, project=None):
+
         """
         Loads the file at file path fp into the project and returns it.
         """
 
         d = yaml.load(open(fp))
 
-        if not d:
-            return
-
-        e = cls(project, **d)
-
-        return e
+        if d:
+            return cls(project, **d)

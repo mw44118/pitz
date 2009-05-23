@@ -18,7 +18,7 @@ class Bag(object):
     """
 
     def __init__(self, title='', name=None, pathname=None, entities=(), 
-        order_method=by_created_time, load_yaml_files=True, **kwargs):
+        order_method=by_created_time, **kwargs):
 
         self.title = title
         self.entities = list()
@@ -36,13 +36,10 @@ class Bag(object):
         # These will get populated in self.append.
         self.entities_by_name = dict()
         self.entities_by_frag = dict()
+        self.entities_by_filename = dict()
 
         for e in entities:
             self.append(e)
-
-        # Only load from the file system if we don't have anything.
-        if self.pathname and load_yaml_files:
-            self.load_entities_from_yaml_files()
 
         # Finally, tell all the entities to replace pointers with
         # objects.
@@ -165,6 +162,7 @@ class Bag(object):
             self.entities.sort(self.order_method)
             self.entities_by_name[e.name] = e
             self.entities_by_frag[e.frag] = e
+            self.entities_by_filename[e.filename] = e
         
     @property
     def summarized_view(self):
@@ -259,3 +257,26 @@ class Bag(object):
                 dd[e[attr]] += 1
 
         return sorted(dd.items(), key=lambda t: t[1], reverse=True)
+
+
+    def grep(self, phrase, options=None):
+
+        """
+        Return a new bag, filtering the entities in this bag by the ones
+        that match the results of::
+
+            $ grep phrase <files>
+
+        where <files> are the files for all the entities in this bag.
+        """
+
+        files = [os.path.join(self.pathname, f) for f in self.entities_by_filename]
+
+        cmd = ['grep', '-l', phrase]
+        cmd.extend(files)
+
+        return Bag(title="entities matching grep %s" % phrase,
+            pathname=self.pathname,
+            order_method=self.order_method,
+            entities=[self.entities_by_filename[os.path.basename(s.strip())] 
+                for s in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout])

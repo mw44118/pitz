@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os
+import glob, os, subprocess
 
 import yaml
 
@@ -20,6 +20,22 @@ class Project(Bag):
     classes = dict(
         entity = Entity
     )
+
+
+    def __init__(self, title='', name=None, pathname=None, entities=(), 
+        order_method=by_created_time, load_yaml_files=True, **kwargs):
+
+        super(Project, self).__init__(title, name, pathname, entities,
+            order_method, **kwargs)
+
+        # Only load from the file system if we don't have anything.
+        if self.pathname and load_yaml_files and not entities:
+            self.load_entities_from_yaml_files()
+
+        # Tell all the entities to replace pointers with
+        # objects.
+        # TODO: 
+        self.replace_pointers_with_objects()
 
 
     def append(self, e):
@@ -131,3 +147,4 @@ class Project(Bag):
         d.pop('order_method_name')
 
         return cls(**d)
+
