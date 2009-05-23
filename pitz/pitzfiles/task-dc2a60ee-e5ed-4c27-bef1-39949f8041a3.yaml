@@ -9,6 +9,6 @@ description: "Right now, it is possible to store a list in a value and it will s
 milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_time: *id001
 name: dc2a60ee-e5ed-4c27-bef1-39949f8041a3
-status: started
+status: finished
 title: Allow queries to look for membership when values are lists
 type: task
