@@ -1,0 +1,24 @@
+created_time: &id001 2009-05-24 14:24:52.441619
+description: 'Right now, when you look at a task, you don''t know if there comments
+
+  attached to it.
+
+
+  That''s a specific scenario.  More generally, any time an entity is
+
+  pointed at by another entity, I''m not showing that information.
+
+
+  It would be useful to be able to see stuff like the number of comments
+
+  linked to a task, or the number of tasks linked to a milestone, etc,
+
+  when looking at the main entity.
+
+  '
+milestone: unscheduled
+modified_time: *id001
+name: 7dea5731-ae03-4c5f-923a-7af431ff6449
+status: unstarted
+title: Somehow indicate when an entity has pointers to it
+type: task
