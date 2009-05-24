@@ -1,6 +1,7 @@
 created_time: &id001 2009-04-13 22:51:44.737273
 description: Nice-to-have stuff should go here.
 modified_time: *id001
-name: b956c98f-faf0-4b4f-b01a-28662bc0ed63
+name: !!python/object:uuid.UUID
+  int: 246357804921662755488325692659396046179
 title: '2.0'
 type: milestone

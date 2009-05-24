@@ -41,10 +41,10 @@ class Entity(dict):
         self['type'] = self.__class__.__name__.lower()
 
         # Make a unique name if we didn't get one.
-        if 'name' not in kwargs:
-            self['name'] = str(uuid.uuid4())
+        if not kwargs.get('name'):
+            self['name'] = uuid.uuid4()
 
-        self['frag'] = self['name'][:6]
+        self['frag'] = str(self['name'])[:6]
 
         # Handle attributes with defaults.
         if 'created_time' not in kwargs:
@@ -71,6 +71,9 @@ class Entity(dict):
 
         else:
             super(Entity, self).__setitem__(attr, val)
+
+    def __hash__(self):
+        return self.name.int
 
     @property
     def filename(self):

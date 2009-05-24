@@ -1,7 +1,8 @@
 created_time: &id001 2009-04-20 12:54:15.158437
 milestone: unscheduled
 modified_time: *id001
-name: 98514188-0888-479c-97dd-9d3d5cf3fd7c
+name: !!python/object:uuid.UUID
+  int: 202464560539143505184510897576106786172
 status: unstarted
 title: Write documentation to show how and why to edit Bag and Entity subclasses
 type: task

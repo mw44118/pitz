@@ -18,7 +18,8 @@ description: 'Right now, when you look at a task, you don''t know if there comme
   '
 milestone: unscheduled
 modified_time: *id001
-name: 7dea5731-ae03-4c5f-923a-7af431ff6449
+name: !!python/object:uuid.UUID
+  int: 167370265443681493821534584579091817545
 status: unstarted
 title: Somehow indicate when an entity has pointers to it
 type: task

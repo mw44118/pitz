@@ -11,7 +11,8 @@ last_modified_by: Matt
 milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_date: *id001
 modified_time: *id002
-name: 75275ca2-6875-43af-be63-080d3cefa34c
+name: !!python/object:uuid.UUID
+  int: 155724053933292083654527990379947467596
 status: finished
 title: Write code to use strings as keys
 type: task

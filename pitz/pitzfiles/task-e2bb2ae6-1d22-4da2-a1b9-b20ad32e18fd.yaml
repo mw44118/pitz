@@ -7,7 +7,8 @@ last_modified_by: Matt
 milestone: unscheduled
 modified_date: *id001
 modified_time: *id002
-name: e2bb2ae6-1d22-4da2-a1b9-b20ad32e18fd
+name: !!python/object:uuid.UUID
+  int: 301377356652634267078682217295532398845
 status: finished
 title: Support grouping tasks by component
 type: task

@@ -1,7 +1,8 @@
 created_time: &id001 2009-04-14 09:53:40.616158
 milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
-name: e5cb59c6-9d57-43f4-8e14-54a520491941
+name: !!python/object:uuid.UUID
+  int: 305449068167353851724625538086555162945
 status: finished
 title: Write a function that opens $EDITOR and then retrieves stored text
 type: task

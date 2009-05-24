@@ -7,7 +7,8 @@ last_modified_by: Matt
 milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_date: *id001
 modified_time: *id002
-name: 6b02c822-fadf-46d3-bbb8-c506ebd92d01
+name: !!python/object:uuid.UUID
+  int: 142241839396022501259590592102766554369
 status: unstarted
 title: Support using substring of name as name
 type: task

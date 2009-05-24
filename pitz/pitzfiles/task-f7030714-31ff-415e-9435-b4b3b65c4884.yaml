@@ -1,7 +1,8 @@
 created_time: &id001 2009-05-11 12:17:59.477914
 milestone: unscheduled
 modified_time: *id001
-name: f7030714-31ff-415e-9435-b4b3b65c4884
+name: !!python/object:uuid.UUID
+  int: 328335035426353651200848263917902514308
 status: unstarted
 title: explore paster and see if it makes sense to make pitz use paster
 type: task
