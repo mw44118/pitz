@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-"""\
+"""
 Simple: milestones and tasks.
 """
 
@@ -66,6 +66,33 @@ class Task(Entity):
         b = self.project(type='comment', entity=self)
         b.title = 'Comments on %(title)s' % self
         return b
+
+
+    def abandon(self):
+
+        if self['status'] in ['unstarted', 'started']:
+            self['status'] = 'abandoned'
+
+        else:
+            raise ValueError('You can only abandon unstarted or started tasks.')
+
+
+    def start(self):
+
+        if self['status'] in ['unstarted', 'abandoned']:
+            self['status'] = 'started'
+
+        else:
+            raise ValueError('You can only start unstarted or abandoned tasks.')
+
+
+    def finish(self):
+
+        if self['status'] == 'started':
+            self['status'] == 'finished'
+
+        else:
+            raise ValueError('You can only finish started.')
 
 
 class Comment(Entity):
