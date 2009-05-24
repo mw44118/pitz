@@ -74,6 +74,7 @@ class Task(Entity):
 
         if self['status'] in ['unstarted', 'started']:
             self['status'] = 'abandoned'
+            return self
 
         else:
             raise ValueError('You can only abandon unstarted or started tasks.')
@@ -83,6 +84,7 @@ class Task(Entity):
 
         if self['status'] in ['unstarted', 'abandoned']:
             self['status'] = 'started'
+            return self
 
         else:
             raise ValueError('You can only start unstarted or abandoned tasks.')
@@ -92,6 +94,7 @@ class Task(Entity):
 
         if self['status'] == 'started':
             self['status'] == 'finished'
+            return self
 
         else:
             raise ValueError('You can only finish started.')
