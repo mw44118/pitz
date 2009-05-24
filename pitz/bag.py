@@ -50,8 +50,10 @@ class Bag(object):
     def to_csv(self, filepath, *columns):
         """
         Write out a CSV file for this bag listing the columns specified,
-        AND the name at the very end.
+        AND the UUID at the very end.
         """
+
+        columns = columns + ['name']
 
         w = csv.writer(open(filepath, 'w'))
         w.writerow(columns)
