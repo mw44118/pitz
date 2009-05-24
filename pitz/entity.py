@@ -84,6 +84,10 @@ class Entity(dict):
     def name(self):
         return self['name']
 
+    @property
+    def title(self):
+        return self['title']
+
     def matches_dict(self, **d):
         """
         Return self or None, depending on whether we match.  You gotta

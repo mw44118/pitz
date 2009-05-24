@@ -7,6 +7,7 @@ Simple: milestones and tasks.
 myclassname = 'SimpleProject'
 
 from copy import copy
+import textwrap
 
 import jinja2
 
@@ -106,7 +107,7 @@ class Comment(Entity):
     pointers = ['who_said_it', 'entity']
 
     @property
-    def detailed_view(self):
+    def summarized_view(self):
 
         text = self['text'].strip().replace('\n', ' ')
         text = "%s..." % text[:60] if len(text) > 60 else text
@@ -114,9 +115,34 @@ class Comment(Entity):
         who_said_it = self['who_said_it']
         who_said_it = getattr(who_said_it, 'title', who_said_it)
         
-        return "%(who_said_it)s at %(time)s said: %(text)s" % dict(
+        return "%(who_said_it)s said: %(text)s" % dict(
             who_said_it=who_said_it,
             time=self['created_time'].strftime("%I:%M %P, %a, %m/%d/%y"),
+            text=text,
+        )
+
+
+    @property
+    def detailed_view(self):
+
+        text = textwrap.fill(self['text'].strip().replace('\n', '  '))
+
+        who_said_it = self['who_said_it']
+        who_said_it = getattr(who_said_it, 'title', who_said_it)
+
+        time = self['created_time'].strftime("%A, %B %d, %Y, at %I:%M %P")
+        
+        tmpl = jinja2.Template("""\
+{{who_said_it}} on {{time}} said:
+
+{{text}}
+""")
+
+
+        return tmpl.render(locals())
+
+        return "%(who_said_it)s at %(time)s said: %(text)s" % dict(
+            who_said_it=who_said_it,
             text=text,
         )
 
