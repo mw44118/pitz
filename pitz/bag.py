@@ -102,6 +102,8 @@ class Bag(object):
 
         self.entities.sort(cmp=order_method)
 
+        return self
+
     def matches_dict(self, **d):
         
         matches = [e for e in self.entities if e.matches_dict(**d)]

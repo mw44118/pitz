@@ -11,6 +11,7 @@ import textwrap
 
 import jinja2
 
+from pitz import *
 from pitz.entity import Entity
 from pitz.project import Project
 from pitz.exceptions import NoProject
@@ -66,7 +67,7 @@ class Task(Entity):
     
         b = self.project(type='comment', entity=self)
         b.title = 'Comments on %(title)s' % self
-        return b
+        return b.order(by_created_time)
 
 
     def abandon(self):

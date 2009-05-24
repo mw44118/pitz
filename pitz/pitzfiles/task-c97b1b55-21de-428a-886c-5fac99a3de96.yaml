@@ -8,6 +8,6 @@ milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_date: *id001
 modified_time: *id002
 name: c97b1b55-21de-428a-886c-5fac99a3de96
-status: unstarted
+status: abandoned
 title: Add support for something like 'ditz grep'
 type: task
