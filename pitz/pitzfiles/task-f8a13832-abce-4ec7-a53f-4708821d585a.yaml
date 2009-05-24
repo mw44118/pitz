@@ -9,8 +9,9 @@ last_modified_by: Matt Wilson
 milestone: unscheduled
 modified_date: *id001
 modified_time: *id002
-name: !!python/object:uuid.UUID
+name: &id003 !!python/object:uuid.UUID
   int: 330485642578400521360783850485913049178
 status: finished
 title: Write code for milestones
 type: task
+uuid: *id003

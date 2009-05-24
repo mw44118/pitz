@@ -7,8 +7,9 @@ last_modified_by: Matt
 milestone: unscheduled
 modified_date: *id001
 modified_time: *id002
-name: !!python/object:uuid.UUID
+name: &id003 !!python/object:uuid.UUID
   int: 257125054036195200449278232044786640598
 status: finished
 title: Write code to support comments
 type: task
+uuid: *id003

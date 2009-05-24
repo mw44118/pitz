@@ -2,9 +2,10 @@ created_time: &id001 2009-03-26 16:55:47.430190
 importance: high
 milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
-name: !!python/object:uuid.UUID
+name: &id002 !!python/object:uuid.UUID
   int: 315876655939259043666697315471019398299
 status: finished
 title: Figure out why some tasks are not converting pointers to objects
 type: task
+uuid: *id002
 whatami: bug

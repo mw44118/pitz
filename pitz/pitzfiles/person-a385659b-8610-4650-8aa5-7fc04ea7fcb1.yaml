@@ -6,7 +6,8 @@ comments: []
 created_time: &id001 2009-03-10 22:25:32.240143
 email: matt@tplus1.com
 modified_time: *id001
-name: !!python/object:uuid.UUID
+name: &id002 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 title: W. Matthew Wilson
 type: person
+uuid: *id002

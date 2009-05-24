@@ -1,8 +1,9 @@
 created_time: &id001 2009-03-26 11:10:06.636945
 milestone: unscheduled
 modified_time: *id001
-name: !!python/object:uuid.UUID
+name: &id002 !!python/object:uuid.UUID
   int: 208218189042363374614582333098657906189
 status: finished
 title: Support --pitz-dir with all pitz scripts
 type: task
+uuid: *id002

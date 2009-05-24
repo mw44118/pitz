@@ -2,8 +2,9 @@ comments: []
 created_time: &id001 2009-03-24 12:20:41.092650
 milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 modified_time: *id001
-name: !!python/object:uuid.UUID
+name: &id002 !!python/object:uuid.UUID
   int: 114830025429908318768725473963323883940
 status: finished
 title: Prompt to save work at the end of an interactive pitz session
 type: task
+uuid: *id002

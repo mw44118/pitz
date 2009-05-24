@@ -12,8 +12,9 @@ description: 'It would be nice to be able to have user-specified actions fire wh
   '
 milestone: unscheduled
 modified_time: *id001
-name: !!python/object:uuid.UUID
+name: &id002 !!python/object:uuid.UUID
   int: 239608449258941514363060719815555537332
 status: unstarted
 title: Support hooks
 type: task
+uuid: *id002

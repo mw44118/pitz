@@ -2,9 +2,10 @@ comments: []
 created_time: &id001 2009-03-24 12:21:26.809135
 milestone: unscheduled
 modified_time: *id001
-name: !!python/object:uuid.UUID
+name: &id002 !!python/object:uuid.UUID
   int: 57995644175786202441156535277274450138
 status: finished
 title: Make sure we can support a many-to-many relationship between a task and related
   components
 type: task
+uuid: *id002

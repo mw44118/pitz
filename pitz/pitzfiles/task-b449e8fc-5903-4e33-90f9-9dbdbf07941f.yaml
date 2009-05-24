@@ -7,8 +7,9 @@ last_modified_by: Matt
 milestone: unscheduled
 modified_date: *id001
 modified_time: *id002
-name: !!python/object:uuid.UUID
+name: &id003 !!python/object:uuid.UUID
   int: 239644802424031062269094147262354265119
 status: finished
 title: Support task statuses
 type: task
+uuid: *id003
