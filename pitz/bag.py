@@ -53,7 +53,7 @@ class Bag(object):
         AND the UUID at the very end.
         """
 
-        columns = columns + ['name']
+        columns = columns + ('name', )
 
         w = csv.writer(open(filepath, 'w'))
         w.writerow(columns)
@@ -65,7 +65,7 @@ class Bag(object):
         for e in self.entities:
             row = []
             for col in columns:
-                row += [e[col]]
+                row += [e.get(col, '')]
             w.writerow(row)
 
     def __iter__(self):
