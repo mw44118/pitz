@@ -4,7 +4,7 @@
 Agile: releases, iterations, stories, tasks, and velocity.
 """
 
-myprojectname = 'AgileProject'
+myclassname = 'AgileProject'
 
 import pitz
 import pitz.project
