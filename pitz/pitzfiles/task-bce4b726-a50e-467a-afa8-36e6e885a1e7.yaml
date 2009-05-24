@@ -2,6 +2,6 @@ created_time: &id001 2009-03-27 09:59:31.277513
 milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_time: *id001
 name: bce4b726-a50e-467a-afa8-36e6e885a1e7
-status: unstarted
+status: finished
 title: A bag should dump to a single CSV file and columns should be chosen
 type: task
