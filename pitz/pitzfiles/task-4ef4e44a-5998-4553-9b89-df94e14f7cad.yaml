@@ -1,7 +1,8 @@
 created_time: &id001 2009-05-23 13:31:39.462612
 milestone: unscheduled
 modified_time: *id001
-name: 4ef4e44a-5998-4553-9b89-df94e14f7cad
-status: unstarted
+name: !!python/object:uuid.UUID
+  int: 104951334384707844648531979554431925421
+status: started
 title: Rename the name attribute with 'uuid', since that's really what it used for.
 type: task
