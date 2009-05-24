@@ -1,0 +1,12 @@
+created_time: &id001 2009-05-24 10:31:59.860325
+entity: f4e02704-8804-434d-9cdd-d5cf12724221
+modified_time: *id001
+name: cabbdd9f-0d5e-47f5-bce5-f13c884c5115
+text: "Hi James, thanks for pointing this out.  I don't know why it didn't\noccur\
+  \ to me before now.  \n\nRight now, in order to start up pitz-shell, I type in the\
+  \ absolute path\nto the project.yaml file.\n\nI think it might be better to pass\
+  \ in just the path to the directory\nwith everything as a variable named PITZDIR,\
+  \ and everything could be\nrelative to that.\n\nWhat do you think?\n"
+title: no title
+type: comment
+who_said_it: a385659b-8610-4650-8aa5-7fc04ea7fcb1
