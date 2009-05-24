@@ -1,0 +1,10 @@
+created_time: &id001 2009-05-24 07:20:55.081988
+entity: f4e02704-8804-434d-9cdd-d5cf12724221
+modified_time: *id001
+name: 4121826d-2db2-44e1-9739-feca246c8f48
+text: The dependence on absolute paths breaks the system if a dir is moved, or a database
+  is cloned.  I don't have a /home/matt/projects/pitz/pitz/pitzfiles as an example,
+  therefore I can't open the pitz database with pitz-shell
+title: no title
+type: comment
+who_said_it: 066fe788-1b45-4442-9233-169165f3e510
