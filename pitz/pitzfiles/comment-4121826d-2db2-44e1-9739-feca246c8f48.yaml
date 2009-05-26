@@ -9,4 +9,5 @@ text: The dependence on absolute paths breaks the system if a dir is moved, or a
 title: no title
 type: comment
 uuid: *id002
-who_said_it: 066fe788-1b45-4442-9233-169165f3e510
+who_said_it: !!python/object:uuid.UUID
+  int: 8556408946095240075678031027664839952

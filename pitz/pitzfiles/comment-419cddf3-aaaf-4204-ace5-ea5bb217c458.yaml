@@ -11,4 +11,5 @@ text: 'People in #python told me about subprocess and tempfile and this was
 title: Comment on task-e5cb59c
 type: comment
 uuid: *id002
-who_said_it: a385659b-8610-4650-8aa5-7fc04ea7fcb1
+who_said_it: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
