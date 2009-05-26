@@ -110,6 +110,7 @@ class Comment(Entity):
 
     pointers = ['who_said_it', 'entity']
 
+
     @property
     def summarized_view(self):
 
@@ -142,13 +143,8 @@ class Comment(Entity):
 {{text}}
 """)
 
-
         return tmpl.render(locals())
 
-        return "%(who_said_it)s at %(time)s said: %(text)s" % dict(
-            who_said_it=who_said_it,
-            text=text,
-        )
 
 class Person(Entity):
     pass
