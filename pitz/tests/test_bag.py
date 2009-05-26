@@ -130,6 +130,6 @@ def test_getitem():
     e1 = b[0]
 
     assert b[0] == e1
-    assert b[e1.name] == e1
-    assert b[e1.frag] == e1
+    assert b[e1.uuid] == e1
+    assert b[e1.uuid] == e1
 

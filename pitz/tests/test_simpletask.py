@@ -64,7 +64,7 @@ def test_new_task():
         creator='Matt',
         description='It is gross!')
 
-    assert t.name == t['name']
+    assert t.uuid == t['uuid']
 
 def test_missing_attributes_replaced_with_defaults():
     """
@@ -85,9 +85,6 @@ def test_summarized_view():
 
     print(str(t1))
 
-def test_name_must_be_unique():
-
-    raise SkipTest
 
 def test_update_task_status():
 

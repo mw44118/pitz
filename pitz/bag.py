@@ -1,7 +1,9 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 from collections import defaultdict
-import csv, logging, os, uuid
+import csv, logging, os
+from uuid import UUID, uuid4
+
 from glob import glob
 
 import jinja2
@@ -17,7 +19,7 @@ class Bag(object):
     Really just a collection of entities with a name on it.  
     """
 
-    def __init__(self, title='', name=None, pathname=None, entities=(), 
+    def __init__(self, title='', uuid=None, pathname=None, entities=(), 
         order_method=by_created_time, **kwargs):
 
         self.title = title
@@ -25,16 +27,15 @@ class Bag(object):
         self.pathname = pathname
         self.order_method = order_method
         
-        if name:
-            self.name = name
+        if uuid:
+            self.uuid = uuid
 
-        # Make a unique name if we didn't get one.
-        if not name:
-            self.name = '%s-%s' % (self.__class__.__name__.lower(), 
-                uuid.uuid4())
+        # Make a unique uuid if we didn't get one.
+        if not uuid:
+            self.uuid = uuid4()
 
         # These will get populated in self.append.
-        self.entities_by_name = dict()
+        self.entities_by_uuid = dict()
         self.entities_by_frag = dict()
         self.entities_by_filename = dict()
 
@@ -45,7 +46,6 @@ class Bag(object):
         # objects.
         self.replace_pointers_with_objects()
 
-
     
     def to_csv(self, filepath, *columns):
         """
@@ -53,7 +53,7 @@ class Bag(object):
         AND the UUID at the very end.
         """
 
-        columns = columns + ('name', )
+        columns = columns + ('uuid', )
 
         w = csv.writer(open(filepath, 'w'))
         w.writerow(columns)
@@ -78,13 +78,13 @@ class Bag(object):
 
     def __getitem__(self, i):
         """
-        Allow lookups by index or by name fragment.
+        Allow lookups by index or by uuid fragment.
         """
 
         try:
             return self.entities[i]
         except TypeError:
-            return self.by_name(i)
+            return self.by_uuid(i)
 
     def __len__(self):
         return len(self.entities)
@@ -130,15 +130,15 @@ class Bag(object):
         return self.matches_dict(**d)
 
 
-    def by_name(self, obj):
+    def by_uuid(self, obj):
         """
-        Return an entity named name if we can.  Otherwise, return name.
+        Return an entity with uuid obj if we can.  Otherwise, return uuid.
         """
 
-        name = getattr(obj, 'name', obj)
+        uuid = getattr(obj, 'uuid', obj)
 
         try:
-            return self.entities_by_name[name]
+            return self.entities_by_uuid[uuid]
         except KeyError:
             frag = getattr(obj, 'frag', obj)
             try:
@@ -160,11 +160,11 @@ class Bag(object):
         """
 
         # Don't add the same entity twice.
-        if e.name not in self.entities_by_name:
+        if e.uuid not in self.entities_by_uuid:
 
             self.entities.append(e)
             self.entities.sort(self.order_method)
-            self.entities_by_name[e.name] = e
+            self.entities_by_uuid[e.uuid] = e
             self.entities_by_frag[e.frag] = e
             self.entities_by_filename[e.filename] = e
         

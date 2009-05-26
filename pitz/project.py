@@ -22,10 +22,10 @@ class Project(Bag):
     )
 
 
-    def __init__(self, title='', name=None, pathname=None, entities=(), 
+    def __init__(self, title='', uuid=None, pathname=None, entities=(), 
         order_method=by_created_time, load_yaml_files=True, **kwargs):
 
-        super(Project, self).__init__(title, name, pathname, entities,
+        super(Project, self).__init__(title, uuid, pathname, entities,
             order_method, **kwargs)
 
         # Only load from the file system if we don't have anything.
@@ -71,6 +71,7 @@ class Project(Bag):
 
             # Skip the project yaml file.
             if bn.startswith(self.__class__.__name__.lower()):
+
                 continue
 
             # Extract the class name and then look it up
@@ -111,7 +112,7 @@ class Project(Bag):
             classname=self.__class__.__name__,
             title=self.title,
             order_method_name=self.order_method.func_name,
-            name=self.name,
+            uuid=self.uuid,
             pathname=self.pathname,
         )
 
@@ -128,8 +129,13 @@ class Project(Bag):
             raise ValueError("I need a pathname!")
 
         pathname = pathname or self.pathname
+        lowered_class_name = self.__class__.__name__.lower()
+        uuid = self.uuid
 
-        fp = os.path.join(pathname, '%s.yaml' % (self.name)) 
+        fp = os.path.join(
+            pathname, 
+            '%(lowered_class_name)s-%(uuid)s.yaml' % locals())
+
         f = open(fp, 'w')
         f.write(self.yaml)
         f.close()

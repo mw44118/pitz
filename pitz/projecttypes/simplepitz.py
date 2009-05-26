@@ -93,7 +93,7 @@ class Task(Entity):
     def finish(self):
 
         if self['status'] == 'started':
-            self['status'] == 'finished'
+            self['status'] = 'finished'
             return self
 
         else:

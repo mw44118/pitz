@@ -40,11 +40,11 @@ class Entity(dict):
         self.update(**kwargs)
         self['type'] = self.__class__.__name__.lower()
 
-        # Make a unique name if we didn't get one.
-        if not kwargs.get('name'):
-            self['name'] = uuid.uuid4()
+        # Make a unique uuid if we didn't get one.
+        if not kwargs.get('uuid'):
+            self['uuid'] = uuid.uuid4()
 
-        self['frag'] = str(self['name'])[:6]
+        self['frag'] = str(self['uuid'])[:6]
 
         # Handle attributes with defaults.
         if 'created_time' not in kwargs:
@@ -73,19 +73,19 @@ class Entity(dict):
             super(Entity, self).__setitem__(attr, val)
 
     def __hash__(self):
-        return self.name.int
+        return self.uuid.int
 
     @property
     def filename(self):
-        return '%(type)s-%(name)s.yaml' % self
+        return '%(type)s-%(uuid)s.yaml' % self
 
     @property
     def frag(self):
         return self['frag']
 
     @property
-    def name(self):
-        return self['name']
+    def uuid(self):
+        return self['uuid']
 
     @property
     def title(self):
@@ -260,22 +260,22 @@ class Entity(dict):
         to.
 
         In other words, replaces the string "matt" with the object with
-        "matt" as its name.
+        "matt" as its uuid.
         """
 
         if self.project:
             for ptr in self.pointers:
                 if ptr in self:
-                    self[ptr] = self.project.by_name(self[ptr])
+                    self[ptr] = self.project.by_uuid(self[ptr])
 
 
     def replace_objects_with_pointers(self):
         """
         Replaces the value of an entity with just the string of the
-        entity's name.
+        entity's uuid.
 
         In other words, replaces the object stored at sef['creator']
-        with just the name of that object.
+        with just the uuid of that object.
         """
 
         for ptr in self.pointers:
@@ -285,7 +285,7 @@ class Entity(dict):
                 # Remember that all subclasses of Entity will return
                 # True for isinstance(o, Entity).
                 if isinstance(o, Entity):
-                    self[ptr] = o.name
+                    self[ptr] = o.uuid
 
     @classmethod
     def from_yaml_file(cls, fp, project=None):

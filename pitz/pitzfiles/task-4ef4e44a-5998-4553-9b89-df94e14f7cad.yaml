@@ -3,7 +3,7 @@ milestone: unscheduled
 modified_time: *id001
 name: &id002 !!python/object:uuid.UUID
   int: 104951334384707844648531979554431925421
-status: started
+status: finished
 title: Rename the name attribute with 'uuid', since that's really what it used for.
 type: task
 uuid: *id002
