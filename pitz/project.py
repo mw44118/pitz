@@ -148,7 +148,7 @@ class Project(Bag):
         """
 
         d = yaml.load(open(fp))
-        d['pathname'] = os.path.dirname(fp)
+        d['pathname'] = os.path.realpath(os.path.dirname(fp))
 
         # Dig out the string that points to the order method and replace
         # it with the actual function.  This is really ugly, so feel
