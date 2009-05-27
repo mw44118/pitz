@@ -128,3 +128,10 @@ def pitz_setup():
     pfile = p.to_yaml_file()
 
     print("All done!  Run pitz-shell %s to start working..." % pfile)
+
+def add_something_new(p):
+    """
+    Add something new to the project p.
+    """
+
+
