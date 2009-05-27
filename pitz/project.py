@@ -113,7 +113,6 @@ class Project(Bag):
             title=self.title,
             order_method_name=self.order_method.func_name,
             uuid=self.uuid,
-            pathname=self.pathname,
         )
 
         return yaml.dump(data, default_flow_style=False)
@@ -143,8 +142,13 @@ class Project(Bag):
         return fp
 
     @classmethod
-    def from_yaml_file(cls, fp): 
+    def from_yaml_file(cls, fp):
+        """
+        Instantiate the class based on the data in file fp.
+        """
+
         d = yaml.load(open(fp))
+        d['pathname'] = os.path.dirname(fp)
 
         # Dig out the string that points to the order method and replace
         # it with the actual function.  This is really ugly, so feel

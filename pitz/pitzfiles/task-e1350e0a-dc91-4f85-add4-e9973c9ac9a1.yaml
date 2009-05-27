@@ -1,0 +1,15 @@
+created_time: &id001 2009-05-26 21:31:19.586277
+description: "Write a script that makes it easy to add new entities from the\ncommand-line.\
+  \  The script should ask a list of questions like:\n\n    What do you want to make:\n\
+  \    1. Milestone\n    2. Task\n    3. Person\n\nThen for each required field in\
+  \ the chosen class, we would do this:\n\n    title:\n    status (unstarted):\n\n\
+  Finally, we would offer a chance to add arbitrary attribute-value pairs\nlike this:\n\
+  \n    Add attribute-value pairs like this:\n    importance=not very\n\n    Start\
+  \ your editor like this\n    description=\n\nHit enter on a blank line to be finished.\n"
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Make a pitz-add script
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 299351775599386865471133054220000479649

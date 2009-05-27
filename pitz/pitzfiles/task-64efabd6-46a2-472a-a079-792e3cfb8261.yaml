@@ -1,0 +1,13 @@
+created_time: &id001 2009-05-26 21:23:01.333154
+description: 'I got some fancy pretty jinja2 templates in the junkyard.  I just need
+
+  to learn how to use them to render a bag.
+
+  '
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Make an HTML view of project
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 134167243796410546326428900984490787425
