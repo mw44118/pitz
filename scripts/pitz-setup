@@ -9,4 +9,3 @@ Run this script to start using pitz.
 from pitz.cmdline import pitz_setup
 
 pitz_setup()
-

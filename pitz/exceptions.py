@@ -6,3 +6,9 @@ class NoProject(Exception):
     because it doesn't have a pitz.project.Project instance to work
     with.
     """
+
+class ProjectYamlNotFound(Exception):
+   """
+    Indicates that the system couldn't find a project.yaml file when it
+    tried to find one.
+    """

@@ -25,6 +25,7 @@ started pitz.""",
     zip_safe=False,
 
     install_requires=[
+        'clepy',
         'IPython',
         'PyYAML',
         'sphinx',

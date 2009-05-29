@@ -142,6 +142,25 @@ class Project(Bag):
         return fp
 
     @classmethod
+    def find_yaml_file(cls):
+        """
+        Raise an exception or return the path to the project.yaml file.
+        """
+        
+        starting_path = os.getcwd()
+
+        for dir in walkup(starting_path):
+
+            a = os.path.join(dir, 'pitzfiles', 'project.yaml')
+
+            if os.path.isfile(a):
+                return a
+
+        else:
+            raise ProjectYamlNotFound("Started looking at %s" % starting_path)
+
+
+    @classmethod
     def from_yaml_file(cls, fp):
         """
         Instantiate the class based on the data in file fp.

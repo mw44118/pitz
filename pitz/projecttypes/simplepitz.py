@@ -17,6 +17,9 @@ from pitz.project import Project
 from pitz.exceptions import NoProject
 
 class Milestone(Entity):
+    """
+    Useful for bundling tasks
+    """
 
     @property
     def tasks(self):
@@ -101,6 +104,10 @@ class Task(Entity):
 
 
 class Comment(Entity):
+
+    """
+    You can comment on any entity.
+    """
     
     required_fields = dict(
         who_said_it=None,
@@ -147,7 +154,9 @@ class Comment(Entity):
 
 
 class Person(Entity):
-    pass
+    """
+    Maybe you want to track who is doing what.
+    """
 
 
 class SimpleProject(Project):

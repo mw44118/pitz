@@ -3,7 +3,7 @@ milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_time: *id001
 name: &id002 !!python/object:uuid.UUID
   int: 221216932501129737511019321430214890246
-status: unstarted
-title: Make pitz-shell look for a pitzfiles/project.yaml file automatically
+status: started
+title: Search for the project.yaml file in parent directories
 type: task
 uuid: *id002
