@@ -38,7 +38,9 @@ started pitz.""",
     # solution.  Why does everything have to be zany?
     scripts = [
         'scripts/pitz-shell',
-        'scripts/pitz-setup'
+        'scripts/pitz-setup',
+        'scripts/pitz-todo',
+        'scripts/pitz-show',
     ],
 
     test_suite = 'nose.collector',

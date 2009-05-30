@@ -178,7 +178,7 @@ class SimpleProject(Project):
         .does_not_match_dict(status='finished')\
         .does_not_match_dict(status='abandoned')
 
-        b.title = 'Stuff to do'
+        b.title = '%s: stuff to do' % self.title
         return b
 
     # I know I COULD make all these properties in the __init__ method

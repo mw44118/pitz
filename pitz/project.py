@@ -32,9 +32,7 @@ class Project(Bag):
         if self.pathname and load_yaml_files and not entities:
             self.load_entities_from_yaml_files()
 
-        # Tell all the entities to replace pointers with
-        # objects.
-        # TODO: 
+        # Tell all the entities to replace their pointers with objects.
         self.replace_pointers_with_objects()
 
 
@@ -70,7 +68,8 @@ class Project(Bag):
             bn = os.path.basename(fp)
 
             # Skip the project yaml file.
-            if bn.startswith(self.__class__.__name__.lower()):
+            if bn == 'project.yaml' \
+            or bn.startswith(self.__class__.__name__.lower()):
 
                 continue
 
@@ -80,6 +79,7 @@ class Project(Bag):
             C.from_yaml_file(fp, self)
 
         return self
+
 
     def save_entities_to_yaml_files(self, pathname=None):
         """
@@ -101,6 +101,7 @@ class Project(Bag):
         return [e.to_yaml_file(pathname) 
             for e in self.entities]
 
+
     @property
     def yaml(self):
         """
@@ -117,6 +118,7 @@ class Project(Bag):
 
         return yaml.dump(data, default_flow_style=False)
 
+
     def to_yaml_file(self, pathname=None):
         """
         Save this project to a YAML file.
@@ -131,9 +133,7 @@ class Project(Bag):
         lowered_class_name = self.__class__.__name__.lower()
         uuid = self.uuid
 
-        fp = os.path.join(
-            pathname, 
-            '%(lowered_class_name)s-%(uuid)s.yaml' % locals())
+        fp = os.path.join(pathname, 'project.yaml')
 
         f = open(fp, 'w')
         f.write(self.yaml)
@@ -141,39 +141,69 @@ class Project(Bag):
 
         return fp
 
+
     @classmethod
-    def find_yaml_file(cls):
+    def find_yaml_file(cls, filename='project.yaml', walkdown=False):
         """
         Raise an exception or return the path to the project.yaml file.
+
+        Check the os.environ first and then walk up the filesystem, then
+        walk down the filesystem IFF walkdown is True.
         """
+
+        if 'PITZDIR' in os.environ:
+            return os.environ['PITZDIR']
         
         starting_path = os.getcwd()
 
+        # Walk up...
         for dir in walkup(starting_path):
 
-            a = os.path.join(dir, 'pitzfiles', 'project.yaml')
+            a = os.path.join(dir, 'pitzdir', filename)
 
             if os.path.isfile(a):
                 return a
 
-        else:
-            raise ProjectYamlNotFound("Started looking at %s" % starting_path)
+        # Walk down...
+        if walkdown:
+            for root, dirs, files in os.walk(starting_path):
+
+                if 'pitzdir' in dirs:
+                    a = os.path.join(dir, 'pitzdir', filename)
+
+                if os.path.isfile(a):
+                    return a
+
+        raise ProjectYamlNotFound("Started looking at %s" % starting_path)
 
 
     @classmethod
     def from_yaml_file(cls, fp):
         """
         Instantiate the class based on the data in file fp.
+
+        IMPORTANT: this may not return an instance of this project.
+        Instead it will return an instance of the project subclass
+        specified in the yaml data.
         """
 
-        d = yaml.load(open(fp))
-        d['pathname'] = os.path.realpath(os.path.dirname(fp))
+        yamldata = yaml.load(open(fp))
+
+        # Read the section on __import__ at
+        # http://docs.python.org/library/functions.html
+        # to make sense out of this.
+        m = __import__(yamldata['module'],
+            fromlist=yamldata['classname'])
+
+        yamldata['pathname'] = os.path.realpath(os.path.dirname(fp))
 
         # Dig out the string that points to the order method and replace
         # it with the actual function.  This is really ugly, so feel
         # free to fix it.
-        d['order_method'] = globals()[d['order_method_name']]
-        d.pop('order_method_name')
+        yamldata['order_method'] = globals()[yamldata['order_method_name']]
+        yamldata.pop('order_method_name')
 
-        return cls(**d)
+        # This big P is the class of the project.
+        P = getattr(m, yamldata['classname'])
 
+        return P(**yamldata)

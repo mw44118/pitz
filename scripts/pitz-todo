@@ -1,0 +1,20 @@
+#! /usr/bin/env python
+
+# vim: set expandtab ts=4 sw=4 filetype=python:
+
+"""
+Print the todo list.
+"""
+
+import optparse, os, sys
+from pitz.project import Project
+
+p = optparse.OptionParser()
+
+p.set_usage('%prog [path to project file]')
+
+options, args = p.parse_args()
+
+path_to_yaml_file = args[0] if args else Project.find_yaml_file()
+proj = Project.from_yaml_file(path_to_yaml_file)
+print(proj.todo)

@@ -71,7 +71,13 @@ def test_to_yaml_file_2(o):
 @patch('__builtin__.globals')
 def test_from_yaml_file_1(m1, m2, m3):
 
-    m2.return_value = {'order_method_name':'bogus_method'}
+    # yaml.load(...) will return m2.
+    m2.return_value = {
+        'order_method_name':'bogus_method',
+        'module':'pitz.project',
+        'classname':'Project'}
+
+    # globals() will return m3.
     m3.return_value = {'bogus_method': 99}
 
     p = Project("Bogus")

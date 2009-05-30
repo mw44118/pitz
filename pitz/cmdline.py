@@ -13,54 +13,42 @@ from IPython.Shell import IPShellEmbed
 
 import pitz
 from pitz import *
+from pitz.project import Project
 
 def shell(projectfile=None):
 
     """
-    Start an ipython session and possibly load in a project.
+    Start an ipython session after loading in a project.
     """
 
     if projectfile:
-        projectdata = yaml.load(open(projectfile))
-
-        # Read the section on __import__ at
-        # http://docs.python.org/library/functions.html
-        # to make sense out of this.
-        m = __import__(projectdata['module'],
-            fromlist=projectdata['classname'])
-
-        # This big P is the class of the project.
-        P = getattr(m, projectdata['classname'])
-
-        # This little p is an instance of the class.
-        p = P.from_yaml_file(projectfile)
-
-        # Normally, I hate stuff like this, but I want to put all the
-        # classes for this project into the namespace, and I can't
-        # predict the names for the classes.
-        locals().update([(C.__name__, C) for C in P.classes.values()])
+        p = Project.from_yaml_file(projectfile)
 
     else:
-        p = None
+        p = Project.from_yaml_file(Project.find_yaml_file())
+
+    # Normally, I hate stuff like this, but I want to put all the
+    # classes for this project into the namespace, and I can't
+    # predict the names for the classes.
+    locals().update([(C.__name__, C) for C in p.classes.values()])
 
     s = IPShellEmbed(['-colors', 'Linux'])
     s()
 
     # This stuff happens when you close the IPython session.
-    if p is not None:
-        answer = raw_input("Write out updated yaml files? ([y]/n) ")
-        if answer.lower() not in ['n', 'no']:
-            p.to_yaml_file()
-            p.save_entities_to_yaml_files()
+    answer = raw_input("Write out updated yaml files? ([y]/n) ")
+    if answer.lower() not in ['n', 'no']:
+        p.to_yaml_file()
+        p.save_entities_to_yaml_files()
 
 
-def mk_pitzfiles_folder():
+def mk_pitzdir():
     """
     Returns the path to the newly created folder.
     """
 
     msg = """\
-I need to make a directory named 'pitzfiles'.  Where should I put it?
+I need to make a directory named 'pitzdir'.  Where should I put it?
 The default place is right here (.)."""
 
     x = raw_input(msg)
@@ -71,14 +59,14 @@ The default place is right here (.)."""
     if not os.access(x, os.W_OK):
         raise ValueError("I can't write to path %s!" % x)
 
-    pitzfiles_dir = os.path.abspath(os.path.join(x, 'pitzfiles'))
+    pitzdir = os.path.abspath(os.path.join(x, 'pitzdir'))
 
-    os.mkdir(pitzfiles_dir)
+    os.mkdir(pitzdir)
 
-    if not os.path.isdir(pitzfiles_dir):
+    if not os.path.isdir(pitzdir):
         raise Exception("Arrgh!")
 
-    return pitzfiles_dir
+    return pitzdir
 
 
 def list_projects(modulepaths=(
@@ -116,13 +104,13 @@ def namedModule(name):
 
 def pitz_setup():
 
-    pathname = mk_pitzfiles_folder()
+    pitzdir = mk_pitzdir()
 
     # List all the possible project modules and wait for a choice.
     m = list_projects()
 
-    # Create a project object based on the chosen module.
-    p = getattr(m, m.myclassname)(pathname=pathname)
+    # Create a project instance based on the chosen module.
+    p = getattr(m, m.myclassname)(pathname=pitzdir)
 
     # Save the project as a yaml file in the pitzfiles folder.
     pfile = p.to_yaml_file()
