@@ -10,6 +10,6 @@ modified_time: *id002
 name: &id003 !!python/object:uuid.UUID
   int: 142241839396022501259590592102766554369
 status: unstarted
-title: Support using substring of name as name
+title: Support using substring of uuid as lookup
 type: task
 uuid: *id003

@@ -104,13 +104,16 @@ def namedModule(name):
 
 def pitz_setup():
 
+    project_title = raw_input("Project name?  (you can change it later)")
+
     pitzdir = mk_pitzdir()
 
     # List all the possible project modules and wait for a choice.
     m = list_projects()
 
     # Create a project instance based on the chosen module.
-    p = getattr(m, m.myclassname)(pathname=pitzdir)
+    ProjectClass = getattr(m, m.myclassname)
+    p = ProjectClass(pathname=pitzdir, title=project_title)
 
     # Save the project as a yaml file in the pitzfiles folder.
     pfile = p.to_yaml_file()

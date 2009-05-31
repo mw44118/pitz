@@ -151,8 +151,10 @@ class Project(Bag):
         walk down the filesystem IFF walkdown is True.
         """
 
-        if 'PITZDIR' in os.environ:
-            return os.environ['PITZDIR']
+        yamlpath = os.path.join(os.environ.get('PITZDIR', ''), 'project.yaml')
+
+        if os.path.isfile(yamlpath):
+            return yamlpath
         
         starting_path = os.getcwd()
 
