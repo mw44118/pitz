@@ -5,7 +5,7 @@ These functions do the interesting stuff after options and arguments
 have been parsed.
 """
 
-import glob, os, sys
+import glob, optparse, os, sys
 
 import yaml
 
@@ -120,4 +120,33 @@ def pitz_setup():
 
     print("All done!  Run pitz-shell %s to start working..." % pfile)
 
+
+def setup_options():
+    p = optparse.OptionParser()
+
+    p.add_option('-p', '--pitz-dir')
+    p.add_option('-s', '--summarized-view', action='store_true', default=False)
+
+    p.set_usage('%prog [path to project file]')
+
+    return p
+
+def build_filter(args):
+    """
+    Turn something like:
+    ['type=task', 'status=[started,unstarted]'
+    into
+    dict(type='task', status=['started', 'unstarted'])
+    """
+
+    d = dict()
+    for a in args:
+        attr, value = a.split('=')
+
+        if value.startswith('[') and value.endswith(']'):
+            value = value.strip('[]').split(',')
+
+        d[attr] = value
+
+    return d
 

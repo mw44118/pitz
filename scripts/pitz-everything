@@ -8,46 +8,22 @@ Print every entity associated with the project.
 
 import optparse, os, sys
 from pitz.project import Project
+from pitz.cmdline import setup_options, build_filter
 
-p = optparse.OptionParser()
-
-p.add_option('-p', '--pitz-dir')
-p.add_option('-s', '--summarized-view', action='store_true', default=False)
-
-p.set_usage('%prog [path to project file]')
+p = setup_options()
 
 options, args = p.parse_args()
 
-print("options: %s" % options)
-print("args: %s" % args)
-
-if options.pitz_dir:
-    path_to_yaml_file = options.pitz_dir
-
-else:
-    path_to_yaml_file = Project.find_yaml_file()
+path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
 
 proj = Project.from_yaml_file(path_to_yaml_file)
 
+d = build_filter(args)
 
-# Now go through the args.  Turn something like:
-# ['type=task', 'status=[started,unstarted]'
-# into
-# dict(type='task', status=['started', 'unstarted'])
-
-d = dict()
-for a in args:
-    attr, value = a.split('=')
-
-    if value.startswith('[') and value.endswith(']'):
-        value = value.strip('[]').split(',')
-
-    d[attr] = value
-
-print("d is %s" % d)
+results = proj(**d)
 
 if options.summarized_view:
-    print(proj(**d).summarized_view)
+    print(results.summarized_view)
 
 else:
-    print(proj(**d))
+    print(results)

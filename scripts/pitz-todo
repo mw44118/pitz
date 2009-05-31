@@ -8,13 +8,22 @@ Print the todo list.
 
 import optparse, os, sys
 from pitz.project import Project
+from pitz.cmdline import setup_options, build_filter
 
-p = optparse.OptionParser()
-
-p.set_usage('%prog [path to project file]')
+p = setup_options()
 
 options, args = p.parse_args()
 
-path_to_yaml_file = args[0] if args else Project.find_yaml_file()
+path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+
 proj = Project.from_yaml_file(path_to_yaml_file)
-print(proj.todo)
+
+d = build_filter(args)
+
+results = proj.todo(**d)
+
+if options.summarized_view:
+    print(results.summarized_view)
+
+else:
+    print(results)
