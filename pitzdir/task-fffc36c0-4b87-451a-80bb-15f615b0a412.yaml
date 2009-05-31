@@ -5,7 +5,7 @@ description: "This script pitz-everything should just list everything (duhh...) 
   \ status=['unstarted', 'started']))\n"
 milestone: unscheduled
 modified_time: *id001
-status: unstarted
+status: finished
 title: Write a pitz-everything script
 type: task
 uuid: !!python/object:uuid.UUID

@@ -4,7 +4,7 @@ description: 'Just do print(p.todo) and dump the results.
   '
 milestone: unscheduled
 modified_time: *id001
-status: unstarted
+status: finished
 title: write a pitz-todo script
 type: task
 uuid: !!python/object:uuid.UUID
