@@ -1,0 +1,13 @@
+created_time: &id001 2009-05-31 20:42:16.434943
+description: "Make it easy to see the statuses for each Entity, like this:\n\n   \
+  \ $ pitz-see-status abc123 # assume abc123 is an entity UUID.\n\n    unstarted -(start)->\
+  \ started\n    started -(abandon)-> abandoned\n    started -(finish)-> finished\n\
+  \nAlso make it easy to update the status of an entity and optionally\nrecord a comment\
+  \ about it.\n"
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Write script to show and update entity statuses
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 256123279073036406708909268754635685245

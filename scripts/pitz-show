@@ -6,21 +6,25 @@
 Print the detailed view for a UUID given at the command line.
 """
 
-import optparse, os, sys
 
+import optparse, os, sys
 from pitz.project import Project
+from pitz.cmdline import setup_options, build_filter
 from pitz.entity import Entity
 
-p = optparse.OptionParser()
-
-p.set_usage('%prog [path to project file] [UUID]')
+p = setup_options()
 
 options, args = p.parse_args()
 
-path_to_yaml_file = args[0] if args else Project.find_yaml_file()
+if not args:
+    p.print_usage()
+    sys.exit()
+
+path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+
 proj = Project.from_yaml_file(path_to_yaml_file)
 
-e = proj[args[1]]
+e = proj[args[0]]
 
 if isinstance(e, Entity):
     print(e.detailed_view)

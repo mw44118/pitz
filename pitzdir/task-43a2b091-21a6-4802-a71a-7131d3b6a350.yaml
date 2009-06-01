@@ -1,0 +1,21 @@
+created_time: &id001 2009-05-31 20:30:48.171458
+description: 'There''s a couple of ways to do this.
+
+
+  The most ghetto way is just to open the selected entity''s yaml file with
+
+  $EDITOR and then save the results.
+
+
+  The fanciest way would be to walk through a set of questions to add
+
+  fields one-by-one.
+
+  '
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Write a pitz-edit script
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 89903009011259839892182310709557109584
