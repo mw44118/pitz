@@ -282,6 +282,9 @@ class Bag(object):
 
         files = [os.path.join(self.pathname, f) for f in self.entities_by_filename]
 
+        if not files:
+            return self
+
         if ignore_case:
             cmd = ['grep', '-l', '-i', phrase]
         else:

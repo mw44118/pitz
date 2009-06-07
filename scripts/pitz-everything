@@ -20,14 +20,12 @@ proj = Project.from_yaml_file(path_to_yaml_file)
 
 d = build_filter(args)
 
+results = proj
+
 if d:
-    results = proj(**d)
+    results = results(**d)
 
-else:
-    results = proj
+if options.grep:
+    results = results.grep(options.grep)
 
-if options.summarized_view:
-    print(results.summarized_view)
-
-else:
-    print(results)
+print(results)

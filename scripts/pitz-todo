@@ -20,13 +20,15 @@ proj = Project.from_yaml_file(path_to_yaml_file)
 
 d = build_filter(args)
 
+
+# This line here is the only thing different from pitz-everything.
+results = proj.todo
+
+
 if d:
-    results = proj.todo(**d)
-else:
-   results = proj.todo
+    results = results(**d)
 
-if options.summarized_view:
-    print(results.summarized_view)
+if options.grep:
+    results = results.grep(options.grep)
 
-else:
-    print(results)
+print(results)

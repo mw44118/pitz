@@ -125,7 +125,7 @@ def setup_options():
     p = optparse.OptionParser()
 
     p.add_option('-p', '--pitz-dir')
-    p.add_option('-s', '--summarized-view', action='store_true', default=False)
+    p.add_option('-g', '--grep')
 
     p.set_usage('%prog [options] [filters]')
 
@@ -133,16 +133,18 @@ def setup_options():
 
 def build_filter(args):
     """
-    Turn something like:
-    ['type=task', 'status=[started,unstarted]'
-    into
-    dict(type='task', status=['started', 'unstarted'])
+    Return a dictionary suitable for filtering.
+
+    >>> build_filter(['a=1', 'b=2', 'c=[3,4,5]'])
+    {'a': '1', 'c': ['3', '4', '5'], 'b': '2'}
+
     """
 
     d = dict()
     for a in args:
         attr, value = a.split('=')
 
+        # Make a list of values if we got a string like "[1, 2, 3]"
         if value.startswith('[') and value.endswith(']'):
             value = value.strip('[]').split(',')
 
