@@ -20,7 +20,10 @@ proj = Project.from_yaml_file(path_to_yaml_file)
 
 d = build_filter(args)
 
-results = proj.todo(**d)
+if d:
+    results = proj.todo(**d)
+else:
+   results = proj.todo
 
 if options.summarized_view:
     print(results.summarized_view)

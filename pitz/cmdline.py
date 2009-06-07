@@ -127,7 +127,7 @@ def setup_options():
     p.add_option('-p', '--pitz-dir')
     p.add_option('-s', '--summarized-view', action='store_true', default=False)
 
-    p.set_usage('%prog [options] [path to project file]')
+    p.set_usage('%prog [options] [filters]')
 
     return p
 

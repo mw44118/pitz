@@ -1,0 +1,8 @@
+created_time: &id001 2009-06-07 10:55:59.823988
+milestone: unscheduled
+modified_time: *id001
+status: finished
+title: Allow case-insensitive greps
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 292541198814457832445848165699995116503

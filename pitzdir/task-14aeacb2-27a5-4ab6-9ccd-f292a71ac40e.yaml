@@ -1,0 +1,9 @@
+created_time: &id001 2009-06-07 10:26:50.183328
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Alter detailed view to show information like related milestones, components,
+  comments, etc.
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 27491522258417874058800437159737869326

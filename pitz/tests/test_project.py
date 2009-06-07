@@ -1,5 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import glob, os
 from pitz.entity import Entity
 from pitz.project import Project
 
@@ -16,6 +17,10 @@ tasks = [
     Entity(p, title='Shovel driveway', creator='person-matt',
         status='not very important'),
 ]
+
+def teardown():
+    for f in glob.glob('/tmp/*.yaml'):
+        os.unlink(f)
 
 
 def test_to_and_from_yaml_files_1():
@@ -83,3 +88,25 @@ def test_from_yaml_file_1(m1, m2, m3):
     p = Project("Bogus")
     b2 = p.from_yaml_file('aaa')
     assert b2.order_method == 99
+
+def test_grep():
+
+    p = Project("Bogus", pathname="/tmp") 
+    e1 = Entity(title="bogus entity 1")
+    e2 = Entity(title="bogus entity 2")
+    p.append(e1)
+    p.append(e2)
+    p.save_entities_to_yaml_files()
+
+    g1 = p.grep('bogus entity 1')
+    assert e1 in g1
+    assert e2 not in g1
+    assert len(g1) == 1
+
+    g2 = p.grep('BOGUS ENTITY 1')
+    assert len(g2) == 0
+
+    g3 = p.grep('BOGUS ENTITY 1', ignore_case=True)
+    assert e1 in g3
+    assert e2 not in g3
+    assert len(g3) == 1

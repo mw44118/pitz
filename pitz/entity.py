@@ -152,7 +152,6 @@ class Entity(dict):
                 and set(ev).isdisjoint(set(v)):
                     return
 
-
         return self
 
     def does_not_match_dict(self, **d):

@@ -133,3 +133,13 @@ def test_getitem():
     assert b[e1.uuid] == e1
     assert b[e1.uuid] == e1
 
+@raises(ValueError)
+def test_grep_1():
+
+    """
+    Verify we don't try to grep without a pathname.
+    """
+
+    global b
+    b.grep('cat')
+

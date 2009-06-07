@@ -263,7 +263,7 @@ class Bag(object):
         return sorted(dd.items(), key=lambda t: t[1], reverse=True)
 
 
-    def grep(self, phrase, options=None):
+    def grep(self, phrase, ignore_case=False):
 
         """
         Return a new bag, filtering the entities in this bag by the ones
@@ -272,11 +272,21 @@ class Bag(object):
             $ grep phrase <files>
 
         where <files> are the files for all the entities in this bag.
+
+        This function depends (of course) on files living in the
+        filesystem and on a command-line program named grep.
         """
+
+        if not self.pathname:
+            raise ValueError("Sorry, I need a pathname first.")
 
         files = [os.path.join(self.pathname, f) for f in self.entities_by_filename]
 
-        cmd = ['grep', '-l', phrase]
+        if ignore_case:
+            cmd = ['grep', '-l', '-i', phrase]
+        else:
+            cmd = ['grep', '-l', phrase]
+
         cmd.extend(files)
 
         return Bag(title="entities matching grep %s" % phrase,
