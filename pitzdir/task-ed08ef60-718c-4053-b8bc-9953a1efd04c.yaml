@@ -1,0 +1,8 @@
+created_time: &id001 2009-06-08 22:09:48.226653
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Start up a pager when scripts exceed terminal height
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 315073428512833574118242635438976127052

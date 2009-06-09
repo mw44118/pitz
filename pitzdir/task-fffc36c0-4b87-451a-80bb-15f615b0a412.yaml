@@ -3,7 +3,8 @@ description: "This script pitz-everything should just list everything (duhh...) 
   then it should also support simple filtering, like this::\n\n    $ pitz-everything\
   \ type=task status=[unstarted,started]\n\nThat would translate into::\n\n    print(p(type='task',\
   \ status=['unstarted', 'started']))\n"
-milestone: unscheduled
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
 modified_time: *id001
 status: finished
 title: Write a pitz-everything script

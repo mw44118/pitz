@@ -2,7 +2,8 @@ comments: []
 created_time: &id001 2009-03-18 15:07:28.123646
 details: It would be nice to be able to go straight from the command line into ipython
   and already have pitz imported and my project loaded.
-milestone: unscheduled
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
 modified_time: *id001
 name: &id002 !!python/object:uuid.UUID
   int: 206147780889996049215650519494320219489

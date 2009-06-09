@@ -6,7 +6,8 @@ description: 'Figure out how to group tasks into milestones.  Some people call
 
   these releases, or iterations, or versions.'
 last_modified_by: Matt Wilson
-milestone: unscheduled
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
 modified_date: *id001
 modified_time: *id002
 name: &id003 !!python/object:uuid.UUID

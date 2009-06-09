@@ -4,7 +4,8 @@ created_time: &id002 2009-03-07 22:27:57.605584
 creator: person-a385659b-8610-4650-8aa5-7fc04ea7fcb1
 description: Support grouping tasks by component
 last_modified_by: Matt
-milestone: unscheduled
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
 modified_date: *id001
 modified_time: *id002
 name: &id003 !!python/object:uuid.UUID

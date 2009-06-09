@@ -8,7 +8,8 @@ description: 'Right now, I''m storing a creator attribute on all tasks.  The val
 
   '
 last_modified_by: Matt
-milestone: d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
 modified_date: *id001
 modified_time: *id002
 name: &id003 !!python/object:uuid.UUID

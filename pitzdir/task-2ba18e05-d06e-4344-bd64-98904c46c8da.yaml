@@ -1,6 +1,7 @@
 comments: []
 created_time: &id001 2009-03-24 12:21:26.809135
-milestone: unscheduled
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
 modified_time: *id001
 name: &id002 !!python/object:uuid.UUID
   int: 57995644175786202441156535277274450138

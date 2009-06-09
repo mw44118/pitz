@@ -6,7 +6,8 @@ description: "Right now, it is possible to store a list in a value and it will s
   \n    >>> ['a', 'b'] == 'a'\n\nInstead, when the initial Entity.matches_dict call\
   \ fails, we should test\nif either element is a sequence, and then test for membership.\n\
   \n"
-milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
 modified_time: *id001
 name: &id002 !!python/object:uuid.UUID
   int: 292650201579523526055880126774263169443

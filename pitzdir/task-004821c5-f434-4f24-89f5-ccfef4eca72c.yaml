@@ -1,0 +1,32 @@
+created_time: &id001 2009-06-08 22:25:49.061577
+description: 'Right now, Entity subclasses can define a class attribute named
+
+  pointers that is a dictionary.
+
+
+  Pitz uses this dictionary to figure out what attributes should get
+
+  replaced by lookups in the project.
+
+
+  I want to explore if I can just use a simpler approach.  When I run
+
+  replace_objects_with_pointers, I''ll go through every attribute in the
+
+  enttity, and if the attribute itself has a ''uuid'' attribute, then I''ll
+
+  use that.
+
+
+  Likewise, when I load a yaml file, when the value is a UUID instance,
+
+  I''ll do a lookup on the project and replace that.
+
+  '
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: replace pointers dictionary with simpler UUID attribute detection
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 374530376857023684456859912494688044

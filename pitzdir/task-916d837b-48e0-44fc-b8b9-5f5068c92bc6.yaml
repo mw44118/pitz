@@ -2,7 +2,8 @@ created_time: &id001 2009-05-29 14:38:17.024363
 description: 'Just do print(p.todo) and dump the results.
 
   '
-milestone: unscheduled
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
 modified_time: *id001
 status: finished
 title: write a pitz-todo script
