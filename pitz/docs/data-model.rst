@@ -28,7 +28,7 @@ You can look up a value for any attribute like this::
     'example entity'
     >>> sorted(e.keys()) #doctest: +NORMALIZE_WHITESPACE
     ['created_time', 'creator', 'frag', 'importance', 'modified_time',
-    'name', 'title', 'type']
+    'title', 'type', 'uuid']
     >>> e['type']
     'entity'
 
@@ -234,11 +234,10 @@ would store a reference to a particular row in the people table.
 
 I wanted the same functionality in pitz, so I came up with pointers.
 First I made sure that every entity has a unique name.  The __init__
-method of Entity makes a call to uuid.uuid4 and that is supposed to
-return a globally unique value, and I store that in self.name.
+method of Entity uses uuid from the standard library to make sure that
+every entity has an attribute 'uuid' with a unique value.
 
-Next I added a class-level dictionary called pointers to the Entity
-class, and I wrote these two instance methods:
+Next I wrote these two instance methods:
 
 * replace_pointers_with_objects
 * replace_objects_with_pointers
@@ -246,8 +245,7 @@ class, and I wrote these two instance methods:
 This is dry stuff, so here's an example::
 
     >>> class Chore(Entity):
-    ...     pointers = dict(assigned_to='person')
-    ... 
+    ...     pass
     >>> class Person(Entity):
     ...     pass
     >>> matt = Person(weekend_chores, title="Matt")
@@ -256,29 +254,22 @@ This is dry stuff, so here's an example::
     >>> ch2 = Chore(weekend_chores, title="Buy some groceries",
     ...             assigned_to=lindsey)
 
-Not much is different, but instead of matt, lindsey, and the various
-chores all being entities, they're now subclasses.  But here's one
-advantage of defining pointers on Chore::
+After running the replace_objects_with_pointers method, ch1 doesn't have a
+reference to the matt object.  Instead, it has matt's uuid now::
 
-    >>> ch1['assigned_to'] # doctest: +SKIP
-    <pitz.Person 'Matt'>
-    >>> matt['name'] # doctest: +SKIP
-    'person-530ad3cc-14f1-491a-bdb6-ed1dd65afe46'
+    >>> isinstance(ch1['assigned_to'], Person)
+    True
     >>> ch1.replace_objects_with_pointers()
-    >>> ch1['assigned_to'] # doctest: +SKIP
-    'person-530ad3cc-14f1-491a-bdb6-ed1dd65afe46'
-
-First of all, notice how I printed out the name attribute on matt.
-
-After running the replace_objects_with_pointers method, I don't have a
-reference to the matt object.  Instead, I have matt's name now.
+    >>> import uuid
+    >>> isinstance(ch1['assigned_to'], uuid.UUID)
+    True
 
 Now I can send this data out to a yaml file.  And when I load it back in
 from yaml, I can then reverse this action, and go look up an entity with
 the same name::
 
-    >>> mn = matt.name
-    >>> matt == weekend_chores.by_name(mn)
+    >>> mu = matt.uuid
+    >>> matt == weekend_chores.by_uuid(mu)
     True
 
 In practice, I convert all the entities to pointers, then write out the
