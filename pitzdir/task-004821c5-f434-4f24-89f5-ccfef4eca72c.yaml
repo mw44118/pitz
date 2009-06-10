@@ -25,7 +25,7 @@ description: 'Right now, Entity subclasses can define a class attribute named
   '
 milestone: unscheduled
 modified_time: *id001
-status: unstarted
+status: finished
 title: replace pointers dictionary with simpler UUID attribute detection
 type: task
 uuid: !!python/object:uuid.UUID

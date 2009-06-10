@@ -6,7 +6,7 @@ description: 'I got some fancy pretty jinja2 templates in the junkyard.  I just 
   '
 milestone: unscheduled
 modified_time: *id001
-status: unstarted
+status: started
 title: Make an HTML view of project
 type: task
 uuid: !!python/object:uuid.UUID
