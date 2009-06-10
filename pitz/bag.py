@@ -42,10 +42,10 @@ class Bag(object):
         for e in entities:
             self.append(e)
 
-        # Finally, tell all the entities to replace pointers with
-        # objects.
+        # Tell all the entities to replace UUIDs with objects.
         self.replace_pointers_with_objects()
 
+        self.e = jinja2.Environment(loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
     
     def to_csv(self, filepath, *columns):
         """
@@ -297,3 +297,12 @@ class Bag(object):
             order_method=self.order_method,
             entities=[self.entities_by_filename[os.path.basename(s.strip())] 
                 for s in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout])
+
+
+    def to_html(self):
+        """
+        Return a string containing this bag formatted as HTML.
+        """
+
+        tmpl = self.e.get_template('bag.html')
+        return tmpl.render(title=self.title)
