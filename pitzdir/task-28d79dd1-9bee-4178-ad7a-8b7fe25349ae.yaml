@@ -1,0 +1,8 @@
+created_time: &id001 2009-06-09 21:04:12.770987
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Allow people to attach files to entities
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 54288664601233571697097355756234295726
