@@ -1,6 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 from pitz.entity import Entity
+from pitz.project import Project
 
 from nose.tools import raises
 from mock import Mock, patch
@@ -13,11 +14,25 @@ def test_summarized_view():
 
 def test_replace_objects_with_pointers():
 
-    global e
-    f = Entity(a=2, e=e)
+    e1 = Entity(title="e1", a=1, b=2)
+    e2 = Entity(title="e2", a=2, b=3)
 
-    f.pointers = ['e']
-    f.replace_objects_with_pointers()
+    e1['friend'] = e2
+
+    e1.replace_objects_with_pointers()
+    assert e1['friend'] == e2.uuid, e1['friend']
+
+
+def test_replace_pointers_with_objects():
+
+    p = Project()
+    e1 = Entity(p, title="e1", a=1, b=2)
+    e2 = Entity(p, title="e2", a=2, b=3)
+
+    e1['friend'] = e2.uuid
+
+    e1.replace_pointers_with_objects()
+    assert e1['friend'] == e2, e1['friend']
 
 
 @patch('__builtin__.open')

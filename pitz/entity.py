@@ -19,7 +19,6 @@ class Entity(dict):
     """
 
     required_fields = dict(title='no title')
-    pointers = list()
     allowed_values = dict()
 
     def __init__(self, project=None, **kwargs):
@@ -263,9 +262,15 @@ class Entity(dict):
         """
 
         if self.project:
-            for ptr in self.pointers:
-                if ptr in self:
-                    self[ptr] = self.project.by_uuid(self[ptr])
+
+            for attr, val in self.items():
+
+                # Skip over our own uuid attribute.
+                if val == self.uuid:
+                    continue
+
+                if isinstance(val, uuid.UUID):
+                    self[attr] = self.project.by_uuid(val)
 
 
     def replace_objects_with_pointers(self):
@@ -277,14 +282,11 @@ class Entity(dict):
         with just the uuid of that object.
         """
 
-        for ptr in self.pointers:
-            if ptr in self:
-                o = self[ptr]
+        for attr, val in self.items():
 
-                # Remember that all subclasses of Entity will return
-                # True for isinstance(o, Entity).
-                if isinstance(o, Entity):
-                    self[ptr] = o.uuid
+            if hasattr(val, 'uuid'):
+                self[attr] = val.uuid
+
 
     @classmethod
     def from_yaml_file(cls, fp, project=None):

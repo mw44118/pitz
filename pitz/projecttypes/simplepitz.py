@@ -1,7 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 """
-Simple: milestones and tasks.
+Simple: milestones,tasks, people, components.
 """
 
 myclassname = 'SimpleProject'
@@ -52,7 +52,6 @@ class Task(Entity):
         status=['unstarted', 'started', 'abandoned', 'finished'],
     )
 
-    pointers = ['milestone', 'person', 'component']
 
     @property
     def summarized_view(self):
@@ -115,9 +114,6 @@ class Comment(Entity):
         entity=None,
         title='no title')
 
-    pointers = ['who_said_it', 'entity']
-
-
     @property
     def summarized_view(self):
 
@@ -152,12 +148,34 @@ class Comment(Entity):
 
         return tmpl.render(locals())
 
-
 class Person(Entity):
     """
     Maybe you want to track who is doing what.
     """
 
+
+class Component(Entity):
+
+    @property
+    def tasks(self):
+
+        if not self.project:
+            raise NoProject("I need a project before I can look up tasks!")
+
+        tasks = self.project(type='task', milestone=self)
+        tasks.title = 'Tasks in %(title)s' % self
+        return tasks
+
+    @property
+    def todo(self):
+
+        unfinished = self.tasks.does_not_match_dict(status='finished')\
+        .does_not_match_dict(status='abandoned')
+
+        unfinished.title = "Unfinished tasks in %(title)s" % self
+        return unfinished
+
+    
 
 class SimpleProject(Project):
     """
@@ -169,7 +187,8 @@ class SimpleProject(Project):
         task=Task,
         person=Person,
         milestone=Milestone,
-        comment=Comment)
+        comment=Comment,
+        component=Component)
 
     @property
     def todo(self):
