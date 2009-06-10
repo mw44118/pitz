@@ -1,0 +1,8 @@
+created_time: &id001 2009-06-09 21:24:40.541249
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Wash dishes
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 169816000292816713013207473431410457282
