@@ -83,11 +83,11 @@ def test_from_yaml_file_1(m1, m2, m3):
         'classname':'Project'}
 
     # globals() will return m3.
-    m3.return_value = {'bogus_method': 99}
+    m3.return_value = {'bogus_method': lambda e1, e2: 1}
 
     p = Project("Bogus")
     b2 = p.from_yaml_file('aaa')
-    assert b2.order_method == 99
+    assert b2.order_method == m3.return_value['bogus_method']
 
 def test_grep():
 

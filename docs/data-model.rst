@@ -276,3 +276,12 @@ In practice, I convert all the entities to pointers, then write out the
 yaml files, then convert all the pointers back into objects
 automatically.  But converting pointers back into objects requires a
 project instance.
+
+Teardown
+--------
+
+You can ignore this part.  I just need to clean up some files created in
+the doctests.
+
+    >>> import glob, os
+    >>> x = [os.unlink(f) for f in glob.glob('entity-*.yaml')]

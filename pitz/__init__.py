@@ -43,7 +43,7 @@ def by_whatever(func_name, *whatever, **kwargs):
         
     return f
 
-# Should I use functools.partial instead?
+# TODO: Figure out if I should use functools.partial instead.
 by_spiciness = by_whatever('by_spiciness', 'peppers')
 by_created_time = by_whatever('by_created_time', 'created_time')
 
