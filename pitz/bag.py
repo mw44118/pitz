@@ -299,10 +299,11 @@ class Bag(object):
                 for s in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout])
 
 
-    def to_html(self):
+    @property
+    def html(self):
         """
         Return a string containing this bag formatted as HTML.
         """
 
         tmpl = self.e.get_template('bag.html')
-        return tmpl.render(title=self.title)
+        return tmpl.render(title=self.title, bag=self)

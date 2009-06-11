@@ -58,6 +58,9 @@ class Entity(dict):
             self.project.append(self)
             self.replace_pointers_with_objects()
 
+        # Set up a template loader.
+        self.e = jinja2.Environment(loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
+
     def __setitem__(self, attr, val):
         """
         Make sure that the value is allowed for this attr before going
@@ -286,6 +289,12 @@ class Entity(dict):
 
             if hasattr(val, 'uuid'):
                 self[attr] = val.uuid
+
+
+    @property
+    def html(self):
+        tmpl = self.e.get_template('entity.html')
+        return tmpl.render(title=self.title, entity=self)
 
 
     @classmethod
