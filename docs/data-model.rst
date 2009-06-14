@@ -259,7 +259,7 @@ reference to the matt object.  Instead, it has matt's uuid now::
 
     >>> isinstance(ch1['assigned_to'], Person)
     True
-    >>> ch1.replace_objects_with_pointers()
+    >>> ch1 = ch1.replace_objects_with_pointers()
     >>> import uuid
     >>> isinstance(ch1['assigned_to'], uuid.UUID)
     True

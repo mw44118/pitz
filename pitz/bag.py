@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 
 class Bag(object):
     """
-    Bags are really just lists of entities and some useful methods.
+    Bags are really just lists with some useful methods.
     """
 
     def __init__(self, title='', uuid=None, pathname=None, entities=(),
@@ -300,6 +300,15 @@ class Bag(object):
                 for s in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout])
 
 
+    def to_html(self, filepath):
+        """
+        Write this bag out as HTML to a file at filepath.
+        """
+
+        with open(filepath, 'w') as f:
+            f.write(self.html)
+
+
     @property
     def html(self):
         """
@@ -307,4 +316,5 @@ class Bag(object):
         """
 
         tmpl = self.e.get_template('bag.html')
-        return tmpl.render(title=self.title, bag=self)
+        return tmpl.render(title=self.title, bag=self,
+            isinstance=isinstance, UUID=UUID)

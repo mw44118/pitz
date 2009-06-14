@@ -290,11 +290,32 @@ class Entity(dict):
             if hasattr(val, 'uuid'):
                 self[attr] = val.uuid
 
+        return self
+
+
+    @property
+    def html_filename(self):
+        return "%(uuid)s.html" % self
+
+
+    def to_html(self, htmldir):
+
+        filepath = os.path.join(htmldir, self.html_filename)
+
+        with open(filepath, 'w') as f:
+            f.write(self.html)
+
+        return filepath
+ 
 
     @property
     def html(self):
+        self.replace_objects_with_pointers()
         tmpl = self.e.get_template('entity.html')
-        return tmpl.render(title=self.title, entity=self)
+        s = tmpl.render(title=self.title, entity=self,
+        isinstance=isinstance, UUID=uuid.UUID)
+        self.replace_pointers_with_objects()
+        return s
 
 
     @classmethod

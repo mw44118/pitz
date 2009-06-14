@@ -10,7 +10,13 @@
 <dl>
 {% for attr, val in entity.items() %}
     <dt>{{attr}}</dt>
-    <dd>{{val}}</dd>
+
+    {% if isinstance(val, UUID) %}
+        <dd><a href="{{val}}">{{val}}</a></dd>
+    {% else %}
+        <dd>{{val}}</dd>
+    {% endif %}
+
 {% endfor %}
 </dl>
 
