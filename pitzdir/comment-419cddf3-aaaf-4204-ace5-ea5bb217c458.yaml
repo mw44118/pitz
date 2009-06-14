@@ -2,8 +2,6 @@ created_time: &id001 2009-04-14 14:43:21.465108
 entity: !!python/object:uuid.UUID
   int: 305449068167353851724625538086555162945
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 87214319753741188284690633023244715096
 text: 'People in #python told me about subprocess and tempfile and this was
 
   downright easy.
@@ -11,6 +9,7 @@ text: 'People in #python told me about subprocess and tempfile and this was
   '
 title: Comment on task-e5cb59c
 type: comment
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 87214319753741188284690633023244715096
 who_said_it: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513

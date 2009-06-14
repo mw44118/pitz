@@ -2,8 +2,6 @@ created_time: &id001 2009-05-24 10:31:59.860325
 entity: !!python/object:uuid.UUID
   int: 325495496840813581718762097733373411873
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 269479509675036549856102992236795154709
 text: "Hi James, thanks for pointing this out.  I don't know why it didn't\noccur\
   \ to me before now.  \n\nRight now, in order to start up pitz-shell, I type in the\
   \ absolute path\nto the project.yaml file.\n\nI think it might be better to pass\
@@ -11,6 +9,7 @@ text: "Hi James, thanks for pointing this out.  I don't know why it didn't\noccu
   \ and everything could be\nrelative to that.\n\nWhat do you think?\n"
 title: no title
 type: comment
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 269479509675036549856102992236795154709
 who_said_it: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513

@@ -12,9 +12,8 @@ milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_date: *id001
 modified_time: *id002
-name: &id003 !!python/object:uuid.UUID
-  int: 155724053933292083654527990379947467596
 status: finished
 title: Write code to use strings as keys
 type: task
-uuid: *id003
+uuid: !!python/object:uuid.UUID
+  int: 155724053933292083654527990379947467596

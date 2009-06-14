@@ -8,9 +8,8 @@ milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_date: *id001
 modified_time: *id002
-name: &id003 !!python/object:uuid.UUID
-  int: 301377356652634267078682217295532398845
 status: finished
 title: Support grouping tasks by component
 type: task
-uuid: *id003
+uuid: !!python/object:uuid.UUID
+  int: 301377356652634267078682217295532398845

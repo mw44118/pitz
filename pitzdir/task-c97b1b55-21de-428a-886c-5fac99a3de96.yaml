@@ -7,9 +7,8 @@ last_modified_by: Matt
 milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_date: *id001
 modified_time: *id002
-name: &id003 !!python/object:uuid.UUID
-  int: 267814034036302687647272335986628222614
 status: abandoned
 title: Add support for something like 'ditz grep'
 type: task
-uuid: *id003
+uuid: !!python/object:uuid.UUID
+  int: 267814034036302687647272335986628222614

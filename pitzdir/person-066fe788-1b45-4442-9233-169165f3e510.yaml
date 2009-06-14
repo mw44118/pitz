@@ -1,7 +1,6 @@
 created_time: &id001 2009-05-24 07:10:21.703604
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 8556408946095240075678031027664839952
 title: James Rowe
 type: person
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 8556408946095240075678031027664839952

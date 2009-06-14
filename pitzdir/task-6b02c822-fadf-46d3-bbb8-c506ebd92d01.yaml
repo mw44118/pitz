@@ -7,9 +7,8 @@ last_modified_by: Matt
 milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_date: *id001
 modified_time: *id002
-name: &id003 !!python/object:uuid.UUID
-  int: 142241839396022501259590592102766554369
 status: unstarted
 title: Support using substring of uuid as lookup
 type: task
-uuid: *id003
+uuid: !!python/object:uuid.UUID
+  int: 142241839396022501259590592102766554369

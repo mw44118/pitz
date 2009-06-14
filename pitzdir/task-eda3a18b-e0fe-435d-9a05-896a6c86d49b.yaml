@@ -3,10 +3,9 @@ importance: high
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 315876655939259043666697315471019398299
 status: finished
 title: Figure out why some tasks are not converting pointers to objects
 type: task
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 315876655939259043666697315471019398299
 whatami: bug

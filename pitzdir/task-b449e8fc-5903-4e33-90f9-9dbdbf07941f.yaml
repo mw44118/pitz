@@ -8,9 +8,8 @@ milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_date: *id001
 modified_time: *id002
-name: &id003 !!python/object:uuid.UUID
-  int: 239644802424031062269094147262354265119
 status: finished
 title: Support task statuses
 type: task
-uuid: *id003
+uuid: !!python/object:uuid.UUID
+  int: 239644802424031062269094147262354265119

@@ -8,10 +8,9 @@ milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_date: *id001
 modified_time: *id002
-name: &id003 !!python/object:uuid.UUID
-  int: 310928245294633837448336571368886494348
 peppers: 1
 status: finished
 title: Allow comments on all entities (tasks, comments, milestones, etc)
 type: task
-uuid: *id003
+uuid: !!python/object:uuid.UUID
+  int: 310928245294633837448336571368886494348

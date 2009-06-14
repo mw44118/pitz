@@ -10,9 +10,8 @@ milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_date: *id001
 modified_time: *id002
-name: &id003 !!python/object:uuid.UUID
-  int: 330485642578400521360783850485913049178
 status: finished
 title: Write code for milestones
 type: task
-uuid: *id003
+uuid: !!python/object:uuid.UUID
+  int: 330485642578400521360783850485913049178

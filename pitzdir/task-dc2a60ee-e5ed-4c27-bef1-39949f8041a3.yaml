@@ -9,9 +9,8 @@ description: "Right now, it is possible to store a list in a value and it will s
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 292650201579523526055880126774263169443
 status: finished
 title: Allow queries to look for membership when values are lists
 type: task
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 292650201579523526055880126774263169443

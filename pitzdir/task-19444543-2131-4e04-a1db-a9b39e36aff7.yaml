@@ -2,9 +2,8 @@ created_time: &id001 2009-03-26 11:09:26.293399
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 33585180885825416641606367858746896375
 status: finished
 title: Support a $PITZDIR env var to tell where yaml files live
 type: task
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 33585180885825416641606367858746896375

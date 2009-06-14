@@ -1,9 +1,8 @@
 created_time: &id001 2009-03-27 10:00:08.811359
 milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 133611950911875574592961743277668354751
 status: unstarted
 title: Load new entities from a CSV file
 type: task
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 133611950911875574592961743277668354751

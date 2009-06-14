@@ -4,9 +4,8 @@ description: 'blah blah blah
   '
 milestone: unscheduled
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 243952634775575136092427018119877153988
 status: unstarted
 title: Allow summarized vs detailed view to be configurable
 type: task
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 243952634775575136092427018119877153988

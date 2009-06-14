@@ -22,9 +22,8 @@ description: 'The pitz-setup script is what somebody should run to start using p
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 288726375786694103791979888046044716748
 status: finished
 title: Write a pitz-setup script
 type: task
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 288726375786694103791979888046044716748

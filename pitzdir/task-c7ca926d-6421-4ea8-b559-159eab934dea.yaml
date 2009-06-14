@@ -2,9 +2,8 @@ created_time: &id001 2009-04-01 09:30:44.514573
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 265568185025282908078403416665063902698
 status: finished
 title: Add a todo property on project (or maybe bag)
 type: task
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 265568185025282908078403416665063902698

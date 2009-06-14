@@ -3,9 +3,8 @@ created_time: &id001 2009-03-24 12:20:41.092650
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
-name: &id002 !!python/object:uuid.UUID
-  int: 114830025429908318768725473963323883940
 status: finished
 title: Prompt to save work at the end of an interactive pitz session
 type: task
-uuid: *id002
+uuid: !!python/object:uuid.UUID
+  int: 114830025429908318768725473963323883940
