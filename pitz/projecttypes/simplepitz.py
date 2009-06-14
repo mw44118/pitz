@@ -174,7 +174,6 @@ class Component(Entity):
 
         unfinished.title = "Unfinished tasks in %(title)s" % self
         return unfinished
-
     
 
 class SimpleProject(Project):
@@ -200,8 +199,8 @@ class SimpleProject(Project):
         b.title = '%s: stuff to do' % self.title
         return b
 
-    # I know I COULD make all these properties in the __init__ method
-    # based on the classes dictionary, but this way is hopefully much
+    # I know I COULD make all these properties using the classes
+    # dictionary, but this way is hopefully much
     # more obvious and solves the hassle of indicating that the plural
     # of "person" is "people".
 
@@ -211,6 +210,12 @@ class SimpleProject(Project):
     def milestones(self):
         b = self(type='milestone')
         b.title = 'Milestones'
+        return b
+
+    @property
+    def components(self):
+        b = self(type='component')
+        b.title = 'Components'
         return b
 
     @property
@@ -243,4 +248,11 @@ class SimpleProject(Project):
             b = b.does_not_match_dict(milestone=m)
 
         b.title = 'Unscheduled and unfinished tasks'
+        return b
+
+
+    @property
+    def started(self):
+        b = self(type='task', status='started')
+        b.title = 'Started tasks'
         return b
