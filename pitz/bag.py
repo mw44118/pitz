@@ -16,10 +16,10 @@ logging.basicConfig(level=logging.INFO)
 
 class Bag(object):
     """
-    Really just a collection of entities with a name on it.  
+    Bags are really just lists of entities and some useful methods.
     """
 
-    def __init__(self, title='', uuid=None, pathname=None, entities=(), 
+    def __init__(self, title='', uuid=None, pathname=None, entities=(),
         order_method=by_created_time, **kwargs):
 
         self.title = title
@@ -45,7 +45,8 @@ class Bag(object):
         # Tell all the entities to replace UUIDs with objects.
         self.replace_pointers_with_objects()
 
-        self.e = jinja2.Environment(loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
+        self.e = jinja2.Environment(
+            loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
     
     def to_csv(self, filepath, *columns):
         """
