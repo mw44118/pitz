@@ -1,0 +1,35 @@
+created_time: &id001 2009-06-14 12:52:05.180484
+description: 'Right now, pitz takes the first six characters from the UUID and then
+
+  uses that for a unique identifier.
+
+
+  It is possible that this won''t work, especially in a project with many
+
+  entities.
+
+
+  It is better to just show the minimum required characters to get a
+
+  unique ID.  In a two-entity project, the minimum is likely to be one
+
+  letter.
+
+
+  In a project with tens of thousands of entities, it might be necessary
+
+  to type out the whole dang UUID.
+
+
+  Anyhow, pitz should figure that out and print the frag that is
+
+  guaranteed to be unique.
+
+  '
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Calculate minimum length of frag dynamically
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 321296213440513529738287394169841403644

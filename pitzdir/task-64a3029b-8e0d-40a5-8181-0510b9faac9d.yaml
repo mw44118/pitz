@@ -1,0 +1,15 @@
+created_time: &id001 2009-06-14 12:57:30.516815
+description: "Right now, in the Task class, I have this code::\n\n    allowed_values\
+  \ = dict(\n            status=['unstarted', 'started', 'abandoned', 'finished'],\n\
+  \                )\n\nPitz uses this to make sure that the status has one of those\
+  \ values.  It\nmight be nicer to just make an assertion that the status field must\
+  \ be\nan instance of a Status entity.  And the each project could define\nwhatever\
+  \ status it wanted to.\n"
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Consider storing stuff like status values (unstarted, started, abandoned, finished)
+  as entities instead of strings
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 133769196855580053922929763053358197917

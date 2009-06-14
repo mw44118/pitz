@@ -1,0 +1,14 @@
+created_time: &id001 2009-06-14 13:07:21.806806
+description: "Right now when I create an entity, I have to add an attribute-value\
+  \ pair\nexplicitly to track who created it.\n\nThe same issue happens when I comment\
+  \ on the entity.\n\nIt would be nicer if pitz somehow recognized who I am and then\
+  \ always\ntracked that with each action.\n\nGit handles this by creating a .git/config\
+  \ in the project.  \n\nMaybe our system could just list all the defined users and\
+  \ then ask \"who\nare you?\"\n"
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Somehow automatically figure out who is using pitz
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 18312254778827030445748352102633657582
