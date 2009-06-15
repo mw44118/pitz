@@ -10,9 +10,18 @@
 <h2>{{ bag.contents }}</h2>
 
 <ol>
-{% for entity in bag %}
-    <li><a href="{{entity.html_filename}}">{{entity.frag}} {{entity.title}}</a></li>
-{% endfor %}
+    {% for t, c in bag.values('type') %}
+    <li><span class="ui-icon ui-icon-triangle-1-e" />{{ t }}
+
+        <ol>
+        {% for entity in bag(type=t) %}
+            <li><a href="{{entity.html_filename}}">{{entity.title}}</a></li>
+        {% endfor %}
+        </ol>
+
+    </li>
+    {% endfor %}
+
 </ol>
 
 {% endblock %}

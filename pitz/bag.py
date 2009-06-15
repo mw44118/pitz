@@ -206,7 +206,7 @@ class Bag(object):
     def contents(self):
 
         if self:
-            return '(' + ', '.join(['%d %s entities' % (typecount, typename) 
+            return '(' + ', '.join(['%d %s entities' % (typecount, typename)
                 for typename, typecount in self.values('type')]) +')'
 
         else:

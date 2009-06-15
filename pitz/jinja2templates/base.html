@@ -6,6 +6,47 @@
 
 {% block page_title %}{% endblock %}
 
+<!--
+<script type="text/javascript" src="http://www.google.com/jsapi">
+</script>
+
+<script type="text/javascript">
+    google.load("jquery", "1.3.2");
+    google.load("jqueryui", "1.7.2");
+</script>
+-->
+
+<link type="text/css" href="jquery-ui/css/le-frog/jquery-ui-1.7.2.custom.css" rel="Stylesheet" /> 
+<script type="text/javascript" src="jquery-ui/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="jquery-ui/js/jquery-ui-1.7.2.custom.min.js"></script>
+
+<style type="text/css">
+body > ol > li
+{
+    font-weight:bold;
+}
+li
+{
+    font-weight:normal;
+}
+body > ol > li > ol
+{
+    display:none;
+}
+</style>
+
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $('body > ol > li').click(
+                function () {
+                    $(this).children().slideToggle();
+                }
+            );
+        }
+    );
+</script>
+
 </head>
 
 <body>
