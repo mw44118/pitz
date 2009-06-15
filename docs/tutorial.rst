@@ -15,9 +15,7 @@ Use a virtualenv or just install pitz as root like this::
 Set up a project to use pitz
 ============================
 
-Typically I use stuff like virtualenv and paster, but for this tutorial,
-I'll keep things simple.  Pretend that I'm starting work on a project
-named frotz::
+Pretend that I'm starting work on a project named frotz::
 
     $ mkdir frotz && cd frotz
 
@@ -25,24 +23,36 @@ Run this command (added to your path when you ran easy_install
 pitz)::
 
     $ pitz-setup
-    I need to make a directory named 'pitzfiles'.  Where should I put it?
-    The default place is right here (.).
-       0. pitz.projecttypes.simplepitz: Simple: milestones and tasks.
 
-       1. pitz.projecttypes.agilepitz: Agile: releases, iterations, stories,
+The pitz-setup script will ask a few questions.  Here's the first one::
+
+    I need to make a directory named 'pitzfiles'.  Where should I put it?
+    The default place is right here (.)
+
+I suggest putting the pitzdir at the very top of your project, in the
+same directory as your setup.py file (if one exists).
+
+The next question is asking you about what kind of pitz-project you want
+to set up.  Here's your choices::
+
+    0. pitz.projecttypes.simplepitz: Simple: milestones and tasks.
+
+    1. pitz.projecttypes.agilepitz: Agile: releases, iterations, stories,
     tasks, and velocity.
 
-    Choose one.0
-    All done!  Run pitz-shell
-    /home/matt/frotz/pitzfiles/simpleproject-c97241b5-be69-4ab4-ba86-3609cf3537e5.yaml
-    to start working...
+    Choose one.
+
+For this tutorial, I'll choose the simple project.  Now the script tells
+you what to do next::
+
+    All done!  Run pitz-shell [path to project file] to start.
 
 Now that created a pitzfiles directory with a single file in there::
 
     $ ls
-    pitzfiles
+    pitzdir
 
-    $ ls pitzfiles/
+    $ ls pitzdir/
     simpleproject-c97241b5-be69-4ab4-ba86-3609cf3537e5.yaml
 
 
@@ -57,11 +67,10 @@ session like this::
 This will fire up IPython, load a bunch of pitz classes,  and create a
 variable called p.  p is an instance of the class you picked out during
 setup.  All the tasks, milestones, people, comments, etc for the frotz
-project are all linked to p::
+project are all attributes on p.  Consider p something like your
+connection to the database.
 
-    In [1]: p
-
-    Out[1]: <pitz.SimpleProject 'Pitz' (63 task entities, 3 comment entities, 2 person entities, 2 milestone entities) sorted by by_whatever(['type', 'status', 'created time'])>
+Or if that bugs you, consider it just a big list.
 
 
 Create a task

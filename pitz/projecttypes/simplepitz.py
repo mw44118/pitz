@@ -1,7 +1,8 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 """
-Simple: milestones,tasks, people, components.
+Simple projects have tasks, people, comments, components, and
+milestones.
 """
 
 myclassname = 'SimpleProject'
