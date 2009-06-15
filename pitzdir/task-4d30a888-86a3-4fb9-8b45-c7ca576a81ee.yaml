@@ -1,0 +1,8 @@
+created_time: &id001 2009-06-15 11:05:09.055877
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Show how to create tasks by sending an email.
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 102603204186160132074636614444948029934
