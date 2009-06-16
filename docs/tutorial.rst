@@ -100,7 +100,7 @@ Now I'll create a task for my frotz project by instantiating the Task class::
     (1 task entities)
     -----------------
 
-       0: c2b023 Wash dishes (unstarted)
+    0: c2b023 Wash dishes (unstarted)
 
 I usually make a task and append it all in one line like this::
 
@@ -114,8 +114,8 @@ I usually make a task and append it all in one line like this::
     (2 task entities)
     -----------------
 
-       0: c2b023 Wash dishes (unstarted)
-          1: 280232 Take out garbage (unstarted)
+    0: c2b023 Wash dishes (unstarted)
+    1: 280232 Take out garbage (unstarted)
 
 Hit ctrl-d to close the session.  You'll be asked if you want to save
 your work::
@@ -134,5 +134,7 @@ Now you can rerun pitz-everything and see our new issues::
     (2 task entities)
     -----------------
 
-     0: c2b023 Wash dishes (unstarted)
-        1: 280232 Take out garbage (unstarted)
+    0: c2b023 Wash dishes (unstarted)
+    1: 280232 Take out garbage (unstarted)
+
+Play with pitz-everything --help to see more options.

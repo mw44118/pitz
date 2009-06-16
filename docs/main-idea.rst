@@ -10,38 +10,29 @@ I'm making a python project, called **pitz**.
 What is pitz
 ============
 
-Pitz is a issue-tracking system, with these goals:
+Pitz is a issue-tracking system with these goals:
 
-* Your to-do list lives right next to the code in your source control.
+*   Your to-do list lives in flat files right next to your code.
 
-* The to-do list objects serialize and deserialize to a plain-text
-  format, so that standard diff tools can expose how issues evolved over
-  time and objects can be edited with any editor.
+*   The to-do list objects (entities) serialize and deserialize to a
+    plain-text format, so that standard diff tools can expose how issues
+    evolved over time and objects can be edited with any editor.
 
-* Use your source control system (git, svn, zipped files, whatever) to
-  track history.
+*   You can use your source control system (git, svn, zipped files,
+    whatever) to track history.
 
-* Allow interesting queries like:
+*   Entities can hold arbitrary attributes and values.  In other words,
+    the user of the library defines what fields to track.
 
-    * Show all the tasks assigned to Matt and linked to milestone 2.0;
-    * Show all the milestones with release dates in 2008 or 2009.
-
-* Offer a data model optimized for flexibility so you can add arbitrary
-  attributes to issues.
+*   Complex queries are straightforward to write.
 
 Ingredients
 ===========
 
-* Pitz uses yaml to serialize and unserialize data.
+*   Pitz uses `yaml`_ to serialize and unserialize data.
+*   Pitz uses `IPython`_ for the pitz-shell component and `jinja2`_ to
+    produce some output.
 
-* All queries can be thought of lists of attribute-value pairs.  Here is
-  how to ask for all milestones with release dates in 2008 or 2009::
-
-    >>> p.milestones(type='milestone', 
-    ...              release_date=[2008, 2009]) # doctest: +SKIP
-
-  By the way, the p variable is like your handle to the database of
-  everything that pitz knows about.
-
-  All the pairs are joined by AND statements.  Using a list in the value
-  spot means you accept any value in that list.
+.. _yaml: http://yaml.org
+.. _IPython: http://ipython.scipy.org
+.. _jinja2: http://jinja.pocoo.org/2/

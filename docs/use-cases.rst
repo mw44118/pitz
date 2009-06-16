@@ -1,65 +1,66 @@
-+++++++++
-Use cases
-+++++++++
+++++++++++++
+Example uses
+++++++++++++
 
-These are all the things I want pitz to be able to do.  I'm not hung up
-on the exact syntax.
-
-Example queries
-===============
+Examples from command-line
+==========================
 
 List all tasks in the system::
 
-    $ pitz tasks
+    $ pitz-everything
 
 List tasks assigned to me::
 
-    $ pitz tasks assigned-to:matt
+    $ pitz-everything type=task assigned-to=matt
 
 List all milestones::
 
-    $ pitz milestones
+    $ pitz-everything type=milestone
 
 List all tasks in the milestone named feb09::
 
-    $ pitz tasks milestone:feb09
+    $ pitz-everything type=task milestone=feb09
 
 List just my tasks in the feb09 milestone::
 
-    $ pitz tasks milestone:feb09 assigned-to:matt
+    $ pitz-everything type=task milestone=feb09 assigned-to=matt
 
 List any task assigned to me or Tim::
 
-    $ pitz tasks assigned-to:[matt,tim]
+    $ pitz-everything type=task assigned-to=[matt,tim]
 
-See a particular milestone in detail (otice how milestone is singular in
-this command)::
+See a particular milestone in detail::
 
-    $ pitz milestone feb09
+    # first get a list of all milestones.
+    $ pitz-everything type=milestone
+    $ pitz-show asdf12 # asdf12 is a UUID fragment.
 
 See all the attributes on tasks::
 
-    $ pitz attributes task
+    $ pitz-show hjkl98 # hjkl98 is a UUID fragment.
 
-Example commands
-================
+Examples from within pitz-shell
+===============================
 
 Add a new task::
 
-    $ pitz new task
+    $ pitz-shell
+    >>> p.append(Task(...)) # doctest: +SKIP
 
 Add a new milestone::
 
-    $ pitz new milestone
+    >>> p.append(Milestone(...)) # doctest: +SKIP
 
-Update a particular task::
+Link a task to a milestone::
 
-    $ pitz update task99
+    >>> m1 = p.milestones[0] # doctest: +SKIP
 
-Delete one particular task::
+    >>> # you can use UUID fragments to get things
+    >>> t = p['hjkl98'] # doctest: +SKIP 
+    >>> t['milestone'] = m1 # doctest: +SKIP
 
-    $ pitz delete task99
+Comment on a task t::
 
-Comment on a task::
-
-    $ pitz comment task100
+    >>> Comment(entity=t, who_said_it="matt', 
+    ...         title='blah blah',
+    ...         text='Blah, blah, blah...') # doctest: +SKIP
