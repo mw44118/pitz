@@ -1,0 +1,32 @@
+#! /usr/bin/env python
+
+# vim: set expandtab ts=4 sw=4 filetype=python:
+
+"""
+Write out a bunch of HTML files.
+"""
+
+import optparse, os, sys
+from pitz.project import Project
+from pitz.cmdline import setup_options, build_filter
+
+p = optparse.OptionParser()
+p.add_option('-p', '--pitz-dir', help="Path to your pitzdir")
+p.set_usage('%prog [options] folder-to-store-html-files')
+
+options, args = p.parse_args()
+
+if not args or not os.path.isdir(args[0]):
+    p.print_usage()
+    sys.exit()
+
+path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+
+proj = Project.from_yaml_file(path_to_yaml_file)
+
+htmldir = args[0]
+html_filename = os.path.join(htmldir, proj.html_filename)
+
+proj.to_html(html_filename)
+for e in proj:
+    e.to_html(htmldir)
