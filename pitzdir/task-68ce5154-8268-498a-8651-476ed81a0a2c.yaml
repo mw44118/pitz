@@ -1,8 +1,8 @@
 created_time: &id001 2009-06-14 12:47:27.212417
 milestone: unscheduled
 modified_time: *id001
-status: unstarted
-title: Make to_yaml_file smart enough to only save when in-memory copy has been updatd
+status: finished
+title: Make to_yaml_file smart enough to only save when in-memory copy has been updated
 type: task
 uuid: !!python/object:uuid.UUID
   int: 139310974285192099107079221738024340012

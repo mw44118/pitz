@@ -1,7 +1,7 @@
 created_time: &id001 2009-06-07 10:27:57.320272
 milestone: unscheduled
 modified_time: *id001
-status: unstarted
+status: finished
 title: Add a proper Component class to simplepitz.
 type: task
 uuid: !!python/object:uuid.UUID

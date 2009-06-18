@@ -61,6 +61,8 @@ class Entity(dict):
         # Set up a template loader.
         self.e = jinja2.Environment(loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
+        self.self_updated = datetime.now()
+
     def __setitem__(self, attr, val):
         """
         Make sure that the value is allowed for this attr before going
@@ -73,6 +75,9 @@ class Entity(dict):
 
         else:
             super(Entity, self).__setitem__(attr, val)
+
+            if attr not in ('yaml_file_saved', 'html_file_saved'):
+                self.self_updated = datetime.now()
 
     def __hash__(self):
         return self.uuid.int
@@ -241,18 +246,25 @@ class Entity(dict):
 
     def to_yaml_file(self, pathname):
         """
-        Returns the path of the file saved.
+        Returns the path of the file saved, IFF one got saved.
 
         The pathname specifies where to save it.
         """
 
-        fp = os.path.join(pathname, self.filename)
-        f = open(fp, 'w')
-        f.write(self.yaml)
-        f.close()
-        logging.debug("Saved file %s" % fp)
+        yaml_file_saved = self.get('yaml_file_saved', datetime(1991, 1, 1))
+        self_updated = getattr(self, 'self_updated', datetime.now())
 
-        return fp
+        if yaml_file_saved < self_updated:
+
+            fp = os.path.join(pathname, self.filename)
+            f = open(fp, 'w')
+            f.write(self.yaml)
+            f.close()
+            logging.debug("Saved file %s" % fp)
+
+            self['yaml_file_saved'] = datetime.now()
+
+            return fp
 
     def replace_pointers_with_objects(self):
 
@@ -300,12 +312,19 @@ class Entity(dict):
 
     def to_html(self, htmldir):
 
-        filepath = os.path.join(htmldir, self.html_filename)
+        html_file_saved = self.get('html_file_saved', datetime(1991, 1, 1))
+        self_updated = getattr(self, 'self_updated', datetime.now())
 
-        with open(filepath, 'w') as f:
-            f.write(self.html)
+        if html_file_saved < self_updated:
 
-        return filepath
+            filepath = os.path.join(htmldir, self.html_filename)
+
+            with open(filepath, 'w') as f:
+                f.write(self.html)
+
+            self['html_file_saved'] = datetime.now()
+
+            return filepath
  
 
     @property
