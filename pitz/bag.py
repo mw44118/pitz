@@ -168,6 +168,10 @@ class Bag(object):
             self.entities_by_uuid[e.uuid] = e
             self.entities_by_frag[e.frag] = e
             self.entities_by_filename[e.filename] = e
+
+    @property
+    def html_filename(self):
+        return "%(uuid)s.html" % self
         
     @property
     def summarized_view(self):

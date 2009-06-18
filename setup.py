@@ -42,6 +42,7 @@ started pitz.""",
         'scripts/pitz-todo',
         'scripts/pitz-show',
         'scripts/pitz-everything',
+        'scripts/pitz-html',
     ],
 
     test_suite = 'nose.collector',
