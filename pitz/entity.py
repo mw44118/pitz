@@ -312,13 +312,17 @@ class Entity(dict):
     def html_filename(self):
         return "%(uuid)s.html" % self
 
+    @property
+    def stale_html(self):
+
+        html_file_saved = self.get('html_file_saved',
+            datetime(1991, 1, 1))
+
+        return self['modified_time'] > html_file_saved
 
     def to_html(self, htmldir):
 
-        html_file_saved = self.get('html_file_saved', datetime(1991, 1, 1))
-        self_updated = getattr(self, 'self_updated', datetime.now())
-
-        if html_file_saved < self_updated:
+        if self.stale_html:
 
             filepath = os.path.join(htmldir, self.html_filename)
 
