@@ -100,7 +100,7 @@ class Project(Bag):
         pathname = pathname or self.pathname
 
         # Send all the entities to the filesystem.
-        return [e.to_yaml_file(pathname) for e in self]
+        return [e for e in self if e.to_yaml_file(self.pathname)]
 
 
     @property

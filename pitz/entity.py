@@ -8,7 +8,9 @@ import yaml
 
 import jinja2
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+
+log = logging.getLogger('pitz.entity')
 
 class Entity(dict):
     """
@@ -19,6 +21,8 @@ class Entity(dict):
     allowed_values = dict()
 
     def __init__(self, project=None, **kwargs):
+    
+        self.update_modified_time = False
 
         # Now make sure we got all the required fields.
         for rf, default_value in self.required_fields.items():
@@ -58,7 +62,7 @@ class Entity(dict):
         # Set up a template loader.
         self.e = jinja2.Environment(loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
-        self.self_updated = datetime.now()
+        self.update_modified_time = True
 
     def __setitem__(self, attr, val):
         """
@@ -73,8 +77,8 @@ class Entity(dict):
         else:
             super(Entity, self).__setitem__(attr, val)
 
-            if attr not in ('yaml_file_saved', 'html_file_saved'):
-                self.self_updated = datetime.now()
+            if self.update_modified_time and attr not in ('yaml_file_saved', 'html_file_saved'):
+                super(Entity, self).__setitem__('modified_time', datetime.now())
 
     def __hash__(self):
         return self.uuid.int
@@ -248,20 +252,16 @@ class Entity(dict):
         The pathname specifies where to save it.
         """
 
-        yaml_file_saved = self.get('yaml_file_saved', datetime(1991, 1, 1))
-        self_updated = getattr(self, 'self_updated', datetime.now())
+        if self.stale_yaml:
 
-        if yaml_file_saved < self_updated:
+            self['yaml_file_saved'] = datetime.now()
 
             fp = os.path.join(pathname, self.filename)
             f = open(fp, 'w')
             f.write(self.yaml)
             f.close()
-            logging.debug("Saved file %s" % fp)
 
-            self['yaml_file_saved'] = datetime.now()
-
-            return fp
+            return fp 
 
     def replace_pointers_with_objects(self):
 
@@ -272,6 +272,7 @@ class Entity(dict):
         In other words, replaces the string "matt" with the object with
         "matt" as its uuid.
         """
+        self.update_modified_time = False
 
         if self.project:
 
@@ -284,6 +285,8 @@ class Entity(dict):
                 if isinstance(val, uuid.UUID):
                     self[attr] = self.project.by_uuid(val)
 
+        self.update_modified_time = True
+        return self
 
     def replace_objects_with_pointers(self):
         """
@@ -294,11 +297,14 @@ class Entity(dict):
         with just the uuid of that object.
         """
 
+        self.update_modified_time = False
+
         for attr, val in self.items():
 
             if hasattr(val, 'uuid'):
                 self[attr] = val.uuid
 
+        self.update_modified_time = True
         return self
 
 
@@ -365,3 +371,11 @@ class Entity(dict):
                 os.unlink(absolute_path)
 
         return self
+
+    @property
+    def stale_yaml(self):
+
+        yaml_file_saved = self.get('yaml_file_saved',
+            datetime(1991, 1, 1))
+
+        return self['modified_time'] > yaml_file_saved

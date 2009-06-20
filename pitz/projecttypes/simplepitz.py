@@ -8,7 +8,7 @@ milestones.
 myclassname = 'SimpleProject'
 
 from copy import copy
-import textwrap
+import logging, textwrap
 
 import jinja2
 
@@ -16,6 +16,8 @@ from pitz import *
 from pitz.entity import Entity
 from pitz.project import Project
 from pitz.exceptions import NoProject
+
+log = logging.getLogger('pitz.simplepitz')
 
 class Milestone(Entity):
     """
@@ -148,6 +150,7 @@ class Comment(Entity):
 """)
 
         return tmpl.render(locals())
+
 
 class Person(Entity):
     """
