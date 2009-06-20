@@ -7,6 +7,6 @@ Contents:
 
     main-idea.rst
     tutorial.rst
-    use-cases.rst
+    examples.rst
     data-model.rst
     project.rst
