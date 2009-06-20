@@ -155,6 +155,12 @@ class Bag(list):
             self.entities_by_frag[e.frag] = e
             self.entities_by_filename[e.filename] = e
 
+    def pop(self, index=-1):
+
+        e = super(Bag, self).pop(index)
+        self.entities_by_uuid.pop(e.uuid)
+        self.entities_by_frag.pop(e.frag)
+        self.entities_by_filename.pop(e.filename)
 
     @property
     def html_filename(self):
