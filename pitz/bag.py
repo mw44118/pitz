@@ -33,7 +33,7 @@ class Bag(list):
         # These will get populated in self.append.
         self.entities_by_uuid = dict()
         self.entities_by_frag = dict()
-        self.entities_by_filename = dict()
+        self.entities_by_yaml_filename = dict()
 
         for e in entities:
             self.append(e)
@@ -154,14 +154,14 @@ class Bag(list):
             self.sort(self.order_method)
             self.entities_by_uuid[e.uuid] = e
             self.entities_by_frag[e.frag] = e
-            self.entities_by_filename[e.filename] = e
+            self.entities_by_yaml_filename[e.yaml_filename] = e
 
     def pop(self, index=-1):
 
         e = super(Bag, self).pop(index)
         self.entities_by_uuid.pop(e.uuid)
         self.entities_by_frag.pop(e.frag)
-        self.entities_by_filename.pop(e.filename)
+        self.entities_by_yaml_filename.pop(e.yaml_filename)
 
     @property
     def html_filename(self):
@@ -280,7 +280,8 @@ class Bag(list):
         if not self.pathname:
             raise ValueError("Sorry, I need a pathname first.")
 
-        files = [os.path.join(self.pathname, f) for f in self.entities_by_filename]
+        files = [os.path.join(self.pathname, f) for f in
+        self.entities_by_yaml_filename]
 
         if not files:
             return self
@@ -295,7 +296,7 @@ class Bag(list):
         return Bag(title="entities matching grep %s" % phrase,
             pathname=self.pathname,
             order_method=self.order_method,
-            entities=[self.entities_by_filename[os.path.basename(s.strip())] 
+            entities=[self.entities_by_yaml_filename[os.path.basename(s.strip())] 
                 for s in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout])
 
 

@@ -84,7 +84,7 @@ class Entity(dict):
         return self.uuid.int
 
     @property
-    def filename(self):
+    def yaml_filename(self):
         return '%(type)s-%(uuid)s.yaml' % self
 
     @property
@@ -256,7 +256,7 @@ class Entity(dict):
 
             self['yaml_file_saved'] = datetime.now()
 
-            fp = os.path.join(pathname, self.filename)
+            fp = os.path.join(pathname, self.yaml_filename)
             f = open(fp, 'w')
             f.write(self.yaml)
             f.close()
@@ -365,7 +365,7 @@ class Entity(dict):
 
         # Delete any yaml file.
         if proj.pathname and os.path.isdir(proj.pathname):
-            absolute_path = os.path.join(proj.pathname, self.filename)
+            absolute_path = os.path.join(proj.pathname, self.yaml_filename)
 
             if os.path.exists(absolute_path):
                 os.unlink(absolute_path)
