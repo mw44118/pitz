@@ -89,9 +89,10 @@ class Bag(list):
         if not self.order_method:
             raise ValueError("I need a method to order entities!")
 
-        self.sort(cmp=order_method)
+        self.sort(cmp=self.order_method)
 
         return self
+
 
     def matches_dict(self, **d):
         
