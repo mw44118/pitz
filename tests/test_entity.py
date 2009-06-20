@@ -64,10 +64,10 @@ def test_html():
 
 
 @patch('__builtin__.open')
-def test_to_html(o):
+def test_to_html_file(o):
  
     global e
-    e.to_html('bogus filepath')
+    e.to_html_file('bogus filepath')
 
 
 def test_self_destruct():

@@ -77,7 +77,9 @@ class Entity(dict):
         else:
             super(Entity, self).__setitem__(attr, val)
 
-            if self.update_modified_time and attr not in ('yaml_file_saved', 'html_file_saved'):
+            if self.update_modified_time \
+            and attr not in ('yaml_file_saved', 'html_file_saved', 'modified_time'):
+
                 super(Entity, self).__setitem__('modified_time', datetime.now())
 
     def __hash__(self):
@@ -320,16 +322,16 @@ class Entity(dict):
 
         return self['modified_time'] > html_file_saved
 
-    def to_html(self, htmldir):
+    def to_html_file(self, htmldir):
 
         if self.stale_html:
+
+            self['html_file_saved'] = self['modified_time'] = datetime.now()
 
             filepath = os.path.join(htmldir, self.html_filename)
 
             with open(filepath, 'w') as f:
                 f.write(self.html)
-
-            self['html_file_saved'] = datetime.now()
 
             return filepath
  

@@ -7,3 +7,4 @@ pitz.egg-info
 pitz/junkyard/*.yaml
 build
 dist
+pitzdir/html

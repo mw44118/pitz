@@ -28,5 +28,12 @@ htmldir = args[0]
 html_filename = os.path.join(htmldir, proj.html_filename)
 
 proj.to_html(html_filename)
-for e in proj:
-    e.to_html(htmldir)
+
+
+print("Wrote %d html files out of %d entities in project."
+    % (
+        len([e for e in proj if e.to_html_file(htmldir)]),
+        len(proj)))
+
+# Record that we rebuilt all the HTML files.
+proj.save_entities_to_yaml_files()
