@@ -5,14 +5,15 @@ creator: person-a385659b-8610-4650-8aa5-7fc04ea7fcb1
 description: 'Figure out how to group tasks into milestones.  Some people call
 
   these releases, or iterations, or versions.'
+html_file_saved: &id002 2009-06-20 18:08:35.265502
 last_modified_by: Matt Wilson
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_date: *id001
-modified_time: 2009-06-20 16:48:07.999425
+modified_time: *id002
 status: finished
 title: Write code for milestones
 type: task
 uuid: !!python/object:uuid.UUID
   int: 330485642578400521360783850485913049178
-yaml_file_saved: 2009-06-20 16:49:43.146809
+yaml_file_saved: 2009-06-20 18:08:36.310476

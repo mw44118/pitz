@@ -5,12 +5,13 @@ description: "Right now, in the Task class, I have this code::\n\n    allowed_va
   \ values.  It\nmight be nicer to just make an assertion that the status field must\
   \ be\nan instance of a Status entity.  And the each project could define\nwhatever\
   \ status it wanted to.\n"
+html_file_saved: &id001 2009-06-20 18:08:35.884616
 milestone: unscheduled
-modified_time: 2009-06-20 16:16:35.475092
+modified_time: *id001
 status: unstarted
 title: Consider storing stuff like status values (unstarted, started, abandoned, finished)
   as entities instead of strings
 type: task
 uuid: !!python/object:uuid.UUID
   int: 133769196855580053922929763053358197917
-yaml_file_saved: 2009-06-20 16:34:57.286153
+yaml_file_saved: 2009-06-20 18:08:36.531036

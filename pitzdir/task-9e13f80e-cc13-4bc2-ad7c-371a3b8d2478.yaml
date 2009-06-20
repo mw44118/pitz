@@ -18,11 +18,12 @@ description: 'Figure out how to allow end-user to modify their projects on a
   whatever was originally installed.
 
   '
+html_file_saved: &id001 2009-06-20 18:08:36.185788
 milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
-modified_time: 2009-06-20 16:16:35.761082
+modified_time: *id001
 status: unstarted
 title: Copy pitz project file to allow local edits
 type: task
 uuid: !!python/object:uuid.UUID
   int: 210121708184263119820492024931184092280
-yaml_file_saved: 2009-06-20 16:34:57.381648
+yaml_file_saved: 2009-06-20 18:08:36.629240

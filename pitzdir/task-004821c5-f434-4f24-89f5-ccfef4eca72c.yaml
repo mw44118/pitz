@@ -23,11 +23,12 @@ description: 'Right now, Entity subclasses can define a class attribute named
   I''ll do a lookup on the project and replace that.
 
   '
+html_file_saved: &id001 2009-06-20 18:08:35.250376
 milestone: unscheduled
-modified_time: 2009-06-20 16:16:35.262985
+modified_time: *id001
 status: finished
 title: replace pointers dictionary with simpler UUID attribute detection
 type: task
 uuid: !!python/object:uuid.UUID
   int: 374530376857023684456859912494688044
-yaml_file_saved: 2009-06-20 16:34:57.063342
+yaml_file_saved: 2009-06-20 18:08:36.302838

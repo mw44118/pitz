@@ -1,9 +1,10 @@
 created_time: 2009-05-31 11:07:48.845014
+html_file_saved: &id001 2009-06-20 18:08:35.944788
 milestone: unscheduled
-modified_time: 2009-06-20 16:16:35.522918
+modified_time: *id001
 status: unstarted
 title: Make a better detailed view for tasks
 type: task
 uuid: !!python/object:uuid.UUID
   int: 39709367347040635236977302890575101630
-yaml_file_saved: 2009-06-20 16:34:57.309778
+yaml_file_saved: 2009-06-20 18:08:36.554264

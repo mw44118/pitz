@@ -7,14 +7,15 @@ description: 'Right now, I''m storing a creator attribute on all tasks.  The val
   it should be used as a key to go lookup the person object.
 
   '
+html_file_saved: &id002 2009-06-20 18:08:35.446361
 last_modified_by: Matt
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_date: *id001
-modified_time: 2009-06-20 16:48:08.000359
+modified_time: *id002
 status: finished
 title: Write code to use strings as keys
 type: task
 uuid: !!python/object:uuid.UUID
   int: 155724053933292083654527990379947467596
-yaml_file_saved: 2009-06-20 16:49:43.240466
+yaml_file_saved: 2009-06-20 18:08:36.374716
