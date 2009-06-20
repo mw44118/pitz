@@ -1,15 +1,12 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-from copy import copy
 import logging
 from datetime import datetime
-import os, uuid, warnings
+import os, uuid
 
 import yaml
 
 import jinja2
-
-from pitz.exceptions import NoProject
 
 logging.basicConfig(level=logging.INFO)
 
@@ -348,3 +345,23 @@ class Entity(dict):
 
         if d:
             return cls(project, **d)
+
+
+    def self_destruct(self, proj):
+        """
+        Remove this entity from the project.  Delete a yaml file if it
+        exists.
+        """
+
+        # Remove this entity from the project.
+        i = proj.index(self)
+        proj.pop(i)
+
+        # Delete any yaml file.
+        if proj.pathname and os.path.isdir(proj.pathname):
+            absolute_path = os.path.join(proj.pathname, self.filename)
+
+            if os.path.exists(absolute_path):
+                os.unlink(absolute_path)
+
+        return self

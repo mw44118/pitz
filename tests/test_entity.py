@@ -56,3 +56,26 @@ def test_from_yaml_file_2(m1, m2):
     global e
 
     assert e.from_yaml_file('bogus') == None
+
+
+def test_html():
+    global e
+    e.html
+
+
+@patch('__builtin__.open')
+def test_to_html(o):
+ 
+    global e
+    e.to_html('bogus filepath')
+
+
+def test_self_destruct():
+
+    p = Project()
+    p.pathname = '/tmp'
+    e1 = Entity(p, title="e1", a=1, b=2)
+    e1.to_yaml_file('/tmp')
+    e1.self_destruct(p)
+
+    
