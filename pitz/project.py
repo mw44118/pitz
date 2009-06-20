@@ -1,8 +1,10 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os, subprocess
+import glob, os
 
 import yaml
+
+from clepy import walkup
 
 from pitz.bag import Bag
 from pitz.entity import Entity
@@ -98,8 +100,7 @@ class Project(Bag):
         pathname = pathname or self.pathname
 
         # Send all the entities to the filesystem.
-        return [e.to_yaml_file(pathname) 
-            for e in self.entities]
+        return [e.to_yaml_file(pathname) for e in self]
 
 
     @property
