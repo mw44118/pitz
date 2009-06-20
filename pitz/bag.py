@@ -4,17 +4,14 @@ from collections import defaultdict
 import csv, logging, os
 from uuid import UUID, uuid4
 
-from glob import glob
-
 import jinja2
 
 from pitz import *
-import pitz.entity
 
 logging.basicConfig(level=logging.INFO)
 
 
-class Bag(object):
+class Bag(list):
     """
     Bags are really just lists with some useful methods.
     """
@@ -23,7 +20,6 @@ class Bag(object):
         order_method=by_created_time, **kwargs):
 
         self.title = title
-        self.entities = list()
         self.pathname = pathname
         self.order_method = order_method
         
@@ -63,19 +59,11 @@ class Bag(object):
         # data.
         w.writerow([])
 
-        for e in self.entities:
+        for e in self:
             row = []
             for col in columns:
                 row += [e.get(col, '')]
             w.writerow(row)
-
-    def __iter__(self):
-        """
-        Make it possible to do "for entity in bag".
-        """
-
-        for e in self.entities:
-            yield e
 
     def __getitem__(self, i):
         """
@@ -83,12 +71,10 @@ class Bag(object):
         """
 
         try:
-            return self.entities[i]
+            return super(Bag, self).__getitem__(i)
         except TypeError:
             return self.by_uuid(i)
 
-    def __len__(self):
-        return len(self.entities)
 
     def order(self, order_method=None):
 
@@ -103,13 +89,13 @@ class Bag(object):
         if not self.order_method:
             raise ValueError("I need a method to order entities!")
 
-        self.entities.sort(cmp=order_method)
+        self.sort(cmp=order_method)
 
         return self
 
     def matches_dict(self, **d):
         
-        matches = [e for e in self.entities if e.matches_dict(**d)]
+        matches = [e for e in self if e.matches_dict(**d)]
 
         return Bag(title='subset of %s' % self.title, 
             pathname=self.pathname, entities=matches,
@@ -117,7 +103,7 @@ class Bag(object):
 
     def does_not_match_dict(self, **d):
 
-        matches = [e for e in self.entities if e.does_not_match_dict(**d)]
+        matches = [e for e in self if e.does_not_match_dict(**d)]
 
         return Bag(title='subset of %s' % self.title, 
             pathname=self.pathname, entities=matches,
@@ -163,11 +149,12 @@ class Bag(object):
         # Don't add the same entity twice.
         if e.uuid not in self.entities_by_uuid:
 
-            self.entities.append(e)
-            self.entities.sort(self.order_method)
+            super(Bag, self).append(e)
+            self.sort(self.order_method)
             self.entities_by_uuid[e.uuid] = e
             self.entities_by_frag[e.frag] = e
             self.entities_by_filename[e.filename] = e
+
 
     @property
     def html_filename(self):
@@ -189,7 +176,7 @@ class Bag(object):
 
         # First sort the entitities just in case we've appended new
         # entities since the last time we sorted.
-        self.entities.sort(self.order_method)
+        self.order()
 
         t = jinja2.Template("""\
 {%  for dash in bag.title -%}={% endfor %}
@@ -203,7 +190,7 @@ class Bag(object):
 {{ "%4d" | format(i) }}: {{e.summarized_view}}
 {% endfor %}""")
 
-        return t.render(bag=self, entities=self.entities, 
+        return t.render(bag=self, entities=self,
             enumerate=enumerate, len=len)
 
     @property
@@ -248,11 +235,12 @@ class Bag(object):
 
         dd = defaultdict(int)
 
-        for e in self.entities:
+        for e in self:
             for a in e:
                 dd[a] += 1
 
         return sorted(dd.items(), key=lambda t: t[1], reverse=True)
+
 
     def values(self, attr):
         """
@@ -261,7 +249,7 @@ class Bag(object):
         """
         dd = defaultdict(int)
 
-        for e in self.entities:
+        for e in self:
             if attr in e:
                 dd[e[attr]] += 1
 

@@ -143,3 +143,13 @@ def test_grep_1():
     global b
     b.grep('cat')
 
+def test_html():
+
+    global b
+    b.html
+
+@patch('__builtin__.open')
+def test_to_html(o):
+    
+    global b
+    b.to_html('bogus filepath')
