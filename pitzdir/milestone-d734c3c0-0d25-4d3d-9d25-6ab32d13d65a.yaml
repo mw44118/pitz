@@ -1,7 +1,22 @@
 created_time: 2009-04-13 22:07:49.416533
-modified_time: 2009-06-20 16:16:35.599744
+description: "The goal for the 1.0 release is to make pitz a viable replacement for\n\
+  ditz.  That is all.\n\nOriginally, I had a wacky idea to make pitz a framework for\
+  \ building\nissue trackers, rather than just an issue tracker.\n\nIn other words,\
+  \ pitz would accomodate any bizarre workflow that anyone\ncould dream up.  For example,\
+  \ I didn't want to assume that there would\nbe anything called milestones or tasks\
+  \ or components.  All of that\nwould be user-configurable.\n\nHere's the problem:\
+  \ code where **everything** is configurable gets\nreally, really complex.\n\nditz\
+  \ has a neat command, todo::\n\n    $ ditz todo # Lists all unfinished tasks\n \
+  \   $ ditz todo feb09 # Just unfinished tasks in the feb09 release.\n\nThe underlying\
+  \ code is clean because ditz forces a one-to-many\nrelationship between releases\
+  \ and tasks.\n\nAs of right now in pitz, that same query is easy from within python::\n\
+  \n    >>> feb09 = p(type=milestone, title='feb09')\n    >>> print(feb09.tasks)\n\
+  \nBut I have been really struggling to get a command-line version of the\nsame thing.\n\
+  \nSo my new goal is to reduce the scope of the 1.0 release, and just knock\nout\
+  \ something that does what ditz does.\n"
+modified_time: 2009-06-20 17:09:19.919630
 title: Mythical 1.0 release
 type: milestone
 uuid: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-yaml_file_saved: 2009-06-20 16:34:56.995596
+yaml_file_saved: 2009-06-20 17:22:01.017877
