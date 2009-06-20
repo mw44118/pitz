@@ -5,13 +5,10 @@ These functions do the interesting stuff after options and arguments
 have been parsed.
 """
 
-import glob, optparse, os, sys
-
-import yaml
+import optparse, os
 
 from IPython.Shell import IPShellEmbed
 
-import pitz
 from pitz import *
 from pitz.project import Project
 

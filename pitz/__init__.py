@@ -9,8 +9,7 @@ package, which is a grab bag of fanciness.
 
 from __future__ import with_statement
 
-import os, os.path, subprocess, tempfile
-from clepy import walkup
+import os, subprocess, tempfile
 from pitz.exceptions import *
 
 def by_whatever(func_name, *whatever, **kwargs):
