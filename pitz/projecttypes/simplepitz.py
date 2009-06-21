@@ -42,7 +42,19 @@ class Milestone(Entity):
 
         unfinished.title = "Unfinished tasks in %(title)s" % self
         return unfinished
-        
+
+    @property
+    def summarized_view(self):
+
+        d = {
+            'title':self['title'],
+            'pct_complete':'85%',
+            'num_finished_tasks':3,
+            'num_tasks':4}
+            
+        s = "%(title)s: %(pct_complete)s complete (%(num_finished_tasks)d / %(num_tasks)d tasks)"
+        return s % d
+
 
 class Task(Entity):
 

@@ -142,10 +142,7 @@ class Bag(list):
 
     def append(self, e):
         """
-        Put an entity in this bag.
-
-        This possibly destroys the sorted order, so you may want to run
-        self.order() next.
+        Put an entity in this bag and update related dictionaries.
         """
 
         # Don't add the same entity twice.
@@ -157,6 +154,7 @@ class Bag(list):
             self.entities_by_frag[e.frag] = e
             self.entities_by_yaml_filename[e.yaml_filename] = e
 
+
     def pop(self, index=-1):
 
         e = super(Bag, self).pop(index)
@@ -164,9 +162,11 @@ class Bag(list):
         self.entities_by_frag.pop(e.frag)
         self.entities_by_yaml_filename.pop(e.yaml_filename)
 
+
     @property
     def html_filename(self):
         return "%s.html" % quote_plus(self.title.lower())
+
         
     @property
     def summarized_view(self):
@@ -176,8 +176,8 @@ class Bag(list):
             self.__class__.__name__,
             self.title,
             self.contents,
-            self.order_method.__doc__,
-            )
+            self.order_method.__doc__)
+
 
     @property
     def detailed_view(self):
@@ -201,8 +201,13 @@ class Bag(list):
         return t.render(bag=self, entities=self,
             enumerate=enumerate, len=len)
 
+
     @property
     def contents(self):
+
+        """
+        Return a descriptive one-line string of the contents of the bag.
+        """
 
         if self:
             return '(' + ', '.join(['%d %s entities' % (typecount, typename)
@@ -210,6 +215,7 @@ class Bag(list):
 
         else:
             return '(empty)'
+
 
     def __str__(self):
         return self.detailed_view
@@ -319,3 +325,7 @@ class Bag(list):
         tmpl = self.e.get_template('bag.html')
         return tmpl.render(title=self.title, bag=self,
             isinstance=isinstance, UUID=UUID)
+
+    @property
+    def length(self):
+        return len(self)
