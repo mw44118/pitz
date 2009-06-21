@@ -3,6 +3,7 @@
 from collections import defaultdict
 import csv, logging, os
 from uuid import UUID, uuid4
+from urllib import quote_plus
 
 import jinja2
 
@@ -165,7 +166,7 @@ class Bag(list):
 
     @property
     def html_filename(self):
-        return "%(uuid)s.html" % self
+        return "%s.html" % quote_plus(self.title.lower())
         
     @property
     def summarized_view(self):

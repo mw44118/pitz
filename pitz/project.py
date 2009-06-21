@@ -179,6 +179,10 @@ class Project(Bag):
 
         raise ProjectYamlNotFound("Started looking at %s" % starting_path)
 
+    @property
+    def html_filename(self):
+
+        return "index.html"
 
     @classmethod
     def from_yaml_file(cls, fp):
