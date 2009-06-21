@@ -46,13 +46,16 @@ class Milestone(Entity):
     @property
     def summarized_view(self):
 
+        a = self.tasks(status='finished').length
+        b = self.tasks.length
+
         d = {
             'title':self['title'],
-            'pct_complete':'85%',
-            'num_finished_tasks':3,
-            'num_tasks':4}
+            'pct_complete':100*(float(a)/b),
+            'num_finished_tasks':a,
+            'num_tasks': b}
             
-        s = "%(title)s: %(pct_complete)s complete (%(num_finished_tasks)d / %(num_tasks)d tasks)"
+        s = "%(title)s: %(pct_complete)0.0f%% complete (%(num_finished_tasks)d / %(num_tasks)d tasks)"
         return s % d
 
 
