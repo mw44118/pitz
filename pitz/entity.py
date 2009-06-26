@@ -60,9 +60,16 @@ class Entity(dict):
             self.replace_pointers_with_objects()
 
         # Set up a template loader.
-        self.e = jinja2.Environment(loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
+        self.e = jinja2.Environment(
+            loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
+
+        self.e.globals = {
+            'isinstance':isinstance,
+            'hasattr':hasattr,
+        }
 
         self.update_modified_time = True
+
 
     def __setitem__(self, attr, val):
         """
@@ -81,6 +88,7 @@ class Entity(dict):
             and attr not in ('yaml_file_saved', 'html_file_saved', 'modified_time'):
 
                 super(Entity, self).__setitem__('modified_time', datetime.now())
+
 
     def __hash__(self):
         return self.uuid.int
@@ -211,25 +219,14 @@ class Entity(dict):
         d['type'] = self.__class__.__name__
         d['data'] = self
 
-        t = jinja2.Template("""\
-{{summarized_view}}
-{{line_of_dashes}}
+        t = self.e.get_template('entity_detailed_view.txt')
 
-{% for k in data %}
-{{ k }}:
-{% if hasattr(data[k], 'summarized_view') -%} 
-{{ data[k].summarized_view -}}
-{% else -%} 
-{{ data[k] -}}
-{% endif %}
-{% endfor %}
-""")
-
-        return t.render(hasattr=hasattr, **d)
+        return t.render(**d)
 
 
     def __str__(self):
         return self.detailed_view
+
 
     @property
     def yaml(self):
@@ -246,6 +243,7 @@ class Entity(dict):
             self.replace_pointers_with_objects()
 
         return y
+
 
     def to_yaml_file(self, pathname):
         """
@@ -264,6 +262,7 @@ class Entity(dict):
             f.close()
 
             return fp 
+
 
     def replace_pointers_with_objects(self):
 
@@ -290,6 +289,7 @@ class Entity(dict):
         self.update_modified_time = True
         return self
 
+
     def replace_objects_with_pointers(self):
         """
         Replaces the value of an entity with just the string of the
@@ -313,6 +313,7 @@ class Entity(dict):
     @property
     def html_filename(self):
         return "%(uuid)s.html" % self
+
 
     @property
     def stale_html(self):
@@ -338,11 +339,18 @@ class Entity(dict):
 
     @property
     def html(self):
+        """
+        Return a string of HTML representing this entity.
+        """
+
         self.replace_objects_with_pointers()
         tmpl = self.e.get_template('entity.html')
+
         s = tmpl.render(title=self.title, entity=self,
-        isinstance=isinstance, UUID=uuid.UUID)
+            UUID=uuid.UUID)
+
         self.replace_pointers_with_objects()
+
         return s
 
 
@@ -377,6 +385,7 @@ class Entity(dict):
                 os.unlink(absolute_path)
 
         return self
+
 
     @property
     def stale_yaml(self):
