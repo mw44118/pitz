@@ -153,3 +153,8 @@ def test_to_html(o):
     
     global b
     b.to_html('bogus filepath')
+
+def test_length():
+
+    global b
+    assert b.length == 2
