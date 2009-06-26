@@ -1,23 +1,37 @@
 created_time: 2009-04-13 22:07:49.416533
-description: "The goal for the 1.0 release is to make pitz a viable replacement for\n\
-  ditz.  That is all.\n\nOriginally, I had a wacky idea to make pitz a framework for\
-  \ building\nissue trackers, rather than just an issue tracker.\n\nIn other words,\
-  \ pitz would accomodate any bizarre workflow that anyone\ncould dream up.  For example,\
-  \ I didn't want to assume that there would\nbe anything called milestones or tasks\
-  \ or components.  All of that\nwould be user-configurable.\n\nHere's the problem:\
-  \ code where **everything** is configurable gets\nreally, really complex.\n\nditz\
-  \ has a neat command, todo::\n\n    $ ditz todo # Lists all unfinished tasks\n \
-  \   $ ditz todo feb09 # Just unfinished tasks in the feb09 release.\n\nThe underlying\
-  \ code is clean because ditz forces a one-to-many\nrelationship between releases\
-  \ and tasks.\n\nAs of right now in pitz, that same query is easy from within python::\n\
-  \n    >>> feb09 = p(type=milestone, title='feb09')\n    >>> print(feb09.tasks)\n\
-  \nBut I have been really struggling to get a command-line version of the\nsame thing.\n\
-  \nSo my new goal is to reduce the scope of the 1.0 release, and just knock\nout\
-  \ something that does what ditz does.\n"
-html_file_saved: &id001 2009-06-20 18:08:35.115302
-modified_time: *id001
+description: "Originally, I had a wacky idea to make pitz a framework for building\n\
+  issue trackers, rather than just an issue tracker.\n\nIn other words, pitz would\
+  \ accomodate any bizarre workflow that anyone\ncould dream up.  For example, I didn't\
+  \ want to assume that there would\nbe anything called milestones or tasks or components.\
+  \  All of that\nwould be user-configurable.\n\nHere's the problem: code where **everything**\
+  \ is configurable gets\nreally, really complex.\n\nditz has a neat command, todo::\n\
+  \n    $ ditz todo # Lists all unfinished tasks\n    $ ditz todo feb09 # Just unfinished\
+  \ tasks in the feb09 release.\n\nThe underlying code is clean because ditz forces\
+  \ a one-to-many\nrelationship between releases and tasks and more importantly, the\
+  \ names\nof releases have to be unique.\n\nIt is easy for ditz to look up the release\
+  \ named \"feb09\" and then look\nup all the attached tasks.\n\nAs of right now in\
+  \ pitz, that same query is easy from within python::\n\n    >>> feb09 = p(type=milestone,\
+  \ title='feb09')\n    >>> print(p(type=task, milestone=feb09)\n\nThat turned out\
+  \ to be the easy part.  I came across two hard parts:\n\n1.  I couldn't make any\
+  \ assumptions about the relationship between tasks\n    and milestones, since I\
+  \ was trying to be so agnostic.  The system\n    would allow, for example, somebody\
+  \ to make the milestone attribute\n    point at a list of milestones or even have\
+  \ it point to another task.\n\n2.  Presenting the data without making any assumptions\
+  \ about its meaning\n    seemed impossible.  Ditz shows the status of individual\
+  \ tasks.\n    Again, I didn't want to push my agenda on the user, so maybe tasks\n\
+  \    won't even have a status.  So how do I build a usable interface?  I\n    just\
+  \ gave and dumped out all the attribute-value pairs.  Not\n    gorgeous.\n\nSo my\
+  \ new goal is to reduce the scope of the 1.0 release and make a lot\nof assumptions\
+  \ and limits.  Instead of a framework that lets you create\nany arbitrary workflows,\
+  \ a lot of stuff will be fixed.\n\nI'm going to shrink the scope and improve user\
+  \ experience.\n\nThe consequence is that when I start working on 2.0, it is likely\
+  \ I will\nhave to break stuff.  And I think that is OK.\n\nWith pitz, I don't want\
+  \ to try to build in all the features first.  The\n2,0 release might not be just\
+  \ a superset.  Instead it might be a\ndifferent app altogether.\n"
+html_file_saved: 2009-06-20 18:08:35.115302
+modified_time: 2009-06-21 11:43:49.009425
 title: Mythical 1.0 release
 type: milestone
 uuid: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-yaml_file_saved: 2009-06-20 18:08:36.254346
+yaml_file_saved: 2009-06-21 12:17:13.027231

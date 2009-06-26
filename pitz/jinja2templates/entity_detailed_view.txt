@@ -1,0 +1,11 @@
+{{summarized_view}}
+{{line_of_dashes}}
+
+{% for k in data %}
+{{ k }}:
+{% if hasattr(data[k], 'summarized_view') -%} 
+{{ data[k].summarized_view -}}
+{% else -%} 
+{{ data[k] -}}
+{% endif %}
+{% endfor %}
