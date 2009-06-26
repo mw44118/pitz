@@ -6,9 +6,9 @@
 Print the todo list.
 """
 
-import optparse, os, sys
+import optparse, os, subprocess, sys
 from pitz.project import Project
-from pitz.cmdline import setup_options, build_filter
+from pitz.cmdline import *
 
 p = setup_options()
 
@@ -20,15 +20,15 @@ proj = Project.from_yaml_file(path_to_yaml_file)
 
 d = build_filter(args)
 
-
 # This line here is the only thing different from pitz-everything.
 results = proj.todo
 
-
+# Apply filters.
 if d:
     results = results(**d)
 
+# Apply grep.
 if options.grep:
     results = results.grep(options.grep)
 
-print(results)
+send_through_pager(str(results))

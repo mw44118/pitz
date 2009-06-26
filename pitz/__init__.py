@@ -46,8 +46,11 @@ def by_whatever(func_name, *whatever, **kwargs):
 by_spiciness = by_whatever('by_spiciness', 'peppers')
 by_created_time = by_whatever('by_created_time', 'created_time')
 
-by_type_status_created_time = by_whatever('by_type_status_created_time', 
+by_type_status_created_time = by_whatever('by_type_status_created_time',
     'type', 'status', 'created time')
+
+by_milestone = by_whatever('by_milestone',
+    'milestone', 'type', 'status', 'created time')
 
 def edit_with_editor(s=None):
     """

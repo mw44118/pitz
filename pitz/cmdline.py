@@ -5,7 +5,7 @@ These functions do the interesting stuff after options and arguments
 have been parsed.
 """
 
-import optparse, os
+import optparse, os, subprocess
 
 from IPython.Shell import IPShellEmbed
 
@@ -149,3 +149,12 @@ def build_filter(args):
 
     return d
 
+def send_through_pager(s):
+    """
+    Open up this user's pager and send string s through it.
+    """
+
+    pager = subprocess.Popen([os.environ.get('PAGER', 'less')],
+        stdin=subprocess.PIPE)
+
+    pager.communicate(s)

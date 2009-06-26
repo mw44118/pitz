@@ -6,9 +6,9 @@
 Print every entity associated with the project.
 """
 
-import optparse, os, sys
+import optparse
 from pitz.project import Project
-from pitz.cmdline import setup_options, build_filter
+from pitz.cmdline import *
 
 p = setup_options()
 
@@ -28,4 +28,4 @@ if d:
 if options.grep:
     results = results.grep(options.grep)
 
-print(results)
+send_through_pager(str(results))
