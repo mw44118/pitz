@@ -57,12 +57,13 @@ class Milestone(Entity):
             pct_complete = 0.0
 
         d = {
+            'frag':self['frag'],
             'title':self['title'],
             'pct_complete':pct_complete,
             'num_finished_tasks':a,
             'num_tasks': b}
             
-        s = "%(title)s: %(pct_complete)0.0f%% complete (%(num_finished_tasks)d / %(num_tasks)d tasks)"
+        s = "%(frag)s %(title)s: %(pct_complete)0.0f%% complete (%(num_finished_tasks)d / %(num_tasks)d tasks)"
         return s % d
 
 

@@ -168,6 +168,9 @@ class Entity(dict):
 
         for a, v in d.items():
 
+            if self.project:
+                v = self.project[v]
+
             if a not in self: 
                 return
 
