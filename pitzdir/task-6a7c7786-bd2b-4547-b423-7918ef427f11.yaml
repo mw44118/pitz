@@ -1,0 +1,9 @@
+created_time: &id001 2009-06-26 20:24:36.535053
+milestone: unscheduled
+modified_time: *id001
+status: unstarted
+title: Convert reStructuredText within title and description into HTML
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 141544436645520990446407163173738282769
+yaml_file_saved: 2009-06-26 20:28:26.006342
