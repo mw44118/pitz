@@ -55,6 +55,14 @@ def test_milestone_todo():
     for m in p.milestones:
         m.todo
 
+def test_milestone_summarized_view():
+
+    global p
+
+    for m in p.milestones:
+        m.summarized_view
+
+
 def test_comments():
 
     global p
@@ -62,6 +70,7 @@ def test_comments():
     z = Comment(p, entity=t, text="I don't want to!", who_said_it="Matt")
     c = t.comments[0]
     c.summarized_view
+    c.detailed_view
 
 def test_project_todo():
 
@@ -88,3 +97,29 @@ def test_unscheduled():
 
     global p
     p.unscheduled
+
+
+def test_abandon_task():
+    
+    global p
+    t = Task(p, title="wash dishes")
+    t.abandon()
+
+@raises(NoProject)
+def test_component():
+
+    c1 = Component(title="Component A")
+    c1.tasks
+
+def test_components_property():
+
+    global p
+    c1 = Component(p, title="Component A")
+    assert p.components.length == 1, p.components
+    assert c1 in p.components
+
+def test_started_property():
+
+    global p
+    started_tasks = p(type='task', status='started')
+    assert p.started.length == started_tasks.length

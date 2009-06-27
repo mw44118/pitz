@@ -51,9 +51,14 @@ class Milestone(Entity):
         a = self.tasks(status='finished').length
         b = self.tasks.length
 
+        if b is not 0:
+            pct_complete = 100*(float(a)/b)
+        else:
+            pct_complete = 0.0
+
         d = {
             'title':self['title'],
-            'pct_complete':100*(float(a)/b),
+            'pct_complete':pct_complete,
             'num_finished_tasks':a,
             'num_tasks': b}
             

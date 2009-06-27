@@ -9,7 +9,7 @@ Print the detailed view for a UUID given at the command line.
 
 import optparse, os, sys
 from pitz.project import Project
-from pitz.cmdline import setup_options, build_filter
+from pitz.cmdline import *
 from pitz.entity import Entity
 
 p = setup_options()
@@ -27,7 +27,7 @@ proj = Project.from_yaml_file(path_to_yaml_file)
 e = proj[args[0]]
 
 if isinstance(e, Entity):
-    print(e.detailed_view)
+    send_through_pager(e.detailed_view)
 
 else:
     print("Sorry, couldn't find %s" % args[1])

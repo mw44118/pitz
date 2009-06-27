@@ -12,6 +12,7 @@ def test_summarized_view():
     global e
     e.summarized_view
 
+
 def test_replace_objects_with_pointers():
 
     e1 = Entity(title="e1", a=1, b=2)
@@ -47,6 +48,7 @@ def test_from_yaml_file_1(m1, m2):
     assert e2['a'] == 1
     assert e2['b'] == 2
 
+
 @patch('__builtin__.open')
 @patch('yaml.load')
 def test_from_yaml_file_2(m1, m2):
@@ -78,4 +80,16 @@ def test_self_destruct():
     e1.to_yaml_file('/tmp')
     e1.self_destruct(p)
 
-    
+
+@raises(TypeError)
+def test_allowed_types():
+
+    Entity.allowed_types = {'frotz':Entity}
+    e1 = Entity(title="e1", frotz='abc')
+
+
+@raises(ValueError)
+def test_allowed_values():
+
+    Entity.allowed_values = {'frotz':[1,2]}
+    e1 = Entity(title="e1", frotz='abc')

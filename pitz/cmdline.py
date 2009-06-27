@@ -149,12 +149,27 @@ def build_filter(args):
 
     return d
 
+
 def send_through_pager(s):
     """
     Open up this user's pager and send string s through it.
+
+    If I don't find a $PAGER variable and "which less" fails, I'll just
+    print the string.
     """
 
-    pager = subprocess.Popen([os.environ.get('PAGER', 'less')],
-        stdin=subprocess.PIPE)
+    pager = os.environ.get('PAGER')
 
-    pager.communicate(s)
+    if not pager:
+        return_code = subprocess.call(['which', 'less'])
+
+        # The which program returns zero when it found stuff.
+        if return_code == 0:
+            pager = 'less'
+
+    if pager:
+        p = subprocess.Popen([pager], stdin=subprocess.PIPE)
+        p.communicate(s)
+
+    else:
+        print(s)

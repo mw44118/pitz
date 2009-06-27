@@ -58,7 +58,7 @@ class Iteration(pitz.entity.Entity):
         Return the sum of points for all stories in this iteration.
         """
 
-        return sum([s['estimate'] for s in self.stories])
+        return sum([s.points for s in self.stories])
         
 
     @property
@@ -69,6 +69,7 @@ class Iteration(pitz.entity.Entity):
 
         return sum([s['estimate'] for s in self.stories if s['status'] == 'finished'])
 
+
     def plan_iteration(self):
         """
         Assign enough stories from the backlog to fill up this
@@ -78,7 +79,7 @@ class Iteration(pitz.entity.Entity):
         for story in self.project.estimated_backlog:
 
             # Only add the story if it will fit.
-            if self.slack >= story['estimate']:
+            if self.slack >= story.points:
                 self.add_story(story)
 
 
@@ -88,34 +89,58 @@ class Iteration(pitz.entity.Entity):
         Check the slack and then maybe add a story.
         """
 
-        if self.slack >= story['estimate']:
-            story['status'] = 'planned'
+        if self.slack >= story['estimate']['points']:
+            story['status'] = Status(title='planned')
             story['iteration'] = self
 
         else:
             raise Exception("Not enough slack for this story!")
-        
+
+
+class Status(pitz.entity.ImmutableEntity):
+    """
+    Tracks the state the story is in.
+    """
+
+class Task(pitz.entity.Entity):
+
+    pointers = ['story']
+
+
+class Priority(pitz.entity.Entity):
+    """
+    Tracks importance.
+    """
+
+
+class Estimate(pitz.entity.ImmutableEntity):
+    """
+    Tracks point score.
+    """
+
+    required_fields = {'points':0}
+
 
 class UserStory(pitz.entity.Entity):
 
     required_fields = dict(
         title=None,
-        priority=5,
-        status='backlog',
-        estimate='unknown',
+        priority=Priority(level=5),
+        status=Status(title="backlog"),
+        estimate=Estimate(title='unknown'),
     )
 
-    allowed_values = dict(
-        status=['backlog', 'planned', 'started', 'stopped', 'finished'],
-        estimate=set(['unknown', 1, 2, 3]),
-        priority=range(0, 6),
+    allowed_types = dict(
+        status=Status,
+        estimate=pitz.entity.Entity,
+        priority=Priority,
     )
 
     pointers = ['iteration']
 
     @property
     def points(self):
-        return self['estimate']
+        return self['estimate']['points']
 
     def send_to_backlog(self):
         """
@@ -123,13 +148,8 @@ class UserStory(pitz.entity.Entity):
         backlog.
         """
 
-        self['status'] = 'backlog'
+        self['status'] = Status(title='backlog')
         self.pop('iteration')
-
-
-class Task(pitz.entity.Entity):
-
-    pointers = ['story']
 
 
 class AgileProject(pitz.project.Project):
@@ -145,7 +165,7 @@ class AgileProject(pitz.project.Project):
 
         self.order()
 
-        backlog = self(type='userstory', status='backlog')
+        backlog = self(type='userstory', status=Status(title='backlog'))
         backlog.title = 'All stories in backlog'
         backlog.order_method = pitz.by_whatever('by_priority', 'priority')
 
@@ -156,8 +176,8 @@ class AgileProject(pitz.project.Project):
         
         self.order()
 
-        backlog = self(type='userstory', status='backlog')\
-        .does_not_match_dict(estimate='unknown')
+        backlog = self(type='userstory', status=Status(title='backlog'))\
+        .does_not_match_dict(estimate=Estimate(title='unknown'))
 
         backlog.title = 'Estimated stories in backlog'
         backlog.order_method = pitz.by_whatever('by_priority', 'priority')

@@ -13,12 +13,25 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger('pitz.entity')
 
 class Entity(dict):
+
     """
     Acts like a regular dictionary with a few extra tweaks.
     """
 
     required_fields = dict(title='no title')
+
+    # Maps attributes to sequences of allowed values.
     allowed_values = dict()
+
+    # Maps attributes to classes.  These attributes must be instances of
+    # these classes.
+    allowed_types = dict()
+
+    # When these keys get updated, do not update the modified_time
+    # key.
+    do_not_update_modified_time_for_these_keys = [
+        'yaml_file_saved', 'html_file_saved', 'modified_time',
+    ]
 
     def __init__(self, project=None, **kwargs):
     
@@ -30,14 +43,18 @@ class Entity(dict):
             if rf not in kwargs:
 
                 # Use a default value if we got one.  
-                if default_value:
+                if default_value is not None:
                     kwargs[rf] = default_value
 
                 # Otherwise, raise an exception.
                 else:
                     raise ValueError("I need a value for %s!" % rf)
 
-        self.update(**kwargs)
+        # Originally, I tried using self.update here, but it seems that
+        # update did NOT use my subclassed __setitem__ method.
+        for k, v in kwargs.items():
+            self[k] = v
+
         self['type'] = self.__class__.__name__.lower()
 
         # Make a unique uuid if we didn't get one.
@@ -72,22 +89,33 @@ class Entity(dict):
 
 
     def __setitem__(self, attr, val):
+
         """
         Make sure that the value is allowed for this attr before going
         any further.
         """
 
-        if attr in self.allowed_values and val not in self.allowed_values[attr]:
-            raise ValueError("%s must be in %s, not %s!" 
+        if attr in self.allowed_values \
+        and val not in self.allowed_values[attr]:
+
+            raise ValueError("%s must be in %s, not %s!"
                 % (attr, self.allowed_values[attr], val))
+
+        elif attr in self.allowed_types \
+        and not isinstance(val, self.allowed_types[attr]):
+
+            raise TypeError("%s must be an instance of %s, not %s!"
+                % (attr, self.allowed_types[attr], type(val)))
+
 
         else:
             super(Entity, self).__setitem__(attr, val)
 
             if self.update_modified_time \
-            and attr not in ('yaml_file_saved', 'html_file_saved', 'modified_time'):
+            and attr not in self.do_not_update_modified_time_for_these_keys:
 
                 super(Entity, self).__setitem__('modified_time', datetime.now())
+
 
 
     def __hash__(self):
@@ -394,3 +422,38 @@ class Entity(dict):
             datetime(1991, 1, 1))
 
         return self['modified_time'] > yaml_file_saved
+
+
+class ImmutableEntity(Entity):
+
+    """
+    These can't be changed after instantiation.  Furthermore, if you try
+    to make one that matches one that already exists, I'll return the
+    original one.
+
+    >>> ie1 = ImmutableEntity(a=1)
+    >>> ie2 = ImmutableEntity(a=1)
+    >>> id(ie1) == id(ie2)
+    True
+    >>> ie3 = ImmutableEntity(a=2)
+    >>> id(ie1) == id(ie3)
+    False
+    """
+
+    already_instantiated = dict()
+
+    def __new__(cls, project=None, **kwargs):
+
+        k = tuple(dict(project=project, **kwargs).items())
+
+        if k in cls.already_instantiated:
+
+            return cls.already_instantiated[k]
+
+        else:
+
+            o = super(ImmutableEntity, cls).__new__(cls, project, **kwargs)
+            cls.already_instantiated[k] = o
+
+            return o
+

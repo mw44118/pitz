@@ -19,20 +19,24 @@ def setup():
 
     global ap
     ap = AgileProject()
-    ap.append(UserStory(title='Draw new accounting report', priority=2))
-    ap.append(UserStory(title='Improve speed of search page', priority=0))
+ 
+    ap.append(UserStory(title='Draw new accounting report',
+        priority=Priority(level=2)))
+
+    ap.append(UserStory(title='Improve speed of search page',
+         priority=Priority(level=1)))
 
     ap.append(UserStory(title='Add animation to site logo',
-        estimate=2))
+        estimate=Estimate(points=2)))
 
     ap.append(UserStory(title='Write "forgot password?" feature',
-        priority=1, estimate=2))
+        priority=Priority(level=1), estimate=Estimate(points=2)))
 
     ap.append(UserStory(title='Allow customer to change contact information',
-        priority=2, estimate=2))
+        priority=Priority(level=1), estimate=Estimate(points=2)))
 
     ap.append(UserStory(title='Allow customer to change display name',
-        priority=2, estimate=1))
+        priority=Priority(level=1), estimate=Estimate(points=1)))
 
 
 def test_show_backlog_1():
@@ -41,7 +45,7 @@ def test_show_backlog_1():
     """
 
     global ap
-    assert len(ap.backlog) == 6
+    assert len(ap.backlog) == 6, len(ap.backlog)
 
 
 def test_show_backlog_2():
@@ -50,7 +54,8 @@ def test_show_backlog_2():
     """
 
     global ap
-    assert len(ap.estimated_backlog) == 4
+    assert len(ap.estimated_backlog) == 4, len(ap.estimated_backlog)
+
 
 def test_show_backlog_3():
     """
@@ -58,8 +63,8 @@ def test_show_backlog_3():
     """
 
     global ap
-    b = ap.backlog(estimate='unknown')
-    assert len(b) == 2
+    b = ap.backlog(estimate=Estimate(title='unknown'))
+    assert len(b) == 2, len(b)
     assert b[0]['priority'] <= b[1]['priority']
 
 
@@ -70,13 +75,14 @@ def test_estimate_story_1():
     """
 
     global ap
-    us = ap.backlog(estimate='unknown')[0]
-    assert us in ap.backlog(estimate='unknown')
+    us = ap.backlog(estimate=Estimate(title='unknown'))[0]
+    assert us in ap.backlog(estimate=Estimate(title='unknown'))
     ap.append(Task(title="Get mockups approved", story=us))
     ap.append(Task(title="Write queries", story=us))
     ap.append(Task(title="Write some tests", story=us))
-    us['estimate'] = 2
-    assert us not in ap.backlog(estimate='unknown')
+    us['estimate'] = Estimate(title='easy')
+    assert us not in ap.backlog(estimate=Estimate(title='unknown'))
+
 
 @with_setup(setup)
 def test_add_story_1():
@@ -90,12 +96,14 @@ def test_add_story_1():
     it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
     s = ap.estimated_backlog[0]
 
-    assert s['status'] == 'backlog', \
+    print("title of estimated story is %s" % s.title)
+
+    assert s['status'] == Status(title='backlog'), \
     "status for %(title)s is %(status)s!" % s
 
     it99.add_story(s)
 
-    assert s['status'] == 'planned', \
+    assert s['status'] == Estimate(title='planned'), \
     "status for %(title)s is %(status)s!" % s
     
     assert len(it99.stories) == 1
@@ -103,7 +111,8 @@ def test_add_story_1():
 
     assert it99.stories[0] == s
 
-    assert it99.points == s.points
+    assert it99.points == s.points, '%s != %s' % (it99.points, s.points)
+
     assert it99.slack == it99.velocity - s.points
 
 
@@ -119,14 +128,21 @@ def test_plan_iteration_1():
     it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
     print("it99 has %d points of slack." % it99.slack)
 
+    print("ap has %d stories in the estimated backlog." 
+        % ap.estimated_backlog.length)
+
     it99.plan_iteration()
 
-    assert it99.points == it99['velocity']
-    assert not it99.slack
+    print("it99 has %d stories" % it99.stories.length)
+
+    assert it99.points == it99['velocity'], \
+    "%s != %s" % (it99.points, it99['velocity'])
+
+    assert not it99.slack, it99.slack
 
     for s in it99.stories:
         assert s['iteration'] == it99
-        assert s['status'] == 'planned'
+        assert s['status'] == Status(title='planned'), s['status']
     
 
 @with_setup(setup)
@@ -189,3 +205,10 @@ def test_add_story_2():
 
     it99.add_story(UserStory(ap, title="Bogus extra story", estimate=3))
 
+
+def test_finished_points():
+
+
+    global ap
+    it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
+    it99.finished_points

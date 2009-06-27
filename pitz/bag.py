@@ -239,6 +239,7 @@ class Bag(list):
         for e in self:
             e.replace_objects_with_pointers()
 
+
     @property
     def attributes(self):
         """
@@ -324,6 +325,7 @@ class Bag(list):
         tmpl = self.e.get_template('bag.html')
         return tmpl.render(title=self.title, bag=self,
             isinstance=isinstance, UUID=UUID)
+
 
     @property
     def length(self):
