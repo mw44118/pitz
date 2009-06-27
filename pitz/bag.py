@@ -13,9 +13,11 @@ logging.basicConfig(level=logging.INFO)
 
 
 class Bag(list):
+
     """
     Bags are really just lists with some useful methods.
     """
+
 
     def __init__(self, title='', uuid=None, pathname=None, entities=(),
         order_method=by_created_time, **kwargs):
@@ -44,7 +46,15 @@ class Bag(list):
 
         self.e = jinja2.Environment(
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
+
+        self.e.globals = {
+            'isinstance':isinstance,
+            'hasattr':hasattr,
+            'enumerate':enumerate,
+            'len':len,
+        }
     
+
     def to_csv(self, filepath, *columns):
         """
         Write out a CSV file for this bag listing the columns specified,
@@ -186,20 +196,9 @@ class Bag(list):
         # entities since the last time we sorted.
         self.order()
 
-        t = jinja2.Template("""\
-{%  for dash in bag.title -%}={% endfor %}
-{{ bag.title }}
-{%  for dash in bag.title -%}={% endfor %}
+        t = self.e.get_template('bag_detailed_view.txt')
 
-{{ bag.contents }}
-{%  for dash in bag.contents -%}-{% endfor %}
-
-{% for i, e in enumerate(entities) -%}
-{{ "%4d" | format(i) }}: {{e.summarized_view}}
-{% endfor %}""")
-
-        return t.render(bag=self, entities=self,
-            enumerate=enumerate, len=len)
+        return t.render(bag=self, entities=self)
 
 
     @property

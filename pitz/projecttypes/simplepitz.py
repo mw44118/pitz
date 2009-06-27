@@ -24,6 +24,8 @@ class Milestone(Entity):
     Useful for bundling tasks
     """
 
+    plural_name = "milestones"
+
     @property
     def tasks(self):
 
@@ -60,6 +62,8 @@ class Milestone(Entity):
 
 
 class Task(Entity):
+
+    plural_name = "tasks"
 
     required_fields = dict(
         milestone='unscheduled',
@@ -125,6 +129,8 @@ class Comment(Entity):
     """
     You can comment on any entity.
     """
+
+    plural_name = "comments"
     
     required_fields = dict(
         who_said_it=None,
@@ -172,8 +178,12 @@ class Person(Entity):
     Maybe you want to track who is doing what.
     """
 
+    plural_name = "people"
+
 
 class Component(Entity):
+
+    plural_name = "component"
 
     @property
     def tasks(self):
@@ -218,13 +228,7 @@ class SimpleProject(Project):
         b.title = '%s: stuff to do' % self.title
         return b
 
-    # I know I COULD make all these properties using the classes
-    # dictionary, but this way is hopefully much
-    # more obvious and solves the hassle of indicating that the plural
-    # of "person" is "people".
-
-    # On the other hand, it may not be that hard to just ask each class
-    # for its plural name, and then use that.
+    # TODO: replace all this with some metaclass tomfoolery.
     @property
     def milestones(self):
         b = self(type='milestone')

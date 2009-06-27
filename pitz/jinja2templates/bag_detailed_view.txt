@@ -1,0 +1,10 @@
+{%  for dash in bag.title -%}={% endfor %}
+{{ bag.title }}
+{%  for dash in bag.title -%}={% endfor %}
+
+{{ bag.contents }}
+{%  for dash in bag.contents -%}-{% endfor %}
+
+{% for i, e in enumerate(entities) -%}
+{{ "%4d" | format(i) }}: {{e.summarized_view}}
+{% endfor %}

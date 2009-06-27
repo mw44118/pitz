@@ -150,6 +150,9 @@ class Project(Bag):
 
         Check the os.environ first and then walk up the filesystem, then
         walk down the filesystem IFF walkdown is True.
+
+        By the way, walking down can take a REALLY long time if you're
+        at the top of a big file system.
         """
 
         yamlpath = os.path.join(os.environ.get('PITZDIR', ''), 'project.yaml')
