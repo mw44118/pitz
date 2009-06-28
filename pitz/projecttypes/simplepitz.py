@@ -176,6 +176,9 @@ class Comment(Entity):
         return tmpl.render(locals())
 
 
+
+
+
 class Person(Entity):
     """
     Maybe you want to track who is doing what.
@@ -208,6 +211,11 @@ class Component(Entity):
         return unfinished
     
 
+class Estimate(ImmutableEntity):
+    
+    required_fields = dict(points=None)
+
+
 class SimpleProject(Project):
     """
     Just like the regular project, but with some queries as properties.
@@ -215,6 +223,7 @@ class SimpleProject(Project):
 
     # These are all the classes I deal with.
     classes = dict(
+        estimate=Estimate,
         task=Task,
         person=Person,
         milestone=Milestone,

@@ -6,7 +6,10 @@
 Start IPython and load up your project.
 """
 
-import optparse, os, sys
+import logging, optparse, os, sys
+
+log = logging.getLogger('pitz')
+log.setLevel(logging.DEBUG)
 
 p = optparse.OptionParser()
 

@@ -104,7 +104,7 @@ def test_add_story_1():
 
     it99.add_story(s)
 
-    assert s['status'] == Estimate(title='planned'), \
+    assert s['status'] == Status(title='planned'), \
     "status for %(title)s is %(status)s!" % s
     
     assert len(it99.stories) == 1
@@ -167,6 +167,7 @@ def test_plan_iteration_2():
 
 @with_setup(setup)
 def test_plan_iteration_3():
+
     """
     Take something out of an iteration in order to make room for
     something else.
@@ -192,6 +193,7 @@ def test_plan_iteration_3():
 @raises(Exception)
 @with_setup(setup)
 def test_add_story_2():
+
     """
     Try to add another story after using up the slack.
     """
@@ -208,7 +210,6 @@ def test_add_story_2():
 
 
 def test_finished_points():
-
 
     global ap
     it99 = Iteration(ap, title="Iteration for week 99", velocity=5)

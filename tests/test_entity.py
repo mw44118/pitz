@@ -8,7 +8,11 @@ from mock import Mock, patch
 
 import yaml
 
-e = Entity(a=1, b=2, c=3)
+e = None
+
+def setup():
+    global e
+    e = Entity(title="bogus entity", a=1, b=2, c=3)
 
 def test_summarized_view():
     global e
@@ -114,8 +118,12 @@ class TestImmutableEntity(object):
 
     def test_already_instantiated(self):
 
-        d = dict(a=1, b=2, c=3)
+        d = dict(title="abc")
         ie1 = ImmutableEntity(**d)
+
+        frag1 = ie1.frag
+
         ie2 = ImmutableEntity(**d)
 
         assert id(ie1) == id(ie2)
+        assert frag1 == ie2.frag, '%s != %s' % (frag1, ie2.frag)
