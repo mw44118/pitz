@@ -35,7 +35,7 @@ def setup():
 
 @raises(NoProject)
 def test_noproject():
-    m = Milestone()
+    m = Milestone(title="Bogus milestone")
     m.tasks
 
 def test_show_milestones():

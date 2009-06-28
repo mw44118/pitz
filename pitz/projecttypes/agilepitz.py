@@ -104,10 +104,10 @@ class Status(pitz.entity.ImmutableEntity):
 
 class Task(pitz.entity.Entity):
 
-    pointers = ['story']
+    pointers = ['story', 'priority', 'estimate']
 
 
-class Priority(pitz.entity.Entity):
+class Priority(pitz.entity.ImmutableEntity):
     """
     Tracks importance.
     """
@@ -125,7 +125,7 @@ class UserStory(pitz.entity.Entity):
 
     required_fields = dict(
         title=None,
-        priority=Priority(level=5),
+        priority=Priority(level=5, title="Critical"),
         status=Status(title="backlog"),
         estimate=Estimate(title='unknown'),
     )

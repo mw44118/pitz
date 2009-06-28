@@ -46,7 +46,7 @@ def test_replace_pointers_with_objects():
 @patch('yaml.load')
 def test_from_yaml_file_1(m1, m2):
 
-    m2.return_value = {'a':1, 'b':2}
+    m2.return_value = {'title':'bogus entity', 'a':1, 'b':2}
 
     global e
 

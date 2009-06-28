@@ -21,23 +21,25 @@ def setup():
     ap = AgileProject()
  
     ap.append(UserStory(title='Draw new accounting report',
-        priority=Priority(level=2)))
+        priority=Priority(level=2, title="two")))
 
     ap.append(UserStory(title='Improve speed of search page',
-         priority=Priority(level=1)))
+         priority=Priority(level=1, title="one")))
 
     ap.append(UserStory(title='Add animation to site logo',
         estimate=Estimate(title="straightforward", points=2)))
 
     ap.append(UserStory(title='Write "forgot password?" feature',
-        priority=Priority(level=1),
+        priority=Priority(level=1, title="one"),
         estimate=Estimate(title="straightforward", points=2)))
 
     ap.append(UserStory(title='Allow customer to change contact information',
-        priority=Priority(level=1), estimate=Estimate(title="straightforward", points=2)))
+        priority=Priority(level=1, title="one"),
+        estimate=Estimate(title="straightforward", points=2)))
 
     ap.append(UserStory(title='Allow customer to change display name',
-        priority=Priority(level=1), estimate=Estimate(title="easy", points=1)))
+        priority=Priority(level=1, title="one"),
+        estimate=Estimate(title="easy", points=1)))
 
 
 def test_show_backlog_1():
