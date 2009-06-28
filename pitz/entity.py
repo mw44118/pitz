@@ -54,14 +54,17 @@ class Entity(dict):
 
         # Originally, I tried using self.update here, but it seems that
         # update did NOT use my subclassed __setitem__ method.
+        # If I were to subclass UserDict, then that would work, BUT
+        # UserDict is not a new-style class, so I couldn't use super.
         for k, v in kwargs.items():
             self[k] = v
 
         self['type'] = self.__class__.__name__.lower()
 
-        # Make a unique uuid if we didn't get one.
-        if not kwargs.get('uuid'):
+        # Make a unique uuid if we don't already have one.
+        if not self.get('uuid'):
             self['uuid'] = uuid.uuid4()
+            log.debug("Just created a new UUID %s" % self['uuid'])
 
         self['frag'] = str(self['uuid'])[:6]
 
@@ -449,10 +452,9 @@ class ImmutableEntity(Entity):
 
     def __new__(cls, project=None, **kwargs):
 
-        k = tuple(kwargs.items())
+        k = (('type', cls.__name__.lower()), ('title', kwargs['title']))
 
         if k in cls.already_instantiated:
-
             return cls.already_instantiated[k]
 
         else:
