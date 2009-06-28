@@ -101,7 +101,7 @@ class TestImmutableEntity(object):
 
     def setUp(self):
         print("setting up")
-        self.ie1 = ImmutableEntity(a=1, b=2, c=3)
+        self.ie1 = ImmutableEntity(title="abc")
 
     def tearDown(self):
         print("tearing down")

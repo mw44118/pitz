@@ -27,16 +27,17 @@ def setup():
          priority=Priority(level=1)))
 
     ap.append(UserStory(title='Add animation to site logo',
-        estimate=Estimate(points=2)))
+        estimate=Estimate(title="straightforward", points=2)))
 
     ap.append(UserStory(title='Write "forgot password?" feature',
-        priority=Priority(level=1), estimate=Estimate(points=2)))
+        priority=Priority(level=1),
+        estimate=Estimate(title="straightforward", points=2)))
 
     ap.append(UserStory(title='Allow customer to change contact information',
-        priority=Priority(level=1), estimate=Estimate(points=2)))
+        priority=Priority(level=1), estimate=Estimate(title="straightforward", points=2)))
 
     ap.append(UserStory(title='Allow customer to change display name',
-        priority=Priority(level=1), estimate=Estimate(points=1)))
+        priority=Priority(level=1), estimate=Estimate(title="easy", points=1)))
 
 
 def test_show_backlog_1():

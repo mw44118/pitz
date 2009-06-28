@@ -18,7 +18,9 @@ class Entity(dict):
     Acts like a regular dictionary with a few extra tweaks.
     """
 
-    required_fields = dict(title='no title')
+    # When the value is None, I'll raise an exception unless the
+    # attribute is defined.
+    required_fields = dict(title=None)
 
     # Maps attributes to sequences of allowed values.
     allowed_values = dict()
@@ -434,11 +436,11 @@ class ImmutableEntity(Entity):
     to make one that matches one that already exists, I'll return the
     original one.
 
-    >>> ie1 = ImmutableEntity(a=1)
-    >>> ie2 = ImmutableEntity(a=1)
+    >>> ie1 = ImmutableEntity(title="a")
+    >>> ie2 = ImmutableEntity(title="a")
     >>> id(ie1) == id(ie2)
     True
-    >>> ie3 = ImmutableEntity(a=2)
+    >>> ie3 = ImmutableEntity(title="b")
     >>> id(ie1) == id(ie3)
     False
     """
