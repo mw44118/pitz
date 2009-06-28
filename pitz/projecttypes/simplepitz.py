@@ -171,11 +171,7 @@ class Comment(Entity):
 
         time = self['created_time'].strftime("%A, %B %d, %Y, at %I:%M %P")
         
-        tmpl = jinja2.Template("""\
-{{who_said_it}} on {{time}} said:
-
-{{text}}
-""")
+        tmpl = self.e.get_template('comment_detailed_view.txt')
 
         return tmpl.render(locals())
 

@@ -1,0 +1,4 @@
+{{who_said_it}} on {{time}} said:
+
+{{text}}
+
