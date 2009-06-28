@@ -199,6 +199,7 @@ class Component(Entity):
 
         tasks = self.project(type='task', milestone=self)
         tasks.title = 'Tasks in %(title)s' % self
+
         return tasks
 
     @property

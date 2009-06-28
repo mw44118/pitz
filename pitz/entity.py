@@ -64,7 +64,6 @@ class Entity(dict):
         # Make a unique uuid if we don't already have one.
         if not self.get('uuid'):
             self['uuid'] = uuid.uuid4()
-            log.debug("Just created a new UUID %s" % self['uuid'])
 
         self['frag'] = str(self['uuid'])[:6]
 
@@ -174,7 +173,13 @@ class Entity(dict):
         for a, v in d.items():
 
             if self.project:
-                v = self.project[v]
+
+                # When v is a frag or a UUID, convert it to the object
+                # it refers to.
+                if v in self.project.entities_by_frag \
+                or v in self.project.entities_by_uuid:
+
+                    v = self.project[v]
 
             if a not in self: 
                 return
