@@ -1,10 +1,12 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-from pitz.entity import Entity
+from pitz.entity import Entity, ImmutableEntity
 from pitz.project import Project
 
 from nose.tools import raises
 from mock import Mock, patch
+
+import yaml
 
 e = Entity(a=1, b=2, c=3)
 
@@ -93,3 +95,27 @@ def test_allowed_values():
 
     Entity.allowed_values = {'frotz':[1,2]}
     e1 = Entity(title="e1", frotz='abc')
+
+
+class TestImmutableEntity(object):
+
+    def setUp(self):
+        print("setting up")
+        self.ie1 = ImmutableEntity(a=1, b=2, c=3)
+
+    def tearDown(self):
+        print("tearing down")
+
+    def test_from_yaml_file(self):
+
+        p = Project()
+        d = yaml.load(self.ie1.yaml)
+        ImmutableEntity(p, **d)
+
+    def test_already_instantiated(self):
+
+        d = dict(a=1, b=2, c=3)
+        ie1 = ImmutableEntity(**d)
+        ie2 = ImmutableEntity(**d)
+
+        assert id(ie1) == id(ie2)

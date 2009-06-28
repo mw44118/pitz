@@ -13,7 +13,7 @@ import logging, textwrap
 import jinja2
 
 from pitz import *
-from pitz.entity import Entity
+from pitz.entity import Entity, ImmutableEntity
 from pitz.project import Project
 from pitz.exceptions import NoProject
 
@@ -88,6 +88,7 @@ class Task(Entity):
         """
 
         return "%(frag)s %(title)s (%(status)s)" % self
+
 
     @property
     def comments(self):

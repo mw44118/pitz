@@ -447,7 +447,7 @@ class ImmutableEntity(Entity):
 
     def __new__(cls, project=None, **kwargs):
 
-        k = tuple(dict(project=project, **kwargs).items())
+        k = tuple(kwargs.items())
 
         if k in cls.already_instantiated:
 
@@ -459,4 +459,3 @@ class ImmutableEntity(Entity):
             cls.already_instantiated[k] = o
 
             return o
-
