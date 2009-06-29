@@ -39,8 +39,9 @@ class Milestone(Entity):
     @property
     def todo(self):
 
-        unfinished = self.tasks.does_not_match_dict(status='finished')\
-        .does_not_match_dict(status='abandoned')
+        unfinished = self.tasks.does_not_match_dict(
+            status=Status(title='finished'))\
+        .does_not_match_dict(status=Status(title='abandoned'))
 
         unfinished.title = "Unfinished tasks in %(title)s" % self
         return unfinished
@@ -75,11 +76,6 @@ class Task(Entity):
         milestone='unscheduled',
         title='no title',
         status='unstarted')
-
-    allowed_values = dict(
-        status=['unstarted', 'started', 'abandoned', 'finished'],
-    )
-
 
     @property
     def summarized_view(self):
@@ -176,9 +172,6 @@ class Comment(Entity):
         return tmpl.render(locals())
 
 
-
-
-
 class Person(Entity):
     """
     Maybe you want to track who is doing what.
@@ -205,8 +198,9 @@ class Component(Entity):
     @property
     def todo(self):
 
-        unfinished = self.tasks.does_not_match_dict(status='finished')\
-        .does_not_match_dict(status='abandoned')
+        unfinished = self.tasks.does_not_match_dict(
+            status=Status(title='finished'))\
+        .does_not_match_dict(status=Status(title='abandoned'))
 
         unfinished.title = "Unfinished tasks in %(title)s" % self
         return unfinished
@@ -217,6 +211,24 @@ class Estimate(ImmutableEntity):
     required_fields = dict(points=None)
 
 
+class Status(ImmutableEntity):
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def tasks(self):
+        """
+        Return tasks with this status
+        """
+        
+        if not self.project:
+            raise NoProject("Need a self.project for this!")
+
+        else:
+            return self.project.tasks(status=self)
+    
+
 class SimpleProject(Project):
     """
     Just like the regular project, but with some queries as properties.
@@ -224,6 +236,7 @@ class SimpleProject(Project):
 
     # These are all the classes I deal with.
     classes = dict(
+        status=Status,
         estimate=Estimate,
         task=Task,
         person=Person,
@@ -235,8 +248,8 @@ class SimpleProject(Project):
     def todo(self):
 
         b = self(type='task')\
-        .does_not_match_dict(status='finished')\
-        .does_not_match_dict(status='abandoned')
+        .does_not_match_dict(status=Status(title='finished'))\
+        .does_not_match_dict(status=Status(title='abandoned'))
 
         b.title = '%s: stuff to do' % self.title
         return b
