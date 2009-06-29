@@ -1,10 +1,11 @@
 created_time: 2009-05-11 12:17:59.477914
-html_file_saved: &id001 2009-06-20 18:08:36.170818
+html_file_saved: 2009-06-20 18:08:36.170818
 milestone: unscheduled
-modified_time: *id001
-status: unstarted
+modified_time: 2009-06-28 21:51:09.803821
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
 title: explore paster and see if it makes sense to make pitz use paster
 type: task
 uuid: !!python/object:uuid.UUID
   int: 328335035426353651200848263917902514308
-yaml_file_saved: 2009-06-20 18:08:36.625067
+yaml_file_saved: 2009-06-28 21:51:50.118631

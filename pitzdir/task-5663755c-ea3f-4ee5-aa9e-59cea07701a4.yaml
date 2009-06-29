@@ -1,12 +1,13 @@
 comments: []
 created_time: 2009-03-24 12:20:41.092650
-html_file_saved: &id001 2009-06-20 18:08:35.476675
+html_file_saved: 2009-06-20 18:08:35.476675
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
-status: finished
+modified_time: 2009-06-28 21:51:09.784564
+status: !!python/object:uuid.UUID
+  int: 181191650815078915740523248343325601886
 title: Prompt to save work at the end of an interactive pitz session
 type: task
 uuid: !!python/object:uuid.UUID
   int: 114830025429908318768725473963323883940
-yaml_file_saved: 2009-06-20 18:08:36.388163
+yaml_file_saved: 2009-06-28 21:51:49.720869

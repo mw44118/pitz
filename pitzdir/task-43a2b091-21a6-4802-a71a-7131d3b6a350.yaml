@@ -12,12 +12,13 @@ description: 'There''s a couple of ways to do this.
   fields one-by-one.
 
   '
-html_file_saved: &id001 2009-06-20 18:08:35.899643
+html_file_saved: 2009-06-20 18:08:35.899643
 milestone: unscheduled
-modified_time: *id001
-status: unstarted
+modified_time: 2009-06-28 21:51:09.798311
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
 title: Write a pitz-edit script
 type: task
 uuid: !!python/object:uuid.UUID
   int: 89903009011259839892182310709557109584
-yaml_file_saved: 2009-06-20 18:08:36.537753
+yaml_file_saved: 2009-06-28 21:51:49.855994

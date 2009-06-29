@@ -1,11 +1,12 @@
 created_time: 2009-04-01 09:30:44.514573
-html_file_saved: &id001 2009-06-20 18:08:35.431313
+html_file_saved: 2009-06-20 18:08:35.431313
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
-status: finished
+modified_time: 2009-06-28 21:51:09.783396
+status: !!python/object:uuid.UUID
+  int: 181191650815078915740523248343325601886
 title: Add a todo property on project (or maybe bag)
 type: task
 uuid: !!python/object:uuid.UUID
   int: 265568185025282908078403416665063902698
-yaml_file_saved: 2009-06-20 18:08:36.370156
+yaml_file_saved: 2009-06-28 21:51:49.612269

@@ -11,10 +11,11 @@ description: "This will make a bag with all tasks attached to the first mileston
   \ d734c3 and then decides if that matches one and only one\nentity in the project.\n\
   \nIf so, I could replace the ugly string with with the entity.\n"
 milestone: unscheduled
-modified_time: 2009-06-27 18:40:16.805559
-status: finished
+modified_time: 2009-06-28 21:51:09.795590
+status: !!python/object:uuid.UUID
+  int: 181191650815078915740523248343325601886
 title: Figure out how to filter by entities at the command-line
 type: task
 uuid: !!python/object:uuid.UUID
   int: 29768332431906119096228123199403195254
-yaml_file_saved: 2009-06-27 18:40:19.552099
+yaml_file_saved: 2009-06-28 21:51:49.820872

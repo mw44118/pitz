@@ -1,10 +1,11 @@
-created_time: &id001 2009-06-26 19:04:18.930465
+created_time: 2009-06-26 19:04:18.930465
 milestone: unscheduled
-modified_time: *id001
-status: unstarted
+modified_time: 2009-06-28 21:51:09.804597
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
 title: Use a metaclass to dynamically map the classes dictionary on the project into
   properties
 type: task
 uuid: !!python/object:uuid.UUID
   int: 8620096672933277371028232334790954061
-yaml_file_saved: 2009-06-26 20:28:25.961350
+yaml_file_saved: 2009-06-28 21:51:50.142774

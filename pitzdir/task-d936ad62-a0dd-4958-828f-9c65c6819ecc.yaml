@@ -19,13 +19,14 @@ description: 'The pitz-setup script is what somebody should run to start using p
   without needing to alter the core pitz code.
 
   '
-html_file_saved: &id001 2009-06-20 18:08:35.401248
+html_file_saved: 2009-06-20 18:08:35.401248
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
-status: finished
+modified_time: 2009-06-28 21:51:09.782593
+status: !!python/object:uuid.UUID
+  int: 181191650815078915740523248343325601886
 title: Write a pitz-setup script
 type: task
 uuid: !!python/object:uuid.UUID
   int: 288726375786694103791979888046044716748
-yaml_file_saved: 2009-06-20 18:08:36.356491
+yaml_file_saved: 2009-06-28 21:51:49.575738

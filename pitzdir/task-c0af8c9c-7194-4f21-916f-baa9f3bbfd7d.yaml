@@ -4,12 +4,13 @@ description: "Make it easy to see the statuses for each Entity, like this:\n\n  
   \ started\n    started -(abandon)-> abandoned\n    started -(finish)-> finished\n\
   \nAlso make it easy to update the status of an entity and optionally\nrecord a comment\
   \ about it.\n"
-html_file_saved: &id001 2009-06-20 18:08:35.990013
+html_file_saved: 2009-06-20 18:08:35.990013
 milestone: unscheduled
-modified_time: *id001
-status: unstarted
+modified_time: 2009-06-28 21:51:09.800682
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
 title: Write script to show and update entity statuses
 type: task
 uuid: !!python/object:uuid.UUID
   int: 256123279073036406708909268754635685245
-yaml_file_saved: 2009-06-20 18:08:36.566895
+yaml_file_saved: 2009-06-28 21:51:49.936939

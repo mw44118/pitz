@@ -1,10 +1,11 @@
 created_time: 2009-04-14 22:05:15.690581
-html_file_saved: &id001 2009-06-20 18:08:35.175319
+html_file_saved: 2009-06-20 18:08:35.175319
 milestone: unscheduled
-modified_time: *id001
-status: abandoned
+modified_time: 2009-06-28 21:51:09.792455
+status: !!python/object:uuid.UUID
+  int: 298405574766749661418099834004395263733
 title: Allow deleting entities
 type: task
 uuid: !!python/object:uuid.UUID
   int: 6806212698864949357149600499512729983
-yaml_file_saved: 2009-06-20 18:08:36.278740
+yaml_file_saved: 2009-06-28 21:51:49.322177

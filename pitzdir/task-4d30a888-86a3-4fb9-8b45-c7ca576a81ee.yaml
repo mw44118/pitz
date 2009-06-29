@@ -1,10 +1,11 @@
 created_time: 2009-06-15 11:05:09.055877
-html_file_saved: &id001 2009-06-20 18:08:35.974770
+html_file_saved: 2009-06-20 18:08:35.974770
 milestone: unscheduled
-modified_time: *id001
-status: unstarted
+modified_time: 2009-06-28 21:51:09.800294
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
 title: Show how to create tasks by sending an email.
 type: task
 uuid: !!python/object:uuid.UUID
   int: 102603204186160132074636614444948029934
-yaml_file_saved: 2009-06-20 18:08:36.562808
+yaml_file_saved: 2009-06-28 21:51:49.925221

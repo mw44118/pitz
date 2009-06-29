@@ -2,12 +2,13 @@ created_time: 2009-06-14 12:41:54.558662
 description: "I want to find out how pitz acts when there are hundreds or even\nthousands\
   \ of yaml files involved.  \n\nThese parts of pitz might be affected:\n\n*   matches_dict\
   \ and does_not_match_dict queries\n*   saving to yaml and loading from yaml files\n"
-html_file_saved: &id001 2009-06-20 18:08:35.929776
+html_file_saved: 2009-06-20 18:08:35.929776
 milestone: unscheduled
-modified_time: *id001
-status: unstarted
+modified_time: 2009-06-28 21:51:09.799097
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
 title: Study how pitz performs when there are lots of entities
 type: task
 uuid: !!python/object:uuid.UUID
   int: 92277578871934744724316452918696646163
-yaml_file_saved: 2009-06-20 18:08:36.548696
+yaml_file_saved: 2009-06-28 21:51:49.885921
