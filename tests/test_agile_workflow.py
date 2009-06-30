@@ -67,7 +67,7 @@ def test_show_backlog_3():
     """
 
     global ap
-    b = ap.backlog(estimate=Estimate(title='unknown'))
+    b = ap.backlog(estimate=Estimate(title='not estimated', points=None))
     assert len(b) == 2, len(b)
     assert b[0]['priority'] <= b[1]['priority']
 
@@ -79,13 +79,16 @@ def test_estimate_story_1():
     """
 
     global ap
-    us = ap.backlog(estimate=Estimate(title='unknown'))[0]
-    assert us in ap.backlog(estimate=Estimate(title='unknown'))
+    us = ap.backlog(estimate=Estimate(title='not estimated', points=None))[0]
+
+    assert us in ap.backlog(estimate=Estimate(title='not estimated', points=None))
+
     ap.append(Task(title="Get mockups approved", story=us))
     ap.append(Task(title="Write queries", story=us))
     ap.append(Task(title="Write some tests", story=us))
-    us['estimate'] = Estimate(title='easy')
-    assert us not in ap.backlog(estimate=Estimate(title='unknown'))
+    us['estimate'] = Estimate(title='easy', points=1)
+
+    assert us not in ap.backlog(estimate=Estimate(title='not estimated', points=None))
 
 
 @with_setup(setup)

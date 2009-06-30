@@ -14,12 +14,13 @@ import pitz
 import pitz.project
 import pitz.entity
 
+from pitz.projecttypes.simplepitz import Task, Estimate, Status, \
+SimpleProject
+
 class Release(pitz.entity.Entity):
     pass
 
 class Iteration(pitz.entity.Entity):
-
-    pointers = ['release']
 
     required_fields = dict(
         title='Untitled iteration',
@@ -97,29 +98,10 @@ class Iteration(pitz.entity.Entity):
             raise Exception("Not enough slack for this story!")
 
 
-class Status(pitz.entity.ImmutableEntity):
-    """
-    Tracks the state the story is in.
-    """
-
-class Task(pitz.entity.Entity):
-
-    pointers = ['story', 'priority', 'estimate']
-
-
 class Priority(pitz.entity.ImmutableEntity):
     """
     Tracks importance.
     """
-
-
-class Estimate(pitz.entity.ImmutableEntity):
-    """
-    Tracks point score.
-    """
-
-    required_fields = {'points':0}
-
 
 class UserStory(pitz.entity.Entity):
 
@@ -127,16 +109,15 @@ class UserStory(pitz.entity.Entity):
         title=None,
         priority=Priority(level=5, title="Critical"),
         status=Status(title="backlog"),
-        estimate=Estimate(title='unknown'),
+        estimate=Estimate(title='not estimated', points=None),
     )
 
     allowed_types = dict(
         status=Status,
-        estimate=pitz.entity.Entity,
+        estimate=Estimate,
         priority=Priority,
     )
 
-    pointers = ['iteration']
 
     @property
     def points(self):
@@ -152,7 +133,7 @@ class UserStory(pitz.entity.Entity):
         self.pop('iteration')
 
 
-class AgileProject(pitz.project.Project):
+class AgileProject(SimpleProject):
 
     classes = dict(
         release=Release,
@@ -177,7 +158,7 @@ class AgileProject(pitz.project.Project):
         self.order()
 
         backlog = self(type='userstory', status=Status(title='backlog'))\
-        .does_not_match_dict(estimate=Estimate(title='unknown'))
+        .does_not_match_dict(estimate=Estimate(title='not estimated', points=None))
 
         backlog.title = 'Estimated stories in backlog'
         backlog.order_method = pitz.by_whatever('by_priority', 'priority')
