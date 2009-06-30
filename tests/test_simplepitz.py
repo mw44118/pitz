@@ -7,7 +7,9 @@ Verify the stuff in simplepitz works.
 from nose.tools import raises, with_setup
 
 from pitz.exceptions import NoProject
-from pitz.projecttypes.simplepitz import *
+
+from pitz.projecttypes.simplepitz import Estimate, Milestone, Task, \
+SimpleProject, Component, Comment
 
 p = None
 
@@ -19,16 +21,16 @@ def setup():
     p.append(Task(title='Improve speed of search page', priority=0))
 
     p.append(Task(title='Add animation to site logo',
-        estimate=2))
+        estimate=Estimate(title="straightforward", points=2)))
 
     p.append(Task(title='Write "forgot password?" feature',
-        priority=1, estimate=2))
+        priority=1, estimate=Estimate(title="straightforward", points=2)))
 
     p.append(Task(title='Allow customer to change contact information',
-        priority=2, estimate=2))
+        priority=2, estimate=Estimate(title="straightforward", points=2)))
 
     p.append(Task(title='Allow customer to change display name',
-        priority=2, estimate=1))
+        priority=2, estimate=Estimate(title="easy", points=1)))
 
     p.append(Milestone(title="1.0"))
     p.append(Milestone(title="2.0"))

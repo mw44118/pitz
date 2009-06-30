@@ -15,9 +15,9 @@ b = Bag()
 
 tasks = [
     Task(b, title='Clean cat box!', creator='Matt',
-        status='unstarted'),
+        status=Status(title='unstarted')),
     Task(b, title='Shovel driveway', creator='Matt',
-        status='unstarted'),
+        status=Status(title='unstarted')),
 ]
 
 t1, t2 = tasks
@@ -60,7 +60,7 @@ def test_new_task():
     b = Bag()
 
     t = Task(b, title='Clean cat box!', 
-        status='unstarted',
+        status=Status(title='unstarted'),
         creator='Matt',
         description='It is gross!')
 
@@ -71,9 +71,8 @@ def test_missing_attributes_replaced_with_defaults():
     Verify we fill in missing attributes with defaults.
     """
 
-    t = Task()
-    assert t['title'] == 'no title'
-    assert t['status'] == 'unstarted'
+    t = Task(title="bogus")
+    assert t['status'] == Status(title='unstarted')
 
 
 def test_summarized_view():
@@ -91,8 +90,8 @@ def test_update_task_status():
     global tasks
     t1, t2 = tasks
 
-    t1['status'] = 'unstarted'
-    t1['status'] = 'finished'
+    t1['status'] = Status(title='unstarted')
+    t1['status'] = Status(title='finished')
 
 
 def test_comment_on_task():
@@ -113,7 +112,7 @@ def test_view_tasks_for_matt():
     p = Project("Matt's stuff")
     matt = Person(p, title='Matt')
 
-    t = Task(p, title='Clean cat box', owner=matt, status='unstarted')
+    t = Task(p, title='Clean cat box', owner=matt, status=Status(title='unstarted'))
 
     tasks_for_matt = p(type='task', owner=matt)
     assert t in tasks_for_matt
@@ -126,7 +125,7 @@ def test_view_tasks_for_matt_and_in_next_milestone():
     m = Milestone(p, title='Next Milestone')
 
     t = Task(p, title='Clean cat box', owner=matt, milestone=m,
-        status='unstarted')
+        status=Status(title='unstarted'))
 
     tasks_for_matt_in_next_milestone = p(type='task', owner=matt, 
         milestone=m)

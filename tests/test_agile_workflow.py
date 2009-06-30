@@ -11,7 +11,8 @@ Verify we can use pitz for an agile workflow, where "agile" means:
 
 from nose.tools import raises, with_setup
 
-from pitz.projecttypes.agilepitz import *
+from pitz.projecttypes.agilepitz import Estimate, UserStory, \
+AgileProject, Iteration, Priority, Status, Task
 
 ap = None
 
