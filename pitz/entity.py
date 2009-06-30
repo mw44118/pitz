@@ -48,7 +48,10 @@ class Entity(dict):
 
                 # Use a default value if we got one.  
                 if default_value is not None:
-                    kwargs[rf] = default_value
+
+                    kwargs[rf] = default_value(project) \
+                    if callable(default_value) \
+                    else default_value
 
                 # Otherwise, raise an exception.
                 else:
@@ -108,7 +111,7 @@ class Entity(dict):
                 % (attr, self.allowed_values[attr], val))
 
         elif attr in self.allowed_types \
-        and not isinstance(val, self.allowed_types[attr]):
+        and not isinstance(val, (uuid.UUID, self.allowed_types[attr])):
 
             raise TypeError("%s must be an instance of %s, not %s!"
                 % (attr, self.allowed_types[attr], type(val)))
