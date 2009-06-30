@@ -270,6 +270,25 @@ class Bag(list):
         return sorted(dd.items(), key=lambda t: t[1], reverse=True)
 
 
+    def choose_value(self, attr_name):
+
+        """
+        Ask for a value chosen from this attribute name.  Return the chosen
+        entity.
+        """
+
+        choices = [v for (v, count) in p.values(attr_name)]
+
+        for i, v in enumerate(choices):
+            print("%4d: %s" % (i, v.summarized_view))
+
+        choice = int(raw_input("Pick one. "))
+
+        return choices[choice]
+
+
+
+
     def grep(self, phrase, ignore_case=False):
 
         """
