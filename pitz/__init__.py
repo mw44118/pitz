@@ -12,6 +12,8 @@ from __future__ import with_statement
 import os, subprocess, tempfile
 from pitz.exceptions import *
 
+
+# TODO: Move this into the clepy package.
 def by_whatever(func_name, *whatever, **kwargs):
     """
     Returns a function suitable for sorting, using whatever.
@@ -42,6 +44,7 @@ def by_whatever(func_name, *whatever, **kwargs):
         
     return f
 
+
 # TODO: Figure out if I should use functools.partial instead.
 by_spiciness = by_whatever('by_spiciness', 'peppers')
 by_created_time = by_whatever('by_created_time', 'created_time')
@@ -52,6 +55,8 @@ by_type_status_created_time = by_whatever('by_type_status_created_time',
 by_milestone = by_whatever('by_milestone',
     'milestone', 'type', 'status', 'created time')
 
+
+# TODO: Move this into the clepy package.
 def edit_with_editor(s=None):
     """
     Open os.environ['EDITOR'] and load in text s.
