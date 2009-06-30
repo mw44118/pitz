@@ -41,7 +41,7 @@ class Entity(dict):
     
         self.update_modified_time = False
 
-        # Now make sure we got all the required fields.
+        # Make sure we got all the required fields.
         for rf, default_value in self.required_fields.items():
 
             if rf not in kwargs:

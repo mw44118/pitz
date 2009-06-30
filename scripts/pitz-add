@@ -1,0 +1,34 @@
+#! /usr/bin/env python
+
+# vim: set expandtab ts=4 sw=4 filetype=python:
+
+"""
+Add a new Task.
+"""
+
+import optparse
+from pitz.project import Project
+from pitz.cmdline import *
+from pitz import edit_with_editor
+from pitz.projecttypes.simplepitz import Task, Status, Estimate
+
+p = optparse.OptionParser()
+p.add_option('-p', '--pitz-dir')
+p.add_option('-t', '--title', help='Task title')
+p.set_usage('%prog [options] [filters]')
+
+options, args = p.parse_args()
+
+path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+
+proj = Project.from_yaml_file(path_to_yaml_file)
+
+t = Task(
+    title=options.title or raw_input("Title: "),
+    description=edit_with_editor(),
+    status=Status(proj, title='unstarted'),
+)
+
+proj.append(t)
+print("Added %s to the project." % t.summarized_view)
+proj.save_entities_to_yaml_files()

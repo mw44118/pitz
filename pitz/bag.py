@@ -277,15 +277,15 @@ class Bag(list):
         entity.
         """
 
-        choices = [v for (v, count) in p.values(attr_name)]
+        choices = [v for (v, count) in self.values(attr_name)]
 
         for i, v in enumerate(choices):
             print("%4d: %s" % (i, v.summarized_view))
 
-        choice = int(raw_input("Pick one. "))
+        choice = raw_input("Pick one or hit <ENTER> to skip ")
 
-        return choices[choice]
-
+        if choice:
+            return choices[int(choices)]
 
 
 

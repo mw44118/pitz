@@ -37,6 +37,7 @@ started pitz.""",
     # I know about the much fancier entry points, but I prefer this
     # solution.  Why does everything have to be zany?
     scripts = [
+        'scripts/pitz-add',
         'scripts/pitz-shell',
         'scripts/pitz-setup',
         'scripts/pitz-todo',
