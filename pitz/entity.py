@@ -73,10 +73,10 @@ class Entity(dict):
         self['frag'] = str(self['uuid'])[:6]
 
         # Handle attributes with defaults.
-        if 'created_time' not in kwargs:
+        if not self.get('created_time'):
             self['created_time'] = datetime.now() 
 
-        if 'modified_time' not in kwargs:
+        if not self.get('modified_time'):
             self['modified_time'] = self['created_time']
 
         # Add this entity to the project (if we got a project).
