@@ -8,6 +8,8 @@ import yaml
 
 import jinja2
 
+from pitz import edit_with_editor
+
 logging.basicConfig(level=logging.DEBUG)
 
 log = logging.getLogger('pitz.entity')
@@ -435,6 +437,10 @@ class Entity(dict):
             datetime(1991, 1, 1))
 
         return self['modified_time'] > yaml_file_saved
+
+
+    def edit(self, attr):
+        self[attr] = edit_with_editor(self.get(attr))
 
 
 class ImmutableEntity(Entity):
