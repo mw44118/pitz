@@ -1,17 +1,20 @@
+components: []
 created_time: 2009-04-14 09:56:39.412202
 description: "The choose value function should work sort of like this::\n\n    >>>\
   \ p.choose_value('milestone')\n    0.  First milestone\n    1.  Second milestone\n\
   \n    Please choose which milestone\n    1\n    < 123123: Second milestone>\n\n\
   In other words, it lists all choices for an attribute, and then allows\nsomebody\
   \ to choose one, and that one gets returned.\n"
+estimate: !!python/object:uuid.UUID
+  int: 146948019838310661317567451360560453079
 html_file_saved: 2009-06-20 18:08:36.035023
 milestone: !!python/object:uuid.UUID
   int: 246357804921662755488325692659396046179
-modified_time: 2009-06-29 11:10:36.972914
+modified_time: 2009-06-29 22:20:12.279667
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 336444450266496547059833010238290292739
 title: Write a choose_value function
 type: task
 uuid: !!python/object:uuid.UUID
   int: 7200135940145057213651168621040906221
-yaml_file_saved: 2009-06-29 13:37:55.408546
+yaml_file_saved: 2009-06-29 22:22:28.627064
