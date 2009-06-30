@@ -5,12 +5,13 @@ description: 'I got some fancy pretty jinja2 templates in the junkyard.  I just 
 
   '
 html_file_saved: 2009-06-20 18:08:35.779134
-milestone: unscheduled
-modified_time: 2009-06-28 21:51:09.796371
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: 2009-06-29 10:41:58.884811
 status: !!python/object:uuid.UUID
   int: 336444450266496547059833010238290292739
 title: Make an HTML view of project
 type: task
 uuid: !!python/object:uuid.UUID
   int: 134167243796410546326428900984490787425
-yaml_file_saved: 2009-06-28 21:51:49.842356
+yaml_file_saved: 2009-06-29 10:44:10.006009

@@ -1,11 +1,12 @@
 created_time: 2009-03-27 10:00:08.811359
 html_file_saved: 2009-06-20 18:08:36.050091
-milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
-modified_time: 2009-06-28 21:51:09.791282
+milestone: !!python/object:uuid.UUID
+  int: 246357804921662755488325692659396046179
+modified_time: 2009-06-29 11:10:36.973003
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
 title: Load new entities from a CSV file
 type: task
 uuid: !!python/object:uuid.UUID
   int: 133611950911875574592961743277668354751
-yaml_file_saved: 2009-06-28 21:51:49.242665
+yaml_file_saved: 2009-06-29 13:37:55.426669

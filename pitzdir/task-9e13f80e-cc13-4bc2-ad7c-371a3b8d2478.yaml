@@ -19,12 +19,13 @@ description: 'Figure out how to allow end-user to modify their projects on a
 
   '
 html_file_saved: 2009-06-20 18:08:36.185788
-milestone: b956c98f-faf0-4b4f-b01a-28662bc0ed63
-modified_time: 2009-06-28 21:51:09.792065
+milestone: !!python/object:uuid.UUID
+  int: 246357804921662755488325692659396046179
+modified_time: 2009-06-29 11:10:36.972608
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
 title: Copy pitz project file to allow local edits
 type: task
 uuid: !!python/object:uuid.UUID
   int: 210121708184263119820492024931184092280
-yaml_file_saved: 2009-06-28 21:51:49.271760
+yaml_file_saved: 2009-06-29 13:37:55.356545

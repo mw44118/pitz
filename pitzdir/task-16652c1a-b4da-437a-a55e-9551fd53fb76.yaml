@@ -10,12 +10,13 @@ description: "This will make a bag with all tasks attached to the first mileston
   \nI think the simplest thing would be a function that takes an input\nstring like\
   \ d734c3 and then decides if that matches one and only one\nentity in the project.\n\
   \nIf so, I could replace the ugly string with with the entity.\n"
-milestone: unscheduled
-modified_time: 2009-06-28 21:51:09.795590
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: 2009-06-29 10:41:58.885689
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
 title: Figure out how to filter by entities at the command-line
 type: task
 uuid: !!python/object:uuid.UUID
   int: 29768332431906119096228123199403195254
-yaml_file_saved: 2009-06-28 21:51:49.820872
+yaml_file_saved: 2009-06-29 10:44:10.406276

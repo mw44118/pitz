@@ -1,11 +1,12 @@
 created_time: 2009-03-26 11:10:21.549393
 html_file_saved: 2009-06-20 18:08:35.205467
-milestone: unscheduled
-modified_time: 2009-06-28 21:51:09.792841
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: 2009-06-29 10:41:58.885893
 status: !!python/object:uuid.UUID
   int: 298405574766749661418099834004395263733
 title: Support a .pitz config file with all pitz scripts
 type: task
 uuid: !!python/object:uuid.UUID
   int: 296370641302902201445376162715785864836
-yaml_file_saved: 2009-06-28 21:51:49.625056
+yaml_file_saved: 2009-06-29 10:44:10.492386

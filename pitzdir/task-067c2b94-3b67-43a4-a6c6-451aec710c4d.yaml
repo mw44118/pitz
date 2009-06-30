@@ -1,6 +1,7 @@
 created_time: 2009-06-26 19:04:18.930465
-milestone: unscheduled
-modified_time: 2009-06-28 21:51:09.804597
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: 2009-06-29 10:41:58.885444
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
 title: Use a metaclass to dynamically map the classes dictionary on the project into
@@ -8,4 +9,4 @@ title: Use a metaclass to dynamically map the classes dictionary on the project 
 type: task
 uuid: !!python/object:uuid.UUID
   int: 8620096672933277371028232334790954061
-yaml_file_saved: 2009-06-28 21:51:50.142774
+yaml_file_saved: 2009-06-29 10:44:10.287842
