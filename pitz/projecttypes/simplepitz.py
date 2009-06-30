@@ -12,12 +12,36 @@ import logging, textwrap
 
 import jinja2
 
-from pitz import *
+from pitz import by_created_time
 from pitz.entity import Entity, ImmutableEntity
 from pitz.project import Project
 from pitz.exceptions import NoProject
 
 log = logging.getLogger('pitz.simplepitz')
+
+
+class Estimate(ImmutableEntity):
+    
+    required_fields = dict(points=None)
+
+
+class Status(ImmutableEntity):
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def tasks(self):
+        """
+        Return tasks with this status
+        """
+        
+        if not self.project:
+            raise NoProject("Need a self.project for this!")
+
+        else:
+            return self.project.tasks(status=self)
+
 
 class Milestone(Entity):
     """
@@ -72,10 +96,19 @@ class Task(Entity):
 
     plural_name = "tasks"
 
+    allowed_types = dict(
+        milestone=Milestone,
+        status=Status,
+        estimate=Entity)
+
     required_fields = dict(
-        milestone='unscheduled',
-        title='no title',
-        status='unstarted')
+        title=None,
+        description='',
+        milestone=lambda proj: Milestone(proj, title='unscheduled'),
+        status=lambda proj: Status(proj, title='unstarted'),
+        estimate=lambda proj: Estimate(proj, title='not estimated', points=None),
+        components=lambda proj: list())
+
 
     @property
     def summarized_view(self):
@@ -99,8 +132,8 @@ class Task(Entity):
 
     def abandon(self):
 
-        if self['status'] in ['unstarted', 'started']:
-            self['status'] = 'abandoned'
+        if self['status'].title in ['unstarted', 'started']:
+            self['status'] = Status(title='abandoned')
             return self
 
         else:
@@ -109,8 +142,8 @@ class Task(Entity):
 
     def start(self):
 
-        if self['status'] in ['unstarted', 'abandoned']:
-            self['status'] = 'started'
+        if self['status'].title in ['unstarted', 'abandoned']:
+            self['status'] = Status(title='started')
             return self
 
         else:
@@ -119,8 +152,8 @@ class Task(Entity):
 
     def finish(self):
 
-        if self['status'] == 'started':
-            self['status'] = 'finished'
+        if self['status'].title == 'started':
+            self['status'] = Status(title='finished')
             return self
 
         else:
@@ -206,27 +239,8 @@ class Component(Entity):
         return unfinished
     
 
-class Estimate(ImmutableEntity):
-    
-    required_fields = dict(points=None)
 
 
-class Status(ImmutableEntity):
-
-    def __str__(self):
-        return self.title
-
-    @property
-    def tasks(self):
-        """
-        Return tasks with this status
-        """
-        
-        if not self.project:
-            raise NoProject("Need a self.project for this!")
-
-        else:
-            return self.project.tasks(status=self)
     
 
 class SimpleProject(Project):
