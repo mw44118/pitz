@@ -270,7 +270,7 @@ class Bag(list):
         return sorted(dd.items(), key=lambda t: t[1], reverse=True)
 
 
-    def choose_value(self, attr_name):
+    def choose_value(self, attr_name, default=None):
 
         """
         Ask for a value chosen from this attribute name.  Return the chosen
@@ -282,10 +282,18 @@ class Bag(list):
         for i, v in enumerate(choices):
             print("%4d: %s" % (i, v.summarized_view))
 
-        choice = raw_input("Pick one or hit <ENTER> to skip ")
+        choice = raw_input(
+            "Pick a %s or hit <ENTER> to choose %s: "
+                % (
+                    attr_name,
+                    getattr(default, 'summarized_view',
+                    str(default))))
 
         if choice:
-            return choices[int(choices)]
+            return choices[int(choice)]
+
+        else:
+            return default
 
 
 
