@@ -10,8 +10,6 @@ import jinja2
 
 from pitz import edit_with_editor
 
-logging.basicConfig(level=logging.DEBUG)
-
 log = logging.getLogger('pitz.entity')
 
 class Entity(dict):

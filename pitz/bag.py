@@ -9,9 +9,6 @@ import jinja2
 
 from pitz import *
 
-logging.basicConfig(level=logging.INFO)
-
-
 class Bag(list):
 
     """

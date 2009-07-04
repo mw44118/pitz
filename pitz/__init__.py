@@ -9,9 +9,12 @@ package, which is a grab bag of fanciness.
 
 from __future__ import with_statement
 
-import os, subprocess, tempfile
+import logging, os, subprocess, tempfile
 from pitz.exceptions import *
 
+logging.basicConfig(level=logging.DEBUG)
+
+log = logging.getLogger('pitz')
 
 # TODO: Move this into the clepy package.
 def by_whatever(func_name, *whatever, **kwargs):
