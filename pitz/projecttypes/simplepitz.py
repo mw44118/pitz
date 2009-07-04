@@ -98,7 +98,7 @@ class Task(Entity):
 
     allowed_types = dict(
         milestone=Milestone,
-        # status=Status,
+        status=Status,
         estimate=Estimate)
 
     required_fields = dict(
