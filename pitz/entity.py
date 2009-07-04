@@ -1,8 +1,8 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import logging
+import logging, os, uuid
 from datetime import datetime
-import os, uuid
+from types import NoneType
 
 import yaml
 
@@ -111,11 +111,11 @@ class Entity(dict):
                 % (attr, self.allowed_values[attr], val))
 
         elif attr in self.allowed_types \
-        and not isinstance(val, (uuid.UUID, self.allowed_types[attr])):
+        and not isinstance(val,
+            (NoneType, uuid.UUID, self.allowed_types[attr])):
 
             raise TypeError("%s must be an instance of %s, not %s!"
                 % (attr, self.allowed_types[attr], type(val)))
-
 
         else:
             super(Entity, self).__setitem__(attr, val)
