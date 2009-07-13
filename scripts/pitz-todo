@@ -6,29 +6,33 @@
 Print the todo list.
 """
 
-import optparse, os, subprocess, sys
-from pitz.project import Project
-from pitz.cmdline import *
+from clepy import spinning_distraction
 
-p = setup_options()
+with spinning_distraction():
 
-options, args = p.parse_args()
+    import optparse, os, subprocess, sys
+    from pitz.project import Project
+    from pitz.cmdline import *
 
-path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+    p = setup_options()
 
-proj = Project.from_yaml_file(path_to_yaml_file)
+    options, args = p.parse_args()
 
-d = build_filter(args)
+    path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
 
-# This line here is the only thing different from pitz-everything.
-results = proj.todo
+    proj = Project.from_yaml_file(path_to_yaml_file)
 
-# Apply filters.
-if d:
-    results = results(**d)
+    d = build_filter(args)
 
-# Apply grep.
-if options.grep:
-    results = results.grep(options.grep)
+    # This line here is the only thing different from pitz-everything.
+    results = proj.todo
+
+    # Apply filters.
+    if d:
+        results = results(**d)
+
+    # Apply grep.
+    if options.grep:
+        results = results.grep(options.grep)
 
 send_through_pager(str(results))
