@@ -30,6 +30,8 @@ class Project(Bag):
         super(Project, self).__init__(title, uuid, pathname, entities,
             order_method, **kwargs)
 
+        self.rerun_sort_after_append = True
+
         # Only load from the file system if we don't have anything.
         if self.pathname and load_yaml_files and not entities:
             self.load_entities_from_yaml_files()
@@ -43,7 +45,7 @@ class Project(Bag):
         Do a regular append and some other stuff too.
         """
 
-        super(Project, self).append(e)
+        super(Project, self).append(e, self.rerun_sort_after_append)
 
         # Make sure the entity remembers this project.
         e.project = self
@@ -65,6 +67,7 @@ class Project(Bag):
 
         pathglob = os.path.join(self.pathname, '*.yaml')
 
+        self.rerun_sort_after_append = False
         for fp in glob.glob(pathglob):
 
             bn = os.path.basename(fp)
@@ -80,6 +83,7 @@ class Project(Bag):
             C = self.classes[classname]
             C.from_yaml_file(fp, self)
 
+        self.rerun_sort_after_append = True
         return self
 
 

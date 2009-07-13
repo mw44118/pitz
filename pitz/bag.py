@@ -9,6 +9,8 @@ import jinja2
 
 from pitz import *
 
+log = logging.getLogger('pitz.bag')
+
 class Bag(list):
 
     """
@@ -145,21 +147,25 @@ class Bag(list):
 
     def by_frag(self, frag):
         return self.entities_by_frag[frag]
-        
 
-    def append(self, e):
+
+    def append(self, e, rerun_sort_after_append=True):
         """
         Put an entity in this bag and update related dictionaries.
+        You can disable the sorting function if you set the
+        rerun_sort_after_append to False.
         """
 
         # Don't add the same entity twice.
         if e.uuid not in self.entities_by_uuid:
 
             super(Bag, self).append(e)
-            self.sort(self.order_method)
             self.entities_by_uuid[e.uuid] = e
             self.entities_by_frag[e.frag] = e
             self.entities_by_yaml_filename[e.yaml_filename] = e
+
+            if rerun_sort_after_append:
+                self.sort(self.order_method)
 
 
     def pop(self, index=-1):

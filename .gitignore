@@ -8,3 +8,4 @@ pitz/junkyard/*.yaml
 build
 dist
 pitzdir/html
+pitz_prof
