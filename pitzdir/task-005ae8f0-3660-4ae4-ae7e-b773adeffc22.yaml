@@ -1,0 +1,49 @@
+components: []
+created_time: &id001 2009-07-13 11:48:48.667259
+description: 'This weekend I spent lots of time monkeying with pitz when I tried to
+
+  set it up in a new virtualenv.
+
+
+  First I realized that the clepy package on pypi was out of date, so I
+
+  had to upload the newer versions of clepy.
+
+
+  Then I found that the more recent version of mock, 0.5, caused some
+
+  tests to fail, so I had to configure pitz to use mock 0.4.
+
+
+  I don''t think pitz will work on python 2.5 because I dropped the
+
+  dependency on multiprocessing, since that is now part of the standard
+
+  library.
+
+
+  In summary, I spent a whole bunch of time handling all the issues that
+
+  any new user would go through.
+
+
+  I need to figure out some way of automating this process and testing it
+
+  so that I know once something is broken.
+
+
+  Maybe this is what buildbot is good for...
+
+  '
+estimate: !!python/object:uuid.UUID
+  int: 146948019838310661317567451360560453079
+milestone: !!python/object:uuid.UUID
+  int: 27388386120155741055882644533239976692
+modified_time: *id001
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Figure out how to test installing pitz from scratch
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 472031267883786180133831071042108450
+yaml_file_saved: 2009-07-13 11:58:23.286291
