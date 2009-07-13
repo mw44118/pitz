@@ -25,6 +25,7 @@ started pitz.""",
     zip_safe=False,
 
     install_requires=[
+        'mock==0.4',
         'clepy',
         'IPython',
         'PyYAML',
