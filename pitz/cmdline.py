@@ -7,10 +7,11 @@ have been parsed.
 
 import optparse, os, subprocess
 
-from IPython.Shell import IPShellEmbed
+import IPython.ipapi
 
 from pitz import *
 from pitz.project import Project
+from pitz.entity import ImmutableEntity
 
 def shell(projectfile=None):
 
@@ -24,13 +25,12 @@ def shell(projectfile=None):
     else:
         p = Project.from_yaml_file(Project.find_yaml_file())
 
-    # Normally, I hate stuff like this, but I want to put all the
-    # classes for this project into the namespace, and I can't
-    # predict the names for the classes.
-    locals().update([(C.__name__, C) for C in p.classes.values()])
+    # Everything in this dictionary will be added to the top-level
+    # namespace in the shell.
+    ns = dict([(C.__name__, C) for C in p.classes.values()])
+    ns['p'] = p
 
-    s = IPShellEmbed(['-colors', 'Linux'])
-    s()
+    IPython.ipapi.launch_new_instance(ns)
 
     # This stuff happens when you close the IPython session.
     answer = raw_input("Write out updated yaml files? ([y]/n) ")

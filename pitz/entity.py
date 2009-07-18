@@ -25,8 +25,7 @@ class Entity(dict):
     # Maps attributes to sequences of allowed values.
     allowed_values = dict()
 
-    # Maps attributes to classes.  These attributes must be instances of
-    # these classes.
+    # These attributes must be instances of these classes.
     allowed_types = dict()
 
     # When these keys get updated, do not update the modified_time
@@ -444,12 +443,22 @@ class Entity(dict):
         self[attr] = edit_with_editor(self.get(attr))
 
 
+class MC(type):
+
+    """
+    This metaclass adds a dictionary named already_instantiated to the
+    cls.
+    """
+
+    def __init__(cls, name, bases, d):
+        cls.already_instantiated = dict()
+
+
 class ImmutableEntity(Entity):
 
     """
-    These can't be changed after instantiation.  Furthermore, if you try
-    to make one that matches one that already exists, I'll return the
-    original one.
+    If you try to instantiate something one that matches one that
+    already exists, I'll return the original one.
 
     >>> ie1 = ImmutableEntity(title="a")
     >>> ie2 = ImmutableEntity(title="a")
@@ -460,18 +469,22 @@ class ImmutableEntity(Entity):
     False
     """
 
-    already_instantiated = dict()
+    # This metaclass gives each subclass its own dictionary named
+    # already_instantiated.
+    __metaclass__ = MC 
 
     def __new__(cls, project=None, **kwargs):
 
-        k = (('type', cls.__name__.lower()), ('title', kwargs['title']))
+        title = kwargs['title']
 
-        if k in cls.already_instantiated:
-            return cls.already_instantiated[k]
+        if title in cls.already_instantiated:
+            return cls.already_instantiated[title]
 
         else:
 
-            o = super(ImmutableEntity, cls).__new__(cls, project, **kwargs)
-            cls.already_instantiated[k] = o
+            o = super(ImmutableEntity, cls).__new__(
+                cls, project, **kwargs)
+
+            cls.already_instantiated[title] = o
 
             return o

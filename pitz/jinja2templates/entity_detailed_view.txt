@@ -1,7 +1,7 @@
 {{summarized_view}}
 {{line_of_dashes}}
 
-{% for k in data %}
+{% for k, v in data.items() %}
 {{ k }}:
 {% if hasattr(data[k], 'summarized_view') -%} 
 {{ data[k].summarized_view -}}
