@@ -183,10 +183,9 @@ class Bag(list):
         
     @property
     def summarized_view(self):
-        s2 = "<pitz.%s '%s' %s sorted by %s>"
+        s2 = "'%s' %s sorted by %s"
 
         return s2 % (
-            self.__class__.__name__,
             self.title,
             self.contents,
             self.order_method.__doc__)
@@ -223,7 +222,9 @@ class Bag(list):
         return self.detailed_view
 
     def __repr__(self):
-        return self.summarized_view
+        return "<pitz.%s %s>" % (
+            self.__class__.__name__,
+            self.summarized_view)
 
     def replace_pointers_with_objects(self):
         """
