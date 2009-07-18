@@ -73,7 +73,9 @@ class Milestone(Entity):
     @property
     def summarized_view(self):
 
-        a = self.tasks(status='finished').length
+        finished = Status(title='finished')
+
+        a = self.tasks(status=finished).length
         b = self.tasks.length
 
         if b is not 0:
