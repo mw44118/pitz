@@ -82,6 +82,11 @@ class Entity(dict):
             self.project.append(self)
             self.replace_pointers_with_objects()
 
+        self._setup_jinja()
+
+        self.update_modified_time = True
+
+    def _setup_jinja(self):
         # Set up a template loader.
         self.e = jinja2.Environment(
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
@@ -90,8 +95,6 @@ class Entity(dict):
             'isinstance':isinstance,
             'hasattr':hasattr,
         }
-
-        self.update_modified_time = True
 
 
     def __setitem__(self, attr, val):
@@ -290,24 +293,15 @@ class Entity(dict):
 
     def __getstate__(self):
 
+        self.replace_objects_with_pointers()
         d = self.copy()
-        for attr, val in d.items():
-            d[attr] = getattr(val, 'uuid', val)
-
+        self.replace_pointers_with_objects()
         return d
-        """
 
-    def __getinitargs__(self):
 
-        d = self.copy()
-
-        for attr, val in d.items():
-            d[attr] = getattr(val, 'uuid', val)
-
-        return (self.project, d)
-        
-        """
-
+    def __setstate__(self, d):
+        self.__dict__.update(d)
+        self._setup_jinja()
 
 
     def to_yaml_file(self, pathname):
@@ -367,9 +361,7 @@ class Entity(dict):
         self.update_modified_time = False
 
         for attr, val in self.items():
-
-            if hasattr(val, 'uuid'):
-                self[attr] = val.uuid
+            self[attr] = getattr(val, 'uuid', val)
 
         self.update_modified_time = True
         return self
@@ -511,3 +503,13 @@ class ImmutableEntity(Entity):
             cls.already_instantiated[title] = o
 
             return o
+
+
+    def __setstate__(self, d):
+        super(ImmutableEntity, self).__setstate__(d)
+
+        # Now add this instance back in to the dictionary that maps
+        # titles to instances.
+        cls = self.__class__
+        if self.title not in cls.already_instantiated:
+            cls.already_instantiated[self.title] = self

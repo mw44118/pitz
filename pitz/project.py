@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os
+import glob, os, pickle
 
 import yaml
 
@@ -134,16 +134,44 @@ class Project(Bag):
             raise ValueError("I need a pathname!")
 
         pathname = pathname or self.pathname
-        lowered_class_name = self.__class__.__name__.lower()
-        uuid = self.uuid
-
         fp = os.path.join(pathname, 'project.yaml')
-
         f = open(fp, 'w')
         f.write(self.yaml)
         f.close()
 
         return fp
+
+    def to_pickle(self, pathname=None):
+        """
+        Save a pickled version of this project at pathname +
+        project.pickle.
+        """
+
+        if not pathname \
+        and (
+            self.pathname is None
+            or not os.path.isdir(self.pathname)):
+
+            raise ValueError("I need a pathname!")
+
+        pathname = pathname or self.pathname
+
+        pf = os.path.join(pathname, 'project.pickle')
+        pickle.dump(self, open(pf, 'w'))
+        return pf
+
+    @classmethod
+    def from_pickle(cls, pf):
+        """
+        Load a project from pickle file pf.
+        """
+
+        p = pickle.load(open(pf))
+        for e in p:
+            p.append(e)
+
+        return p
+
 
 
     @classmethod

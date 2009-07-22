@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os
+import glob, os, unittest
 from pitz.entity import Entity
 from pitz.project import Project
 
@@ -110,3 +110,32 @@ def test_grep():
     assert e1 in g3
     assert e2 not in g3
     assert len(g3) == 1
+
+class TestPicklingProject(unittest.TestCase):
+
+    def setUp(self):
+
+        self.p = Project()
+        self.c = Entity(self.p, title="c")
+        self.e = Entity(self.p, title="t", c=self.c)
+
+    def tearDown(self):
+        self.c.self_destruct(self.p)
+        self.e.self_destruct(self.p)
+        os.remove('/tmp/project.pickle')
+
+    def test_to_pickle(self):
+
+        self.p.to_pickle('/tmp')
+        assert os.path.exists('/tmp/project.pickle')
+
+    def test_unpickle(self):
+
+        assert not os.path.exists('/tmp/project.pickle')
+        self.p.to_pickle('/tmp')
+        assert os.path.exists('/tmp/project.pickle')
+        new_p = Project.from_pickle('/tmp/project.pickle')
+        assert self.p.length == new_p.length
+        assert new_p.length
+        for e in new_p:
+            assert e.project

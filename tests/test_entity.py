@@ -164,3 +164,6 @@ class TestPicklingEntity(unittest.TestCase):
         assert isinstance(self.c, Entity)
         assert e['c'] == self.c, e['c']
         assert isinstance(self.e['c'], Entity) 
+
+        e.summarized_view
+        e.detailed_view
