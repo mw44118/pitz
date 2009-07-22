@@ -89,7 +89,8 @@ class Project(Bag):
 
     def save_entities_to_yaml_files(self, pathname=None):
         """
-        Tell every entity to write itself out to YAML.
+        Ask every entity to write itself out to YAML.
+        Returns those entities that really wrote themselves out.
         """
 
         if pathname is None and self.pathname is None:
@@ -102,8 +103,6 @@ class Project(Bag):
             raise ValueError("%s is not a directory!")
 
         pathname = pathname or self.pathname
-
-        # Send all the entities to the filesystem.
         return [e for e in self if e.to_yaml_file(self.pathname)]
 
 

@@ -1,5 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import pickle, unittest, uuid
+
 from pitz.entity import Entity, ImmutableEntity
 from pitz.project import Project
 
@@ -127,3 +129,38 @@ class TestImmutableEntity(object):
 
         assert id(ie1) == id(ie2)
         assert frag1 == ie2.frag, '%s != %s' % (frag1, ie2.frag)
+
+
+class TestPicklingEntity(unittest.TestCase):
+    """
+    Pickle an entity that refers to other entities.
+    """
+
+    def setUp(self):
+
+        self.p = Project()
+        self.c = Entity(self.p, title="c")
+        self.e = Entity(self.p, title="t", c=self.c)
+
+    def tearDown(self):
+        self.c.self_destruct(self.p)
+        self.e.self_destruct(self.p)
+
+    def test_pickle(self):
+
+        s = pickle.dumps(self.e)
+        assert self.e['c'] == self.c, self.e['c']
+        assert isinstance(self.c, Entity)
+        assert isinstance(self.e['c'], Entity)
+
+    def test_unpickle(self):
+
+        assert isinstance(self.e['c'], Entity) 
+        assert self.e.project
+        s = pickle.dumps(self.e)
+        e = pickle.loads(s)
+        assert id(e) != id(self.e)
+        assert e.uuid == self.e.uuid
+        assert isinstance(self.c, Entity)
+        assert e['c'] == self.c, e['c']
+        assert isinstance(self.e['c'], Entity) 

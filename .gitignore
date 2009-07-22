@@ -9,3 +9,4 @@ build
 dist
 pitzdir/html
 pitz_prof
+*.pickle

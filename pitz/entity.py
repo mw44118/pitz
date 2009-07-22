@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import logging, os, uuid
+import copy, logging, os, uuid, weakref
 from datetime import datetime
 from types import NoneType
 
@@ -288,6 +288,28 @@ class Entity(dict):
         return y
 
 
+    def __getstate__(self):
+
+        d = self.copy()
+        for attr, val in d.items():
+            d[attr] = getattr(val, 'uuid', val)
+
+        return d
+        """
+
+    def __getinitargs__(self):
+
+        d = self.copy()
+
+        for attr, val in d.items():
+            d[attr] = getattr(val, 'uuid', val)
+
+        return (self.project, d)
+        
+        """
+
+
+
     def to_yaml_file(self, pathname):
         """
         Returns the path of the file saved, IFF one got saved.
@@ -366,6 +388,7 @@ class Entity(dict):
 
         return self['modified_time'] > html_file_saved
 
+
     def to_html_file(self, htmldir):
 
         if self.stale_html:
@@ -401,7 +424,7 @@ class Entity(dict):
     def from_yaml_file(cls, fp, project=None):
 
         """
-        Loads the file at file path fp into the project and returns it.
+        Returns an instance after loading yaml file fp.
         """
 
         d = yaml.load(open(fp))
@@ -451,7 +474,7 @@ class MC(type):
     """
 
     def __init__(cls, name, bases, d):
-        cls.already_instantiated = dict()
+        cls.already_instantiated = weakref.WeakValueDictionary()
 
 
 class ImmutableEntity(Entity):
