@@ -5,7 +5,8 @@ These functions do the interesting stuff after options and arguments
 have been parsed.
 """
 
-import optparse, os, subprocess
+import optparse, os, subprocess, warnings
+warnings.simplefilter('ignore', DeprecationWarning)
 
 import IPython.ipapi
 
@@ -13,14 +14,17 @@ from pitz import *
 from pitz.project import Project
 from pitz.entity import ImmutableEntity
 
-def shell(projectfile=None):
+def shell(picklefile=None, yamlfile=None):
 
     """
     Start an ipython session after loading in a project.
     """
 
-    if projectfile:
-        p = Project.from_yaml_file(projectfile)
+    if picklefile:
+        p = Project.from_pickle(picklefile)
+
+    elif yamlfile:
+        p = Project.from_yaml_file(yamlfile)
 
     else:
         p = Project.from_yaml_file(Project.find_yaml_file())
