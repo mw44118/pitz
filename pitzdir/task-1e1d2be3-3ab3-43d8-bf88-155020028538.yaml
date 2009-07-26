@@ -4,12 +4,12 @@ description: ''
 estimate: !!python/object:uuid.UUID
   int: 146948019838310661317567451360560453079
 milestone: !!python/object:uuid.UUID
-  int: 173486462431923466781487031274661430420
-modified_time: 2009-07-12 22:03:39.136765
+  int: 43202488294965147244317640483158997306
+modified_time: 2009-07-26 14:45:30.569918
 status: !!python/object:uuid.UUID
-  int: 181191650815078915740523248343325601886
+  int: 336444450266496547059833010238290292739
 title: Draw an ascii spinner while loading up stuff that takes a long time.
 type: task
 uuid: !!python/object:uuid.UUID
   int: 40028306629017682636375868955997406520
-yaml_file_saved: 2009-07-12 22:15:03.851049
+yaml_file_saved: 2009-07-26 14:45:34.167330
