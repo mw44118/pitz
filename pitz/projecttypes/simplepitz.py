@@ -10,7 +10,7 @@ myclassname = 'SimpleProject'
 from copy import copy
 import logging, textwrap
 
-import jinja2
+import clepy, jinja2
 
 from pitz import by_created_time
 from pitz.entity import Entity
@@ -118,7 +118,11 @@ class Task(Entity):
         Short description of the task.
         """
 
-        return "%(frag)s %(title)s (%(status)s)" % self
+        frag = self['frag']
+        title = clepy.maybe_add_ellipses(self.title, 48)
+        status = '(%s)' % self['status']
+
+        return "%(frag)s %(title)-51s %(status)12s" % locals()
 
 
     @property
