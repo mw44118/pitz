@@ -82,8 +82,6 @@ def test_summarized_view():
     assert isinstance(t1.summarized_view, str)
     assert t1['title'] in t1.summarized_view
 
-    print(str(t1))
-
 
 def test_update_task_status():
 

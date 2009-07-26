@@ -9,214 +9,235 @@ Verify we can use pitz for an agile workflow, where "agile" means:
 * each story has numerous tasks.
 """
 
-from nose.tools import raises, with_setup
+import unittest
+from nose.tools import raises
 
-from pitz.projecttypes.agilepitz import Estimate, UserStory, \
-AgileProject, Iteration, Priority, Status, Task
+from pitz.projecttypes.agilepitz import *
 
-ap = None
 
-def setup():
+class TestAgile(unittest.TestCase):
 
-    global ap
-    ap = AgileProject()
- 
-    ap.append(UserStory(title='Draw new accounting report',
-        priority=Priority(level=2, title="two")))
 
-    ap.append(UserStory(title='Improve speed of search page',
-         priority=Priority(level=1, title="one")))
+    def setUp(self):
 
-    ap.append(UserStory(title='Add animation to site logo',
-        estimate=Estimate(title="straightforward", points=2)))
+        self.ap = AgileProject()
+     
+        self.ap.append(UserStory(
+            title='Draw new accounting report',
+            priority=Priority(level=2, title="two")))
 
-    ap.append(UserStory(title='Write "forgot password?" feature',
-        priority=Priority(level=1, title="one"),
-        estimate=Estimate(title="straightforward", points=2)))
+        self.ap.append(UserStory(
+            title='Improve speed of search page',
+            priority=Priority(level=1, title="one")))
 
-    ap.append(UserStory(title='Allow customer to change contact information',
-        priority=Priority(level=1, title="one"),
-        estimate=Estimate(title="straightforward", points=2)))
+        self.ap.append(UserStory(
+            title='Add animation to site logo',
+            estimate=Estimate(title="straightforward",
+            points=2)))
 
-    ap.append(UserStory(title='Allow customer to change display name',
-        priority=Priority(level=1, title="one"),
-        estimate=Estimate(title="easy", points=1)))
+        self.ap.append(UserStory(
+            title='Write "forgot password?" feature',
+            priority=Priority(level=1, title="one"),
+            estimate=Estimate(title="straightforward",
+            points=2)))
 
+        self.ap.append(UserStory(
+            title='Allow customer to change contact information',
+            priority=Priority(level=1, title="one"),
+            estimate=Estimate(title="straightforward", points=2)))
 
-def test_show_backlog_1():
-    """
-    List every user story in the backlog, ordered by priority.
-    """
+        self.ap.append(UserStory(
+            title='Allow customer to change display name',
+            priority=Priority(level=1, title="one"),
+            estimate=Estimate(title="easy", points=1)))
 
-    global ap
-    assert len(ap.backlog) == 6, len(ap.backlog)
+        # Reset all the stories.
+        for us in self.ap.stories:
+            us.send_to_backlog()
 
 
-def test_show_backlog_2():
-    """
-    Only list the estimated stories in the backlog, ordered by priority.
-    """
+    def test_show_backlog_1(self):
+        """
+        List every user story in the backlog, ordered by priority.
+        """
 
-    global ap
-    assert len(ap.estimated_backlog) == 4, len(ap.estimated_backlog)
+        assert len(self.ap.backlog) == 6, len(self.ap.backlog)
 
 
-def test_show_backlog_3():
-    """
-    Only list unestimated stories in the backlog, ordered by priority.
-    """
+    def test_show_backlog_2(self):
+        """
+        Only list the estimated stories in the backlog, ordered by priority.
+        """
 
-    global ap
-    b = ap.backlog(estimate=Estimate(title='not estimated', points=None))
-    assert len(b) == 2, len(b)
-    assert b[0]['priority'] <= b[1]['priority']
+        assert len(self.ap.estimated_backlog) == 4, len(self.ap.estimated_backlog)
 
 
-def test_estimate_story_1():
+    def test_show_backlog_3(self):
+        """
+        Only list unestimated stories in the backlog, ordered by priority.
+        """
 
-    """
-    Create tasks for a story and then add an estimate to the story.
-    """
+        b = self.ap.backlog(
+            estimate=Estimate(title='not estimated',
+            points=None))
 
-    global ap
-    us = ap.backlog(estimate=Estimate(title='not estimated', points=None))[0]
+        assert len(b) == 2, len(b)
+        assert b[0]['priority'] <= b[1]['priority']
 
-    assert us in ap.backlog(estimate=Estimate(title='not estimated', points=None))
 
-    ap.append(Task(title="Get mockups approved", story=us))
-    ap.append(Task(title="Write queries", story=us))
-    ap.append(Task(title="Write some tests", story=us))
-    us['estimate'] = Estimate(title='easy', points=1)
+    def test_estimate_story_1(self):
 
-    assert us not in ap.backlog(estimate=Estimate(title='not estimated', points=None))
+        """
+        Create tasks for a story and then add an estimate to the story.
+        """
 
+        us = self.ap.backlog(estimate=Estimate(title='not estimated', points=None))[0]
 
-@with_setup(setup)
-def test_add_story_1():
+        assert us in self.ap.backlog(estimate=Estimate(title='not estimated', points=None))
 
-    """
-    Add a single story to an iteration.
-    """
+        self.ap.append(Task(title="Get mockups approved", story=us))
+        self.ap.append(Task(title="Write queries", story=us))
+        self.ap.append(Task(title="Write some tests", story=us))
+        us['estimate'] = Estimate(title='easy', points=1)
 
-    global ap
-    ap.order()
-    it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
-    s = ap.estimated_backlog[0]
+        assert us not in self.ap.backlog(estimate=Estimate(title='not estimated', points=None))
 
-    print("title of estimated story is %s" % s.title)
 
-    assert s['status'] == Status(title='backlog'), \
-    "status for %(title)s is %(status)s!" % s
+    def test_add_story_1(self):
 
-    it99.add_story(s)
+        """
+        Add a single story to an iteration.
+        """
 
-    assert s['status'] == Status(title='planned'), \
-    "status for %(title)s is %(status)s!" % s
-    
-    assert len(it99.stories) == 1
-    assert len(it99.stories) == 1
+        self.ap.order()
+        it99 = Iteration(self.ap, title="Iteration for week 99", velocity=5)
+        s = self.ap.estimated_backlog[0]
 
-    assert it99.stories[0] == s
+        print("title of estimated story is %s" % s.title)
 
-    assert it99.points == s.points, '%s != %s' % (it99.points, s.points)
+        assert s['status'] == Status(title='backlog'), \
+        "status for %(title)s is %(status)s!" % s
 
-    assert it99.slack == it99.velocity - s.points
+        it99.add_story(s)
 
+        assert s['status'] == Status(title='planned'), \
+        "status for %(title)s is %(status)s!" % s
+        
+        assert len(it99.stories) == 1
+        assert len(it99.stories) == 1
 
-def test_plan_iteration_1():
-    """
-    Figure out what user stories can fit into the next release.
-    """
+        assert it99.stories[0] == s
 
-    global ap
+        assert it99.points == s.points, '%s != %s' % (it99.points, s.points)
 
-    ap.order()
+        assert it99.slack == it99.velocity - s.points
 
-    it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
-    print("it99 has %d points of slack." % it99.slack)
 
-    print("ap has %d stories in the estimated backlog." 
-        % ap.estimated_backlog.length)
+    def test_plan_iteration_1(self):
+        """
+        Figure out what user stories can fit into the next release.
+        """
 
-    it99.plan_iteration()
+        self.ap.order()
 
-    print("it99 has %d stories" % it99.stories.length)
+        it99 = Iteration(self.ap, title="Iteration for week 99",
+            velocity=5)
 
-    assert it99.points == it99['velocity'], \
-    "%s != %s" % (it99.points, it99['velocity'])
+        print("it99 has %d points of slack." % it99.slack)
 
-    assert not it99.slack, it99.slack
+        print("ap has %d stories in the estimated backlog." 
+            % self.ap.estimated_backlog.length)
 
-    for s in it99.stories:
-        assert s['iteration'] == it99
-        assert s['status'] == Status(title='planned'), s['status']
-    
+        assert it99.stories.length == 0, it99.stories.length
+        it99.plan_iteration()
 
-@with_setup(setup)
-def test_plan_iteration_2():
-    """
-    Plan the next two iterations.
-    """
+        print("it99 has %d stories" % it99.stories.length)
 
-    global ap
-    ap.order()
-    it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
-    it99.plan_iteration()
+        assert it99.points == it99['velocity'], \
+        "%s != %s" % (it99.points, it99['velocity'])
 
-    assert len(it99.stories) == 3
+        assert not it99.slack, it99.slack
 
-    it100 = Iteration(ap, title="Iteration for week 100", velocity=5)
-    it100.plan_iteration()
+        for s in it99.stories:
+            print(s.summarized_view)
+            assert s['iteration'] == it99
+            assert s['status'] == Status(title='planned'), s['status']
+        
 
-    assert len(it100.stories) == 1
+    def test_plan_iteration_2(self):
+        """
+        Plan the next two iterations.
+        """
 
+        self.ap.order()
+        it99 = Iteration(self.ap, title="Iteration for week 99", velocity=5)
+        it99.plan_iteration()
 
-@with_setup(setup)
-def test_plan_iteration_3():
+        print("stories in it99")
+        for s in it99.stories:
+            print(s.summarized_view)
+            print(s.points)
 
-    """
-    Take something out of an iteration in order to make room for
-    something else.
-    """
+        assert len(it99.stories) == 3
 
-    global ap
+        it100 = Iteration(self.ap, title="Iteration for week 100", velocity=5)
+        it100.plan_iteration()
 
-    ap.order()
+        print("stories in it100")
+        for s in it100.stories:
+            print(s.summarized_view)
+            print(s.points)
+        assert len(it100.stories) == 1, len(it100.stories)
 
-    it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
 
-    it99.plan_iteration()
+    def test_plan_iteration_3(self):
 
-    assert it99.points == it99['velocity']
-    assert not it99.slack
+        """
+        Take something out of an iteration in order to make room for
+        something else.
+        """
 
-    s1, s2, s3 = it99.stories
-    s2.send_to_backlog()
+        self.ap.order()
 
-    assert it99.slack, "it99.slack is %s" % it99.slack
+        it99 = Iteration(self.ap, title="Iteration for week 99", velocity=5)
 
+        it99.plan_iteration()
 
-@raises(Exception)
-@with_setup(setup)
-def test_add_story_2():
+        assert it99.points == it99['velocity']
+        assert not it99.slack
 
-    """
-    Try to add another story after using up the slack.
-    """
+        s1, s2, s3 = it99.stories
+        s2.send_to_backlog()
 
-    global ap
-    ap.order()
-    it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
-    it99.plan_iteration()
+        assert it99.slack, "it99.slack is %s" % it99.slack
 
-    assert it99.points == it99['velocity']
-    assert not it99.slack, "it99 has %d slack remaining!" % it99.slack
 
-    it99.add_story(UserStory(ap, title="Bogus extra story", estimate=3))
+    @raises(Exception)
+    def test_add_story_2(self):
 
+        """
+        Try to add another story after using up the slack.
+        """
 
-def test_finished_points():
+        self.ap.order()
 
-    global ap
-    it99 = Iteration(ap, title="Iteration for week 99", velocity=5)
-    it99.finished_points
+        it99 = Iteration(self.ap, title="Iteration for week 99",
+            velocity=5)
+
+        it99.plan_iteration()
+
+        assert it99.points == it99['velocity']
+
+        assert not it99.slack, \
+        "it99 has %d slack remaining!" % it99.slack
+
+        it99.add_story(UserStory(ap,
+            title="Bogus extra story", estimate=3))
+
+
+    def test_finished_points(self):
+
+        it99 = Iteration(self.ap,
+            title="Iteration for week 99", velocity=5)
+
+        it99.finished_points

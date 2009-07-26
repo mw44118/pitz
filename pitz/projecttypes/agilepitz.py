@@ -98,7 +98,7 @@ class Iteration(pitz.entity.Entity):
             raise Exception("Not enough slack for this story!")
 
 
-class Priority(pitz.entity.ImmutableEntity):
+class Priority(pitz.entity.Entity):
     """
     Tracks importance.
     """
@@ -130,7 +130,8 @@ class UserStory(pitz.entity.Entity):
         """
 
         self['status'] = Status(title='backlog')
-        self.pop('iteration')
+        if 'iteration' in self:
+            self.pop('iteration')
 
 
 class AgileProject(SimpleProject):
@@ -142,13 +143,24 @@ class AgileProject(SimpleProject):
     )
 
     @property
+    def stories(self):
+        b = self(type='userstory')
+        b.title = 'stories'
+        return b
+
+
+    @property
     def backlog(self):
 
         self.order()
 
-        backlog = self(type='userstory', status=Status(title='backlog'))
+        backlog = self(type='userstory',
+            status=Status(title='backlog'))
+
         backlog.title = 'All stories in backlog'
-        backlog.order_method = pitz.by_whatever('by_priority', 'priority')
+
+        backlog.order_method = pitz.by_whatever('by_priority',
+            'priority')
 
         return backlog
 

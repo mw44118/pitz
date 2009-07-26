@@ -8,8 +8,7 @@ from nose.tools import raises, with_setup
 
 from pitz.exceptions import NoProject
 
-from pitz.projecttypes.simplepitz import Estimate, Milestone, Task, \
-SimpleProject, Component, Comment
+from pitz.projecttypes.simplepitz import *
 
 p = None
 
@@ -69,7 +68,7 @@ def test_comments():
 
     global p
     t = Task(p, title="wash dishes")
-    z = Comment(p, entity=t, text="I don't want to!", who_said_it="Matt")
+    z = Comment(p, entity=t, text="I don't want to", who_said_it="Matt")
     c = t.comments[0]
     c.summarized_view
     c.detailed_view
@@ -125,3 +124,12 @@ def test_started_property():
     global p
     started_tasks = p(type='task', status='started')
     assert p.started.length == started_tasks.length
+
+
+def test_from_uid():
+    """
+    Use the os.getuid() to look up a person.
+    """
+
+    matt = Person(
+        title='W. Matthew Wilson')

@@ -12,11 +12,73 @@ from pitz import edit_with_editor
 
 log = logging.getLogger('pitz.entity')
 
+
+class MC(type):
+
+    """
+    This metaclass adds a dictionary named already_instantiated to the
+    cls.
+    """
+
+    def __init__(cls, name, bases, d):
+        cls.already_instantiated = weakref.WeakValueDictionary()
+
+
 class Entity(dict):
 
     """
     Acts like a regular dictionary with a few extra tweaks.
+
+    If you try to instantiate something one that matches one that
+    already exists, I'll return the original one.
+
+    >>> ie1 = Entity(title="a")
+    >>> ie2 = Entity(title="a")
+    >>> id(ie1) == id(ie2)
+    True
+    >>> ie3 = Entity(title="b")
+    >>> id(ie1) == id(ie3)
+    False
     """
+
+    # This metaclass gives each subclass its own dictionary named
+    # already_instantiated.
+    __metaclass__ = MC
+
+    def __new__(cls, project=None, **kwargs):
+
+        if 'title' in kwargs:
+            
+            title = kwargs['title']
+
+            if title in cls.already_instantiated:
+                return cls.already_instantiated[title]
+
+            else:
+
+                o = super(Entity, cls).__new__(
+                    cls, project, **kwargs)
+
+                cls.already_instantiated[title] = o
+
+            return o
+
+        # This block handles entities without a title.
+        else:
+            return super(Entity, cls).__new__(
+                cls, project, **kwargs)
+
+
+    def __setstate__(self, d):
+
+        self.__dict__.update(d)
+        self._setup_jinja()
+
+        # Now add this instance back in to the dictionary that maps
+        # titles to instances.
+        cls = self.__class__
+        if self.title not in cls.already_instantiated:
+            cls.already_instantiated[self.title] = self
 
     # When the value is None, I'll raise an exception unless the
     # attribute is defined.
@@ -299,11 +361,6 @@ class Entity(dict):
         return d
 
 
-    def __setstate__(self, d):
-        self.__dict__.update(d)
-        self._setup_jinja()
-
-
     def to_yaml_file(self, pathname):
         """
         Returns the path of the file saved, IFF one got saved.
@@ -457,59 +514,3 @@ class Entity(dict):
     def edit(self, attr):
         self[attr] = edit_with_editor(self.get(attr))
 
-
-class MC(type):
-
-    """
-    This metaclass adds a dictionary named already_instantiated to the
-    cls.
-    """
-
-    def __init__(cls, name, bases, d):
-        cls.already_instantiated = weakref.WeakValueDictionary()
-
-
-class ImmutableEntity(Entity):
-
-    """
-    If you try to instantiate something one that matches one that
-    already exists, I'll return the original one.
-
-    >>> ie1 = ImmutableEntity(title="a")
-    >>> ie2 = ImmutableEntity(title="a")
-    >>> id(ie1) == id(ie2)
-    True
-    >>> ie3 = ImmutableEntity(title="b")
-    >>> id(ie1) == id(ie3)
-    False
-    """
-
-    # This metaclass gives each subclass its own dictionary named
-    # already_instantiated.
-    __metaclass__ = MC 
-
-    def __new__(cls, project=None, **kwargs):
-
-        title = kwargs['title']
-
-        if title in cls.already_instantiated:
-            return cls.already_instantiated[title]
-
-        else:
-
-            o = super(ImmutableEntity, cls).__new__(
-                cls, project, **kwargs)
-
-            cls.already_instantiated[title] = o
-
-            return o
-
-
-    def __setstate__(self, d):
-        super(ImmutableEntity, self).__setstate__(d)
-
-        # Now add this instance back in to the dictionary that maps
-        # titles to instances.
-        cls = self.__class__
-        if self.title not in cls.already_instantiated:
-            cls.already_instantiated[self.title] = self

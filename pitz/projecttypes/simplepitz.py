@@ -13,19 +13,19 @@ import logging, textwrap
 import jinja2
 
 from pitz import by_created_time
-from pitz.entity import Entity, ImmutableEntity
+from pitz.entity import Entity
 from pitz.project import Project
 from pitz.exceptions import NoProject
 
 log = logging.getLogger('pitz.simplepitz')
 
 
-class Estimate(ImmutableEntity):
+class Estimate(Entity):
     
     required_fields = dict(points=None)
 
 
-class Status(ImmutableEntity):
+class Status(Entity):
 
     def __str__(self):
         return self.title

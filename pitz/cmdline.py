@@ -12,7 +12,6 @@ import IPython.ipapi
 
 from pitz import *
 from pitz.project import Project
-from pitz.entity import ImmutableEntity
 
 def shell(picklefile=None, yamlfile=None):
 

@@ -2,7 +2,7 @@
 
 import pickle, unittest, uuid
 
-from pitz.entity import Entity, ImmutableEntity
+from pitz.entity import Entity
 from pitz.project import Project
 
 from nose.tools import raises
@@ -102,32 +102,23 @@ def test_allowed_values():
     Entity.allowed_values = {'frotz':[1,2]}
     e1 = Entity(title="e1", frotz='abc')
 
-
-class TestImmutableEntity(object):
-
-    def setUp(self):
-        print("setting up")
-        self.ie1 = ImmutableEntity(title="abc")
-
-    def tearDown(self):
-        print("tearing down")
-
     def test_from_yaml_file(self):
 
         p = Project()
         d = yaml.load(self.ie1.yaml)
-        ImmutableEntity(p, **d)
+        Entity(p, **d)
 
     def test_already_instantiated(self):
 
         d = dict(title="abc")
-        ie1 = ImmutableEntity(**d)
+        ie1 = Entity(**d)
 
         frag1 = ie1.frag
 
-        ie2 = ImmutableEntity(**d)
+        ie2 = Entity(**d)
 
         assert id(ie1) == id(ie2)
+
         assert frag1 == ie2.frag, '%s != %s' % (frag1, ie2.frag)
 
 
