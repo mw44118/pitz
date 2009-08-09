@@ -21,10 +21,11 @@ tasks = [
 ]
 
 
-def test_matches_dict():
+def test_matches_dict_1():
 
     global b, tasks
     b.matches_dict(type='entity')
+
 
 def test_new_bag():
 

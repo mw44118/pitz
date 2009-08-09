@@ -76,8 +76,9 @@ class Bag(list):
             w.writerow(row)
 
     def __getitem__(self, i):
+
         """
-        Allow lookups by index or by uuid fragment.
+        Allow lookups by index or uuid.
         """
 
         try:

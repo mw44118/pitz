@@ -8,7 +8,7 @@ have been parsed.
 import optparse, os, subprocess, warnings
 warnings.simplefilter('ignore', DeprecationWarning)
 
-import IPython.ipapi
+from IPython.Shell import IPShellEmbed
 
 from pitz import *
 from pitz.project import Project
@@ -33,7 +33,8 @@ def shell(picklefile=None, yamlfile=None):
     ns = dict([(C.__name__, C) for C in p.classes.values()])
     ns['p'] = p
 
-    IPython.ipapi.launch_new_instance(ns)
+    s = IPShellEmbed(['-colors', 'Linux'])
+    s(local_ns=ns)
 
     # This stuff happens when you close the IPython session.
     answer = raw_input("Write out updated yaml files? ([y]/n) ")
