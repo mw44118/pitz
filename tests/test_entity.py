@@ -158,3 +158,67 @@ class TestPicklingEntity(unittest.TestCase):
 
         e.summarized_view
         e.detailed_view
+
+class TestMatchesDict1(unittest.TestCase):
+
+
+    def setUp(self):
+
+        self.p = Project(title="TestMatchesDict")
+
+        self.important = Entity(self.p, title='Important!!!')
+
+        Entity.allowed_types['priority'] = Entity
+
+        self.e = Entity(self.p, title='Clean cat box', creator='Matt',
+            tags=['boring', 'chore'], priority=self.important)
+
+
+    def test_matches_dict_1(self):
+
+        """
+        Verify matches_dict handles scalars and list comparisons.
+        """
+
+        assert self.e.matches_dict(creator='Matt') == self.e
+        assert self.e.matches_dict(creator='Nobody') == None
+        assert self.e.matches_dict(tags=['boring', 'chore']) == self.e
+        assert self.e.matches_dict(tags='boring') == self.e
+        assert self.e.matches_dict(tags='chore') == self.e
+        assert self.e.matches_dict(creator=['Matt']) == self.e
+        assert self.e.matches_dict(creator=['Matt', 'Nobody']) == self.e
+
+        assert self.e.matches_dict(
+            creator=['Matt', 'Nobody'],
+            tags=['fun']) == None
+
+        assert self.e.matches_dict(
+            creator=['Matt', 'Nobody'],
+            tags=['fun', 'boring']) == self.e
+
+
+    def test_matches_dict_2(self):
+
+        """
+        Verify we can match entities by using their UUID
+        """
+
+        assert self.e.matches_dict(priority=self.important) == self.e
+
+        assert self.e.matches_dict(
+            priority=self.important.uuid) == self.e
+
+        assert self.e.matches_dict(
+            priority=self.important.frag) == self.e
+
+
+    def test_matches_dict_3(self):
+        """
+        Verify we can match entities by using their title.
+        """
+
+        assert 'priority' in self.e.allowed_types
+
+        assert self.e.matches_dict(
+            priority=self.important.title) == self.e, \
+        "Lookup using title failed"

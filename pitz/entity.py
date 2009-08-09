@@ -185,12 +185,11 @@ class Entity(dict):
             if self.update_modified_time \
             and attr not in self.do_not_update_modified_time_for_these_keys:
 
-                super(Entity, self).__setitem__('modified_time', datetime.now())
+                super(Entity, self).__setitem__(
+                    'modified_time', datetime.now())
 
-
-
-    def __hash__(self):
-        return self.uuid.int
+    # def __hash__(self):
+        # return self.uuid.int
 
     @property
     def yaml_filename(self):
@@ -210,50 +209,56 @@ class Entity(dict):
 
     def matches_dict(self, **d):
         """
-        Return self or None, depending on whether we match.  You gotta
-        match EVERYTHING in the passed-in dictionary.
+        Return self or None, depending on whether we match.
 
-        >>> e = Entity(title='Clean cat box', creator='Matt', 
-        ...            tags=['boring', 'chore'])
-        >>> e.matches_dict(creator='Matt') == e
+        You gotta match EVERYTHING in the passed-in dictionary, but the
+        entity tries to match using a bunch of tricks.
+
+        >>> e = Entity(title="blah", a=1)
+        >>> e.matches_dict(a=1) == e
         True
-        >>> e.matches_dict(creator='Nobody') == None
-        True
-        >>> e.matches_dict(tags=['boring', 'chore']) == e
-        True
-        >>> e.matches_dict(tags='boring') == e
-        True
-        >>> e.matches_dict(tags='chore') == e
-        True
-        >>> e.matches_dict(creator=['Matt']) == e
-        True
-        >>> e.matches_dict(creator=['Matt', 'Nobody']) == e
-        True
-        >>> e.matches_dict(creator=['Matt', 'Nobody'],
-        ...                tags=['fun']) == e
-        False
-        >>> e.matches_dict(creator=['Matt', 'Nobody'],
-        ...                tags=['fun', 'boring']) == e
+        >>> e.matches_dict(a=2) == None
         True
         """
 
         for a, v in d.items():
 
+            if a not in self:
+                return
+
+            # Possibly translate this object from its UUID/frag/title
+            # representation to the actual object.
+
             if self.project:
 
-                # When v is a frag or a UUID, convert it to the object
-                # it refers to.
-                if v in self.project.entities_by_frag \
-                or v in self.project.entities_by_uuid:
+                try:
+                    hash(v)
 
-                    v = self.project[v]
+                except TypeError:
+                    v = v
 
-            if a not in self: 
-                return
+                else:
+
+                    # When v is a frag or a UUID, convert it to the object
+                    # it refers to.
+                    if v in self.project.entities_by_frag \
+                    or v in self.project.entities_by_uuid:
+
+                        v = self.project[v]
+
+                    if a in self.allowed_types:
+                        typename = self.allowed_types[a].__name__.lower()
+
+                        results = self.project(type=typename, title=v)
+                        if results.length == 1:
+                            v = results[0]
 
             ev = self[a]
             
+            # Do all this stuff when the entity has a different value
+            # than the one passed in.
             if ev != v: 
+
 
                 # Neither are lists, so don't bother doing anything else.
                 if not isinstance(ev, (list, tuple)) \
