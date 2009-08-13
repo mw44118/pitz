@@ -12,6 +12,9 @@ from __future__ import with_statement
 import logging, os, subprocess, tempfile
 from pitz.exceptions import *
 
+__version__ = "0.3"
+
+
 # This bugs me.  I don't like how instead of just defining stuff, I'm
 # making stuff really happen.
 log = logging.getLogger('pitz')
