@@ -4,7 +4,8 @@ import sys, os
 from pitz import __version__
 version = __version__
 
-setup(name='pitz',
+setup(
+    name='pitz',
     version=version,
     description="Python to-do tracker inspired by ditz (ditz.rubyforge.org)",
 
