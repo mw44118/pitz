@@ -28,7 +28,7 @@ You can look up a value for any attribute like this::
     'example entity'
     >>> sorted(e.keys()) #doctest: +NORMALIZE_WHITESPACE
     ['created_time', 'creator', 'frag', 'importance', 'modified_time',
-    'title', 'type', 'uuid']
+    'pscore', 'title', 'type', 'uuid']
     >>> e['type']
     'entity'
 
