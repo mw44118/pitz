@@ -59,7 +59,8 @@ class Iteration(pitz.entity.Entity):
         Return the sum of points for all stories in this iteration.
         """
 
-        return sum([s.points for s in self.stories])
+        return sum([s.points for s in self.stories 
+            if s.points is not None])
         
 
     @property
@@ -91,7 +92,7 @@ class Iteration(pitz.entity.Entity):
         """
 
         if self.slack >= story['estimate']['points']:
-            story['status'] = Status(title='planned')
+            story['status'] = Status(self.project, title='planned')
             story['iteration'] = self
 
         else:
@@ -129,7 +130,7 @@ class UserStory(pitz.entity.Entity):
         backlog.
         """
 
-        self['status'] = Status(title='backlog')
+        self['status'] = Status(self.project, title='backlog')
         if 'iteration' in self:
             self.pop('iteration')
 
@@ -166,11 +167,18 @@ class AgileProject(SimpleProject):
 
     @property
     def estimated_backlog(self):
+        """
+        Returns a bag holding stories with any estimate but not 'not
+        estimated'.
+        """
         
         self.order()
 
-        backlog = self(type='userstory', status=Status(title='backlog'))\
-        .does_not_match_dict(estimate=Estimate(title='not estimated', points=None))
+        backlog = self(
+            type='userstory',
+            status=Status(self, title='backlog'))\
+        .does_not_match_dict(
+            estimate=Estimate(self, title='not estimated', points=None))
 
         backlog.title = 'Estimated stories in backlog'
         backlog.order_method = pitz.by_whatever('by_priority', 'priority')

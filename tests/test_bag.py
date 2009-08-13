@@ -1,8 +1,11 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import unittest
+
 import pitz
 from pitz.entity import Entity
 from pitz.bag import Bag
+from pitz.project import Project
 
 from nose.tools import raises
 from nose import SkipTest
@@ -159,3 +162,98 @@ def test_length():
 
     global b
     assert b.length == 2
+
+
+class TestSorting1(unittest.TestCase):
+
+    """
+    Verify that we can sort on the pscore attribute.
+    """
+
+
+    def setUp(self):
+
+        self.p = Project(title="test pscore")
+        self.e1 = Entity(self.p, title="e1")
+        self.e2 = Entity(self.p, title="e2")
+        self.e3 = Entity(self.p, title="e3")
+        self.e4 = Entity(self.p, title="e4")
+
+        print("Original order of entities:")
+
+        for e in self.p:
+            print("%(title)s %(pscore)s" % e)
+
+
+    def test_sort(self):
+
+        assert self.p.length == 4
+
+        assert self.p.order_method == pitz.by_pscore_et_al, \
+        self.p.order_method
+
+        for e in self.p:
+            assert e['pscore'] == 0, e['pscore']
+
+        assert list(self.p) == [self.e1, self.e2, self.e3, self.e4]
+
+        self.e1['pscore'] = -10
+        self.p.order()
+
+        print("After first pscore change")
+        for e in self.p:
+            print("%(title)s %(pscore)s" % e)
+
+        assert list(self.p) == [self.e2, self.e3, self.e4, self.e1]
+
+        self.e3['pscore'] = 10
+        self.p.order()
+ 
+        print("After second pscore change")
+        for e in self.p:
+            print "%(title)s %(pscore)s" % e
+
+        assert self.p == [self.e3, self.e2, self.e4, self.e1]
+
+
+class TestSorting2(unittest.TestCase):
+
+    """
+    Sort entities based on their status attribute.
+    """
+
+
+    def setUp(self):
+
+        self.p = Project(title="test simple score")
+
+        class Status(Entity):
+            allowed_values = dict(
+                title=['started', 'unstarted', 'finished', 'abandoned'])
+
+        self.started = Status(self.p, title='started', pscore=1)
+        self.unstarted = Status(self.p, title='unstarted', pscore=0)
+        self.finished = Status(self.p, title='finished', pscore=2)
+        self.abandoned = Status(self.p, title='abandoned', pscore=-1)
+
+        self.e1 = Entity(self.p, title="e1", status=self.unstarted)
+        self.e2 = Entity(self.p, title="e2", status=self.unstarted)
+        self.e3 = Entity(self.p, title="e3", status=self.unstarted)
+        self.e4 = Entity(self.p, title="e4", status=self.unstarted)
+
+
+    def test_sort(self):
+
+        self.e2['status'] = self.started
+
+        entities = self.p(type='entity')
+        entities.order(pitz.by_status)
+
+        print("current order of entities")
+
+        for e in entities:
+
+            print("%(title)s %(status)s" % e)
+
+        assert list(entities) == [self.e2, self.e1, self.e3, self.e4], \
+        list(entities)

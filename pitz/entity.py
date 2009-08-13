@@ -27,46 +27,43 @@ class MC(type):
 class Entity(dict):
 
     """
-    Acts like a regular dictionary with a few extra tweaks.
+    Acts like a regular dictionary with some extra tweaks.
 
-    If you try to instantiate something one that matches one that
-    already exists, I'll return the original one.
+    When you give me a project and you try to instantiate something with
+    a type and title that matches something that already exists, I'll
+    return the original one.
 
-    >>> ie1 = Entity(title="a")
-    >>> ie2 = Entity(title="a")
+    >>> from pitz.project import Project
+    >>> p = Project(title="Blah")
+    >>> ie1 = Entity(p, title="a")
+    >>> ie2 = Entity(p, title="a")
     >>> id(ie1) == id(ie2)
     True
-    >>> ie3 = Entity(title="b")
+    >>> ie3 = Entity(p, title="b")
     >>> id(ie1) == id(ie3)
     False
     """
 
-    # This metaclass gives each subclass its own dictionary named
-    # already_instantiated.
     __metaclass__ = MC
 
     def __new__(cls, project=None, **kwargs):
 
-        if 'title' in kwargs:
-            
-            title = kwargs['title']
+        """
+        Checks if we already have something with this exact type and
+        title.  If we do, then we just return that.
 
-            if title in cls.already_instantiated:
-                return cls.already_instantiated[title]
+        If we don't have it, we make it and return it.
+        """
 
-            else:
+        k = (cls.__name__.lower(), kwargs['title'])
 
-                o = super(Entity, cls).__new__(
-                    cls, project, **kwargs)
+        if k in cls.already_instantiated:
+            return cls.already_instantiated[k]
 
-                cls.already_instantiated[title] = o
-
-            return o
-
-        # This block handles entities without a title.
         else:
-            return super(Entity, cls).__new__(
-                cls, project, **kwargs)
+            o = super(Entity, cls).__new__(cls, project, **kwargs)
+            cls.already_instantiated[k] = o
+            return o
 
 
     def __setstate__(self, d):
@@ -138,6 +135,9 @@ class Entity(dict):
         if not self.get('modified_time'):
             self['modified_time'] = self['created_time']
 
+        if not self.get('pscore'):
+            self['pscore'] = 0
+
         # Add this entity to the project (if we got a project).
         self.project = project
         if project is not None:
@@ -146,7 +146,10 @@ class Entity(dict):
 
         self._setup_jinja()
 
+        # Now throw the switch so that future updates do update the
+        # modified time value.
         self.update_modified_time = True
+
 
     def _setup_jinja(self):
         # Set up a template loader.
@@ -337,10 +340,6 @@ class Entity(dict):
         return t.render(**d)
 
 
-    def __str__(self):
-        return self.detailed_view
-
-
     @property
     def yaml(self):
 
@@ -519,3 +518,14 @@ class Entity(dict):
     def edit(self, attr):
         self[attr] = edit_with_editor(self.get(attr))
 
+    def __cmp__(self, other):
+
+        try:
+            
+            if 'pscore' not in other:
+                return -1
+            else:
+                return cmp(self['pscore'], other['pscore'])
+
+        except TypeError:
+            return -1

@@ -222,3 +222,17 @@ class TestMatchesDict1(unittest.TestCase):
         assert self.e.matches_dict(
             priority=self.important.title) == self.e, \
         "Lookup using title failed"
+
+
+class TestEntityComparisons(unittest.TestCase):
+
+    def setUp(self):
+
+        self.p = Project(title="TestEntityComparisons")
+        self.e1 = Entity(self.p, title="e1", pscore=1)
+        self.e2 = Entity(self.p, title="e2", pscore=2)
+        self.e3 = Entity(self.p, title="e3", pscore=3)
+
+    def test_comparision(self):
+        assert self.e1 < self.e2, cmp(self.e1, self.e2)
+        

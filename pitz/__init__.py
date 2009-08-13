@@ -12,9 +12,13 @@ from __future__ import with_statement
 import logging, os, subprocess, tempfile
 from pitz.exceptions import *
 
-logging.basicConfig(level=logging.DEBUG)
-
+# This bugs me.  I don't like how instead of just defining stuff, I'm
+# making stuff really happen.
 log = logging.getLogger('pitz')
+log.setLevel(logging.DEBUG)
+
+h = logging.StreamHandler()
+log.addHandler(h)
 
 # TODO: Move this into the clepy package.
 def by_whatever(func_name, *whatever, **kwargs):
@@ -57,6 +61,28 @@ by_type_status_created_time = by_whatever('by_type_status_created_time',
 
 by_milestone = by_whatever('by_milestone',
     'milestone', 'type', 'status', 'created time')
+
+def by_pscore_et_al(e1, e2):
+
+    y = cmp(e1['pscore'], e2['pscore']) * -1
+    if y != 0:
+        return y
+
+    else:
+        return by_created_time(e1, e2)
+
+
+def by_status(e1, e2):
+    """
+    Compare the status attribute of the two entities.
+    """
+
+    y = cmp(e1['status'], e2['status']) * -1
+    if y != 0:
+        return y
+
+    else:
+        return by_created_time(e1, e2)
 
 
 # TODO: Move this into the clepy package.

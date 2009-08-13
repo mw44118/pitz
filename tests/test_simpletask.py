@@ -98,11 +98,11 @@ def test_comment_on_task():
 
     c = Comment(b, who_said_it="matt",
         entity=t1,
-        text="blah blah")
+        title="blah blah")
 
     comments_on_t1 = b(type='comment', entity=t1)
     assert len(comments_on_t1) == 1
-    assert comments_on_t1[0]['text'] == 'blah blah'
+    assert comments_on_t1[0]['title'] == 'blah blah'
 
 
 def test_view_tasks_for_matt():

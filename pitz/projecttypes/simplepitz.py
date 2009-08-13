@@ -24,6 +24,9 @@ class Estimate(Entity):
     
     required_fields = dict(points=None)
 
+    def __str__(self):
+        return self.title
+
 
 class Status(Entity):
 
@@ -176,30 +179,29 @@ class Comment(Entity):
     
     required_fields = dict(
         who_said_it=None,
-        text=None,
-        entity=None,
-        title='no title')
+        title=None,
+        entity=None)
 
     @property
     def summarized_view(self):
 
-        text = self['text'].strip().replace('\n', ' ')
-        text = "%s..." % text[:60] if len(text) > 60 else text
+        title = self['title'].strip().replace('\n', ' ')
+        title = "%s..." % title[:60] if len(title) > 60 else title
 
         who_said_it = self['who_said_it']
         who_said_it = getattr(who_said_it, 'title', who_said_it)
         
-        return "%(who_said_it)s said: %(text)s" % dict(
+        return "%(who_said_it)s said: %(title)s" % dict(
             who_said_it=who_said_it,
             time=self['created_time'].strftime("%I:%M %P, %a, %m/%d/%y"),
-            text=text,
+            title=title,
         )
 
 
     @property
     def detailed_view(self):
 
-        text = textwrap.fill(self['text'].strip().replace('\n', '  '))
+        title = textwrap.fill(self['title'].strip().replace('\n', '  '))
 
         who_said_it = self['who_said_it']
         who_said_it = getattr(who_said_it, 'title', who_said_it)

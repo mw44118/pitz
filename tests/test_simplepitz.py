@@ -68,7 +68,7 @@ def test_comments():
 
     global p
     t = Task(p, title="wash dishes")
-    z = Comment(p, entity=t, text="I don't want to", who_said_it="Matt")
+    z = Comment(p, entity=t, title="I don't want to", who_said_it="Matt")
     c = t.comments[0]
     c.summarized_view
     c.detailed_view

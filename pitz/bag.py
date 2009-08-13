@@ -19,7 +19,7 @@ class Bag(list):
 
 
     def __init__(self, title='', uuid=None, pathname=None, entities=(),
-        order_method=by_created_time, **kwargs):
+        order_method=by_pscore_et_al, **kwargs):
 
         self.title = title
         self.pathname = pathname

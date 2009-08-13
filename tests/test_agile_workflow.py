@@ -23,33 +23,39 @@ class TestAgile(unittest.TestCase):
         self.ap = AgileProject()
      
         self.ap.append(UserStory(
+            self.ap,
             title='Draw new accounting report',
-            priority=Priority(level=2, title="two")))
+            priority=Priority(self.ap, level=2, title="two")))
 
         self.ap.append(UserStory(
+            self.ap,
             title='Improve speed of search page',
-            priority=Priority(level=1, title="one")))
+            priority=Priority(self.ap, level=1, title="one")))
 
         self.ap.append(UserStory(
+            self.ap,
             title='Add animation to site logo',
-            estimate=Estimate(title="straightforward",
+            estimate=Estimate(self.ap, title="straightforward",
             points=2)))
 
         self.ap.append(UserStory(
+            self.ap,
             title='Write "forgot password?" feature',
-            priority=Priority(level=1, title="one"),
-            estimate=Estimate(title="straightforward",
+            priority=Priority(self.ap, level=1, title="one"),
+            estimate=Estimate(self.ap, title="straightforward",
             points=2)))
 
         self.ap.append(UserStory(
+            self.ap,
             title='Allow customer to change contact information',
             priority=Priority(level=1, title="one"),
-            estimate=Estimate(title="straightforward", points=2)))
+            estimate=Estimate(self.ap, title="straightforward", points=2)))
 
         self.ap.append(UserStory(
+            self.ap,
             title='Allow customer to change display name',
-            priority=Priority(level=1, title="one"),
-            estimate=Estimate(title="easy", points=1)))
+            priority=Priority(self.ap, level=1, title="one"),
+            estimate=Estimate(self.ap, title="easy", points=1)))
 
         # Reset all the stories.
         for us in self.ap.stories:
@@ -78,7 +84,7 @@ class TestAgile(unittest.TestCase):
         """
 
         b = self.ap.backlog(
-            estimate=Estimate(title='not estimated',
+            estimate=Estimate(self.ap, title='not estimated',
             points=None))
 
         assert len(b) == 2, len(b)
@@ -91,14 +97,17 @@ class TestAgile(unittest.TestCase):
         Create tasks for a story and then add an estimate to the story.
         """
 
-        us = self.ap.backlog(estimate=Estimate(title='not estimated', points=None))[0]
+        us = self.ap.backlog(estimate=Estimate(self.ap,
+            title='not estimated', points=None))[0]
 
-        assert us in self.ap.backlog(estimate=Estimate(title='not estimated', points=None))
+        assert us in self.ap.backlog(
+            estimate=Estimate(
+                self.ap, title='not estimated', points=None))
 
-        self.ap.append(Task(title="Get mockups approved", story=us))
-        self.ap.append(Task(title="Write queries", story=us))
-        self.ap.append(Task(title="Write some tests", story=us))
-        us['estimate'] = Estimate(title='easy', points=1)
+        self.ap.append(Task(self.ap, title="Get mockups approved", story=us))
+        self.ap.append(Task(self.ap, title="Write queries", story=us))
+        self.ap.append(Task(self.ap, title="Write some tests", story=us))
+        us['estimate'] = Estimate(self.ap, title='easy', points=1)
 
         assert us not in self.ap.backlog(estimate=Estimate(title='not estimated', points=None))
 
@@ -109,18 +118,36 @@ class TestAgile(unittest.TestCase):
         Add a single story to an iteration.
         """
 
+        not_estimated = Estimate(self.ap, title='not estimated',
+            points=None)
+
+        print("not estimated frag: %s" % not_estimated.frag)
+
         self.ap.order()
         it99 = Iteration(self.ap, title="Iteration for week 99", velocity=5)
+
+        print("%d stories total in project"
+            % (self.ap(type='userstory').length))
+
+        for us in self.ap(type='userstory'):
+            print("%(title)s: %(status)s %(estimate)s" % us)
+            print(us['estimate'].frag)
+
+        print("self.ap.estimated_backlog.length is %d"
+            % self.ap.estimated_backlog.length)
+
         s = self.ap.estimated_backlog[0]
 
         print("title of estimated story is %s" % s.title)
+        print("status frag of estimated story is %s" 
+            % s['estimate'].frag)
 
-        assert s['status'] == Status(title='backlog'), \
+        assert s['status'] == Status(self.ap, title='backlog'), \
         "status for %(title)s is %(status)s!" % s
 
         it99.add_story(s)
 
-        assert s['status'] == Status(title='planned'), \
+        assert s['status'] == Status(self.ap, title='planned'), \
         "status for %(title)s is %(status)s!" % s
         
         assert len(it99.stories) == 1
