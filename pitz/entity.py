@@ -191,8 +191,8 @@ class Entity(dict):
                 super(Entity, self).__setitem__(
                     'modified_time', datetime.now())
 
-    # def __hash__(self):
-        # return self.uuid.int
+    def __hash__(self):
+        return self.uuid.int
 
     @property
     def yaml_filename(self):
