@@ -1,5 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+from __future__ import with_statement
+
 from collections import defaultdict
 import csv, logging, os
 from uuid import UUID, uuid4

@@ -1,5 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+from __future__ import with_statement
+
 import copy, logging, os, uuid, weakref
 from datetime import datetime
 from types import NoneType
@@ -283,7 +285,7 @@ class Entity(dict):
                 # Both are lists, so test if ev intersects with v.
                 if isinstance(ev, (list, tuple)) \
                 and isinstance(v, (list, tuple)) \
-                and set(ev).isdisjoint(set(v)):
+                and not (set(ev) & set(v)):
                     return
 
         return self
