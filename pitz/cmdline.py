@@ -1,9 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-"""
-These functions do the interesting stuff after options and arguments
-have been parsed.
-"""
+
+from __future__ import with_statement
 
 import optparse, os, subprocess, warnings
 warnings.simplefilter('ignore', DeprecationWarning)
