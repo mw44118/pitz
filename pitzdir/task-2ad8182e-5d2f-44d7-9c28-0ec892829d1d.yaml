@@ -1,0 +1,34 @@
+components: []
+created_time: &id001 2009-08-15 21:08:52.533722
+description: "I got an email with some instructions on how to use zc.buildout.  I'm\n\
+  copying it below.\n\n\n> On Wed, Aug 12, 2009 at 11:12 AM, Gael Pasgrimaud<gael@gawel.org>\n\
+  > wrote:\n>> Hi Matt,\n>>\n>> You package look promissing but I have a few problems\
+  \ with it.\n>>\n>> First your setup.py's scripts are not installed when you are\
+  \ using\n>> zc.buildout for deployment (and maybe easy_install ?). I saw your\n\
+  >> comment in the code but I think you should use setuptools's\n>> entry_points\
+  \ for this.\n>\n> I have never used zc.buildout and I don't know anything about\
+  \ it.\n> Maybe I should learn to use setuptools entry_points.  How can I try to\n\
+  > install pitz with zc.buildout?  I want to see the error.\n>\n\nRun those commands:\n\
+  \nmkdir pitz_buildout\ncd pitz_buildout\nwget\n\"http://svn.zope.org/*checkout*/zc.buildout/trunk/bootstrap/bootstrap.py\"\
+  \ncat <<EOF > buildout.cfg\n[buildout]\nnewest = false\nparts = eggs\nextensions\
+  \ = gp.vcsdevelop\nvcs-extend-develop = git+git://github.com/mw44118/pitz.git#egg=pitz\n\
+  \n[eggs]\nrecipe = zc.recipe.egg\neggs =\n   pitz\n   EOF\n\n   python bootstrap.py\n\
+  \   ./bin/buildout\n\n   This will install pitz in develop mode and it's dependencies\
+  \ in\n   ./eggs.\n\n   Btw there is no errors. scripts are just not installed.\n\
+  \   With entry_points, scripts are found in the ./bin directory. You can\n   try\
+  \ to add IPython in the eggs option, re-run ./bin/buildout and\n   you'll see ipy*\
+  \ in ./bin\n\n   As an exemple here is a setup.py with console_scripts:\n   http://www.gawel.org/docs/rstctl/file/077270cc4a97/setup.py\n\
+  \n\n"
+estimate: !!python/object:uuid.UUID
+  int: 146948019838310661317567451360560453079
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Use entry points so that install with zc.buildout works OK
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 56949602395575203251102237645582015773
+yaml_file_saved: 2009-08-15 21:08:52.543650

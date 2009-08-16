@@ -1,0 +1,18 @@
+components: []
+created_time: &id001 2009-08-13 23:05:26.124080
+description: 'I think the only feature that is causing issues is the with statement.
+
+  '
+estimate: !!python/object:uuid.UUID
+  int: 146948019838310661317567451360560453079
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Support python2.5
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 228332781818679660390767467879047530176
+yaml_file_saved: 2009-08-13 23:05:26.133610
