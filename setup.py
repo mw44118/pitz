@@ -37,17 +37,19 @@ started pitz.""",
           # -*- Extra requirements: -*-
     ],
 
-    # I know about the much fancier entry points, but I prefer this
-    # solution.  Why does everything have to be zany?
     scripts = [
-        'scripts/pitz-add',
         'scripts/pitz-shell',
         'scripts/pitz-setup',
-        'scripts/pitz-todo',
         'scripts/pitz-show',
-        'scripts/pitz-everything',
         'scripts/pitz-html',
     ],
+
+    entry_points="""
+    [console_scripts]
+    pitz-everything = pitz.cmdline:pitz_everything
+    pitz-todo = pitz.cmdline:pitz_todo
+    pitz-add = pitz.cmdline:pitz_add
+    """,
 
     test_suite = 'nose.collector',
 

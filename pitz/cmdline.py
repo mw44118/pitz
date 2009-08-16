@@ -10,8 +10,11 @@ warnings.simplefilter('ignore', DeprecationWarning)
 
 from IPython.Shell import IPShellEmbed
 
+from clepy import send_through_pager, spinning_distraction
+
 from pitz import *
 from pitz.project import Project
+
 
 def shell(picklefile=None, yamlfile=None):
 
@@ -44,8 +47,9 @@ def shell(picklefile=None, yamlfile=None):
 
 
 def mk_pitzdir():
+
     """
-    Returns the path to the newly created folder.
+    Creates a folder and returns the absolute path.
     """
 
     msg = """\
@@ -132,6 +136,7 @@ def setup_options():
 
     return p
 
+
 def build_filter(args):
     """
     Return a dictionary suitable for filtering.
@@ -154,26 +159,88 @@ def build_filter(args):
     return d
 
 
-def send_through_pager(s):
-    """
-    Open up this user's pager and send string s through it.
+def pitz_everything():
 
-    If I don't find a $PAGER variable and "which less" fails, I'll just
-    print the string.
-    """
+    with spinning_distraction():
 
-    pager = os.environ.get('PAGER')
+        p = setup_options()
 
-    if not pager:
-        return_code = subprocess.call(['which', 'less'])
+        options, args = p.parse_args()
 
-        # The which program returns zero when it found stuff.
-        if return_code == 0:
-            pager = 'less'
+        path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
 
-    if pager:
-        p = subprocess.Popen([pager], stdin=subprocess.PIPE)
-        p.communicate(s)
+        proj = Project.from_yaml_file(path_to_yaml_file)
 
-    else:
-        print(s)
+        d = build_filter(args)
+
+        results = proj
+
+        if d:
+            results = results(**d)
+
+        if options.grep:
+            results = results.grep(options.grep)
+
+    send_through_pager(str(results))
+
+
+def pitz_todo():
+
+    with spinning_distraction():
+
+        p = setup_options()
+
+        options, args = p.parse_args()
+
+        path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+
+        proj = Project.from_yaml_file(path_to_yaml_file)
+
+        d = build_filter(args)
+
+        # This line here is the only thing different from
+        # pitz_everything, so these two functions should be
+        # consolidated.
+        results = proj.todo
+
+        # Apply filters.
+        if d:
+            results = results(**d)
+
+        # Apply grep.
+        if options.grep:
+            results = results.grep(options.grep)
+
+    send_through_pager(str(results))
+
+
+def pitz_add():
+
+    from clepy import edit_with_editor
+    from pitz.projecttypes.simplepitz import Task, Status, Estimate, \
+    Milestone
+
+    p = optparse.OptionParser()
+    p.add_option('-p', '--pitz-dir')
+    p.add_option('-t', '--title', help='Task title')
+    p.set_usage('%prog [options] [filters]')
+
+    options, args = p.parse_args()
+
+    path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+
+    proj = Project.from_yaml_file(path_to_yaml_file)
+
+    not_estimated = Estimate(proj, title='not estimated', points=None)
+
+    t = Task(
+        title=options.title or raw_input("Title: "),
+        description=edit_with_editor(),
+        status=Status(proj, title='unstarted'),
+        milestone=proj.choose_value('milestone'),
+        estimate=proj.choose_value('estimate', not_estimated),
+    )
+
+    proj.append(t)
+    print("Added %s to the project." % t.summarized_view)
+    proj.save_entities_to_yaml_files()

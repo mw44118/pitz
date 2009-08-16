@@ -86,22 +86,3 @@ def by_status(e1, e2):
 
     else:
         return by_created_time(e1, e2)
-
-
-# TODO: Move this into the clepy package.
-def edit_with_editor(s=None):
-    """
-    Open os.environ['EDITOR'] and load in text s.
-    
-    Returns the text typed in the editor.
-    """
-
-    # This is the first time I've used with!
-    with tempfile.NamedTemporaryFile() as t:
-
-        if s:
-            t.write(s)
-            t.seek(0)
-
-        subprocess.call([os.environ.get('EDITOR', 'vi'), t.name])
-        return t.read()

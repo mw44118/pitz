@@ -3,37 +3,13 @@
 
 import unittest
 
-from pitz import edit_with_editor, by_pscore_et_al
+from pitz import by_pscore_et_al
 from pitz.entity import Entity
 from pitz.project import Project
 
 from mock import Mock, patch
 
 m, t = Mock(), Mock()
-
-@patch('subprocess.call', m)
-@patch('tempfile.NamedTemporaryFile', t)
-def test_edit_with_editor_1():
-
-    """
-    Verify we can load a blank editor.
-    """
-
-    edit_with_editor()
-    assert m.called
-    assert t.called
-
-@patch('subprocess.call', m)
-@patch('tempfile.NamedTemporaryFile', t)
-def test_edit_with_editor_2():
-
-    """
-    Verify we can load a variable into the editor.
-    """
-
-    edit_with_editor('abcdef')
-    assert m.called
-    assert t.called
 
 class TestByPscoreEtAl(unittest.TestCase):
 

@@ -10,7 +10,7 @@ import yaml
 
 import jinja2
 
-from pitz import edit_with_editor
+from clepy import edit_with_editor
 
 log = logging.getLogger('pitz.entity')
 
