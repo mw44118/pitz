@@ -111,9 +111,10 @@ class Bag(list):
         
         matches = [e for e in self if e.matches_dict(**d)]
 
-        return Bag(title='subset of %s' % self.title, 
+        return Bag(title='subset of %s' % self.title,
             pathname=self.pathname, entities=matches,
             order_method=self.order_method, load_yaml_files=False)
+
 
     def does_not_match_dict(self, **d):
 

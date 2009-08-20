@@ -245,11 +245,7 @@ class Component(Entity):
 
         unfinished.title = "Unfinished tasks in %(title)s" % self
         return unfinished
-    
 
-
-
-    
 
 class SimpleProject(Project):
     """
