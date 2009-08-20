@@ -14,19 +14,49 @@ from pitz import *
 from pitz.project import Project
 
 
+def pitz_shell():
+
+    import logging, optparse, os, sys
+
+    log = logging.getLogger('pitz')
+    log.setLevel(logging.DEBUG)
+
+    p = optparse.OptionParser()
+
+    p.set_usage('%prog [path to project file]')
+
+    options, args = p.parse_args()
+
+    shell(*args)
+
+
 def shell(picklefile=None, yamlfile=None):
 
     """
     Start an ipython session after loading in a project.
     """
 
+    import logging, optparse, os, sys
+
+    log = logging.getLogger('pitz.cmdline')
+    log.setLevel(logging.DEBUG)
+
+    p = optparse.OptionParser()
+
+    p.add_option('-p', '--pitz-dir')
+
+    options, args = p.parse_args()
+
     if picklefile:
+        log.debug("Using picklefile")
         p = Project.from_pickle(picklefile)
 
     elif yamlfile:
+        log.debug("Using yamlfile")
         p = Project.from_yaml_file(yamlfile)
 
     else:
+        log.debug("Searching for yaml file...")
         p = Project.from_yaml_file(Project.find_yaml_file())
 
     # Everything in this dictionary will be added to the top-level
@@ -241,4 +271,69 @@ def pitz_add():
 
     proj.append(t)
     print("Added %s to the project." % t.summarized_view)
+    proj.save_entities_to_yaml_files()
+
+
+def pitz_show():
+
+    import optparse, os, sys
+    from pitz.project import Project
+    from pitz.entity import Entity
+
+    p = setup_options()
+
+    options, args = p.parse_args()
+
+    if not args:
+        p.print_usage()
+        sys.exit()
+
+    path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+
+    proj = Project.from_yaml_file(path_to_yaml_file)
+
+    e = proj[args[0]]
+
+    if isinstance(e, Entity):
+        send_through_pager(e.detailed_view)
+
+    else:
+        print("Sorry, couldn't find %s" % args[1])
+
+
+def pitz_html():
+
+    """
+    Write out a bunch of HTML files.
+    """
+
+    import optparse, os, sys
+    from pitz.project import Project
+
+    p = optparse.OptionParser()
+    p.add_option('-p', '--pitz-dir', help="Path to your pitzdir")
+    p.set_usage('%prog [options] folder-to-store-html-files')
+
+    options, args = p.parse_args()
+
+    if not args or not os.path.isdir(args[0]):
+        p.print_usage()
+        sys.exit()
+
+    path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+
+    proj = Project.from_yaml_file(path_to_yaml_file)
+
+    htmldir = args[0]
+    html_filename = os.path.join(htmldir, proj.html_filename)
+
+    proj.to_html(html_filename)
+
+
+    print("Wrote %d html files out of %d entities in project."
+        % (
+            len([e for e in proj if e.to_html_file(htmldir)]),
+            len(proj)))
+
+    # Record that we rebuilt all the HTML files.
     proj.save_entities_to_yaml_files()

@@ -37,18 +37,16 @@ started pitz.""",
           # -*- Extra requirements: -*-
     ],
 
-    scripts = [
-        'scripts/pitz-shell',
-        'scripts/pitz-setup',
-        'scripts/pitz-show',
-        'scripts/pitz-html',
-    ],
 
     entry_points="""
     [console_scripts]
     pitz-everything = pitz.cmdline:pitz_everything
     pitz-todo = pitz.cmdline:pitz_todo
     pitz-add = pitz.cmdline:pitz_add
+    pitz-shell = pitz.cmdline:pitz_shell
+    pitz-setup = pitz.cmdline:pitz_setup
+    pitz-show = pitz.cmdline:pitz_show
+    pitz-html = pitz.cmdline:pitz_html
     """,
 
     test_suite = 'nose.collector',
