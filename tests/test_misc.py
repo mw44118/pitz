@@ -3,7 +3,7 @@
 
 import unittest
 
-from pitz import by_pscore_et_al
+from pitz import by_pscore_and_milestone
 from pitz.entity import Entity
 from pitz.project import Project
 
@@ -11,7 +11,7 @@ from mock import Mock, patch
 
 m, t = Mock(), Mock()
 
-class TestByPscoreEtAl(unittest.TestCase):
+class TestByPscoreAndMilestone(unittest.TestCase):
 
     def setUp(self):
 
@@ -20,9 +20,9 @@ class TestByPscoreEtAl(unittest.TestCase):
         Entity(self.p, title='b', pscore=1)
         Entity(self.p, title='c', pscore=3)
 
-    def test_by_pscore_et_al(self):
+    def test_by_pscore_and_milestone(self):
 
-        self.p.order(by_pscore_et_al)
+        self.p.order(by_pscore_and_milestone)
         prevscore = 99
 
         for e in self.p:
