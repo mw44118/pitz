@@ -235,4 +235,22 @@ class TestEntityComparisons(unittest.TestCase):
 
     def test_comparision(self):
         assert self.e1 < self.e2, cmp(self.e1, self.e2)
-        
+
+class TestAppending(unittest.TestCase):
+
+    def setUp(self):
+
+        self.p = Project(title="TestAppending")
+        self.e1 = Entity(title="e1")
+
+
+    def test_append(self):
+        """
+        Verify the _set_project property does an append.
+        """
+
+        assert self.e1 not in self.p
+
+        self.e1.project = self.p
+
+        assert self.e1 in self.p

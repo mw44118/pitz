@@ -142,9 +142,6 @@ class Entity(dict):
 
         # Add this entity to the project (if we got a project).
         self.project = project
-        if project is not None:
-            self.project.append(self)
-            self.replace_pointers_with_objects()
 
         self._setup_jinja()
 
@@ -152,6 +149,20 @@ class Entity(dict):
         # modified time value.
         self.update_modified_time = True
 
+
+    def _get_project(self):
+        return self._project
+
+
+    def _set_project(self, p):
+
+        self._project = p
+
+        if p is not None and self not in p:
+            p.append(self)
+            self.replace_pointers_with_objects()
+
+    project = property(_get_project, _set_project)
 
     def _setup_jinja(self):
         # Set up a template loader.
@@ -392,8 +403,8 @@ class Entity(dict):
         Replace pointer to entities with the entities that are pointed
         to.
 
-        In other words, replaces the string "matt" with the object with
-        "matt" as its uuid.
+        In other words, replace the string "matt" with the object that
+        has "matt" as its uuid.
         """
         self.update_modified_time = False
 
