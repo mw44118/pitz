@@ -25,7 +25,7 @@ class Project(Bag):
 
 
     def __init__(self, title='', uuid=None, pathname=None, entities=(), 
-        order_method=by_pscore_et_al, load_yaml_files=True, **kwargs):
+        order_method=by_pscore_and_milestone, load_yaml_files=True, **kwargs):
 
         super(Project, self).__init__(title, uuid, pathname, entities,
             order_method, **kwargs)

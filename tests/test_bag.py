@@ -62,16 +62,19 @@ def test_values():
     assert ('easy', 1) in v
     assert ('hard', 1) in v
 
+
 @patch('__builtin__.open')
 def test_to_csv(o):
 
     global b
     b.to_csv('bogus', 'title')
     
+
 def test_order_1():
 
     global b
     b.order()
+
 
 @raises(ValueError)
 def test_order_2():
@@ -86,10 +89,12 @@ def test_order_2():
     b.order_method = None
     b.order()
 
+
 def test_summarized_view():
 
     global b
     b.summarized_view
+
 
 def test_detailed_view():
 
@@ -101,15 +106,18 @@ def test_contents_1():
 
     Bag().contents
 
+
 def test_str():
 
     global b
     str(b)
 
+
 def test_repr():
 
     global b
     repr(b)
+
 
 def test_replace_objects_with_pointers():
 
@@ -117,16 +125,19 @@ def test_replace_objects_with_pointers():
     b.replace_objects_with_pointers()
     b.replace_pointers_with_objects()
 
+
 def test_attributes():
 
     global b
     b.attributes
+
 
 def test_values():
 
     global b
     a = b.attributes[0][0]
     b.values(a)
+
 
 def test_getitem():
 
@@ -136,6 +147,7 @@ def test_getitem():
     assert b[0] == e1
     assert b[e1.uuid] == e1
     assert b[e1.uuid] == e1
+
 
 @raises(ValueError)
 def test_grep_1():
@@ -147,16 +159,19 @@ def test_grep_1():
     global b
     b.grep('cat')
 
+
 def test_html():
 
     global b
     b.html
+
 
 @patch('__builtin__.open')
 def test_to_html(o):
     
     global b
     b.to_html('bogus filepath')
+
 
 def test_length():
 

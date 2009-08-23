@@ -65,14 +65,14 @@ by_type_status_created_time = by_whatever('by_type_status_created_time',
 by_milestone = by_whatever('by_milestone',
     'milestone', 'type', 'status', 'created time')
 
-def by_pscore_et_al(e1, e2):
+def by_pscore_and_milestone(e1, e2):
 
     y = cmp(e1['pscore'], e2['pscore']) * -1
     if y != 0:
         return y
 
     else:
-        return by_created_time(e1, e2)
+        return by_milestone(e1, e2)
 
 
 def by_status(e1, e2):

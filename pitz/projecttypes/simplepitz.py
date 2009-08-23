@@ -124,8 +124,10 @@ class Task(Entity):
         frag = self['frag']
         title = clepy.maybe_add_ellipses(self.title, 48)
         status = '(%s)' % self['status']
+        milestone = self['milestone'].title if self['milestone'] else 'unscheduled'
+        pscore = self['pscore']
 
-        return "%(frag)s %(title)-51s %(status)12s" % locals()
+        return "%(frag)s %(title)-51s %(pscore)3s %(milestone)22s %(status)12s" % locals()
 
 
     @property
