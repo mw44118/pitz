@@ -1,5 +1,5 @@
 classname: SimpleProject
 module: pitz.projecttypes.simplepitz
-order_method_name: by_pscore_and_milestone
+order_method_name: by_milestone_status_pscore
 title: Pitz
 uuid: 99c58812-5c1c-4fec-874c-c998933ba88b

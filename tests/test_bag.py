@@ -243,13 +243,12 @@ class TestSorting2(unittest.TestCase):
         self.p = Project(title="test simple score")
 
         class Status(Entity):
-            allowed_values = dict(
-                title=['started', 'unstarted', 'finished', 'abandoned'])
+            pass
 
-        self.started = Status(self.p, title='started', pscore=1)
-        self.unstarted = Status(self.p, title='unstarted', pscore=0)
-        self.finished = Status(self.p, title='finished', pscore=2)
-        self.abandoned = Status(self.p, title='abandoned', pscore=-1)
+        self.finished = Status(self.p, title='finished', pscore=4)
+        self.started = Status(self.p, title='started', pscore=3)
+        self.unstarted = Status(self.p, title='unstarted', pscore=2)
+        self.abandoned = Status(self.p, title='abandoned', pscore=1)
 
         self.e1 = Entity(self.p, title="e1", status=self.unstarted)
         self.e2 = Entity(self.p, title="e2", status=self.unstarted)
@@ -259,16 +258,14 @@ class TestSorting2(unittest.TestCase):
 
     def test_sort(self):
 
-        self.e2['status'] = self.started
-
         entities = self.p(type='entity')
-        entities.order(pitz.by_status)
 
-        print("current order of entities")
+        self.e2['status'] = self.started
+        self.e4['status'] = self.finished
 
-        for e in entities:
+        entities.order(pitz.by_milestone_status_pscore)
 
-            print("%(title)s %(status)s" % e)
+        assert entities.order_method == pitz.by_milestone_status_pscore
 
-        assert list(entities) == [self.e2, self.e1, self.e3, self.e4], \
+        assert list(entities) == [self.e4, self.e2, self.e3, self.e1], \
         list(entities)

@@ -531,14 +531,19 @@ class Entity(dict):
     def edit(self, attr):
         self[attr] = edit_with_editor(self.get(attr))
 
+
     def __cmp__(self, other):
 
         try:
             
             if 'pscore' not in other:
                 return -1
+
             else:
-                return cmp(self['pscore'], other['pscore'])
+
+                return cmp(
+                    (self['pscore'], self['title']),
+                    (other['pscore'], other['title']))
 
         except TypeError:
             return -1

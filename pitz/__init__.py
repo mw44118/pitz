@@ -80,7 +80,8 @@ def by_status(e1, e2):
     Compare the status attribute of the two entities.
     """
 
-    y = cmp(e1['status'], e2['status']) * -1
+    y = -1 * cmp(e1['status'], e2['status'])
+
     if y != 0:
         return y
 
@@ -88,3 +89,7 @@ def by_status(e1, e2):
         return by_created_time(e1, e2)
 
 
+by_milestone_status_pscore = by_whatever(
+    'by_milestone_status_pscore',
+    'milestone', 'status', 'pscore',
+    reverse=True)

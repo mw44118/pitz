@@ -234,6 +234,8 @@ class TestEntityComparisons(unittest.TestCase):
         self.e3 = Entity(self.p, title="e3", pscore=3)
 
     def test_comparision(self):
+        print("e1 pscore is %(pscore)s" % self.e1)
+        print("e2 pscore is %(pscore)s" % self.e2)
         assert self.e1 < self.e2, cmp(self.e1, self.e2)
 
 class TestAppending(unittest.TestCase):
