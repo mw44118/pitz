@@ -1,0 +1,2 @@
+cd /home/matt/checkouts/pitz
+screen -S pitz -d -R -c /home/matt/.screenrc-pitz
