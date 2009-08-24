@@ -186,7 +186,7 @@ class Project(Bag):
         at the top of a big file system.
         """
 
-        yamlpath = os.path.join(os.environ.get('PITZDIR', ''), 'project.yaml')
+        yamlpath = os.path.join(os.environ.get('PITZDIR', ''), filename)
 
         if os.path.isfile(yamlpath):
             return yamlpath

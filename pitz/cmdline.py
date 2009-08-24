@@ -15,24 +15,8 @@ from pitz.project import Project
 
 
 def pitz_shell():
+    """%prog [path to project file]
 
-    import logging, optparse, os, sys
-
-    log = logging.getLogger('pitz')
-    log.setLevel(logging.DEBUG)
-
-    p = optparse.OptionParser()
-
-    p.set_usage('%prog [path to project file]')
-
-    options, args = p.parse_args()
-
-    shell(*args)
-
-
-def shell(picklefile=None, yamlfile=None):
-
-    """
     Start an ipython session after loading in a project.
     """
 
@@ -41,11 +25,24 @@ def shell(picklefile=None, yamlfile=None):
     log = logging.getLogger('pitz.cmdline')
     log.setLevel(logging.DEBUG)
 
-    p = optparse.OptionParser()
 
-    p.add_option('-p', '--pitz-dir')
+    p = optparse.OptionParser()
+    p.set_usage(pitz_shell.__doc__)
 
     options, args = p.parse_args()
+
+
+    path = picklefile = yamlfile = None
+
+    if args:
+        path = args[0]
+
+    if path and os.path.isfile(path):
+        if path.endswith('.pickle'):
+            picklefile = path
+        elif path.endswith('.yaml'):
+            yamlfile = path
+
 
     if picklefile:
         log.debug("Using picklefile")
@@ -54,6 +51,11 @@ def shell(picklefile=None, yamlfile=None):
     elif yamlfile:
         log.debug("Using yamlfile")
         p = Project.from_yaml_file(yamlfile)
+
+    elif path and os.path.isdir(path):
+        os.environ['PITZDIR'] = path
+        log.debug("Searching for yaml file in %s..." % path)
+        p = Project.from_yaml_file(Project.find_yaml_file())
 
     else:
         log.debug("Searching for yaml file...")
