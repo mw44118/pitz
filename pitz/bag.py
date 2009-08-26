@@ -9,6 +9,7 @@ from urllib import quote_plus
 
 import jinja2
 
+from pitz.entity import Entity
 from pitz import *
 
 log = logging.getLogger('pitz.bag')
@@ -275,7 +276,8 @@ class Bag(list):
             if attr in e:
                 dd[e[attr]] += 1
 
-        return sorted(dd.items(), key=lambda t: t[1], reverse=True)
+        return sorted([(e, c) for e, c in dd.items() if isinstance(e, Entity)],
+                      key=lambda t: t[1], reverse=True)
 
 
     def choose_value(self, attr_name, default=None):
