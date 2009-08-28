@@ -12,6 +12,8 @@ import jinja2
 
 from clepy import edit_with_editor
 
+from pitz.exceptions import NoProject
+
 log = logging.getLogger('pitz.entity')
 
 
@@ -48,6 +50,23 @@ class Entity(dict):
 
     __metaclass__ = MC
 
+    # When the value is None, I'll raise an exception unless the
+    # attribute is defined.
+    required_fields = dict(title=None)
+
+    # Maps attributes to sequences of allowed values.
+    allowed_values = dict()
+
+    # These attributes must be instances of these classes.
+    allowed_types = dict()
+
+    # When these keys get updated, do not update the modified_time
+    # key.
+    do_not_update_modified_time_for_these_keys = [
+        'yaml_file_saved', 'html_file_saved', 'modified_time',
+    ]
+
+
     def __new__(cls, project=None, **kwargs):
 
         """
@@ -79,21 +98,6 @@ class Entity(dict):
         if self.title not in cls.already_instantiated:
             cls.already_instantiated[self.title] = self
 
-    # When the value is None, I'll raise an exception unless the
-    # attribute is defined.
-    required_fields = dict(title=None)
-
-    # Maps attributes to sequences of allowed values.
-    allowed_values = dict()
-
-    # These attributes must be instances of these classes.
-    allowed_types = dict()
-
-    # When these keys get updated, do not update the modified_time
-    # key.
-    do_not_update_modified_time_for_these_keys = [
-        'yaml_file_saved', 'html_file_saved', 'modified_time',
-    ]
 
     def __init__(self, project=None, **kwargs):
     
@@ -204,24 +208,30 @@ class Entity(dict):
                 super(Entity, self).__setitem__(
                     'modified_time', datetime.now())
 
+
     def __hash__(self):
         return self.uuid.int
+
 
     @property
     def yaml_filename(self):
         return '%(type)s-%(uuid)s.yaml' % self
 
+
     @property
     def frag(self):
         return self['frag']
+
 
     @property
     def uuid(self):
         return self['uuid']
 
+
     @property
     def title(self):
         return self['title']
+
 
     def matches_dict(self, **d):
         """
@@ -301,6 +311,7 @@ class Entity(dict):
 
         return self
 
+
     def does_not_match_dict(self, **d):
         """
         Returns self if ALL of the key-value pairs do not match.
@@ -323,9 +334,11 @@ class Entity(dict):
 
         return self
 
+
     def __repr__(self):
         return "<pitz.%s %s>" \
         % (self.__class__.__name__, self.summarized_view)
+
 
     @property
     def summarized_view(self):
@@ -334,6 +347,18 @@ class Entity(dict):
         """
 
         return "%(frag)s: %(title)s" % self
+
+    @property
+    def abbr(self):
+        """
+        Shortest possible description of entity.
+        """
+
+        if 'abbr' in self:
+            return self['abbr']
+        else:
+            return self.title
+
 
     @property
     def detailed_view(self):
@@ -403,21 +428,23 @@ class Entity(dict):
         Replace pointer to entities with the entities that are pointed
         to.
 
-        In other words, replace the string "matt" with the object that
+        In other words, replace the uuid "matt" with the object that
         has "matt" as its uuid.
         """
+
+        if not self.project:
+            raise NoProject("I can't replace pointers without a project")
+
         self.update_modified_time = False
 
-        if self.project:
+        for attr, val in self.items():
 
-            for attr, val in self.items():
+            # Skip over our own uuid attribute.
+            if val == self.uuid:
+                continue
 
-                # Skip over our own uuid attribute.
-                if val == self.uuid:
-                    continue
-
-                if isinstance(val, uuid.UUID):
-                    self[attr] = self.project.by_uuid(val)
+            if isinstance(val, uuid.UUID):
+                self[attr] = self.project.by_uuid(val)
 
         self.update_modified_time = True
         return self
@@ -491,6 +518,9 @@ class Entity(dict):
 
         """
         Returns an instance after loading yaml file fp.
+
+        Remember, the instance might have pointers that need to be
+        converted to proper references.
         """
 
         d = yaml.load(open(fp))
