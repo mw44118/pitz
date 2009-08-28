@@ -27,10 +27,10 @@ class Project(Bag):
     def __init__(self, title='', uuid=None, pathname=None, entities=(), 
         order_method=by_pscore_and_milestone, load_yaml_files=True, **kwargs):
 
+        self.rerun_sort_after_append = True
+
         super(Project, self).__init__(title, uuid, pathname, entities,
             order_method, **kwargs)
-
-        self.rerun_sort_after_append = True
 
         # Only load from the file system if we don't have anything.
         if self.pathname and load_yaml_files and not entities:

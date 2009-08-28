@@ -256,3 +256,5 @@ class TestAppending(unittest.TestCase):
         self.e1.project = self.p
 
         assert self.e1 in self.p
+
+

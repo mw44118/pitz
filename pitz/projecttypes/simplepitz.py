@@ -123,10 +123,13 @@ class Task(Entity):
 
         frag = self['frag']
         title = clepy.maybe_add_ellipses(self.title, 46)
-        status = '(%s)' % self['status'].abbr
 
-        milestone = self['milestone'].abbr \
-        if self['milestone'] else '???'
+        status = '(%s)' % getattr(self['status'], 'abbr', self['status'])
+
+        if 'milestone' in self:
+            milestone = getattr(self['milestone'], 'abbr', self['milestone'])
+        else:
+            milestone = '???'
 
         pscore = self['pscore']
 
