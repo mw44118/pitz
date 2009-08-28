@@ -3,7 +3,7 @@
 
 from __future__ import with_statement
 
-import optparse, os, subprocess, warnings
+import optparse, os, subprocess, sys, warnings
 warnings.simplefilter('ignore', DeprecationWarning)
 
 from IPython.Shell import IPShellEmbed
@@ -13,6 +13,11 @@ from clepy import send_through_pager, spinning_distraction
 from pitz import *
 from pitz.project import Project
 
+def print_version():
+
+    from pitz import __version__
+    print(__version__)
+    sys.exit()
 
 def pitz_shell():
     """%prog [path to project file]
@@ -29,8 +34,13 @@ def pitz_shell():
     p = optparse.OptionParser()
     p.set_usage(pitz_shell.__doc__)
 
+    p.add_option('--version', action='store_true',
+        help='show pitz version')
+
     options, args = p.parse_args()
 
+    if options.version:
+        print_version()
 
     path = picklefile = yamlfile = None
 
@@ -163,6 +173,9 @@ def setup_options():
     p.add_option('-g', '--grep')
 
     p.set_usage('%prog [options] [filters]')
+
+    p.add_option('--version', action='store_true',
+        help='show pitz version')
 
     return p
 
