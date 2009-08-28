@@ -104,7 +104,9 @@ def test_detailed_view():
 
 def test_contents_1():
 
-    Bag().contents
+    b = Bag()
+    b.append(Entity(title='A'))
+
 
 
 def test_str():

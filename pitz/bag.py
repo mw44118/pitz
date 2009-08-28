@@ -172,6 +172,8 @@ class Bag(list):
             if rerun_sort_after_append:
                 self.sort(self.order_method)
 
+        return self
+
 
     def pop(self, index=-1):
 
@@ -212,7 +214,13 @@ class Bag(list):
     def contents(self):
 
         """
-        Return a descriptive one-line string of the contents of the bag.
+        Return string describing contents of the bag.
+
+        >>> Bag().contents
+        '(empty)'
+
+        >>> Bag().append(Entity(title="blah")).contents
+        '(1 entity entities)'
         """
 
         if self:
@@ -277,8 +285,9 @@ class Bag(list):
             if attr in e:
                 dd[e[attr]] += 1
 
-        return sorted([(e, c) for e, c in dd.items() if isinstance(e, Entity)],
-                      key=lambda t: t[1], reverse=True)
+        return sorted(
+            [(e, c) for e, c in dd.items()],
+            key=lambda t: t[1], reverse=True)
 
 
     def choose_value(self, attr_name, default=None):
