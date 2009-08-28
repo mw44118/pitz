@@ -238,7 +238,8 @@ class Bag(list):
         """
 
         for e in self:
-            e.replace_pointers_with_objects()
+            if e.project:
+                e.replace_pointers_with_objects()
             
 
     def replace_objects_with_pointers(self):

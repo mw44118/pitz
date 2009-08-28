@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os
+import glob, os, unittest
 from datetime import datetime
 import yaml
 
@@ -11,151 +11,170 @@ from pitz.projecttypes.simplepitz import *
 from nose.tools import raises
 from nose import SkipTest
 
-b = Bag()
 
-tasks = [
-    Task(b, title='Clean cat box!', creator='Matt',
-        status=Status(title='unstarted')),
-    Task(b, title='Shovel driveway', creator='Matt',
-        status=Status(title='unstarted')),
-]
+class TestSimpleTask(unittest.TestCase):
 
-t1, t2 = tasks
+    def setUp(self):
 
-def teardown():
-    """
-    Delete any files we created.
-    """
-    for f in glob.glob('/tmp/task-*.yaml'):
-        os.unlink(f)
+        self.b = Bag()
 
+        self.tasks = [
 
-def test_new_bag():
+            Task(self.b, title='Clean the cat box!', creator='Matt',
+                status=Status(self.b, title='unstarted')),
 
-    global t1, t2, tasks
+            Task(self.b, title='Shovel driveway', creator='Matt',
+                status=Status(self.b, title='unstarted')),
+        ]
 
-    b = Bag(entities=tasks)
-
-    assert t1 in b
-    assert t2 in b
+        self.t1, self.t2 = self.tasks
 
 
-def test_show_task():
-    """
-    Verify that we show related information.
-    """
+    def tearDown(self):
 
-    global tasks
-    t1, t2 = tasks
-
-    print
-    print(t1.detailed_view)
+        """
+        Delete any files we created.
+        """
+        for f in glob.glob('/tmp/task-*.yaml'):
+            os.unlink(f)
 
 
-def test_new_task():
-    """
-    Verify we can make a new task.
-    """
+    def test_new_bag(self):
 
-    b = Bag()
+        b = Bag(entities=self.tasks)
 
-    t = Task(b, title='Clean cat box!', 
-        status=Status(title='unstarted'),
-        creator='Matt',
-        description='It is gross!')
-
-    assert t.uuid == t['uuid']
-
-def test_missing_attributes_replaced_with_defaults():
-    """
-    Verify we fill in missing attributes with defaults.
-    """
-
-    t = Task(title="bogus")
-    assert t['status'] == Status(title='unstarted')
+        assert self.t1 in b
+        assert self.t2 in b
 
 
-def test_summarized_view():
+    def test_show_task(self):
+        """
+        Verify that we show related information.
+        """
 
-    global tasks
-    t1, t2 = tasks
-    assert isinstance(t1.summarized_view, str)
-    assert t1['title'] in t1.summarized_view
+        t1, t2 = self.tasks
 
-
-def test_update_task_status():
-
-    global tasks
-    t1, t2 = tasks
-
-    t1['status'] = Status(title='unstarted')
-    t1['status'] = Status(title='finished')
+        print
+        print(t1.detailed_view)
 
 
-def test_comment_on_task():
+    def test_new_task(self):
+        """
+        Verify we can make a new task.
+        """
 
-    global b, t1, t2, tasks
+        b = Bag()
 
-    c = Comment(b, who_said_it="matt",
-        entity=t1,
-        title="blah blah")
+        t = Task(b, title='Clean cat box please!', 
+            status=Status(title='unstarted'),
+            creator='Matt',
+            description='It is gross!')
 
-    comments_on_t1 = b(type='comment', entity=t1)
-    assert len(comments_on_t1) == 1
-    assert comments_on_t1[0]['title'] == 'blah blah'
-
-
-def test_view_tasks_for_matt():
-
-    p = Project("Matt's stuff")
-    matt = Person(p, title='Matt')
-
-    t = Task(p, title='Clean cat box', owner=matt, status=Status(title='unstarted'))
-
-    tasks_for_matt = p(type='task', owner=matt)
-    assert t in tasks_for_matt
-
-    
-def test_view_tasks_for_matt_and_in_next_milestone():
-
-    p = Project("Matt's stuff")
-    matt = Person(p, title='Matt')
-    m = Milestone(p, title='Next Milestone')
-
-    t = Task(p, title='Clean cat box', owner=matt, milestone=m,
-        status=Status(title='unstarted'))
-
-    tasks_for_matt_in_next_milestone = p(type='task', owner=matt, 
-        milestone=m)
-
-    assert t in tasks_for_matt_in_next_milestone
+        assert t.uuid == t['uuid']
 
 
-def test_yaml():
+    def test_missing_attributes_replaced_with_defaults(self):
+        """
+        Verify we fill in missing attributes with defaults.
+        """
 
-    global tasks
-    t1, t2 = tasks
-
-    yaml.load(t1.yaml)
-
-def test_yaml_file():
-
-    global tasks
-    t1, t2 = tasks
-
-    b = Bag()
-
-    fp = t1.to_yaml_file('/tmp')
-    Entity.from_yaml_file(fp, b)
+        t = Task(title="bogus")
+        assert t['status'] == Status(title='unstarted')
 
 
-def test_to_html():
-    raise SkipTest
+    def test_summarized_view(self):
 
-def test_repr():
-    
-    global tasks
-    t1, t2 = tasks
+        t1, t2 = self.tasks
+        assert isinstance(t1.summarized_view, str)
+        assert t1['title'] in t1.summarized_view
 
-    repr(t1)
+
+    def test_update_task_status(self):
+
+        t1, t2 = self.tasks
+
+        t1['status'] = Status(title='unstarted')
+        t1['status'] = Status(title='finished')
+
+
+    def test_comment_on_task(self):
+
+        t1, t2 = self.tasks
+        b = self.b
+
+        c = Comment(b, who_said_it="matt",
+            entity=t1,
+            title="blah blah")
+
+        comments_on_t1 = b(type='comment', entity=t1)
+        assert len(comments_on_t1) == 1
+        assert comments_on_t1[0]['title'] == 'blah blah'
+
+
+    def test_view_tasks_for_matt(self):
+
+        p = Project("Matt's stuff")
+        matt = Person(p, title='Matt')
+
+        t = Task(p, title='Clean cat box now', owner=matt,
+            status=Status(p, title='unstarted'))
+
+        tasks_for_matt = p(type='task', owner=matt)
+        assert t in tasks_for_matt
+
+        
+    def test_view_tasks_for_matt_and_in_next_milestone(self):
+
+        p = Project("Matt's stuff")
+        matt = Person(p, title='Matt')
+        m = Milestone(p, title='Next Milestone')
+
+        t = Task(p, title='Clean cat box again', owner=matt, milestone=m,
+            status=Status(title='unstarted'))
+
+        tasks_for_matt_in_next_milestone = p(type='task', owner=matt, 
+            milestone=m)
+
+        assert t in tasks_for_matt_in_next_milestone
+
+
+    def test_yaml(self):
+
+        t1, t2 = self.tasks
+        unstarted = t1['status']
+        yaml.load(t1.yaml)
+        assert t1['status'] == unstarted, t1['status']
+     
+
+    def test_yaml_file(self):
+
+        t1, t2 = self.tasks
+
+        b = Bag()
+
+        t1 = Task(b, title='Clean cat box dangit', creator='Matt',
+            status=Status(b, title='unstarted'))
+
+        print("t1['status'] is %s" % t1['status'])
+
+        fp = t1.to_yaml_file('/tmp')
+
+        print("status is %s" % t1['status'])
+
+        new_t1 = Entity.from_yaml_file(fp, b)
+
+        repr(t1)
+
+        assert new_t1.uuid == t1.uuid
+
+    def test_to_html(self):
+        raise SkipTest
+
+
+    def test_repr(self):
+        
+        t1, t2 = self.tasks
+
+        print("t1 status is %(status)s" % t1)
+        repr(t1)
 

@@ -269,3 +269,30 @@ class TestSorting2(unittest.TestCase):
 
         assert list(entities) == [self.e4, self.e2, self.e3, self.e1], \
         list(entities)
+
+
+class TestMatchesDict(unittest.TestCase):
+
+    def setUp(self):
+
+        b = Bag('Everything')
+
+        e1 = Entity(title="example #1", creator="Matt",
+            importance="Really important")
+
+        e2 = Entity(title="example #2", creator="Matt",
+            importance="not very")
+
+        b.append(e1)
+        b.append(e2)
+
+        self.b = b
+
+
+    def test_matches_dict(self):
+
+        e1, e2 = self.b
+        assert e1.title == 'example #1', e1.title
+        assert e2.title == 'example #2', e2.title
+
+        unimportant_stuff = self.b.matches_dict(importance='not very')

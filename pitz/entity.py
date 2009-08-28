@@ -164,7 +164,8 @@ class Entity(dict):
 
         if p is not None and self not in p:
             p.append(self)
-            self.replace_pointers_with_objects()
+            if self.project:
+                self.replace_pointers_with_objects()
 
     project = property(_get_project, _set_project)
 
@@ -508,7 +509,8 @@ class Entity(dict):
         s = tmpl.render(title=self.title, entity=self,
             UUID=uuid.UUID)
 
-        self.replace_pointers_with_objects()
+        if self.project:
+            self.replace_pointers_with_objects()
 
         return s
 
