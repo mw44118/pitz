@@ -1,0 +1,26 @@
+components: []
+created_time: &id001 2009-08-29 15:06:44.715012
+description: 'It would be nice to put blank rows between the tasks for each milestone.
+
+
+  Also, add columns titles.
+
+
+  Drop the first column that has the numeric position in the command-line
+
+  context.
+
+  '
+estimate: !!python/object:uuid.UUID
+  int: 146948019838310661317567451360560453079
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Improve display of pitz-todo
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 6635856330868017314927477670019266019
+yaml_file_saved: 2009-08-29 15:06:44.726928
