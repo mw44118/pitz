@@ -173,13 +173,12 @@ class Project(Bag):
             p.append(e)
 
         return p
-
-
+    
 
     @classmethod
-    def find_yaml_file(cls, filename='project.yaml', walkdown=False):
+    def find_file(cls, filename='project.yaml', walkdown=False):
         """
-        Raise an exception or return the path to the project.yaml file.
+        Raise an exception or return the path to the file filename.
 
         Check the os.environ first and then walk up the filesystem, then
         walk down the filesystem IFF walkdown is True.

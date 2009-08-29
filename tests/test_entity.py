@@ -351,3 +351,24 @@ class TestHilariousBug(unittest.TestCase):
         e2.replace_pointers_with_objects()
 
         assert e1['estimate'] == e2['estimate'], est2['estimate']
+
+
+class TestNewMethod(unittest.TestCase):
+
+    def test(self):
+
+        # assert Entity(title="a") is Entity(title="a")
+        a = Entity(title="a")
+
+        print("id(Entity.already_instantiated): %s"
+            % id(Entity.already_instantiated))
+
+        print("Entity.already_instantiated has %d entities cached"
+            % len(Entity.already_instantiated))
+
+        b = Entity(title="a")
+
+        print("Entity.already_instantiated has %d entities cached"
+            % len(Entity.already_instantiated))
+
+        assert a.uuid == b.uuid

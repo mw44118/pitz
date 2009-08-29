@@ -79,12 +79,12 @@ class Entity(dict):
         k = (cls.__name__.lower(), kwargs['title'])
 
         if k in cls.already_instantiated:
-
             return cls.already_instantiated[k]
 
         else:
             o = super(Entity, cls).__new__(cls, project, **kwargs)
             cls.already_instantiated[k] = o
+
             return o
 
 
