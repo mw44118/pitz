@@ -51,7 +51,6 @@ def pitz_shell():
         elif path.endswith('.yaml'):
             yamlfile = path
 
-
     if picklefile:
         log.debug("Using picklefile")
         p = Project.from_pickle(picklefile)
@@ -62,12 +61,26 @@ def pitz_shell():
 
     elif path and os.path.isdir(path):
         os.environ['PITZDIR'] = path
-        log.debug("Searching for yaml file in %s..." % path)
-        p = Project.from_yaml_file(Project.find_yaml_file())
+
+        try:
+            log.debug("Searching for picke file in %s..." % path)
+            p = Project.from_file(Project.find_file('project.pickle'))
+
+        except ProjectYamlNotFound:
+            log.debug("Searching for yaml file...")
+            p = Project.from_yaml_file(Project.find_file())
 
     else:
-        log.debug("Searching for yaml file...")
-        p = Project.from_yaml_file(Project.find_yaml_file())
+
+        # First look for a pickle file.
+        try:
+            log.debug("Searching for project.pickle...")
+            p = Project.from_pickle(Project.find_file('project.pickle'))
+            log.debug("Found the pickle")
+
+        except ProjectYamlNotFound:
+            log.debug("Searching for yaml file...")
+            p = Project.from_yaml_file(Project.find_file())
 
     # Everything in this dictionary will be added to the top-level
     # namespace in the shell.
@@ -148,7 +161,6 @@ def namedModule(name):
 def pitz_setup():
 
     p = optparse.OptionParser()
-    p.set_usage(pitz_shell.__doc__)
 
     p.add_option('--version', action='store_true',
         help='show pitz version')
@@ -214,7 +226,6 @@ def build_filter(args):
 def pitz_everything():
 
     p = optparse.OptionParser()
-    p.set_usage(pitz_shell.__doc__)
 
     p.add_option('--version', action='store_true',
         help='show pitz version')
@@ -230,7 +241,7 @@ def pitz_everything():
 
         options, args = p.parse_args()
 
-        path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+        path_to_yaml_file = options.pitz_dir or Project.find_file()
 
         proj = Project.from_yaml_file(path_to_yaml_file)
 
@@ -249,24 +260,16 @@ def pitz_everything():
 
 def pitz_todo():
 
-    p = optparse.OptionParser()
-    p.set_usage(pitz_shell.__doc__)
-
-    p.add_option('--version', action='store_true',
-        help='show pitz version')
-
-    options, args = p.parse_args()
-
-    if options.version:
-        print_version()
-
     with spinning_distraction():
 
         p = setup_options()
 
         options, args = p.parse_args()
 
-        path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+        if options.version:
+            print_version()
+
+        path_to_yaml_file = options.pitz_dir or Project.find_file()
 
         proj = Project.from_yaml_file(path_to_yaml_file)
 
@@ -308,7 +311,7 @@ def pitz_add():
     if options.version:
         print_version()
 
-    path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+    path_to_yaml_file = options.pitz_dir or Project.find_file()
 
     proj = Project.from_yaml_file(path_to_yaml_file)
 
@@ -347,7 +350,7 @@ def pitz_show():
         p.print_usage()
         sys.exit()
 
-    path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+    path_to_yaml_file = options.pitz_dir or Project.find_file()
 
     proj = Project.from_yaml_file(path_to_yaml_file)
 
@@ -385,7 +388,7 @@ def pitz_html():
         p.print_usage()
         sys.exit()
 
-    path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
+    path_to_yaml_file = options.pitz_dir or Project.find_file()
 
     proj = Project.from_yaml_file(path_to_yaml_file)
 
