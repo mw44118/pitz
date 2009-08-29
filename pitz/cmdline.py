@@ -3,7 +3,7 @@
 
 from __future__ import with_statement
 
-import optparse, os, subprocess, sys, warnings
+import logging, optparse, os, subprocess, sys, warnings
 warnings.simplefilter('ignore', DeprecationWarning)
 
 from IPython.Shell import IPShellEmbed
@@ -13,23 +13,21 @@ from clepy import send_through_pager, spinning_distraction
 from pitz import *
 from pitz.project import Project
 
+log = logging.getLogger('pitz.cmdline')
+
+
 def print_version():
 
     from pitz import __version__
     print(__version__)
     sys.exit()
 
+
 def pitz_shell():
     """%prog [path to project file]
 
     Start an ipython session after loading in a project.
     """
-
-    import logging, optparse, os, sys
-
-    log = logging.getLogger('pitz.cmdline')
-    log.setLevel(logging.DEBUG)
-
 
     p = optparse.OptionParser()
     p.set_usage(pitz_shell.__doc__)
@@ -149,6 +147,17 @@ def namedModule(name):
 
 def pitz_setup():
 
+    p = optparse.OptionParser()
+    p.set_usage(pitz_shell.__doc__)
+
+    p.add_option('--version', action='store_true',
+        help='show pitz version')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+
     project_title = raw_input("Project name?  (you can change it later)")
 
     pitzdir = mk_pitzdir()
@@ -158,10 +167,10 @@ def pitz_setup():
 
     # Create a project instance based on the chosen module.
     ProjectClass = getattr(m, m.myclassname)
-    p = ProjectClass(pathname=pitzdir, title=project_title)
+    proj = ProjectClass(pathname=pitzdir, title=project_title)
 
     # Save the project as a yaml file in the pitzfiles folder.
-    pfile = p.to_yaml_file()
+    pfile = proj.to_yaml_file()
 
     print("All done!  Run pitz-shell %s to start working..." % pfile)
 
@@ -204,6 +213,17 @@ def build_filter(args):
 
 def pitz_everything():
 
+    p = optparse.OptionParser()
+    p.set_usage(pitz_shell.__doc__)
+
+    p.add_option('--version', action='store_true',
+        help='show pitz version')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+
     with spinning_distraction():
 
         p = setup_options()
@@ -228,6 +248,17 @@ def pitz_everything():
 
 
 def pitz_todo():
+
+    p = optparse.OptionParser()
+    p.set_usage(pitz_shell.__doc__)
+
+    p.add_option('--version', action='store_true',
+        help='show pitz version')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
 
     with spinning_distraction():
 
@@ -259,16 +290,23 @@ def pitz_todo():
 
 def pitz_add():
 
+
     from clepy import edit_with_editor
     from pitz.projecttypes.simplepitz import Task, Status, Estimate, \
     Milestone
 
     p = optparse.OptionParser()
-    p.add_option('-p', '--pitz-dir')
-    p.add_option('-t', '--title', help='Task title')
     p.set_usage('%prog [options] [filters]')
 
+    p.add_option('-p', '--pitz-dir')
+    p.add_option('-t', '--title', help='Task title')
+    p.add_option('--version', action='store_true',
+        help='show pitz version')
+
     options, args = p.parse_args()
+
+    if options.version:
+        print_version()
 
     path_to_yaml_file = options.pitz_dir or Project.find_yaml_file()
 
@@ -302,6 +340,9 @@ def pitz_show():
 
     options, args = p.parse_args()
 
+    if options.version:
+        print_version()
+
     if not args:
         p.print_usage()
         sys.exit()
@@ -329,10 +370,16 @@ def pitz_html():
     from pitz.project import Project
 
     p = optparse.OptionParser()
-    p.add_option('-p', '--pitz-dir', help="Path to your pitzdir")
     p.set_usage('%prog [options] folder-to-store-html-files')
+    p.add_option('-p', '--pitz-dir', help="Path to your pitzdir")
+
+    p.add_option('--version', action='store_true',
+        help='show pitz version')
 
     options, args = p.parse_args()
+
+    if options.version:
+        print_version()
 
     if not args or not os.path.isdir(args[0]):
         p.print_usage()
