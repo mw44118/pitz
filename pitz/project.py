@@ -10,6 +10,7 @@ from pitz.bag import Bag
 from pitz.entity import Entity
 from pitz import *
 
+
 class Project(Bag):
 
     """
@@ -24,8 +25,9 @@ class Project(Bag):
     )
 
 
-    def __init__(self, title='', uuid=None, pathname=None, entities=(), 
-        order_method=by_pscore_and_milestone, load_yaml_files=True, **kwargs):
+    def __init__(self, title='', uuid=None, pathname=None, entities=(),
+        order_method=by_pscore_and_milestone, load_yaml_files=True,
+        **kwargs):
 
         self.rerun_sort_after_append = True
 
@@ -224,8 +226,8 @@ class Project(Bag):
         Instantiate the class based on the data in file fp.
 
         IMPORTANT: this may not return an instance of this project.
-        Instead it will return an instance of the project subclass
-        specified in the yaml data.
+        Instead it will return an instance of the subclass specified in
+        the yaml data.
         """
 
         yamldata = yaml.load(open(fp))

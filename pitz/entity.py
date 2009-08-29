@@ -79,6 +79,7 @@ class Entity(dict):
         k = (cls.__name__.lower(), kwargs['title'])
 
         if k in cls.already_instantiated:
+
             return cls.already_instantiated[k]
 
         else:
@@ -144,13 +145,10 @@ class Entity(dict):
         if not self.get('pscore'):
             self['pscore'] = 0
 
-        # Add this entity to the project (if we got a project).
         self.project = project
 
         self._setup_jinja()
 
-        # Now throw the switch so that future updates do update the
-        # modified time value.
         self.update_modified_time = True
 
 
@@ -162,12 +160,14 @@ class Entity(dict):
 
         self._project = p
 
-        if p is not None and self not in p:
+        if p is not None and self.uuid not in p.entities_by_uuid:
             p.append(self)
             if self.project:
                 self.replace_pointers_with_objects()
 
+
     project = property(_get_project, _set_project)
+
 
     def _setup_jinja(self):
         # Set up a template loader.
@@ -286,8 +286,8 @@ class Entity(dict):
             # than the one passed in.
             if ev != v: 
 
-
-                # Neither are lists, so don't bother doing anything else.
+                # Neither are lists, so don't bother doing anything
+                # else.
                 if not isinstance(ev, (list, tuple)) \
                 and not isinstance(v, (list, tuple)):
                     return

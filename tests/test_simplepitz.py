@@ -4,7 +4,9 @@
 Verify the stuff in simplepitz works.
 """
 
-from uuid import UUID
+import glob, unittest
+
+from uuid import uuid4, UUID
 
 from nose.tools import raises, with_setup
 
@@ -153,4 +155,3 @@ def test_repr_after_replace_objects_with_pointers():
     assert isinstance(t['status'], UUID)
 
     t.summarized_view
-    
