@@ -297,7 +297,9 @@ class Bag(list):
         entity.
         """
 
-        for i, e in enumerate(self(type=entity_type)):
+        choices = self(type=entity_type)
+
+        for i, e in enumerate(choices):
             print("%4d: %s" % (i, getattr(e, 'summarized_view', e)))
 
         choice = raw_input(
