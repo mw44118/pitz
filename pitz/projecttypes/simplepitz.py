@@ -21,11 +21,23 @@ log = logging.getLogger('pitz.simplepitz')
 
 
 class Estimate(Entity):
-    
+
     required_fields = dict(points='???')
 
     def __str__(self):
         return self.title
+
+    @property
+    def tasks(self):
+        """
+        Return tasks with this estimate.
+        """
+
+        if not self.project:
+            raise NoProject("Need a self.project for this!")
+
+        else:
+            return self.project.tasks(estimate=self)
 
 
 class Status(Entity):
@@ -38,7 +50,7 @@ class Status(Entity):
         """
         Return tasks with this status
         """
-        
+
         if not self.project:
             raise NoProject("Need a self.project for this!")
 
@@ -92,7 +104,7 @@ class Milestone(Entity):
             'pct_complete':pct_complete,
             'num_finished_tasks':a,
             'num_tasks': b}
-            
+
         s = "%(frag)s %(title)s: %(pct_complete)0.0f%% complete (%(num_finished_tasks)d / %(num_tasks)d tasks)"
         return s % d
 
@@ -142,7 +154,7 @@ class Task(Entity):
         """
         Return all comments on this task.
         """
-    
+
         b = self.project(type='comment', entity=self)
         b.title = 'Comments on %(title)s' % self
         return b.order(by_created_time)
@@ -185,7 +197,7 @@ class Comment(Entity):
     """
 
     plural_name = "comments"
-    
+
     required_fields = dict(
         who_said_it=None,
         title=None,
@@ -199,7 +211,7 @@ class Comment(Entity):
 
         who_said_it = self['who_said_it']
         who_said_it = getattr(who_said_it, 'title', who_said_it)
-        
+
         return "%(who_said_it)s said: %(title)s" % dict(
             who_said_it=who_said_it,
             time=self['created_time'].strftime("%I:%M %P, %a, %m/%d/%y"),
@@ -216,7 +228,7 @@ class Comment(Entity):
         who_said_it = getattr(who_said_it, 'title', who_said_it)
 
         time = self['created_time'].strftime("%A, %B %d, %Y, at %I:%M %P")
-        
+
         tmpl = self.e.get_template('comment_detailed_view.txt')
 
         return tmpl.render(locals())
@@ -232,7 +244,7 @@ class Person(Entity):
 
 class Component(Entity):
 
-    plural_name = "component"
+    plural_name = "components"
 
     @property
     def tasks(self):
@@ -299,7 +311,7 @@ class SimpleProject(Project):
         b = self(type='task')
         b.title = 'Tasks'
         return b
-        
+
     @property
     def people(self):
         b = self(type='person')
@@ -310,6 +322,18 @@ class SimpleProject(Project):
     def comments(self):
         b = self(type='comment')
         b.title = 'Comments'
+        return b
+
+    @property
+    def estimates(self):
+        b = self(type='estimate')
+        b.title = 'Estimates'
+        return b
+
+    @property
+    def statuses(self):
+        b = self(type='status')
+        b.title = 'Statuses'
         return b
 
     @property
