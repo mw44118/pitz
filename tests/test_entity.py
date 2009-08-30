@@ -357,9 +357,9 @@ class TestHilariousBug(unittest.TestCase):
 
 class TestNewMethod(unittest.TestCase):
 
-    def test(self):
 
-        # assert Entity(title="a") is Entity(title="a")
+    def test1(self):
+
         a = Entity(title="a")
 
         print("id(Entity.already_instantiated): %s"
@@ -374,3 +374,14 @@ class TestNewMethod(unittest.TestCase):
             % len(Entity.already_instantiated))
 
         assert a.uuid == b.uuid
+
+
+    def test2(self):
+
+        p = Project()
+
+        a = Entity(p, title="a")
+        a2 = Entity(title="a")
+
+        assert a is a2
+        assert a2.project
