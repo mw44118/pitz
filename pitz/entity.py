@@ -76,7 +76,7 @@ class Entity(dict):
         If we don't have it, we make it and return it.
         """
 
-        k = (cls.__name__.lower(), kwargs['title'])
+        k = kwargs['title']
 
         if k in cls.already_instantiated:
             return cls.already_instantiated[k]
@@ -90,6 +90,15 @@ class Entity(dict):
 
     def __setstate__(self, d):
 
+        """
+        Stuff loaded from the pickle file sidesteps both __new__ and
+        __init__, so you can use this method to make sure some stuff
+        happens.
+
+        Because I've heavily hacked up how the yaml stuff works, __new__
+        and __init__ still execute when loading from yaml.
+        """
+
         self.__dict__.update(d)
         self._setup_jinja()
 
@@ -101,7 +110,7 @@ class Entity(dict):
 
 
     def __init__(self, project=None, **kwargs):
-    
+
         self.update_modified_time = False
 
         # Make sure we got all the required fields.
