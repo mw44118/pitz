@@ -1,0 +1,25 @@
+components: []
+created_time: &id001 2009-08-29 22:13:30.199225
+description: 'Write some tests that automate typical flows, for example:
+
+
+  *   Simulate a first-time set up
+
+  *   Simulate a conversation about a task between several users.
+
+  *   Simulate somebody organizing tasks into milestones and components
+
+  '
+estimate: !!python/object:uuid.UUID
+  int: 146948019838310661317567451360560453079
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Write some end-user simulation tests
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 227636028741920333874596696272463466518
+yaml_file_saved: 2009-08-29 22:13:30.211528
