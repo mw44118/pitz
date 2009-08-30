@@ -16,13 +16,15 @@ e = None
 @raises(NoProject)
 def test_no_project():
 
-    e = Entity(title="blah")
+    e = Entity(title="blah123")
+    print(e.project)
     e.replace_pointers_with_objects()
 
 
 def setup():
     global e
     e = Entity(title="bogus entity", a=1, b=2, c=3)
+
 
 def test_summarized_view():
     global e

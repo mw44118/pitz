@@ -167,7 +167,11 @@ class Entity(dict):
 
     def _set_project(self, p):
 
-        self._project = p
+        if not hasattr(self, '_project'):
+            self._project = None
+
+        if p or not self._project:
+            self._project = p
 
         if p is not None and self.uuid not in p.entities_by_uuid:
             p.append(self)

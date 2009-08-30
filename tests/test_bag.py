@@ -298,3 +298,33 @@ class TestMatchesDict(unittest.TestCase):
         assert e2.title == 'example #2', e2.title
 
         unimportant_stuff = self.b.matches_dict(importance='not very')
+
+
+class TestChooseValue(unittest.TestCase):
+
+    def setUp(self):
+
+        b = Bag('Everything')
+
+        e1 = Entity(title="example #1", creator="Matt",
+            importance="Really important")
+
+        e2 = Entity(title="example #2", creator="Matt",
+            importance="not very")
+
+        b.append(e1)
+        b.append(e2)
+
+        self.b = b
+
+    @patch('__builtin__.raw_input')
+    def test1(self, m):
+
+        e1, e2 = self.b
+        assert e1.title == 'example #1', e1.title
+
+        # When the test runs raw_input, it will automatically return 1.
+        m.return_value = 1
+
+        choice = self.b.choose_value('entity')
+        assert choice == e1, choice

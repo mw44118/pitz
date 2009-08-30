@@ -300,7 +300,7 @@ class Bag(list):
         choices = self(type=entity_type)
 
         for i, e in enumerate(choices):
-            print("%4d: %s" % (i, getattr(e, 'summarized_view', e)))
+            print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
 
         choice = raw_input(
             "Pick a %s or hit <ENTER> to choose %s: "
@@ -308,8 +308,8 @@ class Bag(list):
                     entity_type,
                     getattr(default, 'summarized_view', str(default))))
 
-        if choice:
-            return choices[int(choice)]
+        if choice is not None:
+            return choices[int(choice)-1]
 
         else:
             return default
