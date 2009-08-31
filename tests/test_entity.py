@@ -1,9 +1,10 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import pickle, unittest, uuid
+import glob, pickle, unittest, uuid
 
 from pitz.entity import Entity
 from pitz.project import Project
+from pitz.exceptions import NoProject
 
 from nose.tools import raises
 from mock import Mock, patch
@@ -12,9 +13,18 @@ import yaml
 
 e = None
 
+@raises(NoProject)
+def test_no_project():
+
+    e = Entity(title="blah123")
+    print(e.project)
+    e.replace_pointers_with_objects()
+
+
 def setup():
     global e
     e = Entity(title="bogus entity", a=1, b=2, c=3)
+
 
 def test_summarized_view():
     global e
@@ -159,7 +169,7 @@ class TestPicklingEntity(unittest.TestCase):
         e.summarized_view
         e.detailed_view
 
-class TestMatchesDict1(unittest.TestCase):
+class TestMatchesDict(unittest.TestCase):
 
 
     def setUp(self):
@@ -256,3 +266,122 @@ class TestAppending(unittest.TestCase):
         self.e1.project = self.p
 
         assert self.e1 in self.p
+
+
+class TestHilariousBug(unittest.TestCase):
+
+    """
+    This bug is hilarious because it took me about 14 hours to
+    figure it out.
+
+    When an entity changes its UUID, some entities have pointers to the
+    old UUID and others will have pointers to the new UUID.
+
+    The bug was that the entity's new UUID wasn't added to the
+    project.entities_by_uuid dictionary, so, some entities couldn't
+    replace pointers with objects.
+    
+    Entity.__new__ checks if an entity already exists with the same type
+    and title.  If it does, __new__ returns a reference to that one.
+
+    Meanwhile, Entity.__init__ uses a uuid parameter or generates a
+    random one.
+
+    So, the bug happens like this:
+
+    1.  Somehow an Entity gets generated with a random UUID.
+
+    2.  Later an Entity with the same type and title gets made, but it
+        passes in its own UUID.  So the __new__ method returns a
+        reference to the original Entity and then blows away the uuid
+        attribute from before with the new one.
+
+    As long as other entities had references to the object and not to
+    the UUID, nothing goes wrong.
+
+    But when entities only store references to UUIDs, there's a chance
+    that somebody might not be able to replace the pointer (the UUID)
+    with the object (the entity).
+    """
+
+    def tearDown(self):
+
+        for f in glob.glob('/tmp/*.yaml'):
+            os.unlink(f)
+
+
+    def test_1(self):
+        """
+        Simple case of hilarious bug.
+        """
+
+        p = Project()
+        est1 = Entity(p, title="blah")
+        est1_uuid = est1.uuid
+        assert est1_uuid in p.entities_by_uuid
+
+        est2 = Entity(p, title=est1.title, uuid=uuid.uuid4())
+        est2_uuid = est2.uuid
+
+        assert est2 is est1
+        assert est1_uuid != est2_uuid
+        assert est1_uuid in p.entities_by_uuid
+        assert p.entities_by_uuid[est1_uuid] is est2
+        assert est2.uuid in p.entities_by_uuid
+        assert p.entities_by_uuid[est2_uuid] is est2
+
+
+    def test_2(self):
+
+        p = Project()
+        est1 = Entity(p, title='4 days')
+        est1_uuid = est1.uuid
+
+        e1 = Entity(p, title='some task', estimate=est1)
+        e1.replace_objects_with_pointers()
+
+        est2 = Entity(p, title=est1.title, uuid=uuid.uuid4())
+        assert est2 is est1
+        assert est1_uuid != est2.uuid
+
+        e2 = Entity(p, title='another task', estimate=est2)
+        e2.replace_objects_with_pointers()
+
+        assert e1['estimate'] != e2['estimate'], est2['estimate']
+
+        e1.replace_pointers_with_objects()
+        e2.replace_pointers_with_objects()
+
+        assert e1['estimate'] == e2['estimate'], est2['estimate']
+
+
+class TestNewMethod(unittest.TestCase):
+
+
+    def test1(self):
+
+        a = Entity(title="a")
+
+        print("id(Entity.already_instantiated): %s"
+            % id(Entity.already_instantiated))
+
+        print("Entity.already_instantiated has %d entities cached"
+            % len(Entity.already_instantiated))
+
+        b = Entity(title="a")
+
+        print("Entity.already_instantiated has %d entities cached"
+            % len(Entity.already_instantiated))
+
+        assert a.uuid == b.uuid
+
+
+    def test2(self):
+
+        p = Project()
+
+        a = Entity(p, title="a")
+        a2 = Entity(title="a")
+
+        assert a is a2
+        assert a2.project

@@ -92,11 +92,12 @@ Making them
 
 While entities are based on dictionaries, bags are based on lists.  You
 can give a bag instance a title, which is nice for remembering what it
-is you want it for.  Bags make it easy to organize a bunch of entities.
+is you want it for.  Bags make it easy to organize a bunch of entities::
 
     >>> from pitz.bag import Bag
-    >>> b = Bag(title="Stuff that is not very important")
+    >>> b = Bag(title="Stuff")
     >>> b.append(e)
+    <pitz.Bag 'Stuff' (1 entity entities) sorted by None>
 
 Viewing them
 ------------
@@ -105,9 +106,9 @@ Converting a bag to a string prints the summarized view of all the
 entities inside::
 
     >>> print(b) #doctest: +SKIP
-    ================================
-    Stuff that is not very important
-    ================================
+    =====
+    Stuff
+    =====
 
     1 entity entities
     -----------------
@@ -139,7 +140,9 @@ Now I'll make a new bag that has both of these new entities::
 
     >>> b = Bag('Everything')
     >>> b.append(e1)
+    <pitz.Bag 'Everything' (1 entity entities) sorted by None>
     >>> b.append(e2)
+    <pitz.Bag 'Everything' (2 entity entities) sorted by None>
     >>> print(b) #doctest: +SKIP
     Everything
     ==========

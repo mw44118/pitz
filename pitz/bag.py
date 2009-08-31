@@ -9,6 +9,7 @@ from urllib import quote_plus
 
 import jinja2
 
+from pitz.entity import Entity
 from pitz import *
 
 log = logging.getLogger('pitz.bag')
@@ -171,6 +172,8 @@ class Bag(list):
             if rerun_sort_after_append:
                 self.sort(self.order_method)
 
+        return self
+
 
     def pop(self, index=-1):
 
@@ -211,7 +214,13 @@ class Bag(list):
     def contents(self):
 
         """
-        Return a descriptive one-line string of the contents of the bag.
+        Return string describing contents of the bag.
+
+        >>> Bag().contents
+        '(empty)'
+
+        >>> Bag().append(Entity(title="blah")).contents
+        '(1 entity entities)'
         """
 
         if self:
@@ -237,7 +246,8 @@ class Bag(list):
         """
 
         for e in self:
-            e.replace_pointers_with_objects()
+            if e.project:
+                e.replace_pointers_with_objects()
             
 
     def replace_objects_with_pointers(self):
@@ -275,34 +285,34 @@ class Bag(list):
             if attr in e:
                 dd[e[attr]] += 1
 
-        return sorted(dd.items(), key=lambda t: t[1], reverse=True)
+        return sorted(
+            [(e, c) for e, c in dd.items()],
+            key=lambda t: t[1], reverse=True)
 
 
-    def choose_value(self, attr_name, default=None):
+    def choose_value(self, entity_type, default=None):
 
         """
-        Ask for a value chosen from this attribute name.  Return the chosen
+        Ask for a value chosen from this entity type.  Return the chosen
         entity.
         """
 
-        choices = [v for (v, count) in self.values(attr_name)]
+        choices = self(type=entity_type)
 
-        for i, v in enumerate(choices):
-            print("%4d: %s" % (i, v.summarized_view))
+        for i, e in enumerate(choices):
+            print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
 
         choice = raw_input(
             "Pick a %s or hit <ENTER> to choose %s: "
                 % (
-                    attr_name,
-                    getattr(default, 'summarized_view',
-                    str(default))))
+                    entity_type,
+                    getattr(default, 'summarized_view', str(default))))
 
-        if choice:
-            return choices[int(choice)]
+        if choice is not None:
+            return choices[int(choice)-1]
 
         else:
             return default
-
 
 
     def grep(self, phrase, ignore_case=False):

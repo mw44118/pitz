@@ -4,6 +4,10 @@
 Verify the stuff in simplepitz works.
 """
 
+import glob, unittest
+
+from uuid import uuid4, UUID
+
 from nose.tools import raises, with_setup
 
 from pitz.exceptions import NoProject
@@ -133,3 +137,21 @@ def test_from_uid():
 
     matt = Person(
         title='W. Matthew Wilson')
+
+
+def test_repr_after_replace_objects_with_pointers():
+
+
+    p = SimpleProject(
+        entities=[
+            Task(title="wash dishes",
+                status=Status(title="unstarted"))])
+
+    t = Task(title="wash dishes")
+    assert t in p
+
+    assert isinstance(t['status'], Entity)
+    t.replace_objects_with_pointers()
+    assert isinstance(t['status'], UUID)
+
+    t.summarized_view

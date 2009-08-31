@@ -23,7 +23,7 @@ estimate: !!python/object:uuid.UUID
   int: 146948019838310661317567451360560453079
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-08-23 22:05:26.096534
+modified_time: 2009-08-28 20:37:18.346396
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
@@ -31,4 +31,4 @@ title: Use entry points so that install with zc.buildout works OK
 type: task
 uuid: !!python/object:uuid.UUID
   int: 56949602395575203251102237645582015773
-yaml_file_saved: 2009-08-23 22:05:28.970241
+yaml_file_saved: 2009-08-28 20:38:14.697295

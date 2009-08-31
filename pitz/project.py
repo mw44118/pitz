@@ -10,6 +10,7 @@ from pitz.bag import Bag
 from pitz.entity import Entity
 from pitz import *
 
+
 class Project(Bag):
 
     """
@@ -24,13 +25,14 @@ class Project(Bag):
     )
 
 
-    def __init__(self, title='', uuid=None, pathname=None, entities=(), 
-        order_method=by_pscore_and_milestone, load_yaml_files=True, **kwargs):
+    def __init__(self, title='', uuid=None, pathname=None, entities=(),
+        order_method=by_pscore_and_milestone, load_yaml_files=True,
+        **kwargs):
+
+        self.rerun_sort_after_append = True
 
         super(Project, self).__init__(title, uuid, pathname, entities,
             order_method, **kwargs)
-
-        self.rerun_sort_after_append = True
 
         # Only load from the file system if we don't have anything.
         if self.pathname and load_yaml_files and not entities:
@@ -171,13 +173,12 @@ class Project(Bag):
             p.append(e)
 
         return p
-
-
+    
 
     @classmethod
-    def find_yaml_file(cls, filename='project.yaml', walkdown=False):
+    def find_file(cls, filename='project.yaml', walkdown=False):
         """
-        Raise an exception or return the path to the project.yaml file.
+        Raise an exception or return the path to the file filename.
 
         Check the os.environ first and then walk up the filesystem, then
         walk down the filesystem IFF walkdown is True.
@@ -224,8 +225,8 @@ class Project(Bag):
         Instantiate the class based on the data in file fp.
 
         IMPORTANT: this may not return an instance of this project.
-        Instead it will return an instance of the project subclass
-        specified in the yaml data.
+        Instead it will return an instance of the subclass specified in
+        the yaml data.
         """
 
         yamldata = yaml.load(open(fp))

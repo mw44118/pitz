@@ -5,11 +5,12 @@ estimate: !!python/object:uuid.UUID
   int: 146948019838310661317567451360560453079
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: 2009-06-29 22:14:21.737169
+modified_time: 2009-08-28 20:37:18.346589
+pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
 title: Automatically strip newlines off entity titles
 type: task
 uuid: !!python/object:uuid.UUID
   int: 7568865829982135871330794544222803322
-yaml_file_saved: 2009-06-29 22:14:27.388171
+yaml_file_saved: 2009-08-28 20:38:14.812938

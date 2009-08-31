@@ -1,0 +1,38 @@
+components: []
+created_time: &id001 2009-08-29 15:00:09.937245
+description: 'The way to tell pitz where the project data lives is kind of messy.
+
+  Ideally, the user should just say "the pitzdir is here".  Maybe that''s
+
+  an option.
+
+
+  If no pitzdir is specified, pitz should search for it.
+
+
+  When a pitzdir is found, first pitz should check for a project.pickle.
+
+  If that exists, and it is not stale, then pitz should load it.
+
+
+  Otherwise, pitz should look for a project.yaml file.
+
+
+  All of this needs to be defined in a single place so each script can
+
+  easily have all these rules.
+
+  '
+estimate: !!python/object:uuid.UUID
+  int: 146948019838310661317567451360560453079
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Rewrite code to locate project.pickle
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 134670963762631689391744269090493152808
+yaml_file_saved: 2009-08-29 15:00:09.948107

@@ -39,11 +39,12 @@ estimate: !!python/object:uuid.UUID
   int: 146948019838310661317567451360560453079
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: 2009-07-17 20:54:36.080821
+modified_time: 2009-08-28 20:37:18.346536
+pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
 title: Figure out how to test installing pitz from scratch
 type: task
 uuid: !!python/object:uuid.UUID
   int: 472031267883786180133831071042108450
-yaml_file_saved: 2009-07-17 20:54:51.245894
+yaml_file_saved: 2009-08-28 20:38:14.776439

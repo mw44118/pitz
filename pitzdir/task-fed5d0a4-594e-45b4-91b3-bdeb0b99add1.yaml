@@ -1,5 +1,5 @@
 components: []
-created_time: &id001 2009-07-07 15:48:41.372230
+created_time: 2009-07-07 15:48:41.372230
 description: 'The fabric project has a nice get_version function that allows the
 
   version to be only stored in a single place.
@@ -17,11 +17,12 @@ estimate: !!python/object:uuid.UUID
   int: 146948019838310661317567451360560453079
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
+modified_time: 2009-08-29 13:46:36.214499
+pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
-title: Add a --version option to all the command-line scripts
+  int: 181191650815078915740523248343325601886
+title: Add --version to command-line scripts
 type: task
 uuid: !!python/object:uuid.UUID
   int: 338734101922491553151473382837718724049
-yaml_file_saved: 2009-07-07 15:48:41.373700
+yaml_file_saved: 2009-08-29 13:46:41.451626

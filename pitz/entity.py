@@ -12,6 +12,8 @@ import jinja2
 
 from clepy import edit_with_editor
 
+from pitz.exceptions import NoProject
+
 log = logging.getLogger('pitz.entity')
 
 
@@ -48,37 +50,6 @@ class Entity(dict):
 
     __metaclass__ = MC
 
-    def __new__(cls, project=None, **kwargs):
-
-        """
-        Checks if we already have something with this exact type and
-        title.  If we do, then we just return that.
-
-        If we don't have it, we make it and return it.
-        """
-
-        k = (cls.__name__.lower(), kwargs['title'])
-
-        if k in cls.already_instantiated:
-            return cls.already_instantiated[k]
-
-        else:
-            o = super(Entity, cls).__new__(cls, project, **kwargs)
-            cls.already_instantiated[k] = o
-            return o
-
-
-    def __setstate__(self, d):
-
-        self.__dict__.update(d)
-        self._setup_jinja()
-
-        # Now add this instance back in to the dictionary that maps
-        # titles to instances.
-        cls = self.__class__
-        if self.title not in cls.already_instantiated:
-            cls.already_instantiated[self.title] = self
-
     # When the value is None, I'll raise an exception unless the
     # attribute is defined.
     required_fields = dict(title=None)
@@ -95,8 +66,51 @@ class Entity(dict):
         'yaml_file_saved', 'html_file_saved', 'modified_time',
     ]
 
+
+    def __new__(cls, project=None, **kwargs):
+
+        """
+        Checks if we already have something with this exact type and
+        title.  If we do, then we just return that.
+
+        If we don't have it, we make it and return it.
+        """
+
+        k = kwargs['title']
+
+        if k in cls.already_instantiated:
+            return cls.already_instantiated[k]
+
+        else:
+            o = super(Entity, cls).__new__(cls, project, **kwargs)
+            cls.already_instantiated[k] = o
+
+            return o
+
+
+    def __setstate__(self, d):
+
+        """
+        Stuff loaded from the pickle file sidesteps both __new__ and
+        __init__, so you can use this method to make sure some stuff
+        happens.
+
+        Because I've heavily hacked up how the yaml stuff works, __new__
+        and __init__ still execute when loading from yaml.
+        """
+
+        self.__dict__.update(d)
+        self._setup_jinja()
+
+        # Now add this instance back in to the dictionary that maps
+        # titles to instances.
+        cls = self.__class__
+        if self.title not in cls.already_instantiated:
+            cls.already_instantiated[self.title] = self
+
+
     def __init__(self, project=None, **kwargs):
-    
+
         self.update_modified_time = False
 
         # Make sure we got all the required fields.
@@ -140,13 +154,10 @@ class Entity(dict):
         if not self.get('pscore'):
             self['pscore'] = 0
 
-        # Add this entity to the project (if we got a project).
         self.project = project
 
         self._setup_jinja()
 
-        # Now throw the switch so that future updates do update the
-        # modified time value.
         self.update_modified_time = True
 
 
@@ -156,13 +167,20 @@ class Entity(dict):
 
     def _set_project(self, p):
 
-        self._project = p
+        if not hasattr(self, '_project'):
+            self._project = None
 
-        if p is not None and self not in p:
+        if p or not self._project:
+            self._project = p
+
+        if p is not None and self.uuid not in p.entities_by_uuid:
             p.append(self)
-            self.replace_pointers_with_objects()
+            if self.project:
+                self.replace_pointers_with_objects()
+
 
     project = property(_get_project, _set_project)
+
 
     def _setup_jinja(self):
         # Set up a template loader.
@@ -204,24 +222,30 @@ class Entity(dict):
                 super(Entity, self).__setitem__(
                     'modified_time', datetime.now())
 
+
     def __hash__(self):
         return self.uuid.int
+
 
     @property
     def yaml_filename(self):
         return '%(type)s-%(uuid)s.yaml' % self
 
+
     @property
     def frag(self):
         return self['frag']
+
 
     @property
     def uuid(self):
         return self['uuid']
 
+
     @property
     def title(self):
         return self['title']
+
 
     def matches_dict(self, **d):
         """
@@ -275,8 +299,8 @@ class Entity(dict):
             # than the one passed in.
             if ev != v: 
 
-
-                # Neither are lists, so don't bother doing anything else.
+                # Neither are lists, so don't bother doing anything
+                # else.
                 if not isinstance(ev, (list, tuple)) \
                 and not isinstance(v, (list, tuple)):
                     return
@@ -301,6 +325,7 @@ class Entity(dict):
 
         return self
 
+
     def does_not_match_dict(self, **d):
         """
         Returns self if ALL of the key-value pairs do not match.
@@ -323,9 +348,11 @@ class Entity(dict):
 
         return self
 
+
     def __repr__(self):
         return "<pitz.%s %s>" \
         % (self.__class__.__name__, self.summarized_view)
+
 
     @property
     def summarized_view(self):
@@ -334,6 +361,18 @@ class Entity(dict):
         """
 
         return "%(frag)s: %(title)s" % self
+
+    @property
+    def abbr(self):
+        """
+        Shortest possible description of entity.
+        """
+
+        if 'abbr' in self:
+            return self['abbr']
+        else:
+            return self.title
+
 
     @property
     def detailed_view(self):
@@ -403,21 +442,23 @@ class Entity(dict):
         Replace pointer to entities with the entities that are pointed
         to.
 
-        In other words, replace the string "matt" with the object that
+        In other words, replace the uuid "matt" with the object that
         has "matt" as its uuid.
         """
+
+        if not self.project:
+            raise NoProject("I can't replace pointers without a project")
+
         self.update_modified_time = False
 
-        if self.project:
+        for attr, val in self.items():
 
-            for attr, val in self.items():
+            # Skip over our own uuid attribute.
+            if val == self.uuid:
+                continue
 
-                # Skip over our own uuid attribute.
-                if val == self.uuid:
-                    continue
-
-                if isinstance(val, uuid.UUID):
-                    self[attr] = self.project.by_uuid(val)
+            if isinstance(val, uuid.UUID):
+                self[attr] = self.project.by_uuid(val)
 
         self.update_modified_time = True
         return self
@@ -481,7 +522,8 @@ class Entity(dict):
         s = tmpl.render(title=self.title, entity=self,
             UUID=uuid.UUID)
 
-        self.replace_pointers_with_objects()
+        if self.project:
+            self.replace_pointers_with_objects()
 
         return s
 
@@ -491,6 +533,9 @@ class Entity(dict):
 
         """
         Returns an instance after loading yaml file fp.
+
+        Remember, the instance might have pointers that need to be
+        converted to proper references.
         """
 
         d = yaml.load(open(fp))
