@@ -1,9 +1,10 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os, unittest
+import glob, os, random, time, unittest
 from pitz.entity import Entity
 from pitz.project import Project
 
+from nose import SkipTest
 from nose.tools import raises
 from mock import Mock, patch
 
@@ -86,8 +87,9 @@ def test_from_yaml_file_1(m1, m2, m3):
     m3.return_value = {'bogus_method': lambda e1, e2: 1}
 
     p = Project("Bogus")
-    b2 = p.from_yaml_file('aaa')
+    b2 = p.from_yaml_file('xyz')
     assert b2.order_method == m3.return_value['bogus_method']
+
 
 def test_grep():
 
@@ -139,3 +141,105 @@ class TestPicklingProject(unittest.TestCase):
         assert new_p.length
         for e in new_p:
             assert e.project
+
+
+class TestFindPitzdir(unittest.TestCase):
+
+    def setUp(self):
+        os.mkdir('/tmp/pitzdir')
+        os.mkdir('/tmp/pitzdir/foo')
+        os.environ['PITZDIR'] = 'xxx'
+
+    def tearDown(self):
+        os.chdir(os.environ['HOME'])
+        os.rmdir('/tmp/pitzdir/foo')
+        os.rmdir('/tmp/pitzdir')
+
+    def test_1(self):
+        """
+        Verify we can use the parameter
+        """
+
+        assert Project.find_pitzdir('/tmp/pitzdir') == '/tmp/pitzdir'
+
+    def test_2(self):
+        """
+        Verify we check os.environ.
+        """
+
+        os.environ['PITZDIR'] = '/tmp/pitzdir'
+        assert Project.find_pitzdir() == '/tmp/pitzdir'
+
+    @raises(IOError)
+    def test_3(self):
+        """
+        Verify we catch invalid values.
+        """
+
+        Project.find_pitzdir('/tmp/boguspitzdir')
+
+
+    def test_4(self):
+        """
+        Verify we can walk up and find pitzdir.
+        """
+
+        os.chdir('/tmp/pitzdir/foo')
+        assert Project.find_pitzdir() == '/tmp/pitzdir'
+
+
+class TestFromPitzdir(unittest.TestCase):
+
+    def setUp(self):
+
+        self.p = Project(pathname='/tmp')
+        self.p.to_yaml_file()
+        self.p.to_pickle()
+
+    def tearDown(self):
+
+        for f in glob.glob('/tmp/*.yaml'):
+            os.unlink(f)
+
+        if os.path.isfile('/tmp/project.pickle'):
+            os.unlink('/tmp/project.pickle')
+
+
+    def test_fresh_pickle(self):
+        """
+        Verify we use the pickle when we can.
+        """
+
+        p = Project.from_pitzdir('/tmp')
+        assert p.loaded_from == 'pickle', p.loaded_from
+        
+
+    def test_stale_pickle(self):
+        """
+        Verify we use the yaml files when the pickle is too old.
+        """
+
+        stat = os.stat('/tmp/project.pickle')
+
+        os.utime('/tmp/project.pickle',
+            (stat.st_atime-1, stat.st_mtime-1))
+
+        print("pickle file: %s" 
+            % os.stat('/tmp/project.pickle').st_mtime)
+
+        print("newest yaml file: %s" 
+            % max([os.stat(f).st_mtime for f in glob.glob('/tmp/*.yaml')]))
+
+        p = Project.from_pitzdir('/tmp')
+        assert p.loaded_from == 'yaml', p.loaded_from
+
+
+    def test_from_yaml_files(self):
+        """
+        Verify we can use the yaml files when no pickle exists.
+        """
+
+        os.unlink('/tmp/project.pickle')
+
+        p = Project.from_pitzdir('/tmp')
+        assert p.loaded_from == 'yaml', p.loaded_from

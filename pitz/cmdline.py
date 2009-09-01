@@ -30,7 +30,6 @@ def pitz_shell():
     """
 
     p = optparse.OptionParser()
-    p.set_usage(pitz_shell.__doc__)
 
     p.add_option('--version', action='store_true',
         help='show pitz version')
@@ -63,10 +62,10 @@ def pitz_shell():
         os.environ['PITZDIR'] = path
 
         try:
-            log.debug("Searching for picke file in %s..." % path)
+            log.debug("Searching for pickle file in %s..." % path)
             p = Project.from_file(Project.find_file('project.pickle'))
 
-        except ProjectYamlNotFound:
+        except ProjectNotFound:
             log.debug("Searching for yaml file...")
             p = Project.from_yaml_file(Project.find_file())
 
@@ -78,7 +77,7 @@ def pitz_shell():
             p = Project.from_pickle(Project.find_file('project.pickle'))
             log.debug("Found the pickle")
 
-        except ProjectYamlNotFound:
+        except ProjectNotFound:
             log.debug("Searching for yaml file...")
             p = Project.from_yaml_file(Project.find_file())
 
