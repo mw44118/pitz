@@ -12,8 +12,8 @@ class NoProject(PitzException):
     with.
     """
 
-class ProjectYamlNotFound(PitzException):
+class ProjectNotFound(PitzException):
    """
-    Indicates that the system couldn't find a project.yaml file when it
-    tried to find one.
+    Indicates that the system couldn't find what it needed to create a
+    project.
     """

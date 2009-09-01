@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os, pickle
+import glob, logging, os, pickle
 
 import yaml
 
@@ -9,6 +9,8 @@ from clepy import walkup
 from pitz.bag import Bag
 from pitz.entity import Entity
 from pitz import *
+
+log = logging.getLogger('pitz.project')
 
 
 class Project(Bag):
@@ -143,6 +145,7 @@ class Project(Bag):
 
         return fp
 
+
     def to_pickle(self, pathname=None):
         """
         Save a pickled version of this project at pathname +
@@ -172,6 +175,7 @@ class Project(Bag):
         for e in p:
             p.append(e)
 
+        p.loaded_from = 'pickle'
         return p
     
 
@@ -212,7 +216,94 @@ class Project(Bag):
                 if os.path.isfile(a):
                     return a
 
-        raise ProjectYamlNotFound("Started looking at %s" % starting_path)
+        raise ProjectNotFound("Started looking at %s" % starting_path)
+
+
+    @classmethod
+    def find_pitzdir(cls, pitzdir=None, walkdown=False):
+
+        """
+        Return the path to the pitzdir.
+
+        Check the pitzdir parameter first, then look in os.environ, then
+        go up the directory from where we are now, and then maybe
+        (depending on walkdown) go down the directory tree.
+
+        Raises ProjectNotFound if no project could be found.
+        """
+
+        # Check parameter.
+        if pitzdir:
+            
+            if os.path.isdir(pitzdir):
+                return os.path.abspath(pitzdir)
+
+            else:
+                raise IOError("%s ain't real" % pitzdir)
+
+
+        # Check os.environ['PITZDIR']
+        if 'PITZDIR' in os.environ \
+        and os.path.isdir(os.environ['PITZDIR']):
+
+            return os.path.abspath(os.environ['PITZDIR'])
+
+
+        # Walk up the file system.
+        starting_path = os.getcwd()
+
+        # Walk up...
+        for dir in walkup(starting_path):
+
+            p = os.path.join(dir, 'pitzdir')
+
+            if os.path.isdir(p):
+                return os.path.abspath(p)
+
+
+        # Walk down...
+        if walkdown:
+            for root, dirs, files in os.walk(starting_path):
+
+                if 'pitzdir' in dirs:
+                    return os.path.abspath(
+                        os.path.join(dir, 'pitzdir'))
+
+        raise ProjectNotFound("Started looking at %s" % starting_path)
+
+        # Maybe walk down the filesystem.
+
+ 
+    @classmethod
+    def from_pitzdir(cls, pitzdir):
+
+        """
+        Return a project (or subclass) instance based on data in
+        pitzdir.  
+        """
+
+        # If we have a project.pickle, compare the timestamp of the
+        # pickle to the timestamps of all the yaml files.
+        pickle_path = os.path.join(pitzdir, 'project.pickle')
+        if os.path.isfile(pickle_path):
+
+            pickle_timestamp = os.stat(pickle_path).st_mtime
+            
+            newest_yaml = max([os.stat(f).st_mtime 
+                for f in glob.glob(os.path.join(pitzdir, '*.yaml'))])
+
+            if pickle_timestamp >= newest_yaml:
+                return cls.from_pickle(pickle_path)
+
+        yaml_path = os.path.join(pitzdir, 'project.yaml')
+        if os.path.isfile(yaml_path):
+
+            return cls.from_yaml_file(yaml_path)
+
+
+        raise ProjectNotFound("Couldn't find anything in pitzdir %s"
+            % pitzdir)
+
 
     @property
     def html_filename(self):
@@ -248,4 +339,6 @@ class Project(Bag):
         # This big P is the class of the project.
         P = getattr(m, yamldata['classname'])
 
-        return P(**yamldata)
+        p = P(**yamldata)
+        p.loaded_from = 'yaml'
+        return p
