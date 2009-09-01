@@ -29,57 +29,16 @@ def pitz_shell():
     Start an ipython session after loading in a project.
     """
 
-    p = optparse.OptionParser()
-
-    p.add_option('--version', action='store_true',
-        help='show pitz version')
+    p = setup_options()
 
     options, args = p.parse_args()
 
     if options.version:
         print_version()
 
-    path = picklefile = yamlfile = None
+    pitzdir = Project.find_pitzdir(options.pitzdir)
 
-    if args:
-        path = args[0]
-
-    if path and os.path.isfile(path):
-        if path.endswith('.pickle'):
-            picklefile = path
-        elif path.endswith('.yaml'):
-            yamlfile = path
-
-    if picklefile:
-        log.debug("Using picklefile")
-        p = Project.from_pickle(picklefile)
-
-    elif yamlfile:
-        log.debug("Using yamlfile")
-        p = Project.from_yaml_file(yamlfile)
-
-    elif path and os.path.isdir(path):
-        os.environ['PITZDIR'] = path
-
-        try:
-            log.debug("Searching for pickle file in %s..." % path)
-            p = Project.from_file(Project.find_file('project.pickle'))
-
-        except ProjectNotFound:
-            log.debug("Searching for yaml file...")
-            p = Project.from_yaml_file(Project.find_file())
-
-    else:
-
-        # First look for a pickle file.
-        try:
-            log.debug("Searching for project.pickle...")
-            p = Project.from_pickle(Project.find_file('project.pickle'))
-            log.debug("Found the pickle")
-
-        except ProjectNotFound:
-            log.debug("Searching for yaml file...")
-            p = Project.from_yaml_file(Project.find_file())
+    p = Project.from_pitzdir(pitzdir)
 
     # Everything in this dictionary will be added to the top-level
     # namespace in the shell.
@@ -189,10 +148,7 @@ def pitz_setup():
 def setup_options():
     p = optparse.OptionParser()
 
-    p.add_option('-p', '--pitz-dir')
-    p.add_option('-g', '--grep')
-
-    p.set_usage('%prog [options] [filters]')
+    p.add_option('-p', '--pitzdir')
 
     p.add_option('--version', action='store_true',
         help='show pitz version')

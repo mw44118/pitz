@@ -145,6 +145,7 @@ class Project(Bag):
 
         return fp
 
+
     def to_pickle(self, pathname=None):
         """
         Save a pickled version of this project at pathname +
