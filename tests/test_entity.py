@@ -169,6 +169,9 @@ class TestPicklingEntity(unittest.TestCase):
         e.summarized_view
         e.detailed_view
 
+        assert e.update_modified_time == True
+
+
 class TestMatchesDict(unittest.TestCase):
 
 
