@@ -1,0 +1,31 @@
+components: []
+created_time: &id001 2009-09-03 10:43:45.567900
+description: 'Right now, pitz-setup asks the project''s name, creates the pitzdir,
+  and
+
+  then quits.
+
+
+  It should also give a way to set up milestones, components, estimates,
+
+  statuses, and anything else we add in.
+
+
+  It should also probably create a person entity based on who is currently
+
+  using the system.
+
+  '
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: During pitz-setup, offer chance to add some milestones, components, etc
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 206271098856523555710420776844562704515
+yaml_file_saved: 2009-09-03 10:43:45.574359
