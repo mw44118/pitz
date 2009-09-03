@@ -201,8 +201,6 @@ class Bag(list):
     @property
     def detailed_view(self):
 
-        # First sort the entitities just in case we've appended new
-        # entities since the last time we sorted.
         self.order()
 
         t = self.e.get_template('bag_detailed_view.txt')

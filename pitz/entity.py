@@ -108,8 +108,9 @@ class Entity(dict):
         if self.title not in cls.already_instantiated:
             cls.already_instantiated[self.title] = self
 
-        # Set a few attributes on the entity.
+        # Set some attributes that also get set in __init__.
         self.update_modified_time = True
+
 
     def __init__(self, project=None, **kwargs):
 

@@ -1,0 +1,13 @@
+{{for equal_sign in bag.title}}={{endfor}}
+{{ bag.title }}
+{{for equal_sign in bag.title}}={{endfor}}
+
+{{ bag.contents }}
+{{for dash in bag.contents}}-{{endfor}}
+
+{{for loop, t in looper(bag)}}
+{{if loop.first_group(lambda t: t['milestone'])}}
+
+{{endif}}
+{{ "%4d" % loop.index }}: {{ t.summarized_view }}
+{{endfor}}
