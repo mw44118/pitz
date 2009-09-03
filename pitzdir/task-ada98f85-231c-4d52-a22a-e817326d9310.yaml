@@ -1,0 +1,22 @@
+components: []
+created_time: &id001 2009-09-03 15:50:18.685918
+description: 'Right now, by_whatever doesn''t allow sorting by a compound key like
+
+  (milestone ascending, status descending).  Instead, it is all or
+
+  nothing.
+
+  '
+estimate: !!python/object:uuid.UUID
+  int: 53593374283076976629647435265038831042
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Rewrite by_whatever and allow asc/desc on each key
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 230836852372667958880841689105035006736
+yaml_file_saved: 2009-09-03 15:50:18.693367
