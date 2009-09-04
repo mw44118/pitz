@@ -1,0 +1,23 @@
+components: []
+created_time: &id001 2009-09-04 09:58:22.176851
+description: 'I want a quick way to abandon tasks.  That means:
+
+
+  *   Change status to abandoned
+
+  *   Set their milestone to unscheduled
+
+  '
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 246357804921662755488325692659396046179
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Write a pitz-abandon script
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 202307208808856636439594765980585079800
+yaml_file_saved: 2009-09-04 09:58:22.182177
