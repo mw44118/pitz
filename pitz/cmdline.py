@@ -195,6 +195,9 @@ def pitz_everything():
 
         p = setup_options()
 
+        p.add_option('-g', '--grep',
+            help='Filter to entities matching a regex')
+
         options, args = p.parse_args()
 
         path_to_yaml_file = options.pitzdir or Project.find_file()
