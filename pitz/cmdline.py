@@ -181,16 +181,6 @@ def build_filter(args):
 
 def pitz_everything():
 
-    p = optparse.OptionParser()
-
-    p.add_option('--version', action='store_true',
-        help='show pitz version')
-
-    options, args = p.parse_args()
-
-    if options.version:
-        print_version()
-
     with spinning_distraction():
 
         p = setup_options()
@@ -199,6 +189,9 @@ def pitz_everything():
             help='Filter to entities matching a regex')
 
         options, args = p.parse_args()
+
+        if options.version:
+            print_version()
 
         path_to_yaml_file = options.pitzdir or Project.find_file()
 
