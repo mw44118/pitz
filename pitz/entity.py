@@ -6,9 +6,7 @@ import copy, logging, os, uuid, weakref
 from datetime import datetime
 from types import NoneType
 
-import yaml
-
-import jinja2
+import jinja2, tempita, yaml
 
 from clepy import edit_with_editor
 
@@ -193,6 +191,7 @@ class Entity(dict):
         self.e.globals = {
             'isinstance':isinstance,
             'hasattr':hasattr,
+            'looper':tempita.looper,
         }
 
 

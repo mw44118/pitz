@@ -1,0 +1,18 @@
+{%  for equalsign in bag.title -%}={% endfor %}
+{{ bag.title }}
+{%  for equalsign in bag.title -%}={% endfor %}
+
+{{ bag.contents }}
+{% for x, e in looper(entities) -%}
+
+{% if x.first_group(first_milestone) %}
+Milestone: {{e['milestone'].summarized_view if hasattr(e, 'milestone') else 'None'}}
+-----------{%  for dash in e['milestone'].summarized_view -%}-{% endfor %}
+{% endif -%}
+
+{% if x.first_group(first_status) %}
+Status: {{e['status'].summarized_view if 'status' in e else 'None'}}
+{% endif -%}
+
+{{'%4d' | format(x.index)}}: {{e.summarized_view}}
+{% endfor %}

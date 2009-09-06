@@ -128,6 +128,21 @@ class Task(Entity):
 
 
     @property
+    def milestone(self):
+        return self['milestone']
+
+
+    @property
+    def status(self):
+        return self['status']
+
+
+    @property
+    def estimate(self):
+        return self['estimate']
+
+
+    @property
     def summarized_view(self):
         """
         Short description of the task.
@@ -141,7 +156,7 @@ class Task(Entity):
         if 'milestone' in self:
             milestone = getattr(self['milestone'], 'abbr', self['milestone'])
         else:
-            milestone = '???'
+            milestone = '...'
 
         pscore = self['pscore']
 

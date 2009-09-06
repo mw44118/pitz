@@ -34,6 +34,7 @@ started pitz.""",
         'sphinx',
         'nose',
         'jinja2',
+        'Tempita',
           # -*- Extra requirements: -*-
     ],
 

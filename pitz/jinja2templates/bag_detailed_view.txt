@@ -1,10 +1,8 @@
-{%  for dash in bag.title -%}={% endfor %}
+{%  for equalsign in bag.title -%}={% endfor %}
 {{ bag.title }}
-{%  for dash in bag.title -%}={% endfor %}
+{%  for equalsign in bag.title -%}={% endfor %}
 
 {{ bag.contents }}
-{%  for dash in bag.contents -%}-{% endfor %}
-
-{% for i, e in enumerate(entities) -%}
-{{ "%4d" | format(i) }}: {{e.summarized_view}}
+{% for x, e in looper(entities) -%}
+{{'%4d' | format(x.index)}}: {{e.summarized_view}}
 {% endfor %}

@@ -14,6 +14,12 @@ from pitz import *
 
 log = logging.getLogger('pitz.bag')
 
+def first_milestone(e):
+    return e.get('milestone')
+
+def first_status(e):
+    return e.get('status')
+
 class Bag(list):
 
     """
@@ -54,6 +60,9 @@ class Bag(list):
             'hasattr':hasattr,
             'enumerate':enumerate,
             'len':len,
+            'looper':tempita.looper,
+            'first_milestone':first_milestone,
+            'first_status':first_status,
         }
     
 
@@ -203,12 +212,8 @@ class Bag(list):
 
         self.order()
 
-        filename = pkg_resources.resource_filename('pitz',
-            'tempitatemplates/bag_detailed_view.txt')
-
-        t = tempita.Template.from_filename(filename)
-
-        return t.substitute(bag=self)
+        t = self.e.get_template('bag_detailed_view.txt')
+        return t.render(bag=self, entities=self)
 
 
     @property
