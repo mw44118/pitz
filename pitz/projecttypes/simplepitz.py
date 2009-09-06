@@ -134,7 +134,7 @@ class Task(Entity):
         """
 
         frag = self['frag']
-        title = clepy.maybe_add_ellipses(self.title, 46)
+        title = clepy.maybe_add_ellipses(self.title, 51)
 
         status = '(%s)' % getattr(self['status'], 'abbr', self['status'])
 
@@ -145,7 +145,7 @@ class Task(Entity):
 
         pscore = self['pscore']
 
-        return "%(frag)6s %(title)-49s %(milestone)3s %(status)11s" \
+        return "%(frag)6s  %(title)-54s  %(milestone)3s  %(status)-11s" \
         % locals()
 
 

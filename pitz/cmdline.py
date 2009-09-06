@@ -193,9 +193,9 @@ def pitz_everything():
         if options.version:
             print_version()
 
-        path_to_yaml_file = options.pitzdir or Project.find_file()
+        pitzdir = Project.find_pitzdir(options.pitzdir)
 
-        proj = Project.from_yaml_file(path_to_yaml_file)
+        proj = Project.from_pitzdir(pitzdir)
 
         d = build_filter(args)
 

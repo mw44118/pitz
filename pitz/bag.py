@@ -7,7 +7,7 @@ import csv, logging, os
 from uuid import UUID, uuid4
 from urllib import quote_plus
 
-import jinja2
+import jinja2, pkg_resources, tempita
 
 from pitz.entity import Entity
 from pitz import *
@@ -203,9 +203,12 @@ class Bag(list):
 
         self.order()
 
-        t = self.e.get_template('bag_detailed_view.txt')
+        filename = pkg_resources.resource_filename('pitz',
+            'tempitatemplates/bag_detailed_view.txt')
 
-        return t.render(bag=self, entities=self)
+        t = tempita.Template.from_filename(filename)
+
+        return t.substitute(bag=self)
 
 
     @property
