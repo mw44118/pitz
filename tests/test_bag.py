@@ -266,10 +266,12 @@ class TestSorting2(unittest.TestCase):
 
         self.e2['status'] = self.started
         self.e4['status'] = self.finished
+        self.e3['pscore'] = self.e3['pscore'] + 1
 
-        entities.order(pitz.by_milestone_status_pscore)
+        entities.order(pitz.by_milestone_status_pscore_created_time)
 
-        assert entities.order_method == pitz.by_milestone_status_pscore
+        assert entities.order_method \
+        == pitz.by_milestone_status_pscore_created_time
 
         assert list(entities) == [self.e4, self.e2, self.e3, self.e1], \
         list(entities)

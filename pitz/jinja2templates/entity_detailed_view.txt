@@ -1,9 +1,18 @@
-{{summarized_view}}
-{{line_of_dashes}}
+{{e.title}}
+{%  for equalsign in e.title -%}={% endfor %}
 
-{% for k, v in data.items() %}
-{{ k }}:
-{% if hasattr(data[k], 'summarized_view') -%} 
+{% if e.description -%}
+Description
+-----------
+{{e.description}}
+
+{%- endif %}
+
+Attributes
+----------
+{% for k, v in data.items() -%}
+{% if k in ('title', 'description') %}{% continue %}{% endif -%}
+{{ '%-18s' | format(k) }}: {% if hasattr(data[k], 'summarized_view') -%} 
 {{ data[k].summarized_view -}}
 {% else -%} 
 {{ data[k] -}}

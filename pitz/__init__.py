@@ -89,7 +89,9 @@ def by_status(e1, e2):
         return by_created_time(e1, e2)
 
 
-by_milestone_status_pscore = by_whatever(
-    'by_milestone_status_pscore',
-    'milestone', 'status', 'pscore', 'created time',
-    reverse=True)
+by_milestone_status_pscore_created_time = by_whatever(
+    'by_milestone_status_pscore_created_time',
+    'milestone', 'status', 'pscore', 'created time')
+
+by_milestone_status_pscore = by_milestone_status_pscore_created_time
+

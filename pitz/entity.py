@@ -48,9 +48,13 @@ class Entity(dict):
 
     __metaclass__ = MC
 
-    # When the value is None, I'll raise an exception unless the
-    # attribute is defined.
-    required_fields = dict(title=None)
+    # When the value is None, I'll raise an exception when the
+    # attribute is not defined.
+    required_fields = dict(
+        title=None,
+        description='',
+        pscore=0,
+    )
 
     # Maps attributes to sequences of allowed values.
     allowed_values = dict()
@@ -186,6 +190,7 @@ class Entity(dict):
     def _setup_jinja(self):
         # Set up a template loader.
         self.e = jinja2.Environment(
+            extensions=['jinja2.ext.loopcontrols'],
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
         self.e.globals = {
@@ -248,6 +253,9 @@ class Entity(dict):
     def title(self):
         return self['title']
 
+    @property
+    def description(self):
+        return self['description']
 
     def matches_dict(self, **d):
         """
@@ -389,7 +397,7 @@ class Entity(dict):
 
         t = self.e.get_template('entity_detailed_view.txt')
 
-        return t.render(**d)
+        return t.render(e=self, **d)
 
 
     @property

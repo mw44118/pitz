@@ -124,7 +124,9 @@ class Task(Entity):
         milestone=lambda proj: Milestone(proj, title='unscheduled'),
         status=lambda proj: Status(proj, title='unstarted'),
         estimate=lambda proj: Estimate(proj, title='not estimated', points=None),
-        components=lambda proj: list())
+        components=lambda proj: list(),
+        comments=lambda proj: list(),
+    )
 
 
     @property
@@ -172,6 +174,7 @@ class Task(Entity):
 
         b = self.project(type='comment', entity=self)
         b.title = 'Comments on %(title)s' % self
+
         return b.order(by_created_time)
 
 
