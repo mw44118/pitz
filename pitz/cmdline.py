@@ -77,9 +77,6 @@ The default place is right here (.)."""
 
     os.mkdir(pitzdir)
 
-    if not os.path.isdir(pitzdir):
-        raise Exception("Arrgh!")
-
     return pitzdir
 
 
