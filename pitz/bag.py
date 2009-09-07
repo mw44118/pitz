@@ -152,7 +152,14 @@ class Bag(list):
             return self.entities_by_uuid[uuid]
 
         except KeyError:
-            return obj
+
+            frag = getattr(obj, 'frag', obj)
+            try:
+                return self.entities_by_frag[frag]
+            except KeyError:
+                return obj
+            
+        return obj
 
 
     def by_frag(self, frag):

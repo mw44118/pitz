@@ -251,13 +251,11 @@ class Entity(dict):
 
     def matches_dict(self, **d):
         """
-        Return self or None, depending on whether we match.
+        Return self or None, depending on whether we match all the
+        key-value pairs.
 
-        You gotta match EVERYTHING in the passed-in dictionary, but the
-        entity tries to match using a bunch of tricks.
-
-        >>> e = Entity(title="blah", a=1)
-        >>> e.matches_dict(a=1) == e
+        >>> e = Entity(title="blah", a=1, b=2, c=3)
+        >>> e.matches_dict(a=1, c=3) == e
         True
         >>> e.matches_dict(a=2) == None
         True

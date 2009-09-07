@@ -218,11 +218,11 @@ class TestMatchesDict(unittest.TestCase):
 
         assert self.e.matches_dict(priority=self.important) == self.e
 
-        assert self.e.matches_dict(
-            priority=self.important.uuid) == self.e
+        assert self.e.matches_dict(priority=self.important.uuid) == self.e
 
-        assert self.e.matches_dict(
-            priority=self.important.frag) == self.e
+        frag = self.important.frag
+
+        assert self.e.matches_dict(priority=frag) == self.e
 
 
     def test_matches_dict_3(self):
