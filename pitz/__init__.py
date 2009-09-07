@@ -91,7 +91,7 @@ def by_status(e1, e2):
 
 by_milestone_status_pscore_created_time = by_whatever(
     'by_milestone_status_pscore_created_time',
-    'milestone', 'status', 'pscore', 'created time')
+    'milestone', 'status', 'pscore', 'created time', reverse=True)
 
 by_milestone_status_pscore = by_milestone_status_pscore_created_time
 
