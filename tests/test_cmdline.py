@@ -72,9 +72,115 @@ class TestPitzEverything(unittest.TestCase):
         pitz_everything()
 
 
-    def test_nofilter(self):
+    @patch('pitz.cmdline.send_through_pager')
+    def test_nofilter(self, m1):
 
         sys.argv = ['pitz-everything']
 
         pitz_everything()
 
+
+    @patch('pitz.cmdline.send_through_pager')
+    def test_filter(self, m1):
+
+        sys.argv = ['pitz-everything', 'type=task']
+
+        pitz_everything()
+
+
+    @patch('pitz.cmdline.send_through_pager')
+    @patch('pitz.bag.Bag.grep')
+    def test_grep(self, m1, m2):
+
+        sys.argv = ['pitz-everything', '--grep', 'foo']
+
+        pitz_everything()
+
+
+class TestPitzTodo(unittest.TestCase):
+
+    @raises(SystemExit)
+    def test_version(self):
+
+        # This just feels wrong.  There's gotta be a better way to set
+        # up sys.argv.  Maybe I should mock it.
+        sys.argv = ['pitz-todo', '--version']
+
+        pitz_todo()
+
+
+    @patch('pitz.cmdline.send_through_pager')
+    def test_nofilter(self, m1):
+
+        sys.argv = ['pitz-todo']
+
+        pitz_todo()
+
+
+    @patch('pitz.cmdline.send_through_pager')
+    def test_filter(self, m1):
+
+        sys.argv = ['pitz-todo', 'type=task']
+
+        pitz_todo()
+
+
+    @patch('pitz.cmdline.send_through_pager')
+    @patch('pitz.bag.Bag.grep')
+    def test_grep(self, m1, m2):
+
+        sys.argv = ['pitz-todo', '--grep', 'foo']
+
+        pitz_todo()
+
+
+class TestPitzShell(unittest.TestCase):
+
+    @raises(SystemExit)
+    def test_version(self):
+
+        sys.argv = ['pitz-shell', '--version']
+        pitz_shell()
+
+    @patch('pitz.cmdline.IPShellEmbed')
+    @patch('__builtin__.raw_input')
+    def test_shell(self, m1, m2):
+
+        sys.argv = ['pitz-shell']
+        pitz_shell()
+
+
+class TestPitzSetup(unittest.TestCase):
+
+    @raises(SystemExit)
+    def test_version(self):
+
+        sys.argv = ['pitz-setup', '--version']
+        pitz_setup()
+
+
+class TestPitzAdd(unittest.TestCase):
+
+    @raises(SystemExit)
+    def test_version(self):
+
+        sys.argv = ['pitz-add', '--version']
+        pitz_add()
+
+
+class TestPitzShow(unittest.TestCase):
+
+    @raises(SystemExit)
+    def test_version(self):
+
+        sys.argv = ['pitz-show', '--version']
+        pitz_show()
+
+
+class TestPitzHtml(unittest.TestCase):
+
+    @raises(SystemExit)
+    def test_version(self):
+
+        sys.argv = ['pitz-html', '--version']
+        pitz_html()

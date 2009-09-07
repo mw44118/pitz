@@ -24,8 +24,7 @@ def print_version():
 
 
 def pitz_shell():
-    """%prog [path to project file]
-
+    """
     Start an ipython session after loading in a project.
     """
 
@@ -196,7 +195,6 @@ def pitz_everything():
         pitzdir = Project.find_pitzdir(options.pitzdir)
 
         proj = Project.from_pitzdir(pitzdir)
-        log.debug("Loaded from %s" % proj.loaded_from)
 
         d = build_filter(args)
 
