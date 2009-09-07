@@ -1,7 +1,8 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob
+import glob, sys, unittest
 from nose import SkipTest
+from nose.tools import raises
 
 from mock import Mock, patch, patch_object
 from IPython.Shell import IPShellEmbed
@@ -57,3 +58,23 @@ def test_pitz_setup():
     """
 
     raise SkipTest
+
+
+class TestPitzEverything(unittest.TestCase):
+
+    @raises(SystemExit)
+    def test_version(self):
+
+        # This just feels wrong.  There's gotta be a better way to set
+        # up sys.argv.  Maybe I should mock it.
+        sys.argv = ['pitz-everything', '--version']
+
+        pitz_everything()
+
+
+    def test_nofilter(self):
+
+        sys.argv = ['pitz-everything']
+
+        pitz_everything()
+

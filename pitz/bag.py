@@ -52,6 +52,11 @@ class Bag(list):
         # Tell all the entities to replace UUIDs with objects.
         self.replace_pointers_with_objects()
 
+        self._setup_jinja()
+
+
+    def _setup_jinja(self):
+
         self.e = jinja2.Environment(
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
@@ -64,7 +69,8 @@ class Bag(list):
             'first_milestone':first_milestone,
             'first_status':first_status,
         }
-    
+
+
 
     def to_csv(self, filepath, *columns):
         """
@@ -211,6 +217,8 @@ class Bag(list):
     def detailed_view(self):
 
         self.order()
+
+        self._setup_jinja()
 
         t = self.e.get_template('bag_detailed_view.txt')
         return t.render(bag=self, entities=self)
