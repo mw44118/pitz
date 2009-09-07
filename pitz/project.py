@@ -107,7 +107,13 @@ class Project(Bag):
             raise ValueError("%s is not a directory!")
 
         pathname = pathname or self.pathname
-        return [e for e in self if e.to_yaml_file(self.pathname)]
+
+        updated_yaml_files = \
+        [e for e in self if e.to_yaml_file(self.pathname)]
+
+        self.to_pickle()
+
+        return updated_yaml_files
 
 
     @property
