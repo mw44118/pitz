@@ -14,11 +14,6 @@ from pitz import *
 
 log = logging.getLogger('pitz.bag')
 
-def first_milestone(e):
-    return e.get('milestone')
-
-def first_status(e):
-    return e.get('status')
 
 class Bag(list):
 
@@ -66,8 +61,6 @@ class Bag(list):
             'enumerate':enumerate,
             'len':len,
             'looper':tempita.looper,
-            'first_milestone':first_milestone,
-            'first_status':first_status,
         }
 
 
@@ -157,12 +150,9 @@ class Bag(list):
 
         try:
             return self.entities_by_uuid[uuid]
+
         except KeyError:
-            frag = getattr(obj, 'frag', obj)
-            try:
-                return self.entities_by_frag[frag]
-            except KeyError:
-                return obj
+            return obj
 
 
     def by_frag(self, frag):

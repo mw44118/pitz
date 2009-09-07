@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import unittest
+import glob, os, unittest
 
 import pitz
 from pitz.entity import Entity
@@ -42,10 +42,12 @@ def test_new_bag():
 
     b.order()
     
+
 def test_append_1():
 
     b = Bag()
     b.append(pitz.entity.Entity(title='blah', status='irrelevant'))
+
     
 def test_values():
 
@@ -273,11 +275,12 @@ class TestSorting2(unittest.TestCase):
         list(entities)
 
 
-class TestMatchesDict(unittest.TestCase):
+class TestBag(unittest.TestCase):
+
 
     def setUp(self):
 
-        b = Bag('Everything')
+        b = Bag('Everything', pathname='/tmp')
 
         e1 = Entity(title="example #1", creator="Matt",
             importance="Really important")
@@ -289,6 +292,15 @@ class TestMatchesDict(unittest.TestCase):
         b.append(e2)
 
         self.b = b
+
+
+    def tearDown(self):
+
+        if os.path.isfile('/tmp/project.pickle'):
+            os.unlink('/tmp/project.pickle')
+
+        for f in glob.glob('/tmp/*.yaml'):
+            os.unlink(f)
 
 
     def test_matches_dict(self):
@@ -300,25 +312,12 @@ class TestMatchesDict(unittest.TestCase):
         unimportant_stuff = self.b.matches_dict(importance='not very')
 
 
-class TestChooseValue(unittest.TestCase):
-
-    def setUp(self):
-
-        b = Bag('Everything')
-
-        e1 = Entity(title="example #1", creator="Matt",
-            importance="Really important")
-
-        e2 = Entity(title="example #2", creator="Matt",
-            importance="not very")
-
-        b.append(e1)
-        b.append(e2)
-
-        self.b = b
-
     @patch('__builtin__.raw_input')
-    def test1(self, m):
+    def test_choose_value_1(self, m):
+
+        """
+        Pick the first option with choose_value.
+        """
 
         e1, e2 = self.b
         assert e1.title == 'example #1', e1.title
@@ -328,3 +327,47 @@ class TestChooseValue(unittest.TestCase):
 
         choice = self.b.choose_value('entity')
         assert choice == e1, choice
+
+
+    @patch('__builtin__.raw_input')
+    def test_choose_value_2(self, m):
+
+        """
+        Pick the default with choose_value.
+        """
+
+        e1, e2 = self.b
+        assert e1.title == 'example #1', e1.title
+
+        m.return_value = None 
+
+        choice = self.b.choose_value('entity', 'DEFAULT')
+        assert choice == 'DEFAULT', choice
+
+
+    def test_by_frag(self):
+
+        e1, e2 = self.b
+        assert e1 == self.b.by_frag(e1.frag)
+
+
+    def test_by_uuid_1(self):
+
+        e1, e2 = self.b
+        assert e1 == self.b.by_uuid(e1.uuid)
+
+
+    def test_by_uuid_2(self):
+
+        assert 'abc' == self.b.by_uuid('abc')
+
+
+    def test_grep(self):
+
+        for e in self.b:
+            e.to_yaml_file('/tmp')
+
+        assert self.b.grep('example').length == 2, \
+        self.b.grep('example').length
+
+        assert self.b.grep('EXAMPLE', ignore_case=True).length == 2
