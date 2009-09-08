@@ -101,11 +101,11 @@ class Entity(dict):
         and __init__ still execute when loading from yaml.
         """
 
-        self.__dict__.update(d)
+        # self.__dict__.update(d)
         self._setup_jinja()
 
-        # Now add this instance back in to the dictionary that maps
-        # titles to instances.
+        # Add this instance in to the cls.already_instantiated
+        # dictionary that maps titles to instances.
         cls = self.__class__
         if self.title not in cls.already_instantiated:
             cls.already_instantiated[self.title] = self

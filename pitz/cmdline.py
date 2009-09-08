@@ -8,7 +8,7 @@ warnings.simplefilter('ignore', DeprecationWarning)
 
 from IPython.Shell import IPShellEmbed
 
-from clepy import send_through_pager, spinning_distraction
+from clepy import edit_with_editor, send_through_pager, spinning_distraction
 
 from pitz import *
 from pitz.project import Project
@@ -43,6 +43,8 @@ def pitz_shell():
     # namespace in the shell.
     ns = dict([(C.__name__, C) for C in p.classes.values()])
     ns['p'] = p
+    ns['send_through_pager'] = send_through_pager
+    ns['edit_with_editor'] = edit_with_editor
 
     s = IPShellEmbed(['-colors', 'Linux'])
     s(local_ns=ns)
