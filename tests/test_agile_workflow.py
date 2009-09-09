@@ -12,7 +12,7 @@ Verify we can use pitz for an agile workflow, where "agile" means:
 import unittest
 from nose.tools import raises
 
-from pitz.projecttypes.agilepitz import *
+from pitz.agilepitz import *
 
 
 class TestAgile(unittest.TestCase):

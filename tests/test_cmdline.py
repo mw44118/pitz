@@ -8,7 +8,7 @@ from mock import Mock, patch, patch_object
 from IPython.Shell import IPShellEmbed
 
 from pitz.cmdline import *
-from pitz.projecttypes.simplepitz import SimpleProject
+from pitz.simplepitz import SimpleProject
 from pitz.entity import Entity
 
 @patch('__builtin__.open') # m1

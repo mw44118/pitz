@@ -83,8 +83,8 @@ The default place is right here (.)."""
 
 
 def list_projects(modulepaths=(
-        'pitz.projecttypes.simplepitz', 
-        'pitz.projecttypes.agilepitz')):
+        'pitz.simplepitz', 
+        'pitz..agilepitz')):
 
     """
     Print a list of modules to choose from and return the chosen one.
@@ -248,7 +248,7 @@ def pitz_add():
 
 
     from clepy import edit_with_editor
-    from pitz.projecttypes.simplepitz import Task, Status, Estimate, \
+    from pitz.simplepitz import Task, Status, Estimate, \
     Milestone
 
     p = setup_options()

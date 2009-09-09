@@ -14,7 +14,7 @@ import pitz
 import pitz.project
 import pitz.entity
 
-from pitz.projecttypes.simplepitz import Task, Estimate, Status, \
+from pitz.simplepitz import Task, Estimate, Status, \
 SimpleProject
 
 class Release(pitz.entity.Entity):

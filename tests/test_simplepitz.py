@@ -12,7 +12,7 @@ from nose.tools import raises, with_setup
 
 from pitz.exceptions import NoProject
 
-from pitz.projecttypes.simplepitz import *
+from pitz.simplepitz import *
 
 p = None
 

@@ -34,9 +34,9 @@ same directory as your setup.py file (if one exists).
 The next question is asking you about what kind of pitz-project you want
 to set up.  Here's your choices::
 
-    0. pitz.projecttypes.simplepitz: Simple: milestones and tasks.
+    0. pitz.simplepitz: Simple: milestones and tasks.
 
-    1. pitz.projecttypes.agilepitz: Agile: releases, iterations, stories,
+    1. pitz.agilepitz: Agile: releases, iterations, stories,
     tasks, and velocity.
 
     Choose one.
