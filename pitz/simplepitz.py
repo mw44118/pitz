@@ -8,9 +8,9 @@ milestones.
 myclassname = 'SimpleProject'
 
 from copy import copy
-import logging, textwrap
+import logging, os, pwd, socket, textwrap
 
-import clepy, jinja2
+import clepy, jinja2, yaml
 
 from pitz import by_created_time
 from pitz.entity import Entity
@@ -258,6 +258,52 @@ class Person(Entity):
     """
 
     plural_name = "people"
+
+
+    @classmethod
+    def find_me(cls):
+
+        """
+        Return the person currently using this pitz session by reading
+        the pitzdir/you.yaml file.
+        """
+
+        # When no people have been created, there's no point.
+        if not len(cls.already_instantiated):
+            return
+
+        # Not thrilled about this code.
+        first_person = cls.already_instantiated.values()[0]
+        proj = first_person.project
+
+        if hasattr(proj, 'current_user'):
+            return proj.current_user
+
+        pitzdir = proj.pathname
+        me_yaml = os.path.join(pitzdir, 'me.yaml')
+
+        if not os.path.isfile(me_yaml):
+            return
+        
+        proj.current_user = proj[yaml.load(open(me_yaml))]
+        return proj.current_user
+
+
+    def save_as_me_yaml(self):
+
+        """
+        Designate this person is me by saving a me.yaml file.
+        """
+
+        if not self.project:
+            raise NoProject("Sorry, saving a me.yaml needs a project")
+
+        me_yaml_path = os.path.join(self.project.pathname, 'me.yaml')
+        me_yaml = open(me_yaml_path, 'w')
+        me_yaml.write(yaml.dump(self.uuid))
+
+        return me_yaml_path
+
 
 
 class Component(Entity):
