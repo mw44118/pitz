@@ -58,10 +58,11 @@ def test_save_entities_1():
     p.save_entities_to_yaml_files('nonexistent directory')
 
 @patch('__builtin__.open')
-def test_to_yaml_file_1(o):
+@patch('pickle.dump')
+def test_to_yaml_file_1(m1, m2):
     
     p = Project("Bogus")
-    p.to_yaml_file('bogus')
+    p.to_yaml_file('bogus-pathname')
 
 
 @patch('__builtin__.open')

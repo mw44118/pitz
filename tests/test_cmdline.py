@@ -8,6 +8,8 @@ from mock import Mock, patch, patch_object
 from IPython.Shell import IPShellEmbed
 
 from pitz.cmdline import *
+from pitz.projecttypes.simplepitz import SimpleProject
+from pitz.entity import Entity
 
 @patch('__builtin__.open') # m1
 @patch('yaml.load') # m2
@@ -60,7 +62,32 @@ def test_pitz_setup():
     raise SkipTest
 
 
-class TestPitzEverything(unittest.TestCase):
+class TestPitzCmdLine(unittest.TestCase):
+
+    def setUp(self):
+        """
+        Create a bogus pitz project for us to work on.
+        """
+
+        os.chdir('/tmp')
+        os.mkdir('/tmp/pitzdir')
+        proj = SimpleProject('bogus', pathname='/tmp/pitzdir')
+        proj.append(Entity(title="frog"))
+        proj.append(Entity(title="toad"))
+        proj.save_entities_to_yaml_files()
+        proj.to_yaml_file()
+
+
+    def tearDown(self):
+
+        for f in glob.glob('/tmp/pitzdir/*'):
+            os.unlink(f)
+
+        os.rmdir('/tmp/pitzdir')
+
+
+class TestPitzEverything(TestPitzCmdLine):
+
 
     @raises(SystemExit)
     def test_version(self):
@@ -97,7 +124,7 @@ class TestPitzEverything(unittest.TestCase):
         pitz_everything()
 
 
-class TestPitzTodo(unittest.TestCase):
+class TestPitzTodo(TestPitzCmdLine):
 
     @raises(SystemExit)
     def test_version(self):
@@ -134,7 +161,7 @@ class TestPitzTodo(unittest.TestCase):
         pitz_todo()
 
 
-class TestPitzShell(unittest.TestCase):
+class TestPitzShell(TestPitzCmdLine):
 
     @raises(SystemExit)
     def test_version(self):
@@ -184,3 +211,35 @@ class TestPitzHtml(unittest.TestCase):
 
         sys.argv = ['pitz-html', '--version']
         pitz_html()
+
+
+class TestMkPitzdir(unittest.TestCase):
+
+    def setUp(self):
+        os.chdir('/tmp')
+
+    def tearDown(self):
+
+        for d in ('./pitzdir', '/tmp/pitzdir'):
+            if os.path.isdir(d):
+                os.rmdir(d)
+
+
+    @patch('__builtin__.raw_input')
+    def test_1(self, m):
+
+        m.return_value = None
+
+        mk_pitzdir()
+
+        assert os.path.isdir('./pitzdir')
+
+
+    @patch('__builtin__.raw_input')
+    def test_2(self, m):
+
+        m.return_value = '/tmp'
+
+        mk_pitzdir()
+
+        assert os.path.isdir('/tmp/pitzdir')

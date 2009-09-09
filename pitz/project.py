@@ -149,6 +149,8 @@ class Project(Bag):
         f.write(self.yaml)
         f.close()
 
+        self.to_pickle(pathname)
+
         return fp
 
 
@@ -170,6 +172,7 @@ class Project(Bag):
         pf = os.path.join(pathname, 'project.pickle')
         pickle.dump(self, open(pf, 'w'))
         return pf
+
 
     @classmethod
     def from_pickle(cls, pf):
