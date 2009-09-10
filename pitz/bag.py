@@ -133,6 +133,7 @@ class Bag(list):
             pathname=self.pathname, entities=matches,
             order_method=self.order_method, load_yaml_files=False)
 
+
     def __call__(self, **d):
         """
         Now can just pass the filters right into the bag.
@@ -143,7 +144,7 @@ class Bag(list):
 
     def by_uuid(self, obj):
         """
-        Return an entity with uuid obj if we can.  Otherwise, return uuid.
+        Return an entity with uuid obj if we can.  Otherwise, return obj.
         """
 
         uuid = getattr(obj, 'uuid', obj)
@@ -159,8 +160,6 @@ class Bag(list):
             except KeyError:
                 return obj
             
-        return obj
-
 
     def by_frag(self, frag):
         return self.entities_by_frag[frag]
@@ -193,6 +192,8 @@ class Bag(list):
         self.entities_by_uuid.pop(e.uuid)
         self.entities_by_frag.pop(e.frag)
         self.entities_by_yaml_filename.pop(e.yaml_filename)
+
+        return e
 
 
     @property
@@ -344,7 +345,7 @@ class Bag(list):
             raise ValueError("Sorry, I need a pathname first.")
 
         files = [os.path.join(self.pathname, f) for f in
-        self.entities_by_yaml_filename]
+            self.entities_by_yaml_filename]
 
         if not files:
             return self

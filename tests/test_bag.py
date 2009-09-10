@@ -364,7 +364,7 @@ class TestBag(unittest.TestCase):
         assert 'abc' == self.b.by_uuid('abc')
 
 
-    def test_grep(self):
+    def test_grep_1(self):
 
         for e in self.b:
             e.to_yaml_file('/tmp')
@@ -373,3 +373,47 @@ class TestBag(unittest.TestCase):
         self.b.grep('example').length
 
         assert self.b.grep('EXAMPLE', ignore_case=True).length == 2
+
+
+    def test_grep_2(self):
+
+        b = Bag()
+        b.pathname = '/tmp'
+        assert b.grep('foo') == b
+
+
+    def test_html_filename(self):
+
+        assert self.b.html_filename.endswith('.html')
+
+
+    def test_does_not_match_dict(self):
+
+        e1, e2 = self.b
+        b2 = self.b.does_not_match_dict(title=e1.title)
+        assert e2 in b2
+        assert e1 not in b2
+
+
+    def test_pop(self):
+
+        e1, e2 = self.b
+        e = self.b.pop()
+        assert e == e2, e
+        assert e2 not in self.b
+        assert e2.uuid not in self.b.entities_by_uuid
+        assert e2.frag not in self.b.entities_by_frag
+        assert e2.yaml_filename not in self.b.entities_by_yaml_filename
+
+
+    def test_contents(self):
+
+        b = Bag()
+        assert b.contents == '(empty)'
+
+
+    def test_init(self):
+
+        b = Bag(uuid='99999999')
+        assert b.uuid == '99999999'
+        
