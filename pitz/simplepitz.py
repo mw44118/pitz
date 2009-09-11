@@ -260,33 +260,6 @@ class Person(Entity):
     plural_name = "people"
 
 
-    @classmethod
-    def find_me(cls):
-
-        """
-        Return the person currently using this pitz session by reading
-        the pitzdir/you.yaml file.
-        """
-
-        # When no people have been created, there's no point.
-        if not len(cls.already_instantiated):
-            return
-
-        # Not thrilled about this code.
-        first_person = cls.already_instantiated.values()[0]
-        proj = first_person.project
-
-        if hasattr(proj, 'current_user'):
-            return proj.current_user
-
-        pitzdir = proj.pathname
-        me_yaml = os.path.join(pitzdir, 'me.yaml')
-
-        if not os.path.isfile(me_yaml):
-            return
-        
-        proj.current_user = proj[yaml.load(open(me_yaml))]
-        return proj.current_user
 
 
     def save_as_me_yaml(self):
@@ -337,6 +310,13 @@ class SimpleProject(Project):
     Just like the regular project, but with some queries as properties.
     """
 
+
+    def __init__(self, *args, **kwargs):
+
+        super(SimpleProject, self).__init__(*args, **kwargs)
+        self.find_me()
+
+
     # These are all the classes I deal with.
     classes = dict(
         status=Status,
@@ -357,7 +337,7 @@ class SimpleProject(Project):
         b.title = '%s: stuff to do' % self.title
         return b
 
-    # TODO: replace all this with some metaclass tomfoolery.
+    # TODO: replace all these properties with some metaclass tomfoolery.
     @property
     def milestones(self):
         b = self(type='milestone')
@@ -420,3 +400,28 @@ class SimpleProject(Project):
         b = self(type='task', status='started')
         b.title = 'Started tasks'
         return b
+
+
+    def find_me(self):
+
+        """
+        Return the person currently using this pitz session by reading
+        the pitzdir/you.yaml file.
+        """
+
+
+        # When no people have been created, there's no point.
+        if not self.people:
+            return
+
+        if hasattr(self, 'current_user'):
+            return self.current_user
+
+        pitzdir = self.pathname
+        me_yaml = os.path.join(pitzdir, 'me.yaml')
+
+        if not os.path.isfile(me_yaml):
+            return
+        
+        self.current_user = self[yaml.load(open(me_yaml))]
+        return self.current_user

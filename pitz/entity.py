@@ -101,7 +101,6 @@ class Entity(dict):
         and __init__ still execute when loading from yaml.
         """
 
-        # self.__dict__.update(d)
         self._setup_jinja()
 
         # Add this instance in to the cls.already_instantiated
@@ -111,6 +110,7 @@ class Entity(dict):
             cls.already_instantiated[self.title] = self
 
         # Set some attributes that also get set in __init__.
+
         self.update_modified_time = True
 
 
@@ -358,8 +358,7 @@ class Entity(dict):
 
 
     def __repr__(self):
-        return "<pitz.%s %s>" \
-        % (self.__class__.__name__, self.summarized_view)
+        return "<pitz.%s %s>" % (self.__class__.__name__, self.title)
 
 
     @property
