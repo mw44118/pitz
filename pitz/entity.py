@@ -121,7 +121,7 @@ class Entity(dict):
         # Make sure we got all the required fields.
         for rf, default_value in self.required_fields.items():
 
-            if rf not in kwargs:
+            if rf not in kwargs and rf not in self:
 
                 # Use a default value if we got one.  
                 if default_value is not None:

@@ -388,3 +388,19 @@ class TestNewMethod(unittest.TestCase):
 
         assert a is a2
         assert a2.project
+
+class TestEntity(unittest.TestCase):
+
+    def test_required_fields(self):
+
+        """
+        Make an entity with a description.
+
+        Write it to yaml.
+
+        Reload it.
+
+        Make sure that the required field default doesn't replace the
+        original description.
+
+        """
