@@ -50,11 +50,11 @@ class Iteration(pitz.entity.Entity):
         planned stories.
         """
 
-        return self.velocity - self.points
+        return self.velocity - self.points_planned
 
         
     @property
-    def points(self):
+    def points_planned(self):
         """
         Return the sum of points for all stories in this iteration.
         """
@@ -161,8 +161,7 @@ class AgileProject(SimpleProject):
     @property
     def estimated_backlog(self):
         """
-        Returns a bag holding stories with any estimate but not 'not
-        estimated'.
+        Returns a bag holding estimated stories.
         """
         
         self.order()
@@ -171,7 +170,7 @@ class AgileProject(SimpleProject):
             type='userstory',
             status=Status(self, title='backlog'))\
         .does_not_match_dict(
-            estimate=Estimate(self, title='not estimated', points=None))
+            estimate=Estimate(self, title='not estimated'))
 
         backlog.title = 'Estimated stories in backlog'
 

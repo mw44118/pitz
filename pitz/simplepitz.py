@@ -22,7 +22,10 @@ log = logging.getLogger('pitz.simplepitz')
 
 class Estimate(Entity):
 
-    required_fields = dict(points='???')
+    required_fields = dict(points=0)
+
+    allowed_types = dict(
+        points=int)
 
     def __str__(self):
         return self.title

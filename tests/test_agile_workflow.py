@@ -25,36 +25,39 @@ class TestAgile(unittest.TestCase):
         self.ap.append(UserStory(
             self.ap,
             title='Draw new accounting report',
-            pscore=2))
+            pscore=1,
+            estimate=Estimate(title='not estimated')))
 
         self.ap.append(UserStory(
             self.ap,
             title='Improve speed of search page',
-            pscore=1))
+            pscore=2,
+            estimate=Estimate(title='not estimated')))
 
         self.ap.append(UserStory(
             self.ap,
             title='Add animation to site logo',
+            pscore=3,
             estimate=Estimate(self.ap, title="straightforward",
-            points=2)))
+                points=2)))
 
         self.ap.append(UserStory(
             self.ap,
             title='Write "forgot password?" feature',
-            pscore=1,
+            pscore=4,
             estimate=Estimate(self.ap, title="straightforward",
-            points=2)))
+                points=2)))
 
         self.ap.append(UserStory(
             self.ap,
             title='Allow customer to change contact information',
-            pscore=1,
+            pscore=5,
             estimate=Estimate(self.ap, title="straightforward", points=2)))
 
         self.ap.append(UserStory(
             self.ap,
             title='Allow customer to change display name',
-            pscore=1,
+            pscore=6,
             estimate=Estimate(self.ap, title="easy", points=1)))
 
         # Reset all the stories.
@@ -131,6 +134,7 @@ class TestAgile(unittest.TestCase):
         self.ap.append(Task(self.ap, title="Get mockups approved", story=us))
         self.ap.append(Task(self.ap, title="Write queries", story=us))
         self.ap.append(Task(self.ap, title="Write some tests", story=us))
+
         us['estimate'] = Estimate(self.ap, title='easy', points=1)
 
         assert us not in self.ap.backlog(estimate=Estimate(title='not estimated', points=None))
@@ -179,7 +183,7 @@ class TestAgile(unittest.TestCase):
 
         assert it99.stories[0] == s
 
-        assert it99.points == s.points, '%s != %s' % (it99.points, s.points)
+        assert it99.points_planned == s.points, '%s != %s' % (it99.points, s.points)
 
         assert it99.slack == it99.velocity - s.points
 
@@ -191,6 +195,8 @@ class TestAgile(unittest.TestCase):
 
         self.ap.order()
 
+        assert self.ap.backlog.length == self.ap.stories.length
+
         it99 = Iteration(self.ap, title="Iteration for week 99",
             velocity=5)
 
@@ -200,12 +206,24 @@ class TestAgile(unittest.TestCase):
             % self.ap.estimated_backlog.length)
 
         assert it99.stories.length == 0, it99.stories.length
+
         it99.plan_iteration()
 
-        print("it99 has %d stories" % it99.stories.length)
+        print("After planning, it99 has %d stories" % it99.stories.length)
 
-        assert it99.points == it99['velocity'], \
-        "%s != %s" % (it99.points, it99['velocity'])
+        print("it99 now has %d points planned" % it99.points_planned)
+
+        print("These are the next few stories in the backlog:")
+
+        for s in self.ap.backlog[:3]:
+            print "%(title)s %(pscore)s %(points)s" % s
+
+        assert self.ap.backlog.length + it99.stories.length \
+        == self.ap.stories.length
+
+
+        assert it99.points_planned == it99['velocity'], \
+        "%s != %s" % (it99.points_planned, it99['velocity'])
 
         assert not it99.slack, it99.slack
 
@@ -221,14 +239,14 @@ class TestAgile(unittest.TestCase):
         """
 
         self.ap.order()
+        assert self.ap.backlog.length == self.ap.stories.length
 
         it99 = Iteration(self.ap, title="Iteration for week 99", velocity=5)
         it99.plan_iteration()
 
         print("stories in it99")
         for s in it99.stories:
-            print(s.summarized_view)
-            print(s.points)
+            print("%(title)s %(pscore)s %(points)s" % s)
 
         assert len(it99.stories) == 3
 
@@ -256,7 +274,7 @@ class TestAgile(unittest.TestCase):
 
         it99.plan_iteration()
 
-        assert it99.points == it99['velocity']
+        assert it99.points_planned == it99['velocity']
         assert not it99.slack
 
         s1, s2, s3 = it99.stories
@@ -294,3 +312,21 @@ class TestAgile(unittest.TestCase):
             title="Iteration for week 99", velocity=5)
 
         it99.finished_points
+
+
+    def test_estimated_backlog(self):
+
+        """
+        Verify estimated_backlog only includes estimated stories.
+        """
+
+        assert self.ap.backlog.length == self.ap.stories.length
+
+        print "title, pscore, estimate"
+
+        for s in self.ap.stories:
+            print("%(title)s: %(pscore)s %(estimate)s" % s)
+
+        assert self.ap.estimated_backlog.length == 4
+
+
