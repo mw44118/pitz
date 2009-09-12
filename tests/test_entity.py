@@ -414,3 +414,20 @@ class TestEntity(unittest.TestCase):
         f = Entity(title='foo', description='fibityfoo')
         f2 = Entity(title='foo')
         assert f2['description'] == 'fibityfoo', f2['description']
+
+
+    def test_already_instantiated_1(self):
+
+        """
+        Verify parameters passed in init apply even when entity has
+        already been instantiated once.
+        """
+
+        f1 = Entity(title='foo', description='fibityfoo')
+        f2 = Entity(title='foo', description='yoink')
+        assert f2['description'] == 'yoink', f2['description']
+
+        f3 = Entity(title='foo')
+        assert f3['description'] == 'yoink', f3['description']
+
+        assert f1 is f2 is f3
