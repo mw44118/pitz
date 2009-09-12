@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, pickle, unittest, uuid
+import glob, os, pickle, unittest, uuid
 
 from pitz.entity import Entity
 from pitz.project import Project
@@ -391,16 +391,26 @@ class TestNewMethod(unittest.TestCase):
 
 class TestEntity(unittest.TestCase):
 
-    def test_required_fields(self):
+    def test_required_fields_1(self):
 
         """
-        Make an entity with a description.
+        When loading from yaml, verify we don't overwrite required fields.
+        """
 
-        Write it to yaml.
+        f = Entity(title='foo', description='fibityfoo')
 
-        Reload it.
+        f2 = Entity.from_yaml_file(f.to_yaml_file('/tmp'))
 
-        Make sure that the required field default doesn't replace the
-        original description.
+        assert f2['description'] == 'fibityfoo', f2['description']
+
+
+    def test_required_fields_2(self):
 
         """
+        Verify entities retrieved from already_instantiated don't
+        overwrite required fields.
+        """
+        
+        f = Entity(title='foo', description='fibityfoo')
+        f2 = Entity(title='foo')
+        assert f2['description'] == 'fibityfoo', f2['description']

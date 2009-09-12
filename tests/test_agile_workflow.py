@@ -214,6 +214,7 @@ class TestAgile(unittest.TestCase):
         for s in it100.stories:
             print(s.summarized_view)
             print(s.points)
+
         assert len(it100.stories) == 1, len(it100.stories)
 
 
