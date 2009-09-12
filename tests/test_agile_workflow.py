@@ -25,12 +25,12 @@ class TestAgile(unittest.TestCase):
         self.ap.append(UserStory(
             self.ap,
             title='Draw new accounting report',
-            priority=Priority(self.ap, level=2, title="two")))
+            pscore=2))
 
         self.ap.append(UserStory(
             self.ap,
             title='Improve speed of search page',
-            priority=Priority(self.ap, level=1, title="one")))
+            pscore=1))
 
         self.ap.append(UserStory(
             self.ap,
@@ -41,20 +41,20 @@ class TestAgile(unittest.TestCase):
         self.ap.append(UserStory(
             self.ap,
             title='Write "forgot password?" feature',
-            priority=Priority(self.ap, level=1, title="one"),
+            pscore=1,
             estimate=Estimate(self.ap, title="straightforward",
             points=2)))
 
         self.ap.append(UserStory(
             self.ap,
             title='Allow customer to change contact information',
-            priority=Priority(level=1, title="one"),
+            pscore=1,
             estimate=Estimate(self.ap, title="straightforward", points=2)))
 
         self.ap.append(UserStory(
             self.ap,
             title='Allow customer to change display name',
-            priority=Priority(self.ap, level=1, title="one"),
+            pscore=1,
             estimate=Estimate(self.ap, title="easy", points=1)))
 
         # Reset all the stories.
@@ -62,9 +62,33 @@ class TestAgile(unittest.TestCase):
             us.send_to_backlog()
 
 
+    def test_order(self):
+
+        """
+        Verify we order by milestone, status, pscore, created time.
+        """
+        
+        self.ap.order()
+
+        prev_story = None
+        for story in self.ap.stories:
+
+            if prev_story is None:
+                continue
+
+            assert prev_story >= story
+            
+            sort_keys = ['milestone', 'status', 'pscore', 'created_time']
+
+            t1 = [prev_story[k] for k in sort_keys]
+            t2 = [story[k] for k in sort_keys]
+
+            assert t1 >= t2
+
+
     def test_show_backlog_1(self):
         """
-        List every user story in the backlog, ordered by priority.
+        List every user story in the backlog.
         """
 
         assert len(self.ap.backlog) == 6, len(self.ap.backlog)
@@ -72,15 +96,16 @@ class TestAgile(unittest.TestCase):
 
     def test_show_backlog_2(self):
         """
-        Only list the estimated stories in the backlog, ordered by priority.
+        List estimated backlog stories.
         """
 
-        assert len(self.ap.estimated_backlog) == 4, len(self.ap.estimated_backlog)
+        assert len(self.ap.estimated_backlog) == 4, \
+        len(self.ap.estimated_backlog)
 
 
     def test_show_backlog_3(self):
         """
-        Only list unestimated stories in the backlog, ordered by priority.
+        List unestimated backlog stories.
         """
 
         b = self.ap.backlog(
@@ -88,7 +113,6 @@ class TestAgile(unittest.TestCase):
             points=None))
 
         assert len(b) == 2, len(b)
-        assert b[0]['priority'] <= b[1]['priority']
 
 
     def test_estimate_story_1(self):
@@ -197,6 +221,7 @@ class TestAgile(unittest.TestCase):
         """
 
         self.ap.order()
+
         it99 = Iteration(self.ap, title="Iteration for week 99", velocity=5)
         it99.plan_iteration()
 

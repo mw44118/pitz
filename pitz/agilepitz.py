@@ -99,16 +99,12 @@ class Iteration(pitz.entity.Entity):
             raise Exception("Not enough slack for this story!")
 
 
-class Priority(pitz.entity.Entity):
-    """
-    Tracks importance.
-    """
-
 class UserStory(pitz.entity.Entity):
 
     required_fields = dict(
+        points=0,
         title=None,
-        priority=Priority(level=5, title="Critical"),
+        pscore=0,
         status=Status(title="backlog"),
         estimate=Estimate(title='not estimated', points=None),
     )
@@ -116,7 +112,6 @@ class UserStory(pitz.entity.Entity):
     allowed_types = dict(
         status=Status,
         estimate=Estimate,
-        priority=Priority,
     )
 
 
@@ -160,10 +155,8 @@ class AgileProject(SimpleProject):
 
         backlog.title = 'All stories in backlog'
 
-        backlog.order_method = pitz.by_whatever('by_priority',
-            'priority')
-
         return backlog
+
 
     @property
     def estimated_backlog(self):
@@ -181,6 +174,6 @@ class AgileProject(SimpleProject):
             estimate=Estimate(self, title='not estimated', points=None))
 
         backlog.title = 'Estimated stories in backlog'
-        backlog.order_method = pitz.by_whatever('by_priority', 'priority')
+
 
         return backlog
