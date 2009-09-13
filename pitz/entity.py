@@ -81,12 +81,14 @@ class Entity(dict):
         k = kwargs['title']
 
         if k in cls.already_instantiated:
+
+            o = cls.already_instantiated[k]
             return cls.already_instantiated[k]
+
 
         else:
             o = super(Entity, cls).__new__(cls, project, **kwargs)
             cls.already_instantiated[k] = o
-
             return o
 
 
@@ -155,9 +157,6 @@ class Entity(dict):
 
         if not self.get('modified_time'):
             self['modified_time'] = self['created_time']
-
-        if not self.get('pscore'):
-            self['pscore'] = 0
 
         self.project = project
 

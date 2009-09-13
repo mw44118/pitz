@@ -24,6 +24,8 @@ class Iteration(pitz.entity.Entity):
 
     required_fields = dict(
         title='Untitled iteration',
+        description='',
+        pscore=0,
         velocity=10,
     )
 
@@ -102,9 +104,10 @@ class Iteration(pitz.entity.Entity):
 class UserStory(pitz.entity.Entity):
 
     required_fields = dict(
-        points=0,
         title=None,
+        description='',
         pscore=0,
+        points=0,
         status=Status(title="backlog"),
         estimate=Estimate(title='not estimated', points=None),
     )

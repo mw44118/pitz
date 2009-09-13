@@ -22,7 +22,11 @@ log = logging.getLogger('pitz.simplepitz')
 
 class Estimate(Entity):
 
-    required_fields = dict(points=0)
+    required_fields = dict(
+        title=None,
+        description='',
+        pscore=0,
+        points=0)
 
     allowed_types = dict(
         points=int)
@@ -124,6 +128,7 @@ class Task(Entity):
     required_fields = dict(
         title=None,
         description='',
+        pscore=0,
         milestone=lambda proj: Milestone(proj, title='unscheduled'),
         status=lambda proj: Status(proj, title='unstarted'),
         estimate=lambda proj: Estimate(proj, title='not estimated', points=None),
@@ -220,9 +225,12 @@ class Comment(Entity):
     plural_name = "comments"
 
     required_fields = dict(
-        who_said_it=None,
         title=None,
-        entity=None)
+        description='',
+        pscore=0,
+        who_said_it=None,
+        entity=None,
+    )
 
     @property
     def summarized_view(self):
