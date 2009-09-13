@@ -167,9 +167,6 @@ class TestSimpleTask(unittest.TestCase):
 
         assert new_t1.uuid == t1.uuid
 
-    def test_to_html(self):
-        raise SkipTest
-
 
     def test_repr(self):
         
@@ -177,4 +174,3 @@ class TestSimpleTask(unittest.TestCase):
 
         print("t1 status is %(status)s" % t1)
         repr(t1)
-
