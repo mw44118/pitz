@@ -76,9 +76,11 @@ class Project(Bag):
 
             bn = os.path.basename(fp)
 
-            # Skip the project yaml file.
+            # Skip a few files.
             if bn == 'project.yaml' \
-            or bn.startswith(self.__class__.__name__.lower()):
+            or bn.startswith(self.__class__.__name__.lower()) \
+            or bn == 'me.yaml' \
+            or bn.startswith('simpleproject'):
 
                 continue
 

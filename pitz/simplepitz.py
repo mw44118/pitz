@@ -413,6 +413,11 @@ class SimpleProject(Project):
         return b
 
 
+    @property
+    def me(self):
+        return getattr(self, 'current_user', None)
+
+
     def find_me(self):
 
         """

@@ -11,56 +11,6 @@ from pitz.cmdline import *
 from pitz.simplepitz import SimpleProject
 from pitz.entity import Entity
 
-@patch('__builtin__.open') # m1
-@patch('yaml.load') # m2
-@patch('__builtin__.__import__') # m3
-@patch('__builtin__.getattr') # m4
-@patch('IPython.Shell.IPShellEmbed') # m5
-def test_shell_1(m1, m2, m3, m4, m5):
-
-    raise SkipTest
-
-    # I spent two hours trying to get this test working, but failed
-    # around the point where I tried to mock out IPython. 
-
-    m2.return_value = {
-        'module':Mock(),
-        'classname':'bogus'}
-
-    P = Mock()
-    P.classes.values.return_value = []
-
-    m4.return_value = P
-    m5.return_value = None
-
-    shell('bogus')
-
-
-def test_list_projects_1():
-    """
-    Verify we get a list of pitz modules that we can use.
-    """
-
-    raise SkipTest
-    list_projects()
-
-
-def test_list_projects_2():
-    """
-    Verify we can add our own weird modules in as ones we can use.
-    """
-
-    raise SkipTest
-
-
-def test_pitz_setup():
-    """
-    Verify we make a pitzfiles folder, copy simplepitz.py in there, and
-    write a project-abcd.yaml file that loads that simplepitz.py file.
-    """
-
-    raise SkipTest
-
 
 class TestPitzCmdLine(unittest.TestCase):
 
@@ -186,13 +136,29 @@ class TestPitzSetup(unittest.TestCase):
         pitz_setup()
 
 
-class TestPitzAdd(unittest.TestCase):
+class TestPitzAdd(TestPitzCmdLine):
 
     @raises(SystemExit)
     def test_version(self):
 
         sys.argv = ['pitz-add', '--version']
         pitz_add()
+
+
+    @patch('__builtin__.raw_input')
+    @patch('pitz.cmdline.edit_with_editor')
+    def test_created_by(self, m1, m2):
+
+        sys.argv = ['pitz-add', '--pitzdir=/tmp/pitzdir', '--title=foo']
+
+        m1.return_value = None
+        m2.return_value = 'bogus description'
+
+        pitz_add()
+
+        proj = Project.from_pitzdir('/tmp/pitzdir')
+
+        assert proj(title='foo')
 
 
 class TestPitzShow(unittest.TestCase):
@@ -239,6 +205,17 @@ class TestMkPitzdir(unittest.TestCase):
     def test_2(self, m):
 
         m.return_value = '/tmp'
+
+        mk_pitzdir()
+
+        assert os.path.isdir('/tmp/pitzdir')
+
+
+    @raises(ValueError)
+    @patch('__builtin__.raw_input')
+    def test_3(self, m):
+
+        m.return_value = '/nonexistent'
 
         mk_pitzdir()
 

@@ -38,6 +38,7 @@ def pitz_shell():
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
     p = Project.from_pitzdir(pitzdir)
+    p.find_me()
 
     # Everything in this dictionary will be added to the top-level
     # namespace in the shell.
@@ -194,6 +195,7 @@ def pitz_everything():
         pitzdir = Project.find_pitzdir(options.pitzdir)
 
         proj = Project.from_pitzdir(pitzdir)
+        proj.find_me()
 
         d = build_filter(args)
 
@@ -225,6 +227,7 @@ def pitz_todo():
         pitzdir = Project.find_pitzdir(options.pitzdir)
 
         proj = Project.from_pitzdir(pitzdir)
+        proj.find_me()
 
         d = build_filter(args)
 
@@ -247,7 +250,6 @@ def pitz_todo():
 def pitz_add():
 
 
-    from clepy import edit_with_editor
     from pitz.simplepitz import Task, Status, Estimate, \
     Milestone
 
@@ -262,18 +264,23 @@ def pitz_add():
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
     proj = Project.from_pitzdir(pitzdir)
-
-    not_estimated = Estimate(proj, title='not estimated')
+    proj.find_me()
 
     t = Task(
+
+        proj,
+
         title=options.title or raw_input("Title: "),
-        description=edit_with_editor(),
-        status=Status(proj, title='unstarted'),
+
+        description=edit_with_editor('# Task description goes here'),
+
+        status=Status(title='unstarted'),
 
         milestone=proj.choose_value('milestone',
             Milestone(proj, title='unscheduled')),
 
-        estimate=proj.choose_value('estimate', not_estimated),
+        estimate=proj.choose_value('estimate',
+            Estimate(title='not estimated')),
     )
 
     proj.append(t)

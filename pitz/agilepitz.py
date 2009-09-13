@@ -14,8 +14,7 @@ import pitz
 import pitz.project
 import pitz.entity
 
-from pitz.simplepitz import Task, Estimate, Status, \
-SimpleProject
+from pitz.simplepitz import *
 
 class Release(pitz.entity.Entity):
     pass
@@ -136,10 +135,18 @@ class UserStory(pitz.entity.Entity):
 class AgileProject(SimpleProject):
 
     classes = dict(
+        status=Status,
+        estimate=Estimate,
+        task=Task,
+        person=Person,
+        milestone=Milestone,
+        comment=Comment,
+        component=Component,
         release=Release,
         iteration=Iteration,
         userstory=UserStory,
     )
+
 
     @property
     def stories(self):

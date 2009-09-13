@@ -431,3 +431,22 @@ class TestEntity(unittest.TestCase):
         assert f3['description'] == 'yoink', f3['description']
 
         assert f1 is f2 is f3
+
+
+    def test_created_by_1(self):
+
+        """
+        Verify nothing breaks when no current user is set.
+        """
+
+        p = Project()
+        e = Entity(p, title="entity")
+        assert 'created_by' not in e
+
+
+    def test_created_by_2(self):
+
+        p = Project()
+        p.current_user = 'matt'
+        e = Entity(p, title="entity")
+        assert e['created_by'] == p.current_user

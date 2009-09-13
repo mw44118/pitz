@@ -1,0 +1,24 @@
+comments: []
+components: []
+created_time: &id001 2009-09-13 09:48:56.072090
+description: 'Right now, to store a comment on a task, you gotta create a Comment
+
+  instance and associate it with the task.
+
+
+  That is good, but Task.comment(...) method would be convenient.
+
+  '
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Add a comment method on the Task class
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 213698503728120633235772951478161491030
+yaml_file_saved: 2009-09-13 09:48:56.074939

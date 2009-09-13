@@ -162,6 +162,11 @@ class Entity(dict):
 
         self._setup_jinja()
 
+        if hasattr(self.project, 'current_user') \
+        and 'created_by' not in self:
+
+            self['created_by'] = self.project.current_user
+
         self.update_modified_time = True
 
 
