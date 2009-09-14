@@ -85,7 +85,7 @@ The default place is right here (.)."""
 
 def list_projects(modulepaths=(
         'pitz.simplepitz', 
-        'pitz..agilepitz')):
+        'pitz.agilepitz')):
 
     """
     Print a list of modules to choose from and return the chosen one.
@@ -274,13 +274,13 @@ def pitz_add():
 
         description=edit_with_editor('# Task description goes here'),
 
-        status=Status(title='unstarted'),
+        status=Status(proj, title='unstarted'),
 
         milestone=proj.choose_value('milestone',
             Milestone(proj, title='unscheduled')),
 
         estimate=proj.choose_value('estimate',
-            Estimate(title='not estimated')),
+            Estimate(proj, title='not estimated')),
     )
 
     proj.append(t)

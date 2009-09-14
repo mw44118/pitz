@@ -320,10 +320,10 @@ class Bag(list):
                     entity_type,
                     getattr(default, 'summarized_view', str(default))))
 
-        if choice is not None:
+        try:
             return choices[int(choice)-1]
 
-        else:
+        except (TypeError, ValueError):
             return default
 
 
