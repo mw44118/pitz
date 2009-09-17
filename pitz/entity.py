@@ -261,6 +261,29 @@ class Entity(dict):
     def description(self):
         return self['description']
 
+
+    @classmethod
+    def choose(cls, default=None):
+
+        choices = sorted(cls.already_instantiated.values())
+
+        print("Choose a %s" % cls.__name__)
+        for i, e in enumerate(choices):
+            print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
+
+        choice = raw_input(
+            "Pick a %s or hit <ENTER> to choose %s: "
+                % (
+                    cls.__name__,
+                    getattr(default, 'summarized_view', str(default))))
+
+        try:
+            return choices[int(choice)-1]
+
+        except (TypeError, ValueError):
+            return default
+
+
     def matches_dict(self, **d):
         """
         Return self or None, depending on whether we match all the
@@ -585,7 +608,25 @@ class Entity(dict):
 
 
     def edit(self, attr):
-        self[attr] = edit_with_editor(self.get(attr))
+
+        """
+        if attr points to an Entity subclass, then show a list of all
+        instances of the subclass and ask for a choice.
+
+        Otherwise, open an editor with the value for this attr.
+        """
+
+        if issubclass(self.allowed_types.get(attr, object), Entity):
+
+            cls = self.allowed_types[attr]
+
+            self[attr] = cls.choose()
+
+
+        else:
+            self[attr] = edit_with_editor(self.get(attr))
+
+        return self
 
 
     def __cmp__(self, other):
