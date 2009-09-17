@@ -131,7 +131,7 @@ class Task(Entity):
         pscore=0,
         milestone=lambda proj: Milestone(proj, title='unscheduled'),
         status=lambda proj: Status(proj, title='unstarted'),
-        estimate=lambda proj: Estimate(proj, title='not estimated', points=None),
+        estimate=lambda proj: Estimate(proj, title='not estimated'),
         components=lambda proj: list(),
         comments=lambda proj: list(),
     )

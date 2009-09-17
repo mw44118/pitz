@@ -249,7 +249,6 @@ def pitz_todo():
 
 def pitz_add():
 
-
     from pitz.simplepitz import Task, Status, Estimate, \
     Milestone
 
