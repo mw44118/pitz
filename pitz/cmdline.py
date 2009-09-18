@@ -52,7 +52,7 @@ def pitz_shell():
     s(local_ns=ns)
 
     # This stuff happens when you close the IPython session.
-    answer = raw_input("Write out updated yaml files? ([y]/n) ")
+    answer = raw_input("Write out updated yaml files? ([y]/n) ").strip()
     if answer.lower() not in ['n', 'no']:
         p.to_yaml_file()
         p.to_pickle()
@@ -129,7 +129,8 @@ def pitz_setup():
     if options.version:
         print_version()
 
-    project_title = raw_input("Project name?  (you can change it later)")
+    project_title = raw_input(
+        "Project name?  (you can change it later)").strip()
 
     pitzdir = mk_pitzdir()
 
@@ -270,7 +271,7 @@ def pitz_add():
 
         proj,
 
-        title=options.title or raw_input("Title: "),
+        title=options.title or raw_input("Title: ").strip(),
 
         description=edit_with_editor('# Task description goes here'),
 
