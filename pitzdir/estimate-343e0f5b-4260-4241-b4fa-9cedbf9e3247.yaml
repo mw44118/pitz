@@ -1,9 +1,12 @@
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
 created_time: 2009-08-29 15:01:37.235916
-modified_time: 2009-08-29 21:52:59.184189
+description: ''
+modified_time: 2009-09-17 21:49:54.248713
 points: 1
-pscore: 1
+pscore: 3
 title: trivial
 type: estimate
 uuid: !!python/object:uuid.UUID
   int: 69442089652494008692236859468511326791
-yaml_file_saved: 2009-08-29 21:54:50.238427
+yaml_file_saved: 2009-09-17 22:02:20.119086

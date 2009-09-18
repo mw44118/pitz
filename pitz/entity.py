@@ -257,15 +257,21 @@ class Entity(dict):
     def title(self):
         return self['title']
 
+
     @property
     def description(self):
         return self['description']
 
 
+    @property
+    def pscore(self):
+        return self['pscore']
+
+
     @classmethod
     def choose(cls, default=None):
 
-        choices = sorted(cls.already_instantiated.values())
+        choices = sorted(cls.already_instantiated.values(), reverse=True)
 
         print("Choose a %s" % cls.__name__)
         for i, e in enumerate(choices):

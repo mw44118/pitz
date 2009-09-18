@@ -1,0 +1,26 @@
+comments: []
+components: []
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-09-17 21:39:56.469371
+description: "The milestone attribute in the Task class can only be a Milestone\n\
+  instance.  So querying for entities linked to milestone m1 can be done\nby using\
+  \ the milestone OR the title of the milestone::\n\n    >>> m1 = Milestone(title='1.0')\n\
+  \    >>> p(milestone=m1) == p(milestone=m1.title)\n    True\n\nMeanwhile, it is\
+  \ also possible to pass in a list of values to the\nmatches_dict function::\n\n\
+  \    >>> p(milestone=m1) == p(milestone=[m1])\n    True\n\nThis is incomplete though.\
+  \  You can't pass in a list of Milestone\ntitles::\n\n    >>> p(milestone=m1) ==\
+  \ p(milestone=[m1.title])\n    False\n\nI need to close this gap.\n"
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: 2009-09-17 21:39:56.471864
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Allow queries by lists of titles
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 212002490567112129268879065770176627867
+yaml_file_saved: 2009-09-17 21:39:56.522984
