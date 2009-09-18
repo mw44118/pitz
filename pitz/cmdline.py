@@ -12,6 +12,7 @@ from clepy import edit_with_editor, send_through_pager, spinning_distraction
 
 from pitz import *
 from pitz.project import Project
+from pitz.entity import Entity
 
 log = logging.getLogger('pitz.cmdline')
 
@@ -289,9 +290,6 @@ def pitz_add():
 
 def pitz_show():
 
-    import optparse, os, sys
-    from pitz.project import Project
-    from pitz.entity import Entity
 
     p = setup_options()
 
@@ -358,4 +356,29 @@ def pitz_html():
             len(proj)))
 
     # Record that we rebuilt all the HTML files.
+    proj.save_entities_to_yaml_files()
+
+
+def pitz_edit():
+
+    p = setup_options()
+    p.set_usage('%prog frag attribute-to-edit')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+
+    if not args:
+        p.print_usage()
+        sys.exit()
+
+    path_to_yaml_file = options.pitzdir or Project.find_file()
+
+    proj = Project.from_yaml_file(path_to_yaml_file)
+
+    e = proj[args[0]]
+    e.edit(args[1])
+
+    print("Edited %s on %s." % (args[1], args[0]))
     proj.save_entities_to_yaml_files()

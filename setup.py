@@ -48,6 +48,7 @@ started pitz.""",
     pitz-setup = pitz.cmdline:pitz_setup
     pitz-show = pitz.cmdline:pitz_show
     pitz-html = pitz.cmdline:pitz_html
+    pitz-edit = pitz.cmdline:pitz_edit
     """,
 
     test_suite = 'nose.collector',
