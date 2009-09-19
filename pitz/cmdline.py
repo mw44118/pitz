@@ -249,7 +249,11 @@ def pitz_todo():
     send_through_pager(str(results))
 
 
-def pitz_add():
+def pitz_add_task():
+
+    """
+    Walks through the setup of a new Task.
+    """
 
     from pitz.simplepitz import Task, Status, Estimate, \
     Milestone
@@ -287,6 +291,11 @@ def pitz_add():
     proj.append(t)
     print("Added %s to the project." % t.summarized_view)
     proj.save_entities_to_yaml_files()
+
+    return t
+
+
+pitz_add = pitz_add_task
 
 
 def pitz_show():
@@ -383,3 +392,19 @@ def pitz_edit():
 
     print("Edited %s on %s." % (args[1], args[0]))
     proj.save_entities_to_yaml_files()
+
+
+def pitz_add_milestone():
+    raise NotImplementedError
+
+def pitz_add_person():
+    raise NotImplementedError
+
+def pitz_add_estimate():
+    raise NotImplementedError
+
+def pitz_add_component():
+    raise NotImplementedError
+
+def pitz_add_status():
+    raise NotImplementedError
