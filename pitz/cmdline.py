@@ -1,6 +1,5 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-
 from __future__ import with_statement
 
 import logging, optparse, os, subprocess, sys, warnings
@@ -134,12 +133,7 @@ def pitz_setup():
 
     pitzdir = mk_pitzdir()
 
-    # List all the possible project modules and wait for a choice.
-    m = list_projects()
-
-    # Create a project instance based on the chosen module.
-    ProjectClass = getattr(m, m.myclassname)
-    proj = ProjectClass(pathname=pitzdir, title=project_title)
+    proj = Project(pathname=pitzdir, title=project_title)
 
     # Save the project as a yaml file in the pitzfiles folder.
     pfile = proj.to_yaml_file()
