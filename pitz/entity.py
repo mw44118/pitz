@@ -1,5 +1,9 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+"""
+The Entity class and Entity subclasses.
+"""
+
 from __future__ import with_statement
 
 import copy, logging, os, textwrap, uuid, weakref
