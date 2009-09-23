@@ -1,12 +1,27 @@
+comments: []
+components: []
 created_time: 2009-05-24 09:29:35.720460
+description: "It would be nice to run a command like pitz-recent-updates and see stuff\n\
+  like:\n\n    \n    *   Matt created task 123abc\n    *   Matt edited title on task\
+  \ 456def and changed it to \"blah\"\n    *   Matt edited description on task 789ghi\
+  \ and changed it to \n        \"blah blah blah...\"\n    *   Matt changed status\
+  \ on task 321cba to finished, and wrote \n        comment \"This was easy!\"\n\n\
+  And so forth.  \n\nEach time I do something, pitz would record a short description\
+  \ of the\naction (generated automatically) and store it in the project.\n\nThe goal\
+  \ here is to do all this automatically.\n"
+estimate: !!python/object:uuid.UUID
+  int: 90095269217473032960059910478092208144
 html_file_saved: 2009-06-20 18:08:35.839283
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: 2009-06-29 10:41:58.885377
+modified_time: 2009-09-23 10:03:07.866338
+pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
-title: Add a property on the project to list recently updated stuff
+title: 'Allow project to track updates
+
+  '
 type: task
 uuid: !!python/object:uuid.UUID
   int: 288466727208680250501216453963986135249
-yaml_file_saved: 2009-06-29 10:44:10.254242
+yaml_file_saved: 2009-09-23 10:03:07.869502
