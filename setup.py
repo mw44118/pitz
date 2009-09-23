@@ -49,6 +49,11 @@ started pitz.""",
     pitz-show = pitz.cmdline:pitz_show
     pitz-html = pitz.cmdline:pitz_html
     pitz-edit = pitz.cmdline:pitz_edit
+    pitz-add-task = pitz.cmdline:pitz_add_task
+    pitz-add-milestone = pitz.cmdline:pitz_add_milestone
+    pitz-add-person = pitz.cmdline:pitz_add_person
+    pitz-add-status = pitz.cmdline:pitz_add_status
+    pitz-add-component = pitz.cmdline:pitz_add_component
     """,
 
     test_suite = 'nose.collector',
