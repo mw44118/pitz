@@ -2,15 +2,17 @@
 
 from __future__ import with_statement
 
-import copy, logging, os, uuid, weakref
+import copy, logging, os, textwrap, uuid, weakref
 from datetime import datetime
 from types import NoneType
 
 import jinja2, tempita, yaml
 
-from clepy import edit_with_editor
+import clepy
 
 from pitz.exceptions import NoProject
+
+from pitz import by_created_time
 
 log = logging.getLogger('pitz.entity')
 
@@ -35,7 +37,7 @@ class Entity(dict):
     a type and title that matches something that already exists, I'll
     return the original one.
 
-    >>> from pitz.project import Project
+    >>> from pitz.bag import Project
     >>> p = Project(title="Blah")
     >>> ie1 = Entity(p, title="a")
     >>> ie2 = Entity(p, title="a")
@@ -630,7 +632,7 @@ class Entity(dict):
 
 
         else:
-            self[attr] = edit_with_editor(self.get(attr))
+            self[attr] = clepy.edit_with_editor(self.get(attr))
 
         return self
 
@@ -650,3 +652,299 @@ class Entity(dict):
 
         except TypeError:
             return -1
+
+
+class Estimate(Entity):
+
+    required_fields = dict(
+        title=None,
+        description='',
+        pscore=0,
+        points=0)
+
+    allowed_types = dict(
+        points=int)
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def tasks(self):
+        """
+        Return tasks with this estimate.
+        """
+
+        if not self.project:
+            raise NoProject("Need a self.project for this!")
+
+        else:
+            return self.project.tasks(estimate=self)
+
+
+class Status(Entity):
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def tasks(self):
+        """
+        Return tasks with this status
+        """
+
+        if not self.project:
+            raise NoProject("Need a self.project for this!")
+
+        else:
+            return self.project.tasks(status=self)
+
+
+class Milestone(Entity):
+    """
+    Useful for bundling tasks
+    """
+
+    plural_name = "milestones"
+
+    @property
+    def tasks(self):
+
+        if not self.project:
+            raise NoProject("I need a project before I can look up tasks!")
+
+        tasks = self.project(type='task', milestone=self)
+        tasks.title = 'Tasks in %(title)s' % self
+        return tasks
+
+    @property
+    def todo(self):
+
+        unfinished = self.tasks.does_not_match_dict(
+            status=Status(title='finished'))\
+        .does_not_match_dict(status=Status(title='abandoned'))
+
+        unfinished.title = "Unfinished tasks in %(title)s" % self
+        return unfinished
+
+    @property
+    def summarized_view(self):
+
+        finished = Status(title='finished')
+
+        a = self.tasks(status=finished).length
+        b = self.tasks.length
+
+        if b is not 0:
+            pct_complete = 100*(float(a)/b)
+        else:
+            pct_complete = 0.0
+
+        d = {
+            'frag':self['frag'],
+            'title':self['title'],
+            'pct_complete':pct_complete,
+            'num_finished_tasks':a,
+            'num_tasks': b}
+
+        s = "%(frag)s %(title)s: %(pct_complete)0.0f%% complete (%(num_finished_tasks)d / %(num_tasks)d tasks)"
+        return s % d
+
+
+class Task(Entity):
+
+    plural_name = "tasks"
+
+    allowed_types = dict(
+        milestone=Milestone,
+        status=Status,
+        estimate=Estimate)
+
+    required_fields = dict(
+        title=None,
+        description='',
+        pscore=0,
+        milestone=lambda proj: Milestone(proj, title='unscheduled'),
+        status=lambda proj: Status(proj, title='unstarted'),
+        estimate=lambda proj: Estimate(proj, title='not estimated'),
+        components=lambda proj: list(),
+        comments=lambda proj: list(),
+    )
+
+
+    @property
+    def milestone(self):
+        return self['milestone']
+
+
+    @property
+    def status(self):
+        return self['status']
+
+
+    @property
+    def estimate(self):
+        return self['estimate']
+
+
+    @property
+    def summarized_view(self):
+        """
+        Short description of the task.
+        """
+
+        frag = self['frag']
+        title = clepy.maybe_add_ellipses(self.title, 45)
+
+        status = '(%s)' % getattr(self['status'], 'abbr', self['status'])
+
+        if 'milestone' in self:
+            milestone = getattr(self['milestone'], 'abbr', self['milestone'])
+        else:
+            milestone = '...'
+
+        pscore = self['pscore']
+
+        return "%(frag)6s  %(title)-48s  %(milestone)3s  %(status)-11s" \
+        % locals()
+
+
+    @property
+    def comments(self):
+        """
+        Return all comments on this task.
+        """
+
+        b = self.project(type='comment', entity=self)
+        b.title = 'Comments on %(title)s' % self
+
+        return b.order(by_created_time)
+
+
+    def abandon(self):
+
+        if self['status'].title in ['unstarted', 'started']:
+            self['status'] = Status(title='abandoned')
+            return self
+
+        else:
+            raise ValueError('You can only abandon unstarted or started tasks.')
+
+
+    def start(self):
+
+        if self['status'].title in ['unstarted', 'abandoned']:
+            self['status'] = Status(title='started')
+            return self
+
+        else:
+            raise ValueError('You can only start unstarted or abandoned tasks.')
+
+
+    def finish(self):
+
+        if self['status'].title == 'started':
+            self['status'] = Status(title='finished')
+            return self
+
+        else:
+            raise ValueError('You can only finish started.')
+
+
+class Comment(Entity):
+
+    """
+    You can comment on any entity.
+    """
+
+    plural_name = "comments"
+
+    required_fields = dict(
+        title=None,
+        description='',
+        pscore=0,
+        who_said_it=None,
+        entity=None,
+    )
+
+    @property
+    def summarized_view(self):
+
+        title = self['title'].strip().replace('\n', ' ')
+        title = "%s..." % title[:60] if len(title) > 60 else title
+
+        who_said_it = self['who_said_it']
+        who_said_it = getattr(who_said_it, 'title', who_said_it)
+
+        return "%(who_said_it)s said: %(title)s" % dict(
+            who_said_it=who_said_it,
+            time=self['created_time'].strftime("%I:%M %P, %a, %m/%d/%y"),
+            title=title,
+        )
+
+
+    @property
+    def detailed_view(self):
+
+        title = textwrap.fill(self['title'].strip().replace('\n', '  '))
+
+        who_said_it = self['who_said_it']
+        who_said_it = getattr(who_said_it, 'title', who_said_it)
+
+        time = self['created_time'].strftime("%A, %B %d, %Y, at %I:%M %P")
+
+        tmpl = self.e.get_template('comment_detailed_view.txt')
+
+        return tmpl.render(locals())
+
+
+class Person(Entity):
+    """
+    Maybe you want to track who is doing what.
+    """
+
+    plural_name = "people"
+
+
+
+
+    def save_as_me_yaml(self):
+
+        """
+        Designate this person is me by saving a me.yaml file.
+        """
+
+        if not self.project:
+            raise NoProject("Sorry, saving a me.yaml needs a project")
+
+        me_yaml_path = os.path.join(self.project.pathname, 'me.yaml')
+        me_yaml = open(me_yaml_path, 'w')
+        me_yaml.write(yaml.dump(self.uuid))
+
+        return me_yaml_path
+
+
+
+class Component(Entity):
+
+    plural_name = "components"
+
+    @property
+    def tasks(self):
+
+        if not self.project:
+            raise NoProject("I need a project before I can look up tasks!")
+
+        tasks = self.project(type='task', milestone=self)
+        tasks.title = 'Tasks in %(title)s' % self
+
+        return tasks
+
+    @property
+    def todo(self):
+
+        unfinished = self.tasks.does_not_match_dict(
+            status=Status(title='finished'))\
+        .does_not_match_dict(status=Status(title='abandoned'))
+
+        unfinished.title = "Unfinished tasks in %(title)s" % self
+        return unfinished

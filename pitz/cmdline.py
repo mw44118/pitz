@@ -11,8 +11,8 @@ from IPython.Shell import IPShellEmbed
 from clepy import edit_with_editor, send_through_pager, spinning_distraction
 
 from pitz import *
-from pitz.project import Project
-from pitz.entity import Entity
+from pitz.bag import Project
+from pitz.entity import Entity, Task, Status, Estimate, Milestone
 
 log = logging.getLogger('pitz.cmdline')
 
@@ -255,8 +255,6 @@ def pitz_add_task():
     Walks through the setup of a new Task.
     """
 
-    from pitz.simplepitz import Task, Status, Estimate, \
-    Milestone
 
     p = setup_options()
     p.add_option('-t', '--title', help='Task title')
@@ -332,7 +330,6 @@ def pitz_html():
     """
 
     import optparse, os, sys
-    from pitz.project import Project
 
     p = optparse.OptionParser()
     p.set_usage('%prog [options] folder-to-store-html-files')

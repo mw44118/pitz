@@ -12,14 +12,14 @@ from nose.tools import raises, with_setup
 
 from pitz.exceptions import NoProject
 
-from pitz.simplepitz import *
+from pitz.bag import *
 
 p = None
 
 def setup():
 
     global p
-    p = SimpleProject()
+    p = Project()
     p.append(Task(title='Draw new accounting report', priority=2))
     p.append(Task(title='Improve speed of search page', priority=0))
 
@@ -142,7 +142,7 @@ def test_from_uid():
 def test_repr_after_replace_objects_with_pointers():
 
 
-    p = SimpleProject(
+    p = Project(
         entities=[
             Task(title="wash dishes",
                 status=Status(title="unstarted"))])

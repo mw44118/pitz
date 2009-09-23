@@ -2,8 +2,8 @@
 
 import glob, os, pickle, unittest, uuid
 
-from pitz.entity import Entity
-from pitz.project import Project
+from pitz.entity import *
+from pitz.bag import Project
 from pitz.exceptions import NoProject
 
 from nose.tools import raises
@@ -391,6 +391,24 @@ class TestNewMethod(unittest.TestCase):
 
 class TestEntity(unittest.TestCase):
 
+
+    def test_detailed_view(self):
+
+        f = Entity(title='foo', description='fibityfoo')
+
+        assert isinstance(f.detailed_view, basestring), \
+        type(f.detailed_view)
+
+        assert f['title'] in f.detailed_view
+
+
+    def test_summarized_view(self):
+
+        f = Entity(title='foo', description='fibityfoo')
+        assert isinstance(f.summarized_view, str)
+        assert f['title'] in f.summarized_view
+
+
     def test_required_fields_1(self):
 
         """
@@ -450,3 +468,50 @@ class TestEntity(unittest.TestCase):
         p.current_user = 'matt'
         e = Entity(p, title="entity")
         assert e['created_by'] == p.current_user
+
+
+    def test_new_task(self):
+        """
+        Verify we can make a new task.
+        """
+
+        p = Project()
+
+        t = Task(p, title='Clean cat box please!', 
+            status=Status(title='unstarted'),
+            creator='Matt',
+            description='It is gross!')
+
+        assert t.uuid == t['uuid']
+
+
+    def test_missing_attributes_replaced_with_defaults(self):
+        """
+        Verify we fill in missing attributes with defaults.
+        """
+
+        t = Task(title="bogus")
+        assert t['status'] == Status(title='unstarted')
+
+
+    def test_update_task_status(self):
+
+        t1 = Task(title='t1')
+
+        t1['status'] = Status(title='unstarted')
+        t1['status'] = Status(title='finished')
+
+
+    def test_comment_on_task(self):
+
+        p = Project()
+        t1 = Task(title='t1')
+
+        c = Comment(p, who_said_it="matt",
+            entity=t1,
+            title="blah blah")
+
+        comments_on_t1 = p(type='comment', entity=t1)
+        assert len(comments_on_t1) == 1
+        assert comments_on_t1[0]['title'] == 'blah blah'
+

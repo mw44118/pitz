@@ -8,7 +8,7 @@ from mock import Mock, patch, patch_object
 from IPython.Shell import IPShellEmbed
 
 from pitz.cmdline import *
-from pitz.simplepitz import SimpleProject
+from pitz.bag import Project
 from pitz.entity import Entity
 
 
@@ -21,7 +21,7 @@ class TestPitzCmdLine(unittest.TestCase):
 
         os.chdir('/tmp')
         os.mkdir('/tmp/pitzdir')
-        proj = SimpleProject('bogus', pathname='/tmp/pitzdir')
+        proj = Project('bogus', pathname='/tmp/pitzdir')
         proj.append(Entity(title="frog"))
         proj.append(Entity(title="toad"))
         proj.save_entities_to_yaml_files()
@@ -185,10 +185,9 @@ class TestMkPitzdir(unittest.TestCase):
         os.chdir('/tmp')
 
     def tearDown(self):
-
-        for d in ('./pitzdir', '/tmp/pitzdir'):
-            if os.path.isdir(d):
-                os.rmdir(d)
+        d = '/tmp/pitzdir'
+        if os.path.isdir(d):
+            os.rmdir(d)
 
 
     @patch('__builtin__.raw_input')
