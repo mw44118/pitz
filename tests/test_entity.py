@@ -515,3 +515,146 @@ class TestEntity(unittest.TestCase):
         assert len(comments_on_t1) == 1
         assert comments_on_t1[0]['title'] == 'blah blah'
 
+
+class TestMisc(unittest.TestCase):
+
+
+    def setUp(self):
+
+        self.p = Project()
+        p = self.p
+        p.append(Task(title='Draw new accounting report', priority=2))
+        p.append(Task(title='Improve speed of search page', priority=0))
+
+        p.append(Task(title='Add animation to site logo',
+            estimate=Estimate(title="straightforward", points=2)))
+
+        p.append(Task(title='Write "forgot password?" feature',
+            priority=1, estimate=Estimate(title="straightforward", points=2)))
+
+        p.append(Task(title='Allow customer to change contact information',
+            priority=2, estimate=Estimate(title="straightforward", points=2)))
+
+        p.append(Task(title='Allow customer to change display name',
+            priority=2, estimate=Estimate(title="easy", points=1)))
+
+        p.append(Milestone(title="1.0"))
+        p.append(Milestone(title="2.0"))
+
+    @raises(NoProject)
+    def test_noproject(self):
+        m = Milestone(title="Bogus milestone")
+        m.tasks
+
+    def test_show_milestones(self):
+        """
+        List every milestone.
+        """
+
+        p = self.p
+
+        for m in p.milestones:
+            m.todo
+        
+    def test_milestone_todo(self):
+        
+        p = self.p
+
+        for m in p.milestones:
+            m.todo
+
+    def test_milestone_summarized_view(self):
+
+        p = self.p
+
+        for m in p.milestones:
+            m.summarized_view
+
+
+    def test_comments(self):
+
+        p = self.p
+        t = Task(p, title="wash dishes")
+        z = Comment(p, entity=t, title="I don't want to", who_said_it="Matt")
+        c = t.comments[0]
+        c.summarized_view
+        c.detailed_view
+
+    def test_project_todo(self):
+
+        p = self.p
+        p.todo
+
+
+    def test_project_tasks(self):
+
+        p = self.p
+        p.tasks
+
+    def test_project_people(self):
+
+        p = self.p
+        p.people
+
+    def test_project_comments(self):
+
+        p = self.p
+        p.comments
+
+    def test_unscheduled(self):
+
+        p = self.p
+        p.unscheduled
+
+
+    def test_abandon_task(self):
+        
+        p = self.p
+        t = Task(p, title="wash dishes")
+        t.abandon()
+
+    @raises(NoProject)
+    def test_component(self):
+
+        c1 = Component(title="Component A")
+        c1.tasks
+
+    def test_components_property(self):
+
+        p = self.p
+        c1 = Component(p, title="Component A")
+        assert p.components.length == 1, p.components
+        assert c1 in p.components
+
+    def test_started_property(self):
+
+        p = self.p
+        started_tasks = p(type='task', status='started')
+        assert p.started.length == started_tasks.length
+
+
+    def test_from_uid(self):
+        """
+        Use the os.getuid() to look up a person.
+        """
+
+        matt = Person(
+            title='W. Matthew Wilson')
+
+
+    def test_repr_after_replace_objects_with_pointers(self):
+
+
+        p = Project(
+            entities=[
+                Task(title="wash dishes",
+                    status=Status(title="unstarted"))])
+
+        t = Task(title="wash dishes")
+        assert t in p
+
+        assert isinstance(t['status'], Entity)
+        t.replace_objects_with_pointers()
+        assert isinstance(t['status'], uuid.UUID)
+
+        t.summarized_view
