@@ -4,7 +4,7 @@ import glob, os, pickle, unittest, uuid
 
 from pitz.entity import *
 from pitz.bag import Project
-from pitz.exceptions import NoProject
+from pitz import NoProject
 
 from nose.tools import raises
 from mock import Mock, patch

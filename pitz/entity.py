@@ -14,7 +14,7 @@ import jinja2, tempita, yaml
 
 import clepy
 
-from pitz.exceptions import NoProject
+from pitz import NoProject
 
 from pitz import by_created_time
 
