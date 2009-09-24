@@ -386,16 +386,132 @@ def pitz_edit():
 
 
 def pitz_add_milestone():
-    raise NotImplementedError
+
+    p = setup_options()
+    p.add_option('-t', '--title', help='Milestone title')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    m = Milestone(
+        proj,
+        title=options.title or raw_input("Title: ").strip(),
+        description=edit_with_editor('# Milestone description goes here'),
+        reached=Milestone.choose_from_allowed_values('reached', False),
+    )
+
+    proj.append(m)
+    print("Added %s to the project." % m.summarized_view)
+    proj.save_entities_to_yaml_files()
+
 
 def pitz_add_person():
-    raise NotImplementedError
+
+    p = setup_options()
+    p.add_option('-t', '--title', help='Person title')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    person = Person(
+        proj,
+        title=options.title or raw_input("Title: ").strip(),
+        description=edit_with_editor('# Milestone description goes here'),
+    )
+
+    proj.append(person)
+    print("Added %s to the project." % person.summarized_view)
+    proj.save_entities_to_yaml_files()
+
 
 def pitz_add_estimate():
-    raise NotImplementedError
+
+    p = setup_options()
+    p.add_option('-t', '--title', help='Estimate title')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    est = Estimate(
+        proj,
+        title=options.title or raw_input("Title: ").strip(),
+        description=edit_with_editor('# Estimate description goes here'),
+        points=int(raw_input("Points: ").strip()),
+    )
+
+    proj.append(est)
+    print("Added %s to the project." % est.summarized_view)
+    proj.save_entities_to_yaml_files()
+
 
 def pitz_add_component():
-    raise NotImplementedError
+
+    p = setup_options()
+    p.add_option('-t', '--title', help='Component title')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    c = Component(
+        proj,
+        title=options.title or raw_input("Title: ").strip(),
+        description=edit_with_editor('# Component description goes here'),
+    )
+
+    proj.append(c)
+    print("Added %s to the project." % c.summarized_view)
+    proj.save_entities_to_yaml_files()
+
 
 def pitz_add_status():
-    raise NotImplementedError
+
+    p = setup_options()
+    p.add_option('-t', '--title', help='Status title')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    s = Status(
+        proj,
+        title=options.title or raw_input("Title: ").strip(),
+        description=edit_with_editor('# Status description goes here'),
+    )
+
+    proj.append(s)
+    print("Added %s to the project." % s.summarized_view)
+    proj.save_entities_to_yaml_files()

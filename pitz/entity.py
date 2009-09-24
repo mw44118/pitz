@@ -275,6 +275,28 @@ class Entity(dict):
 
 
     @classmethod
+    def choose_from_allowed_values(cls, attr, default=None):
+
+        choices = sorted(cls.allowed_values[attr])
+
+        print("Choose a value for %s" % attr)
+        for i, e in enumerate(choices):
+            print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
+
+        choice = raw_input(
+            "Pick a %s or hit <ENTER> to choose %s: "
+                % (
+                    attr,
+                    getattr(default, 'summarized_view', str(default))))
+
+        try:
+            return choices[int(choice)-1]
+
+        except (TypeError, ValueError):
+            return default
+
+
+    @classmethod
     def choose(cls, default=None):
 
         choices = sorted(cls.already_instantiated.values(), reverse=True)
@@ -294,6 +316,8 @@ class Entity(dict):
 
         except (TypeError, ValueError):
             return default
+
+    choose_from_already_instantiated = choose
 
 
     def matches_dict(self, **d):
@@ -707,6 +731,18 @@ class Milestone(Entity):
     """
     Useful for bundling tasks
     """
+
+    required_fields = dict(
+        title=None,
+        description='',
+        pscore=0,
+        reached=False,
+    )
+
+    allowed_values = dict(
+        reached=[False, True],
+    )
+
 
     plural_name = "milestones"
 

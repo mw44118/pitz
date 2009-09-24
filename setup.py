@@ -53,6 +53,7 @@ started pitz.""",
     pitz-add-milestone = pitz.cmdline:pitz_add_milestone
     pitz-add-person = pitz.cmdline:pitz_add_person
     pitz-add-status = pitz.cmdline:pitz_add_status
+    pitz-add-estimate = pitz.cmdline:pitz_add_estimate
     pitz-add-component = pitz.cmdline:pitz_add_component
     """,
 

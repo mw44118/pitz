@@ -306,31 +306,6 @@ class Bag(list):
             key=lambda t: t[1], reverse=True)
 
 
-    def choose_value(self, entity_type, default=None):
-
-        """
-        Ask for a value chosen from this entity type.  Return the chosen
-        entity.
-        """
-
-        choices = self(type=entity_type)
-
-        for i, e in enumerate(choices):
-            print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
-
-        choice = raw_input(
-            "Pick a %s or hit <ENTER> to choose %s: "
-                % (
-                    entity_type,
-                    getattr(default, 'summarized_view', str(default))))
-
-        try:
-            return choices[int(choice)-1]
-
-        except (TypeError, ValueError):
-            return default
-
-
     def grep(self, phrase, ignore_case=False):
 
         """
