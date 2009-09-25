@@ -571,9 +571,12 @@ class Entity(dict):
         return self['modified_time'] > html_file_saved
 
 
-    def to_html_file(self, htmldir):
+    def to_html_file(self, htmldir, force=False):
+        """
+        If force is True, then we ignore the timestamps.
+        """
 
-        if self.stale_html:
+        if force or self.stale_html:
 
             self['html_file_saved'] = self['modified_time'] = datetime.now()
 

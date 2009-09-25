@@ -323,34 +323,41 @@ def pitz_html():
     Write out a bunch of HTML files.
     """
 
-    p = setup_options()
-    p.set_usage('%prog directory')
+    with spinning_distraction():
 
-    options, args = p.parse_args()
+        p = setup_options()
+        p.set_usage('%prog [options] directory')
+        p.add_option('--force',
+            help='Ignore timestamps and regenerate all files',
+            action='store_true',
+            default=False)
 
-    if options.version:
-        print_version()
+        options, args = p.parse_args()
 
-    if not args:
-        p.print_usage()
-        sys.exit()
+        if options.version:
+            print_version()
 
-    pitzdir = Project.find_pitzdir(options.pitzdir)
+        if not args:
+            p.print_usage()
+            sys.exit()
 
-    proj = Project.from_pitzdir(pitzdir)
-    proj.find_me()
+        pitzdir = Project.find_pitzdir(options.pitzdir)
 
-    htmldir = args[0]
+        proj = Project.from_pitzdir(pitzdir)
+        proj.find_me()
 
-    proj.to_html(htmldir)
+        htmldir = args[0]
 
-    print("Wrote %d html files out of %d entities in project."
-        % (
-            len([e for e in proj if e.to_html_file(htmldir)]),
-            len(proj)))
+        proj.to_html(htmldir)
 
-    # Record that we rebuilt all the HTML files.
-    proj.save_entities_to_yaml_files()
+        print("Wrote %d html files out of %d entities in project."
+            % (
+                len([e for e in proj
+                    if e.to_html_file(htmldir, options.force)]),
+                len(proj)))
+
+        # Record that we rebuilt all the HTML files.
+        proj.save_entities_to_yaml_files()
 
 
 def pitz_edit():
