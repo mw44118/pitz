@@ -240,8 +240,18 @@ class Bag(list):
         """
 
         if self:
-            return '(' + ', '.join(['%d %s entities' % (typecount, typename)
-                for typename, typecount in self.values('type')]) +')'
+
+            nasty_list_comprehension = [
+                '%d %s' % (typecount,
+
+                    getattr(
+                        getattr(self, 'classes', {}).get(typename),
+                        'plural_name',
+                        '%s entities' % typename))
+
+                for typename, typecount in self.values('type')]
+
+            return "(%s)" % ', '.join(nasty_list_comprehension)
 
         else:
             return '(empty)'

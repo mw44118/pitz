@@ -113,7 +113,7 @@ entities inside::
     1 entity entities
     -----------------
 
-       0: example entity (entity)
+       0: example entity (entity entities)
 
 
 That number 0 can be used to pull out the entity at that position, just

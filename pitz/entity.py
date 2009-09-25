@@ -52,6 +52,8 @@ class Entity(dict):
     False
     """
 
+    plural_name = 'entities'
+
     __metaclass__ = MC
 
     # When the value is None, I'll raise an exception when the
@@ -692,6 +694,8 @@ class Entity(dict):
 
 class Estimate(Entity):
 
+    plural_name = 'estimates'
+
     required_fields = dict(
         title=None,
         description='',
@@ -718,6 +722,8 @@ class Estimate(Entity):
 
 
 class Status(Entity):
+
+    plural_name = 'statuses'
 
     def __str__(self):
         return self.title
@@ -750,7 +756,6 @@ class Milestone(Entity):
     allowed_values = dict(
         reached=[False, True],
     )
-
 
     plural_name = "milestones"
 
@@ -885,7 +890,8 @@ class Task(Entity):
             return self
 
         else:
-            raise ValueError('You can only start unstarted or abandoned tasks.')
+            raise ValueError(
+                'You can only start unstarted or abandoned tasks.')
 
 
     def finish(self):
