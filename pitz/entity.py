@@ -482,7 +482,8 @@ class Entity(dict):
     def __getstate__(self):
 
         """
-        We want to pickle the pointers, not the objects.
+        We want to pickle the pointers, not the objects, because lots of
+        objects have reference cycles.
         """
 
         self.replace_objects_with_pointers()
