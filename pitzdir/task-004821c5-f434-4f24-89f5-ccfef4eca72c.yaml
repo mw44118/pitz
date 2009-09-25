@@ -27,7 +27,7 @@ description: 'Right now, Entity subclasses can define a class attribute named
   '
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-24 22:03:38.368088
+html_file_saved: &id001 2009-09-24 22:40:09.829590
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
 modified_time: *id001
@@ -38,4 +38,4 @@ title: replace pointers dictionary with simpler UUID attribute detection
 type: task
 uuid: !!python/object:uuid.UUID
   int: 374530376857023684456859912494688044
-yaml_file_saved: 2009-09-24 22:03:40.145201
+yaml_file_saved: 2009-09-24 22:40:11.500908

@@ -6,7 +6,7 @@ created_time: 2009-09-19 11:33:04.987551
 description: Walk through adding a person to the project.
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-09-24 22:03:39.532103
+html_file_saved: &id001 2009-09-24 22:40:10.925694
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
@@ -17,4 +17,4 @@ title: Write a pitz-add-person script
 type: task
 uuid: !!python/object:uuid.UUID
   int: 84712960800937697793490904722010239946
-yaml_file_saved: 2009-09-24 22:03:40.773000
+yaml_file_saved: 2009-09-24 22:40:12.150920

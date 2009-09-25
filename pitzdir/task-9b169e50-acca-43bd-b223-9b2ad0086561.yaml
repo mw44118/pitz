@@ -6,7 +6,7 @@ details: It would be nice to be able to go straight from the command line into i
   and already have pitz imported and my project loaded.
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-24 22:03:38.969870
+html_file_saved: &id001 2009-09-24 22:40:10.397900
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
@@ -17,4 +17,4 @@ title: Start an ipython session loaded with a project
 type: task
 uuid: !!python/object:uuid.UUID
   int: 206147780889996049215650519494320219489
-yaml_file_saved: 2009-09-24 22:03:40.459967
+yaml_file_saved: 2009-09-24 22:40:11.838345
