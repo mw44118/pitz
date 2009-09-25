@@ -17,7 +17,7 @@ description: 'For the 1.0 release, I''m not going to allow the zany "build your 
   '
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-09-24 22:40:10.095517
+html_file_saved: &id001 2009-09-24 23:41:05.880024
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
@@ -28,4 +28,4 @@ title: Consolidate Project, SimpleProject, and AgileProject into a single class
 type: task
 uuid: !!python/object:uuid.UUID
   int: 231536058727495247731226531628350289217
-yaml_file_saved: 2009-09-24 22:40:11.676482
+yaml_file_saved: 2009-09-24 23:41:07.472976
