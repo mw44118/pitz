@@ -324,12 +324,16 @@ def pitz_html():
     """
 
     p = setup_options()
-    p.add_option('-t', '--title', help='Status title')
+    p.set_usage('%prog directory')
 
     options, args = p.parse_args()
 
     if options.version:
         print_version()
+
+    if not args:
+        p.print_usage()
+        sys.exit()
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -337,9 +341,8 @@ def pitz_html():
     proj.find_me()
 
     htmldir = args[0]
-    html_filename = os.path.join(htmldir, proj.html_filename)
 
-    proj.to_html(html_filename)
+    proj.to_html(htmldir)
 
     print("Wrote %d html files out of %d entities in project."
         % (

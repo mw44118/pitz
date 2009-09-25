@@ -339,8 +339,11 @@ class Bag(list):
         return Bag(title="entities matching grep %s" % phrase,
             pathname=self.pathname,
             order_method=self.order_method,
-            entities=[self.entities_by_yaml_filename[os.path.basename(s.strip())] 
+
+            entities=[
+                self.entities_by_yaml_filename[os.path.basename(s.strip())]
                 for s in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout])
+
 
 
     def to_html(self, filepath):
@@ -348,8 +351,16 @@ class Bag(list):
         Write this bag out as HTML to a file at filepath.
         """
 
-        with open(filepath, 'w') as f:
+        with open(os.path.join(filepath, self.html_filename), 'w') as f:
             f.write(self.html)
+
+
+    def __getstate__(self):
+
+        if hasattr(self, 'e'):
+            delattr(self, 'e')
+
+        return self.__dict__
 
 
     @property

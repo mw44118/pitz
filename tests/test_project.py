@@ -244,3 +244,13 @@ class TestFromPitzdir(unittest.TestCase):
 
         p = Project.from_pitzdir('/tmp')
         assert p.loaded_from == 'yaml', p.loaded_from
+
+
+class TestProject(unittest.TestCase):
+
+
+    def test_html_then_pickle(self):
+
+        p = Project(pathname='/tmp')
+        p.to_html('/tmp')
+        p.save_entities_to_yaml_files()
