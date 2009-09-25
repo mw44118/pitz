@@ -363,6 +363,12 @@ class Bag(list):
         return self.__dict__
 
 
+    def __setstate__(self, d):
+
+        self.__dict__.update(d)
+        self._setup_jinja()
+
+
     @property
     def html(self):
         """
