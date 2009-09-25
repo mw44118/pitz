@@ -1,3 +1,4 @@
+comments: []
 components: []
 created_time: 2009-08-29 15:00:09.937245
 description: 'The way to tell pitz where the project data lives is kind of messy.
@@ -24,10 +25,11 @@ description: 'The way to tell pitz where the project data lives is kind of messy
 
   '
 estimate: !!python/object:uuid.UUID
-  int: 146948019838310661317567451360560453079
+  int: 334988786726400201598883942844016081861
+html_file_saved: &id001 2009-09-24 20:29:33.392572
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-09-01 20:05:23.913823
+modified_time: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
@@ -35,4 +37,4 @@ title: Rewrite code to locate project.pickle
 type: task
 uuid: !!python/object:uuid.UUID
   int: 134670963762631689391744269090493152808
-yaml_file_saved: 2009-09-01 20:05:29.271052
+yaml_file_saved: 2009-09-24 20:29:34.887875

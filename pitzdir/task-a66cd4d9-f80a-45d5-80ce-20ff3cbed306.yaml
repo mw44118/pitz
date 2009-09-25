@@ -1,12 +1,18 @@
+comments: []
+components: []
 created_time: 2009-05-05 10:12:20.169108
-html_file_saved: 2009-06-20 18:08:35.371202
+description: ''
+estimate: !!python/object:uuid.UUID
+  int: 334988786726400201598883942844016081861
+html_file_saved: &id001 2009-09-24 20:29:33.252540
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-06-28 21:51:09.782205
+modified_time: *id001
+pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
 title: Search for the project.yaml file in parent directories
 type: task
 uuid: !!python/object:uuid.UUID
   int: 221216932501129737511019321430214890246
-yaml_file_saved: 2009-06-28 21:51:49.562845
+yaml_file_saved: 2009-09-24 20:29:34.813255

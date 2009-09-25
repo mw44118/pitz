@@ -481,6 +481,10 @@ class Entity(dict):
 
     def __getstate__(self):
 
+        """
+        We want to pickle the pointers, not the objects.
+        """
+
         self.replace_objects_with_pointers()
         d = self.copy()
         self.replace_pointers_with_objects()

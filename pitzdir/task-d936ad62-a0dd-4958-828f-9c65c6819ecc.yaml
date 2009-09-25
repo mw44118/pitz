@@ -1,3 +1,5 @@
+comments: []
+components: []
 created_time: 2009-04-17 14:03:55.341777
 description: 'The pitz-setup script is what somebody should run to start using pitz.
 
@@ -19,14 +21,17 @@ description: 'The pitz-setup script is what somebody should run to start using p
   without needing to alter the core pitz code.
 
   '
-html_file_saved: 2009-06-20 18:08:35.401248
+estimate: !!python/object:uuid.UUID
+  int: 334988786726400201598883942844016081861
+html_file_saved: &id001 2009-09-24 20:29:33.294044
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-06-28 21:51:09.782593
+modified_time: *id001
+pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
 title: Write a pitz-setup script
 type: task
 uuid: !!python/object:uuid.UUID
   int: 288726375786694103791979888046044716748
-yaml_file_saved: 2009-06-28 21:51:49.575738
+yaml_file_saved: 2009-09-24 20:29:34.833884

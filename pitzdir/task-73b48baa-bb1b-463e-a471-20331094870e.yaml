@@ -1,6 +1,6 @@
 comments: []
 components: []
-created_time: &id001 2009-09-12 22:45:26.365104
+created_time: 2009-09-12 22:45:26.365104
 description: "Right now, the Entity class has these required fields:\n\n    class\
   \ Entity(dict):\n\n        required_fields = dict(\n            title=None,\n  \
   \          description='',\n            pscore=0)\n\nAnd every time I subclass Entity,\
@@ -13,6 +13,7 @@ description: "Right now, the Entity class has these required fields:\n\n    clas
   \ this.\n"
 estimate: !!python/object:uuid.UUID
   int: 53593374283076976629647435265038831042
+html_file_saved: &id001 2009-09-24 20:29:34.476610
 milestone: !!python/object:uuid.UUID
   int: 246357804921662755488325692659396046179
 modified_time: *id001
@@ -23,4 +24,4 @@ title: Remove need to repeat everything in required_fields attribute
 type: task
 uuid: !!python/object:uuid.UUID
   int: 153798665731430798919121964624589915918
-yaml_file_saved: 2009-09-12 22:45:26.380743
+yaml_file_saved: 2009-09-24 20:29:35.477885

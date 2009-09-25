@@ -273,10 +273,10 @@ def pitz_add_task():
 
         status=Status(proj, title='unstarted'),
 
-        milestone=proj.choose_value('milestone',
+        milestone=Milestone.choose_from_already_instantiated(
             Milestone(proj, title='unscheduled')),
 
-        estimate=proj.choose_value('estimate',
+        estimate=Estimate.choose_from_already_instantiated(
             Estimate(proj, title='not estimated')),
     )
 
@@ -323,33 +323,23 @@ def pitz_html():
     Write out a bunch of HTML files.
     """
 
-    import optparse, os, sys
-
-    p = optparse.OptionParser()
-    p.set_usage('%prog [options] folder-to-store-html-files')
-    p.add_option('-p', '--pitzdir', help="Path to your pitzdir")
-
-    p.add_option('--version', action='store_true',
-        help='show pitz version')
+    p = setup_options()
+    p.add_option('-t', '--title', help='Status title')
 
     options, args = p.parse_args()
 
     if options.version:
         print_version()
 
-    if not args or not os.path.isdir(args[0]):
-        p.print_usage()
-        sys.exit()
+    pitzdir = Project.find_pitzdir(options.pitzdir)
 
-    path_to_yaml_file = options.pitzdir or Project.find_file()
-
-    proj = Project.from_yaml_file(path_to_yaml_file)
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
 
     htmldir = args[0]
     html_filename = os.path.join(htmldir, proj.html_filename)
 
     proj.to_html(html_filename)
-
 
     print("Wrote %d html files out of %d entities in project."
         % (

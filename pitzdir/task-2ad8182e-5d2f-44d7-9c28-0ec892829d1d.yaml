@@ -1,3 +1,4 @@
+comments: []
 components: []
 created_time: 2009-08-15 21:08:52.533722
 description: "I got an email with some instructions on how to use zc.buildout.  I'm\n\
@@ -20,10 +21,11 @@ description: "I got an email with some instructions on how to use zc.buildout.  
   \ in ./bin\n\n   As an exemple here is a setup.py with console_scripts:\n   http://www.gawel.org/docs/rstctl/file/077270cc4a97/setup.py\n\
   \n\n"
 estimate: !!python/object:uuid.UUID
-  int: 146948019838310661317567451360560453079
+  int: 334988786726400201598883942844016081861
+html_file_saved: &id001 2009-09-24 20:29:33.100365
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-08-28 20:37:18.346396
+modified_time: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
@@ -31,4 +33,4 @@ title: Use entry points so that install with zc.buildout works OK
 type: task
 uuid: !!python/object:uuid.UUID
   int: 56949602395575203251102237645582015773
-yaml_file_saved: 2009-08-28 20:38:14.697295
+yaml_file_saved: 2009-09-24 20:29:34.724264

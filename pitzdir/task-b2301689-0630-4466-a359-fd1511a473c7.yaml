@@ -1,10 +1,12 @@
+comments: []
 components: []
-created_time: &id001 2009-09-01 21:25:52.656698
+created_time: 2009-09-01 21:25:52.656698
 description: "Right now, slicing a bag returns a list::\n\n    >>> type(p.todo)\n\
   \    <class 'pitz.bag.Bag'>\n    >>> type(p.todo[:4])\n    <type 'list'>\n\nIt would\
   \ be better to return a new bag instead.\n"
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
+html_file_saved: &id001 2009-09-24 20:29:33.307839
 milestone: !!python/object:uuid.UUID
   int: 246357804921662755488325692659396046179
 modified_time: *id001
@@ -15,4 +17,4 @@ title: Slicing bags should return bags, not lists
 type: task
 uuid: !!python/object:uuid.UUID
   int: 236852270568109503406539718343778399175
-yaml_file_saved: 2009-09-01 21:25:52.668986
+yaml_file_saved: 2009-09-24 20:29:34.843141

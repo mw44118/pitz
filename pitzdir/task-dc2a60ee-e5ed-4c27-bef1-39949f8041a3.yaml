@@ -1,3 +1,5 @@
+comments: []
+components: []
 created_time: 2009-05-05 10:09:03.903880
 description: "Right now, it is possible to store a list in a value and it will survive\n\
   going to and from yaml.  However queries will not match.  Example::\n\n    >>> t\
@@ -6,14 +8,17 @@ description: "Right now, it is possible to store a list in a value and it will s
   \n    >>> ['a', 'b'] == 'a'\n\nInstead, when the initial Entity.matches_dict call\
   \ fails, we should test\nif either element is a sequence, and then test for membership.\n\
   \n"
-html_file_saved: 2009-06-20 18:08:35.627725
+estimate: !!python/object:uuid.UUID
+  int: 334988786726400201598883942844016081861
+html_file_saved: &id001 2009-09-24 20:29:34.185753
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-06-28 21:51:09.786120
+modified_time: *id001
+pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
 title: Allow queries to look for membership when values are lists
 type: task
 uuid: !!python/object:uuid.UUID
   int: 292650201579523526055880126774263169443
-yaml_file_saved: 2009-06-28 21:51:49.777540
+yaml_file_saved: 2009-09-24 20:29:35.326862

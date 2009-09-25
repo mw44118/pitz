@@ -313,39 +313,6 @@ class TestBag(unittest.TestCase):
         unimportant_stuff = self.b.matches_dict(importance='not very')
 
 
-    @patch('__builtin__.raw_input')
-    def test_choose_value_1(self, m):
-
-        """
-        Pick the first option with choose_value.
-        """
-
-        e1, e2 = self.b
-        assert e1.title == 'example #1', e1.title
-
-        # When the test runs raw_input, it will automatically return 1.
-        m.return_value = 1
-
-        choice = self.b.choose_value('entity')
-        assert choice == e1, choice
-
-
-    @patch('__builtin__.raw_input')
-    def test_choose_value_2(self, m):
-
-        """
-        Pick the default with choose_value.
-        """
-
-        e1, e2 = self.b
-        assert e1.title == 'example #1', e1.title
-
-        m.return_value = None 
-
-        choice = self.b.choose_value('entity', 'DEFAULT')
-        assert choice == 'DEFAULT', choice
-
-
     def test_by_frag(self):
 
         e1, e2 = self.b

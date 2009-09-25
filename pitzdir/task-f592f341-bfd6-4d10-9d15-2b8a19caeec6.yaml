@@ -1,12 +1,18 @@
+comments: []
+components: []
 created_time: 2009-06-05 15:38:20.202150
-html_file_saved: 2009-06-20 18:08:36.005069
+description: ''
+estimate: !!python/object:uuid.UUID
+  int: 334988786726400201598883942844016081861
+html_file_saved: &id001 2009-09-24 20:29:34.088649
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: 2009-06-29 10:41:58.885249
+modified_time: *id001
+pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
 title: Make some web view that allows tasks to be dragged around
 type: task
 uuid: !!python/object:uuid.UUID
   int: 326423868143385435408253671017628233414
-yaml_file_saved: 2009-06-29 10:44:10.199649
+yaml_file_saved: 2009-09-24 20:29:35.279619
