@@ -11,7 +11,9 @@ from clepy import edit_with_editor, send_through_pager, spinning_distraction
 
 from pitz import *
 from pitz.bag import Project
-from pitz.entity import Entity, Task, Status, Estimate, Milestone
+
+from pitz.entity import Comment, Component, Entity, Estimate, Milestone, \
+Person, Status, Task
 
 log = logging.getLogger('pitz.cmdline')
 

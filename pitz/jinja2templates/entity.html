@@ -5,7 +5,18 @@
 {% endblock %}
 
 {%block content %}
+
 <h1>{{ title }}</h1>
+
+{% if entity.description -%}
+<div id="description">
+<h2>Description</h2>
+{{ description }}
+</div>
+{%- endif %}
+
+<div id="attributes">
+<h2>Attributes</h2>
 
 <dl>
 {% for attr, val in entity.items() %}
@@ -19,5 +30,6 @@
 
 {% endfor %}
 </dl>
+</div>
 
 {% endblock %}

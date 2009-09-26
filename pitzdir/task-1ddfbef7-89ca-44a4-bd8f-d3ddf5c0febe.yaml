@@ -10,7 +10,7 @@ description: 'Right now, an entity''s detailed view takes up a lot of vertical s
   title, description, pscore, and some comments.'
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-24 23:41:06.388199
+html_file_saved: &id001 2009-09-26 13:03:00.212261
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
@@ -21,4 +21,4 @@ title: Make a better detailed view for tasks
 type: task
 uuid: !!python/object:uuid.UUID
   int: 39709367347040635236977302890575101630
-yaml_file_saved: 2009-09-24 23:41:07.734748
+yaml_file_saved: 2009-09-26 13:03:02.575836

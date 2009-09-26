@@ -7,7 +7,7 @@ description: "I think I'lll probably tweak the HTML templates plenty.  I know I 
   \ the todo bag"
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-24 23:41:06.335808
+html_file_saved: &id001 2009-09-26 13:03:00.080118
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
@@ -18,4 +18,4 @@ title: Make an HTML view of project
 type: task
 uuid: !!python/object:uuid.UUID
   int: 134167243796410546326428900984490787425
-yaml_file_saved: 2009-09-24 23:41:07.704524
+yaml_file_saved: 2009-09-26 13:03:02.545727

@@ -12,6 +12,9 @@ from types import NoneType
 
 import jinja2, tempita, yaml
 
+from docutils.core import publish_parts
+from docutils.utils import SystemMessage
+
 import clepy
 
 from pitz import NoProject
@@ -588,18 +591,41 @@ class Entity(dict):
                 f.write(self.html)
 
             return filepath
+
+    @property
+    def description_as_html(self):
+
+        try:
+            return publish_parts(self['description'],
+                writer_name='html')['html_body']
+
+        except SystemMessage, ex:
+
+            log.error(
+                "Couldn't render %(frag)s description as HTML"
+                % self)
+
+            log.exception(ex)
+
+            return """<pre>%(description)s</pre>""" % self
+
+
  
 
     @property
     def html(self):
         """
         Return a string of HTML representing this entity.
+
+        Convert the description attribute from restructured text into
+        HTML.
         """
 
         self.replace_objects_with_pointers()
         tmpl = self.e.get_template('entity.html')
 
-        s = tmpl.render(title=self.title, entity=self,
+        s = tmpl.render(title=self.title,
+            description=self.description_as_html, entity=self,
             UUID=uuid.UUID)
 
         if self.project:
