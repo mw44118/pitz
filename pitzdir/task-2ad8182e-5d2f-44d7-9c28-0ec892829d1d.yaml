@@ -22,7 +22,7 @@ description: "I got an email with some instructions on how to use zc.buildout.  
   \n\n"
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-26 13:02:58.895728
+html_file_saved: &id001 2009-09-26 13:20:12.649986
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
@@ -33,4 +33,4 @@ title: Use entry points so that install with zc.buildout works OK
 type: task
 uuid: !!python/object:uuid.UUID
   int: 56949602395575203251102237645582015773
-yaml_file_saved: 2009-09-26 13:03:02.231927
+yaml_file_saved: 2009-09-26 13:20:16.330231

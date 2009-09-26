@@ -4,6 +4,14 @@
 
 <head>
 
+<div id="header">
+<a href="index.html">index page</a>
+<a href="todo.html">Stuff to do</a>
+<a href="tasks.html">Tasks</a>
+<a href="milestones.html">Milestones</a>
+<a href="components.html">Components</a>
+</div>
+
 {% block page_title %}{% endblock %}
 
 </head>
@@ -11,6 +19,15 @@
 <body>
 
 {% block content %}{% endblock %}
+
+<div id="footer">
+{% if entity %}
+<a href="http://pitz.tplus1.com">pitz</a> wrote this HTML file on
+{{ entity['html_file_saved'] }}.
+{% else %}
+<a href="http://pitz.tplus1.com">pitz</a> wrote this HTML file.
+{% endif %}
+</div>
 
 </body>
 

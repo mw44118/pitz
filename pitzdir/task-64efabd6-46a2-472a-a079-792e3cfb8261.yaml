@@ -2,12 +2,13 @@ comments: []
 components: []
 created_time: 2009-05-26 21:23:01.333154
 description: "I think I'lll probably tweak the HTML templates plenty.  I know I need\n\
-  at least these features:\n\n*   A nav that shows up on every page:\n\n    *   Link\
-  \ back to the main index.html page\n    *   Link to bags by type\n    *   Link to\
-  \ the todo bag"
+  at least these features:\n\n*   A header div:\n\n    *   Link back to the main index.html\
+  \ page\n    *   Link to bags by type\n    *   Link to the todo bag\n    \n*   A\
+  \ footer div:\n\n    *   Shows date and time when we generated this HTML file\n\
+  \    *   Links to pitz project (http://pitz.tplus1.com)"
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-26 13:03:00.080118
+html_file_saved: &id001 2009-09-26 13:20:13.937123
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
@@ -18,4 +19,4 @@ title: Make an HTML view of project
 type: task
 uuid: !!python/object:uuid.UUID
   int: 134167243796410546326428900984490787425
-yaml_file_saved: 2009-09-26 13:03:02.545727
+yaml_file_saved: 2009-09-26 13:20:16.647363
