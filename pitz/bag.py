@@ -28,12 +28,14 @@ class Bag(list):
 
     def __init__(self, title='', html_filename=None, uuid=None,
         pathname=None, entities=(),
-        order_method=by_pscore_and_milestone, **kwargs):
+        order_method=by_pscore_and_milestone, jinja_template=None,
+        **kwargs):
 
         self.title = title
         self.pathname = pathname
         self.order_method = order_method
         self._html_filename = html_filename
+        self.jinja_template = jinja_template or 'bag.html'
         
         if uuid:
             self.uuid = uuid
@@ -68,6 +70,9 @@ class Bag(list):
             'len':len,
             'looper':tempita.looper,
         }
+
+        if not hasattr(self, 'jinja_template'):
+            self.jinja_template = 'bag.html'
 
 
 
@@ -389,7 +394,8 @@ class Bag(list):
         Return a string containing this bag formatted as HTML.
         """
 
-        tmpl = self.e.get_template('bag.html')
+        tmpl = self.e.get_template(self.jinja_template)
+
         return tmpl.render(title=self.title, bag=self,
             isinstance=isinstance, UUID=UUID)
 
@@ -425,8 +431,9 @@ class Project(Bag):
 
         self.rerun_sort_after_append = True
 
-        super(Project, self).__init__(title, uuid=uuid, pathname=pathname, 
-            entities=entities, order_method=order_method, **kwargs)
+        super(Project, self).__init__(title, uuid=uuid,
+            pathname=pathname, entities=entities,
+            order_method=order_method, **kwargs)
 
         # Only load from the file system if we don't have anything.
         if self.pathname and load_yaml_files and not entities:

@@ -57,6 +57,8 @@ class Entity(dict):
 
     plural_name = 'entities'
 
+    jinja_template = 'entity.html'
+
     __metaclass__ = MC
 
     # When the value is None, I'll raise an exception when the
@@ -608,8 +610,6 @@ class Entity(dict):
             log.exception(ex)
 
             return """<pre>%(description)s</pre>""" % self
-
-
  
 
     @property
@@ -622,7 +622,7 @@ class Entity(dict):
         """
 
         self.replace_objects_with_pointers()
-        tmpl = self.e.get_template('entity.html')
+        tmpl = self.e.get_template(self.jinja_template)
 
         s = tmpl.render(title=self.title,
             description=self.description_as_html, entity=self,
@@ -784,6 +784,8 @@ class Milestone(Entity):
     )
 
     plural_name = "milestones"
+
+    jinja_template = 'milestone.html'
 
     @property
     def tasks(self):
@@ -1007,6 +1009,8 @@ class Person(Entity):
 class Component(Entity):
 
     plural_name = "components"
+
+    jinja_template = 'component.html'
 
     @property
     def tasks(self):

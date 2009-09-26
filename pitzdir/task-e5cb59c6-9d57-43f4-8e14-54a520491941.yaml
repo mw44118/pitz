@@ -4,7 +4,7 @@ created_time: 2009-04-14 09:53:40.616158
 description: ''
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-26 14:13:34.571006
+html_file_saved: &id001 2009-09-26 18:21:53.908360
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
@@ -15,4 +15,4 @@ title: Write a function that opens $EDITOR and then retrieves stored text
 type: task
 uuid: !!python/object:uuid.UUID
   int: 305449068167353851724625538086555162945
-yaml_file_saved: 2009-09-26 14:13:38.009964
+yaml_file_saved: 2009-09-26 18:21:58.060696

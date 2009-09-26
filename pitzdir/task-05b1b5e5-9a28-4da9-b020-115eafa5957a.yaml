@@ -4,7 +4,7 @@ created_time: 2009-06-29 10:32:59.717736
 description: ''
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-26 14:13:37.199811
+html_file_saved: &id001 2009-09-26 18:21:57.257861
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_time: *id001
@@ -15,4 +15,4 @@ title: Strip newlines off entity titles
 type: task
 uuid: !!python/object:uuid.UUID
   int: 7568865829982135871330794544222803322
-yaml_file_saved: 2009-09-26 14:13:38.656670
+yaml_file_saved: 2009-09-26 18:21:58.700542

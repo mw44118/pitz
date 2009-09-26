@@ -6,7 +6,7 @@ description: 'blah blah blah
   '
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-26 14:13:35.777708
+html_file_saved: &id001 2009-09-26 18:21:55.283612
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
 modified_time: *id001
@@ -17,4 +17,4 @@ title: Allow summarized vs detailed view to be configurable
 type: task
 uuid: !!python/object:uuid.UUID
   int: 243952634775575136092427018119877153988
-yaml_file_saved: 2009-09-26 14:13:38.311367
+yaml_file_saved: 2009-09-26 18:21:58.353294
