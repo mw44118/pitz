@@ -14,7 +14,7 @@ description: 'First I thought the problem was due to IPython, so I commented it 
   '
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-09-26 13:20:12.868341
+html_file_saved: &id001 2009-09-26 14:13:34.507348
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
 modified_time: *id001
@@ -25,4 +25,4 @@ title: Figure out why pitz-todo scripts are taking so long to load
 type: task
 uuid: !!python/object:uuid.UUID
   int: 302948312096198529046812070894581742761
-yaml_file_saved: 2009-09-26 13:20:16.388270
+yaml_file_saved: 2009-09-26 14:13:37.998070

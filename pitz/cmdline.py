@@ -352,6 +352,11 @@ def pitz_html():
 
         proj.to_html(htmldir)
 
+        proj.todo.to_html(htmldir)
+        proj.milestones.to_html(htmldir)
+        proj.tasks.to_html(htmldir)
+        proj.components.to_html(htmldir)
+
         print("Wrote %d html files out of %d entities in project."
             % (
                 len([e for e in proj

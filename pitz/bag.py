@@ -26,12 +26,14 @@ class Bag(list):
     """
 
 
-    def __init__(self, title='', uuid=None, pathname=None, entities=(),
+    def __init__(self, title='', html_filename=None, uuid=None,
+        pathname=None, entities=(),
         order_method=by_pscore_and_milestone, **kwargs):
 
         self.title = title
         self.pathname = pathname
         self.order_method = order_method
+        self._html_filename = html_filename
         
         if uuid:
             self.uuid = uuid
@@ -202,7 +204,9 @@ class Bag(list):
 
     @property
     def html_filename(self):
-        return "%s.html" % quote_plus(self.title.lower())
+
+        return self._html_filename \
+        or "%s.html" % quote_plus(self.title.lower())
 
         
     @property
@@ -755,6 +759,8 @@ class Project(Bag):
         .does_not_match_dict(status=Status(title='abandoned'))
 
         b.title = '%s: stuff to do' % self.title
+        b._html_filename = 'todo.html'
+
         return b
 
 
@@ -763,6 +769,7 @@ class Project(Bag):
     def milestones(self):
         b = self(type='milestone')
         b.title = 'Milestones'
+
         return b
 
 
