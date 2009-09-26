@@ -425,8 +425,8 @@ class Project(Bag):
 
         self.rerun_sort_after_append = True
 
-        super(Project, self).__init__(title, uuid, pathname, entities,
-            order_method, **kwargs)
+        super(Project, self).__init__(title, uuid=uuid, pathname=pathname, 
+            entities=entities, order_method=order_method, **kwargs)
 
         # Only load from the file system if we don't have anything.
         if self.pathname and load_yaml_files and not entities:
