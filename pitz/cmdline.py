@@ -522,3 +522,29 @@ def pitz_add_status():
     proj.append(s)
     print("Added %s to the project." % s.summarized_view)
     proj.save_entities_to_yaml_files()
+
+
+def pitz_destroy():
+
+    p = setup_options()
+    p.add_option('-t', '--title', help='Status title')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    e = proj[args[0]]
+
+    if isinstance(e, Entity):
+
+        e.self_destruct(proj)
+
+    print("""Entity %(frag)s: "%(title)s" is no longer part of the project.""" % e)
+
+    proj.save_entities_to_yaml_files()

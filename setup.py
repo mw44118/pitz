@@ -55,6 +55,7 @@ started pitz.""",
     pitz-add-status = pitz.cmdline:pitz_add_status
     pitz-add-estimate = pitz.cmdline:pitz_add_estimate
     pitz-add-component = pitz.cmdline:pitz_add_component
+    pitz-destroy = pitz.cmdline:pitz_destroy
     """,
 
     test_suite = 'nose.collector',

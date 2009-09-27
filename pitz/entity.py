@@ -526,6 +526,8 @@ class Entity(dict):
 
         In other words, replace the uuid "matt" with the object that
         has "matt" as its uuid.
+
+        Also works when the values are lists and tuples of UUIDs.
         """
 
         if not self.project:
@@ -541,6 +543,9 @@ class Entity(dict):
 
             if isinstance(val, uuid.UUID):
                 self[attr] = self.project.by_uuid(val)
+
+            if isinstance(val, (list, tuple)):
+                self[attr] = [self.project.by_uuid(x) for x in val]
 
         self.update_modified_time = True
         return self
@@ -559,6 +564,9 @@ class Entity(dict):
 
         for attr, val in self.items():
             self[attr] = getattr(val, 'uuid', val)
+
+            if isinstance(val, (tuple, list)):
+                self[attr] = [getattr(e, 'uuid', e) for e in val]
 
         self.update_modified_time = True
         return self
@@ -848,7 +856,6 @@ class Task(Entity):
         status=lambda proj: Status(proj, title='unstarted'),
         estimate=lambda proj: Estimate(proj, title='not estimated'),
         components=lambda proj: list(),
-        comments=lambda proj: list(),
     )
 
 
