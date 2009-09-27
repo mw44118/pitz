@@ -941,6 +941,29 @@ class Task(Entity):
             raise ValueError('You can only finish started.')
 
 
+    def comment(self, who_said_it=None, title=None, description=None):
+
+        """
+        Store a comment on this task.
+        """
+
+        if not who_said_it:
+
+            if self.project and hasattr(self.project, 'me'):
+                who_said_it = self.project.me
+
+            else:
+                who_said_it = Person.choose()
+
+        if not title:
+            title = '''RE: task %(frag)s "%(title)s"''' % self
+
+        if not description:
+            description = clepy.edit_with_editor("# Comment goes here")
+
+        return Comment(self.project, entity=self.uuid, title=title,
+            who_said_it=who_said_it, description=description)
+
 
 class Comment(Entity):
 
@@ -978,12 +1001,10 @@ class Comment(Entity):
     def detailed_view(self):
 
         title = textwrap.fill(self['title'].strip().replace('\n', '  '))
-
         who_said_it = self['who_said_it']
         who_said_it = getattr(who_said_it, 'title', who_said_it)
-
         time = self['created_time'].strftime("%A, %B %d, %Y, at %I:%M %P")
-
+        description = self.description
         tmpl = self.e.get_template('comment_detailed_view.txt')
 
         return tmpl.render(locals())
