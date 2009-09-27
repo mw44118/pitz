@@ -1,0 +1,18 @@
+components: []
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-09-26 22:21:33.875188
+description: ''
+estimate: !!python/object:uuid.UUID
+  int: 334988786726400201598883942844016081861
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: 2009-09-26 22:21:33.877822
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Bogus
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 10600894308725259776600408658087837888
+yaml_file_saved: 2009-09-26 22:25:28.449840
