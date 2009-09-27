@@ -843,6 +843,8 @@ class Task(Entity):
 
     plural_name = "tasks"
 
+    jinja_template = 'task.html'
+
     allowed_types = dict(
         milestone=Milestone,
         status=Status,
@@ -937,6 +939,7 @@ class Task(Entity):
 
         else:
             raise ValueError('You can only finish started.')
+
 
 
 class Comment(Entity):
