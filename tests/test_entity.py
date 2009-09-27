@@ -516,6 +516,15 @@ class TestEntity(unittest.TestCase):
         assert comments_on_t1[0]['title'] == 'blah blah'
 
 
+    def test_convert_to_allowed_types(self):
+        """
+        Verify we coerce to an allowed type.
+        """
+
+        e = Entity(title='blah', pscore='99')
+        assert e['pscore'] == 99, 'pscore is %(pscore)s' % e
+
+
 class TestMisc(unittest.TestCase):
 
 

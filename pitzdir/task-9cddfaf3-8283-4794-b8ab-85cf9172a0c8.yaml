@@ -1,0 +1,25 @@
+components: []
+created_time: &id001 2009-09-27 08:57:29.380603
+description: 'I''m using 7 characters in the output to show the index of each element
+
+  in the bag.   This index is useful within a shell session, but not
+
+  useful at the command-line.
+
+
+  I need a way to hide this output when I''m running a script, but not when
+
+  I''m inside a shell.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Hide the index in command-line output
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 208512154843419235553328821796965884104
+yaml_file_saved: 2009-09-27 08:57:29.399419

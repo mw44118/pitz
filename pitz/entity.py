@@ -73,7 +73,9 @@ class Entity(dict):
     allowed_values = dict()
 
     # These attributes must be instances of these classes.
-    allowed_types = dict()
+    allowed_types = dict(
+        pscore=int,
+    )
 
     # When these keys get updated, do not update the modified_time
     # key.
@@ -90,6 +92,9 @@ class Entity(dict):
 
         If we don't have it, we make it and return it.
         """
+
+        if 'title' not in kwargs:
+            raise TypeError("%s requires a title!" % cls.__name__)
 
         k = kwargs['title']
 
@@ -230,21 +235,29 @@ class Entity(dict):
             raise ValueError("%s must be in %s, not %s!"
                 % (attr, self.allowed_values[attr], val))
 
+
         elif attr in self.allowed_types \
         and not isinstance(val,
             (NoneType, uuid.UUID, self.allowed_types[attr])):
 
-            raise TypeError("%s must be an instance of %s, not %s!"
-                % (attr, self.allowed_types[attr], type(val)))
+            try:
+                val = self.allowed_types[attr](val)
 
-        else:
-            super(Entity, self).__setitem__(attr, val)
+            except (TypeError, ValueError), ex:
 
-            if self.update_modified_time \
-            and attr not in self.do_not_update_modified_time_for_these_keys:
+                raise TypeError("%s must be an instance of %s, not %s!"
+                    % (attr, self.allowed_types[attr], type(val)))
 
-                super(Entity, self).__setitem__(
-                    'modified_time', datetime.now())
+
+        # Now that we made it through the gauntlet, do the assignment.
+
+        super(Entity, self).__setitem__(attr, val)
+
+        if self.update_modified_time \
+        and attr not in self.do_not_update_modified_time_for_these_keys:
+
+            super(Entity, self).__setitem__(
+                'modified_time', datetime.now())
 
 
     def __hash__(self):
@@ -697,11 +710,7 @@ class Entity(dict):
         """
 
         if issubclass(self.allowed_types.get(attr, object), Entity):
-
-            cls = self.allowed_types[attr]
-
-            self[attr] = cls.choose()
-
+            self[attr] = self.allowed_types[attr].choose()
 
         else:
             self[attr] = clepy.edit_with_editor(self.get(attr))
@@ -737,6 +746,7 @@ class Estimate(Entity):
         points=0)
 
     allowed_types = dict(
+        pscore=int,
         points=int)
 
     def __str__(self):
@@ -846,6 +856,7 @@ class Task(Entity):
     jinja_template = 'task.html'
 
     allowed_types = dict(
+        points=int,
         milestone=Milestone,
         status=Status,
         estimate=Estimate)
