@@ -1,0 +1,27 @@
+components: []
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-09-28 10:08:45.260771
+description: "Example (assume that task with frag abc123 exists)::\n\n    $ pitz-assign\
+  \ abc123 'W. Matthew Wilson'\n\nThat would assign task abc123 to me.\n\nThis would\
+  \ do the same thing::\n\n    $ pitz-assign abc123 a38565\n\nI'm using the frag for\
+  \ myself rather than the title.\n\nBehind the scenes, the code should do something\
+  \ like::\n\n    >>> p['abc123']['owner'] = p['a38565']\n\nIf I want to assign a\
+  \ task to myself, rather than somebody else, I\nshould just use pitz-claim.\n\n\
+  It would be nice if pitz-assign could optionally list all the people and\nlet me\
+  \ choose one, like this::\n\n    $ pitz-assign abc123\n    Choose a Person\n   \
+  \ 1: a38565: W. Matthew Wilson\n    Pick a Person or hit <ENTER> to choose a38565:\
+  \ W. Matthew Wilson:"
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 281829325005055660957328011118288254534
+modified_time: 2009-09-28 10:08:45.262000
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Write a pitz-assign script
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 315147997749650714771847918749983939775
+yaml_file_saved: 2009-09-28 10:08:45.262487

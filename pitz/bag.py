@@ -254,7 +254,7 @@ class Bag(list):
         '(empty)'
 
         >>> Bag().append(Entity(title="blah")).contents
-        '(1 entity entities)'
+        '(1 entities)'
         """
 
         if self:
@@ -263,7 +263,7 @@ class Bag(list):
                 '%d %s' % (typecount,
 
                     getattr(
-                        getattr(self, 'classes', {}).get(typename),
+                        globals().get(typename.title()),
                         'plural_name',
                         '%s entities' % typename))
 
