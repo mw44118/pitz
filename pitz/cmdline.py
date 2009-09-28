@@ -40,6 +40,7 @@ def pitz_shell():
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
     p = Project.from_pitzdir(pitzdir)
+    p._shell_mode = True
     p.find_me()
 
     # Everything in this dictionary will be added to the top-level
@@ -443,6 +444,11 @@ def pitz_add_person():
     proj.append(person)
     print("Added %s to the project." % person.summarized_view)
     proj.save_entities_to_yaml_files()
+
+    if raw_input("Should I identify you as %(title)s? (y/N)" % person)\
+    .strip().lower().startswith('y'):
+
+        person.save_as_me_yaml()
 
 
 def pitz_add_estimate():

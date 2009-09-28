@@ -2,11 +2,11 @@ created_by: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 created_time: 2009-09-26 19:03:46.900475
 description: Nice-to-have features will get added here.
-modified_time: 2009-09-27 16:11:01.343904
-pscore: 100
+modified_time: 2009-09-27 16:37:03.995698
+pscore: 90
 reached: false
 title: '1.1'
 type: milestone
 uuid: !!python/object:uuid.UUID
   int: 281829325005055660957328011118288254534
-yaml_file_saved: 2009-09-27 16:11:03.412799
+yaml_file_saved: 2009-09-27 16:37:24.394899

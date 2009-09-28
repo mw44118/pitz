@@ -25,17 +25,16 @@ class Bag(list):
     Bags are really just lists with some useful methods.
     """
 
-
     def __init__(self, title='', html_filename=None, uuid=None,
-        pathname=None, entities=(),
-        order_method=by_pscore_and_milestone, jinja_template=None,
-        **kwargs):
+        pathname=None, entities=(), order_method=by_pscore_and_milestone,
+        jinja_template=None, shell_mode=False, **kwargs):
 
         self.title = title
         self.pathname = pathname
         self.order_method = order_method
         self._html_filename = html_filename
         self.jinja_template = jinja_template or 'bag.html'
+        self._shell_mode = shell_mode
         
         if uuid:
             self.uuid = uuid
@@ -133,7 +132,9 @@ class Bag(list):
 
         return Bag(title='subset of %s' % self.title,
             pathname=self.pathname, entities=matches,
-            order_method=self.order_method, load_yaml_files=False)
+            order_method=self.order_method, load_yaml_files=False,
+            jinja_template=self.jinja_template,
+            shell_mode=self.shell_mode)
 
 
     def does_not_match_dict(self, **d):
@@ -142,7 +143,9 @@ class Bag(list):
 
         return Bag(title='subset of %s' % self.title, 
             pathname=self.pathname, entities=matches,
-            order_method=self.order_method, load_yaml_files=False)
+            order_method=self.order_method, load_yaml_files=False,
+            jinja_template=self.jinja_template,
+            shell_mode=self.shell_mode)
 
 
     def __call__(self, **d):
@@ -223,6 +226,10 @@ class Bag(list):
             self.contents,
             self.order_method.__doc__)
 
+    @property
+    def shell_mode(self):
+        return getattr(self, '_shell_mode', False)
+
 
     @property
     def detailed_view(self):
@@ -232,7 +239,9 @@ class Bag(list):
         self._setup_jinja()
 
         t = self.e.get_template('bag_detailed_view.txt')
-        return t.render(bag=self, entities=self)
+
+        return t.render(bag=self, entities=self,
+            shell_mode=self.shell_mode)
 
 
     @property
@@ -588,6 +597,7 @@ class Project(Bag):
             p.append(e)
 
         p.loaded_from = 'pickle'
+        p._shell_mode = False
         return p
     
 

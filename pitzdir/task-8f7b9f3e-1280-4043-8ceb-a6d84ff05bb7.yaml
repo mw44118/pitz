@@ -1,0 +1,17 @@
+components: []
+created_time: &id001 2009-09-27 18:20:55.286548
+description: This will just set a task's status to started and maybe add a comment
+  if I got a --comment option.
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 281829325005055660957328011118288254534
+modified_time: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Write a pitz-start script
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 190721485731841586282776032681326042039
+yaml_file_saved: 2009-09-27 18:20:55.306268
