@@ -383,3 +383,12 @@ class TestBag(unittest.TestCase):
         b = Bag(uuid='99999999')
         assert b.uuid == '99999999'
         
+
+    def test_slice(self):
+
+        b = Bag(entities=[
+            Entity(title='abc'), Entity(title='def'), Entity(title='ghi')])
+
+        b2 = b[0:2]
+
+        assert isinstance(b2, Bag), "b2 is a %s" % type(b2)

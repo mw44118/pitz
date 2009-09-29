@@ -108,6 +108,17 @@ class Bag(list):
             return self.by_uuid(i)
 
 
+    def __getslice__(self, i, j):
+
+        entities = super(Bag, self).__getslice__(i, j)
+
+        return Bag(title='slice from %s' % self.title,
+            pathname=self.pathname, entities=entities,
+            order_method=self.order_method, load_yaml_files=False,
+            jinja_template=self.jinja_template,
+            shell_mode=self.shell_mode)
+
+
     def order(self, order_method=None):
 
         """

@@ -20,6 +20,7 @@ log = logging.getLogger('pitz')
 log.setLevel(logging.DEBUG)
 
 h = logging.StreamHandler()
+h.setLevel(logging.DEBUG)
 log.addHandler(h)
 
 # TODO: Move this into the clepy package.
