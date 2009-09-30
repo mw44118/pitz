@@ -8,9 +8,10 @@ description: 'I''m not sure what I''ll name the script, but the idea is to give 
   a way to write a me.yaml file.'
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
+html_file_saved: &id001 2009-09-29 18:52:54.615730
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-09-26 22:33:37.294429
+modified_time: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
@@ -18,4 +19,4 @@ title: Write a pitz-set-person-as-me script
 type: task
 uuid: !!python/object:uuid.UUID
   int: 78430847030386932259168607737866577454
-yaml_file_saved: 2009-09-26 22:33:37.295200
+yaml_file_saved: 2009-09-29 18:52:55.117840
