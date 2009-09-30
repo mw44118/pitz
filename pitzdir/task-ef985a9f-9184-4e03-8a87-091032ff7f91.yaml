@@ -31,9 +31,10 @@ description: 'I''ve been seeing a confusing intermittent bug, and I think I figu
   permanently lost, but I have to manually delete the project.pickle.'
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-09-26 18:21:55.886999
+html_file_saved: &id001 2009-09-29 22:20:13.065925
 milestone: !!python/object:uuid.UUID
-  int: 286057988816149038667284962231564097114
+  int: 43202488294965147244317640483158997306
+milestonee: ''
 modified_time: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
@@ -42,4 +43,4 @@ title: Allow pitz-shell to reload from pitzdir
 type: task
 uuid: !!python/object:uuid.UUID
   int: 318476558174269628884106374609027170193
-yaml_file_saved: 2009-09-26 18:21:58.496797
+yaml_file_saved: 2009-09-29 22:20:13.175629

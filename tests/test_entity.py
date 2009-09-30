@@ -667,3 +667,16 @@ class TestMisc(unittest.TestCase):
         assert isinstance(t['status'], uuid.UUID)
 
         t.summarized_view
+
+
+    @patch('__builtin__.raw_input')
+    def test_choose_many(self, m):
+
+        a = Entity(title="aaa")
+        b = Entity(title="bbb")
+        c = Entity(title="ccc")
+
+        m.return_value = "1  3"
+
+        results = Entity.choose_many_from_already_instantiated()
+        assert len(results) == 2

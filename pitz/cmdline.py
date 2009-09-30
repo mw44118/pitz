@@ -22,7 +22,6 @@ def print_version():
 
     from pitz import __version__
     print(__version__)
-    sys.exit()
 
 
 def pitz_shell():
@@ -36,6 +35,7 @@ def pitz_shell():
 
     if options.version:
         print_version()
+        return
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -130,18 +130,33 @@ def pitz_setup():
 
     if options.version:
         print_version()
+        return
 
     project_title = raw_input(
-        "Project name?  (you can change it later)").strip()
+        "Project name?  (you can change it later) ").strip()
 
     pitzdir = mk_pitzdir()
 
     proj = Project(pathname=pitzdir, title=project_title)
+    proj.to_yaml_file()
 
-    # Save the project as a yaml file in the pitzfiles folder.
-    pfile = proj.to_yaml_file()
+    pitz_me()
 
-    print("All done!  Run pitz-shell %s to start working..." % pfile)
+    for plural, add_function, singular in [
+        ('estimates', pitz_add_estimate, 'estimate'),
+        ('statuses', pitz_add_status, 'status'),
+        ('milestones', pitz_add_milestone, 'milestone'),
+        ('components', pitz_add_component, 'component')]:
+
+        temp = raw_input("Add some %s to the project? (y/n)" % plural)
+
+        while temp.strip().lower().startswith('y'):
+
+            add_function()
+            temp = raw_input("Add another %s? (y/n)" % singular)
+
+    proj.save_entities_to_yaml_files()
+    print("All done!")
 
 
 def setup_options():
@@ -190,6 +205,7 @@ def pitz_everything():
 
         if options.version:
             print_version()
+            return
 
         pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -222,6 +238,7 @@ def pitz_todo():
 
         if options.version:
             print_version()
+            return
 
         pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -260,6 +277,7 @@ def pitz_add_task():
 
     if options.version:
         print_version()
+        return
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -270,7 +288,7 @@ def pitz_add_task():
 
         proj,
 
-        title=options.title or raw_input("Title: ").strip(),
+        title=options.title or raw_input("Task title: ").strip(),
 
         description=edit_with_editor('# Task description goes here'),
 
@@ -281,9 +299,18 @@ def pitz_add_task():
 
         estimate=Estimate.choose_from_already_instantiated(
             Estimate(proj, title='not estimated')),
+
+        owner=Person.choose_from_already_instantiated(),
     )
 
     proj.append(t)
+
+    temp = raw_input("Add some components for this task? (y/n)")
+
+    if temp and temp.strip().lower().startswith('y'):
+        t['components'] = Component.choose_many_from_already_instantiated()
+
+
     print("Added %s to the project." % t.summarized_view)
     proj.save_entities_to_yaml_files()
 
@@ -302,6 +329,7 @@ def pitz_show():
 
     if options.version:
         print_version()
+        return
 
     if not args:
         p.print_usage()
@@ -339,6 +367,7 @@ def pitz_html():
 
         if options.version:
             print_version()
+            return
 
         if not args:
             p.print_usage()
@@ -377,6 +406,7 @@ def pitz_edit():
 
     if options.version:
         print_version()
+        return
 
     if not args:
         p.print_usage()
@@ -402,6 +432,7 @@ def pitz_add_milestone():
 
     if options.version:
         print_version()
+        return
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -410,7 +441,7 @@ def pitz_add_milestone():
 
     m = Milestone(
         proj,
-        title=options.title or raw_input("Title: ").strip(),
+        title=options.title or raw_input("Milestone title: ").strip(),
         description=edit_with_editor('# Milestone description goes here'),
         reached=Milestone.choose_from_allowed_values('reached', False),
     )
@@ -429,6 +460,7 @@ def pitz_add_person():
 
     if options.version:
         print_version()
+        return
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -437,8 +469,8 @@ def pitz_add_person():
 
     person = Person(
         proj,
-        title=options.title or raw_input("Title: ").strip(),
-        description=edit_with_editor('# Milestone description goes here'),
+        title=options.title or raw_input("Person title: ").strip(),
+        description=edit_with_editor('# Person description goes here'),
     )
 
     proj.append(person)
@@ -449,6 +481,7 @@ def pitz_add_person():
     .strip().lower().startswith('y'):
 
         person.save_as_me_yaml()
+        print("OK, I'll recognize you as %(title)s from now on.")
 
 
 def pitz_add_estimate():
@@ -460,6 +493,7 @@ def pitz_add_estimate():
 
     if options.version:
         print_version()
+        return
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -468,7 +502,7 @@ def pitz_add_estimate():
 
     est = Estimate(
         proj,
-        title=options.title or raw_input("Title: ").strip(),
+        title=options.title or raw_input("Estimate title: ").strip(),
         description=edit_with_editor('# Estimate description goes here'),
         points=int(raw_input("Points: ").strip()),
     )
@@ -487,6 +521,7 @@ def pitz_add_component():
 
     if options.version:
         print_version()
+        return
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -495,7 +530,7 @@ def pitz_add_component():
 
     c = Component(
         proj,
-        title=options.title or raw_input("Title: ").strip(),
+        title=options.title or raw_input("Component title: ").strip(),
         description=edit_with_editor('# Component description goes here'),
     )
 
@@ -513,6 +548,7 @@ def pitz_add_status():
 
     if options.version:
         print_version()
+        return
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -521,7 +557,7 @@ def pitz_add_status():
 
     s = Status(
         proj,
-        title=options.title or raw_input("Title: ").strip(),
+        title=options.title or raw_input("Status title: ").strip(),
         description=edit_with_editor('# Status description goes here'),
     )
 
@@ -539,6 +575,7 @@ def pitz_destroy():
 
     if options.version:
         print_version()
+        return
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -551,6 +588,217 @@ def pitz_destroy():
 
         e.self_destruct(proj)
 
-    print("""Entity %(frag)s: "%(title)s" is no longer part of the project.""" % e)
+    print("""%(frag)s: "%(title)s" is no longer part of the project."""
+        % e)
 
+    proj.save_entities_to_yaml_files()
+
+
+def pitz_my_tasks():
+
+    p = setup_options()
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+        return
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    if not proj.me:
+        print("Sorry, I don't know who you are.")
+        print("Use pitz-me to add yourself to the project.")
+        sys.exit()
+
+    my_tasks = proj.todo(owner=proj.me)
+    my_tasks.title = "To-do list for %(title)s" % proj.me
+
+    if my_tasks:
+        send_through_pager(str(my_tasks))
+
+    else:
+        print("I didn't find any tasks for you (%(title)s)."
+            % proj.me)
+
+
+def pitz_me():
+
+    """
+    Pick a Person or make a new one, then save a me.yaml file.
+    """
+
+    p = setup_options()
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+        return
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    if proj.me:
+        print("You are %(title)s." % proj.me)
+        print("Delete this file if you want to be somebody else:")
+        print(os.path.join(proj.pathname, 'me.yaml'))
+        return
+
+    if Person.already_instantiated:
+        print("You may already be in pitz:")
+        person = Person.choose_from_already_instantiated()
+        person.save_as_me_yaml()
+
+        print("OK, I'll recognize you as %(title)s from now on."
+            % person)
+
+        return
+
+    pitz_add_person()
+
+
+def pitz_claim_task():
+    
+    p = setup_options()
+    p.set_usage("%prog task")
+
+    options, args = p.parse_args()
+
+    if not args:
+        p.print_usage()
+        return
+
+    if options.version:
+        print_version()
+        return
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    if not proj.me:
+        print("Sorry, I don't know who you are.")
+        print("Use pitz-me to add yourself to the project.")
+        return
+
+    t = proj[args[0]]
+    t.assign(proj.me)
+    proj.save_entities_to_yaml_files()
+
+
+def pitz_assign_task():
+
+    p = setup_options()
+    p.set_usage("%prog task [person]")
+
+    options, args = p.parse_args()
+
+    if not args:
+        p.print_usage()
+        return
+
+    if options.version:
+        print_version()
+        return
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    t = proj[args[0]]
+
+    if len(args) == 2:
+        person  = proj[args[1]]
+
+    else:
+        person = Person.choose_from_already_instantiated()
+
+        if not person:
+            print("Pick somebody!")
+            return
+
+    t.assign(person)
+    proj.save_entities_to_yaml_files()
+
+
+def pitz_finish_task():
+
+    p = setup_options()
+    p.set_usage("%prog task")
+
+    options, args = p.parse_args()
+
+    if not args:
+        p.print_usage()
+        return
+
+    if options.version:
+        print_version()
+        return
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    t = proj[args[0]]
+    t.finish()
+    proj.save_entities_to_yaml_files()
+
+
+def pitz_start_task():
+
+    p = setup_options()
+    p.set_usage("%prog task")
+
+    options, args = p.parse_args()
+
+    if not args:
+        p.print_usage()
+        return
+
+    if options.version:
+        print_version()
+        return
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    t = proj[args[0]]
+    t.start()
+    proj.save_entities_to_yaml_files()
+
+
+def pitz_abandon_task():
+
+    p = setup_options()
+    p.set_usage("%prog task")
+
+    options, args = p.parse_args()
+
+    if not args:
+        p.print_usage()
+        return
+
+    if options.version:
+        print_version()
+        return
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    t = proj[args[0]]
+    t.abandon()
     proj.save_entities_to_yaml_files()

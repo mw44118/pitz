@@ -1,5 +1,5 @@
 abbr: matt
-abc: !!python/tuple
+abc:
 - 1
 - 2
 - 3
@@ -7,11 +7,11 @@ comments: []
 created_time: 2009-03-10 22:25:32.240143
 description: ''
 email: matt@tplus1.com
-html_file_saved: &id001 2009-09-26 18:21:54.697138
+html_file_saved: &id001 2009-09-29 22:20:12.510928
 modified_time: *id001
 pscore: 0
-title: W. Matthew Wilson
+title: W. Matthew Wilson <matt@tplus1.com>
 type: person
 uuid: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
-yaml_file_saved: 2009-09-26 18:21:58.214546
+yaml_file_saved: 2009-09-29 22:20:13.127932

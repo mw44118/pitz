@@ -38,8 +38,6 @@ class TestPitzCmdLine(unittest.TestCase):
 
 class TestPitzEverything(TestPitzCmdLine):
 
-
-    @raises(SystemExit)
     def test_version(self):
 
         # This just feels wrong.  There's gotta be a better way to set
@@ -76,7 +74,6 @@ class TestPitzEverything(TestPitzCmdLine):
 
 class TestPitzTodo(TestPitzCmdLine):
 
-    @raises(SystemExit)
     def test_version(self):
 
         # This just feels wrong.  There's gotta be a better way to set
@@ -113,7 +110,6 @@ class TestPitzTodo(TestPitzCmdLine):
 
 class TestPitzShell(TestPitzCmdLine):
 
-    @raises(SystemExit)
     def test_version(self):
 
         sys.argv = ['pitz-shell', '--version']
@@ -129,7 +125,6 @@ class TestPitzShell(TestPitzCmdLine):
 
 class TestPitzSetup(unittest.TestCase):
 
-    @raises(SystemExit)
     def test_version(self):
 
         sys.argv = ['pitz-setup', '--version']
@@ -138,7 +133,6 @@ class TestPitzSetup(unittest.TestCase):
 
 class TestPitzAdd(TestPitzCmdLine):
 
-    @raises(SystemExit)
     def test_version(self):
 
         sys.argv = ['pitz-add', '--version']
@@ -163,7 +157,6 @@ class TestPitzAdd(TestPitzCmdLine):
 
 class TestPitzShow(unittest.TestCase):
 
-    @raises(SystemExit)
     def test_version(self):
 
         sys.argv = ['pitz-show', '--version']
@@ -172,7 +165,6 @@ class TestPitzShow(unittest.TestCase):
 
 class TestPitzHtml(unittest.TestCase):
 
-    @raises(SystemExit)
     def test_version(self):
 
         sys.argv = ['pitz-html', '--version']

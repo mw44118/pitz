@@ -6,7 +6,7 @@ The Entity class and Entity subclasses.
 
 from __future__ import with_statement
 
-import copy, logging, os, textwrap, uuid, weakref
+import copy, logging, os, re, textwrap, uuid, weakref
 from datetime import datetime
 from types import NoneType
 
@@ -338,6 +338,31 @@ class Entity(dict):
             return default
 
     choose_from_already_instantiated = choose
+
+    @classmethod
+    def choose_many_from_already_instantiated(cls):
+        """
+        Just like choose_from_already_instantiated, but allows many.
+        """
+
+        print("Pick a few %s" % cls.plural_name)
+
+        choices = sorted(cls.already_instantiated.values(), reverse=True)
+
+        for i, e in enumerate(choices):
+            print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
+
+        temp = raw_input("Use commas or spaces to pick more than one.")
+
+        results = []
+
+        for choice in re.split(",| ", temp):
+            if choice:
+
+                e = choices[int(choice)-1]
+                results.append(e)
+
+        return results
 
 
     def matches_dict(self, **d):
@@ -849,6 +874,31 @@ class Milestone(Entity):
         return s % d
 
 
+class Person(Entity):
+
+    """
+    Track who is doing what.
+    """
+
+    plural_name = "people"
+
+
+    def save_as_me_yaml(self):
+
+        """
+        Designate this person is me by saving a me.yaml file.
+        """
+
+        if not self.project:
+            raise NoProject("Sorry, saving a me.yaml needs a project")
+
+        me_yaml_path = os.path.join(self.project.pathname, 'me.yaml')
+        me_yaml = open(me_yaml_path, 'w')
+        me_yaml.write(yaml.dump(self.uuid))
+
+        return me_yaml_path
+
+
 class Task(Entity):
 
     plural_name = "tasks"
@@ -856,6 +906,7 @@ class Task(Entity):
     jinja_template = 'task.html'
 
     allowed_types = dict(
+        owner=Person,
         points=int,
         milestone=Milestone,
         status=Status,
@@ -944,12 +995,8 @@ class Task(Entity):
 
     def finish(self):
 
-        if self['status'].title == 'started':
-            self['status'] = Status(title='finished')
-            return self
-
-        else:
-            raise ValueError('You can only finish started.')
+        self['status'] = Status(title='finished')
+        return self
 
 
     def comment(self, who_said_it=None, title=None, description=None):
@@ -974,6 +1021,11 @@ class Task(Entity):
 
         return Comment(self.project, entity=self.uuid, title=title,
             who_said_it=who_said_it, description=description)
+
+
+    def assign(self, owner):
+
+        self['owner'] = owner
 
 
 class Comment(Entity):
@@ -1020,31 +1072,6 @@ class Comment(Entity):
 
         return tmpl.render(locals())
 
-
-class Person(Entity):
-    """
-    Maybe you want to track who is doing what.
-    """
-
-    plural_name = "people"
-
-
-
-
-    def save_as_me_yaml(self):
-
-        """
-        Designate this person is me by saving a me.yaml file.
-        """
-
-        if not self.project:
-            raise NoProject("Sorry, saving a me.yaml needs a project")
-
-        me_yaml_path = os.path.join(self.project.pathname, 'me.yaml')
-        me_yaml = open(me_yaml_path, 'w')
-        me_yaml.write(yaml.dump(self.uuid))
-
-        return me_yaml_path
 
 
 
