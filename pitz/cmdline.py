@@ -756,6 +756,10 @@ def pitz_finish_task():
 
 def pitz_start_task():
 
+    """
+    Set the task's status to started and set the owner to you.
+    """
+
     p = setup_options()
     p.set_usage("%prog task")
 
@@ -774,7 +778,13 @@ def pitz_start_task():
     proj = Project.from_pitzdir(pitzdir)
     proj.find_me()
 
+    if not proj.me:
+        print("Sorry, I don't know who you are.")
+        print("Use pitz-me to add yourself to the project.")
+        sys.exit()
+
     t = proj[args[0]]
+    t.assign(proj.me)
     t.start()
     proj.save_entities_to_yaml_files()
 
