@@ -7,15 +7,15 @@ description: "The script would do something like this::\n\n    >>> p['abc123']['
   assigned-to, or something else."
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-09-29 18:52:54.795615
+html_file_saved: 2009-09-29 18:52:54.795615
 milestone: !!python/object:uuid.UUID
   int: 281829325005055660957328011118288254534
-modified_time: *id001
+modified_time: 2009-09-30 21:32:44.159582
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 181191650815078915740523248343325601886
 title: Write a pitz-claim-task script
 type: task
 uuid: !!python/object:uuid.UUID
   int: 328463373029530043070484955557675348085
-yaml_file_saved: 2009-09-29 18:52:55.168668
+yaml_file_saved: 2009-09-30 21:32:44.160014
