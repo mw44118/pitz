@@ -10,7 +10,7 @@ description: 'Right now, the pitz.entity.Entity.__init__ method is about 50 line
   '
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-09-26 18:21:57.754445
+html_file_saved: &id001 2009-10-03 12:06:42.722975
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
 modified_time: *id001
@@ -21,4 +21,4 @@ title: Rewrite Entity.__init__ to be smaller
 type: task
 uuid: !!python/object:uuid.UUID
   int: 46743938058993844797669075369581431024
-yaml_file_saved: 2009-09-26 18:21:58.821749
+yaml_file_saved: 2009-10-03 12:06:43.882838

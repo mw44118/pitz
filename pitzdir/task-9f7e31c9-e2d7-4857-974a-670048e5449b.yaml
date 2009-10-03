@@ -1,6 +1,6 @@
 comments: []
 components: []
-created_by: !!python/object:uuid.UUID
+created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 created_time: 2009-09-17 21:39:56.469371
 description: "The milestone attribute in the Task class can only be a Milestone\n\
@@ -13,10 +13,11 @@ description: "The milestone attribute in the Task class can only be a Milestone\
   \ p(milestone=[m1.title])\n    False\n\nI need to close this gap.\n"
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-09-26 18:21:57.782006
+html_file_saved: 2009-10-03 12:06:41.056430
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
+modified_time: 2009-10-03 12:28:20.282582
+owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
@@ -24,4 +25,4 @@ title: Allow queries by lists of titles
 type: task
 uuid: !!python/object:uuid.UUID
   int: 212002490567112129268879065770176627867
-yaml_file_saved: 2009-09-26 18:21:58.829700
+yaml_file_saved: 2009-10-03 12:28:20.283051
