@@ -15,11 +15,26 @@
 </div>
 {%- endif %}
 
+{% if entity.get('attached_files') %}
+<div id="attachedfiles">
+<h2>Attached Files</h2>
+
+<ul>
+{% for filepath in entity['attached_files'] %}
+    <li>
+        <a href="{{ filepath }}">{{ os.path.basename(filepath) }}</a></li>
+{% endfor %}
+</ul>
+
+</div>
+{% endif %}
+
 <div id="attributes">
 <h2>Attributes</h2>
 
 <dl>
 {% for attr, val in entity.items() %}
+{% if attr not in ('description', 'attachedfiles', 'title', 'frag') %}
     <dt>{{attr}}</dt>
 
     {% if isinstance(val, UUID) %}
@@ -27,7 +42,7 @@
     {% else %}
         <dd>{{val}}</dd>
     {% endif %}
-
+{% endif %}
 {% endfor %}
 </dl>
 </div>

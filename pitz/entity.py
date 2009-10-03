@@ -217,6 +217,7 @@ class Entity(dict):
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
         self.e.globals = {
+            'os':os,
             'isinstance':isinstance,
             'hasattr':hasattr,
             'looper':tempita.looper,
@@ -935,8 +936,6 @@ class Person(Entity):
 class Task(Entity):
 
     plural_name = "tasks"
-
-    jinja_template = 'task.html'
 
     allowed_types = dict(
         owner=Person,
