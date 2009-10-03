@@ -6,7 +6,7 @@ The Entity class and Entity subclasses.
 
 from __future__ import with_statement
 
-import copy, logging, os, re, textwrap, uuid, weakref
+import copy, logging, os, re, shutil, textwrap, uuid, weakref
 from datetime import datetime
 from types import NoneType
 
@@ -67,6 +67,7 @@ class Entity(dict):
         title=None,
         description='',
         pscore=0,
+        attached_files=lambda proj: list(),
     )
 
     # Maps attributes to sequences of allowed values.
@@ -352,7 +353,11 @@ class Entity(dict):
         for i, e in enumerate(choices):
             print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
 
-        temp = raw_input("Use commas or spaces to pick more than one.")
+        print("Use commas or spaces to pick more than one.")
+        temp = raw_input("Hit <ENTER> to not pick any.")
+
+        if temp is None:
+            return []
 
         results = []
 
@@ -554,6 +559,34 @@ class Entity(dict):
             f.close()
 
             return fp 
+
+
+    def save_attachment(self, filepath):
+
+        """
+        Save the file in filepath in the pitzdir.
+        """
+
+        if not self.project:
+            raise NoProject("I can't save attachments without a project.")
+
+        attachment_folder = os.path.join(
+            self.project.pathname, 'attached_files')
+
+        if not os.path.isdir(attachment_folder):
+            os.mkdir(attachment_folder)
+
+        new_filepath = os.path.join(
+            attachment_folder, os.path.basename(filepath))
+
+        shutil.copy(filepath, new_filepath)
+
+        if 'attached_files' not in self:
+            self['attached_files'] = []
+
+        self['attached_files'].append(new_filepath)
+        
+        return new_filepath
 
 
     def replace_pointers_with_objects(self):

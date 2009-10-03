@@ -86,39 +86,6 @@ The default place is right here (.)."""
     return pitzdir
 
 
-def list_projects(modulepaths=(
-        'pitz.simplepitz', 
-        'pitz.agilepitz')):
-
-    """
-    Print a list of modules to choose from and return the chosen one.
-    """
-
-    modules = [namedModule(mp) for mp in modulepaths]
-    for i, m in enumerate(modules):
-        print("%4d. %s: %s" % (i, m.__name__, m.__doc__))
-
-    return modules[int(raw_input("Choose one."))]
-        
-
-def namedModule(name):
-    """
-    Return a module given its name.
-
-    Copied from
-    http://twistedmatrix.com/trac/browser/trunk/twisted/python/reflect.py
-
-    Thanks to "dash" in #python for the recommendation.
-    """
-
-    topLevel = __import__(name)
-    packages = name.split(".")[1:]
-    m = topLevel
-    for p in packages:
-        m = getattr(m, p)
-    return m
-
-
 def pitz_setup():
 
     p = optparse.OptionParser()
@@ -269,7 +236,6 @@ def pitz_add_task():
     Walks through the setup of a new Task.
     """
 
-
     p = setup_options()
     p.add_option('-t', '--title', help='Task title')
 
@@ -305,10 +271,7 @@ def pitz_add_task():
 
     proj.append(t)
 
-    temp = raw_input("Add some components for this task? (y/n)")
-
-    if temp and temp.strip().lower().startswith('y'):
-        t['components'] = Component.choose_many_from_already_instantiated()
+    t['components'] = Component.choose_many_from_already_instantiated()
 
 
     print("Added %s to the project." % t.summarized_view)
