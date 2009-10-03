@@ -11,10 +11,10 @@ description: 'I want a quick way to abandon tasks.  That means:
   '
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: 2009-10-03 12:06:41.431989
+html_file_saved: &id001 2009-10-03 16:10:44.179371
 milestone: !!python/object:uuid.UUID
   int: 246357804921662755488325692659396046179
-modified_time: 2009-10-03 12:29:33.498412
+modified_time: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
@@ -22,4 +22,4 @@ title: Write a pitz-abandon script
 type: task
 uuid: !!python/object:uuid.UUID
   int: 202307208808856636439594765980585079800
-yaml_file_saved: 2009-10-03 12:29:33.498850
+yaml_file_saved: 2009-10-03 16:10:46.777834

@@ -1,5 +1,5 @@
 components: []
-created_by: &id001 !!python/object:uuid.UUID
+created_by: &id002 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 created_time: 2009-09-28 10:08:45.260771
 description: "Example (assume that task with frag abc123 exists)::\n\n    $ pitz-assign\
@@ -14,11 +14,11 @@ description: "Example (assume that task with frag abc123 exists)::\n\n    $ pitz
   \ W. Matthew Wilson:"
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: 2009-10-03 12:06:41.256666
+html_file_saved: &id001 2009-10-03 16:10:43.943578
 milestone: !!python/object:uuid.UUID
   int: 281829325005055660957328011118288254534
-modified_time: 2009-10-03 12:50:17.241669
-owner: *id001
+modified_time: *id001
+owner: *id002
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
@@ -26,4 +26,4 @@ title: Write a pitz-assign script
 type: task
 uuid: !!python/object:uuid.UUID
   int: 315147997749650714771847918749983939775
-yaml_file_saved: 2009-10-03 12:50:17.242075
+yaml_file_saved: 2009-10-03 16:10:46.716113
