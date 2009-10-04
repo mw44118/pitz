@@ -6,12 +6,12 @@
 
 {%block content %}
 
-<h1>{{ title }}</h1>
+<h1>{{ entity['type']}}: {{ title }}</h1>
 
 {% if entity.description -%}
 <div id="description">
 <h2>Description</h2>
-{{ description }}
+{{ description | safe}}
 </div>
 {%- endif %}
 
@@ -22,7 +22,8 @@
 <ul>
 {% for filepath in entity['attached_files'] %}
     <li>
-        <a href="{{ filepath }}">{{ os.path.basename(filepath) }}</a></li>
+        <a href="/attached_files{{ filepath }}">{{ os.path.basename(filepath) }}</a>
+    </li>
 {% endfor %}
 </ul>
 
@@ -38,7 +39,7 @@
     <dt>{{attr}}</dt>
 
     {% if isinstance(val, UUID) %}
-        <dd><a href="{{val}}.html">{{project[val].summarized_view}}</a></dd>
+        <dd><a href="/entity/{{val}}">{{project[val].summarized_view}}</a></dd>
     {% else %}
         <dd>{{val}}</dd>
     {% endif %}

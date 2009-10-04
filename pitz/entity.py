@@ -213,6 +213,7 @@ class Entity(dict):
     def _setup_jinja(self):
         # Set up a template loader.
         self.e = jinja2.Environment(
+            autoescape=True,
             extensions=['jinja2.ext.loopcontrols'],
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 

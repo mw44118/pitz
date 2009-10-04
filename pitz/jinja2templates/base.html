@@ -6,19 +6,38 @@
 
 {% block page_title %}{% endblock %}
 
+<style type="text/css">
+body
+{
+    margin:auto;
+    width:720px;
+    padding:10px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+p
+{
+    width:40em;
+}
+
+</style>
+
 </head>
 
 <body>
 
 <div id="header">
-<a href="index.html">index page</a>
-<a href="todo.html">Stuff to do</a>
-<a href="tasks.html">Tasks</a>
-<a href="milestones.html">Milestones</a>
-<a href="components.html">Components</a>
+<a href="/project">index page</a>
+<a href="/todo">Stuff to do</a>
+<a href="/project?type=task">Tasks</a>
+<a href="/project?type=milestone">Milestones</a>
+<a href="/project?type=component">Components</a>
 </div>
 
+<div id="main">
 {% block content %}{% endblock %}
+</div>
 
 <div id="footer">
 {% if entity %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "entity.html" %}
 
 {%block page_title %}
 <title>{{ title }}</title>
@@ -6,38 +6,16 @@
 
 {%block content %}
 
-<h1>{{ title }}</h1>
+{{ super() }}
 
-{% if entity.description -%}
-<div id="description">
-<h2>Description</h2>
-{{ description }}
-</div>
-{%- endif %}
-
-<div id="attributes">
-<h2>Attributes</h2>
-
-<dl>
-{% for attr, val in entity.items() %}
-    <dt>{{attr}}</dt>
-
-    {% if isinstance(val, UUID) %}
-        <dd><a href="{{val}}.html">{{val}}</a></dd>
-    {% else %}
-        <dd>{{val}}</dd>
-    {% endif %}
-
-{% endfor %}
-</dl>
-</div>
-
-<h2>Tasks</h2>
+{% if entity.tasks %}
+<h2>Tasks linked to this milestone</h2>
 
 <ol>
 {% for t in entity.tasks %}
-    <li><a href="{{t.html_filename}}">{{t.title}}</a></li>
+    <li><a href="/entity/{{t.uuid}}">{{t.title}}</a></li>
 {% endfor %}
 </ol>
+{% endif %}
 
 {% endblock %}

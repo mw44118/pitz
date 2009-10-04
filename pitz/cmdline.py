@@ -2,7 +2,7 @@
 
 from __future__ import with_statement
 
-import logging, optparse, os, subprocess, sys, warnings
+import logging, optparse, os, subprocess, sys, uuid, warnings
 warnings.simplefilter('ignore', DeprecationWarning)
 
 from IPython.Shell import IPShellEmbed
@@ -814,20 +814,77 @@ def pitz_webapp():
         def __call__(self, environ, start_response):
 
             """
-            Return the contents of a file.
+            Shows a single entity in detail:
+            /entity/d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
+
+            Return the attached a.txt file:
+            /attached_files/tmp/a.txt   
+
+            Views of lots of stuff:
+
+            /project                            Lists everything.
+            /project?type=task                  Lists all tasks
+            /project?type=task&status=def456    Tasks with status def456
+            /?type=task&status=started          Started tasks
             """
 
-            status = '200 OK'
-            headers = [('Content-type', 'text/html')]
-
-            start_response(status, headers)
-
             log.debug('PATH_INFO is %(PATH_INFO)s' % environ)
+            log.debug('QUERY_STRING is %(QUERY_STRING)s' % environ)
 
-            s = open(os.path.join(
-                self.path_to_html_files, environ['PATH_INFO'][1:])).read()
+            path_info = environ['PATH_INFO']
 
-            return [str(s)]
+            if path_info.startswith('/entity'):
+
+                junk, entity_label, uuidstr = path_info.split('/')
+                u = uuid.UUID(uuidstr)
+                entity = proj[u]
+
+                status = '200 OK'
+                headers = [('Content-type', 'text/html')]
+                start_response(status, headers)
+
+                return [str(entity.html)]
+
+            elif path_info.startswith('/attached_files'):
+
+                status = '200 OK'
+                headers = [('Content-type', 'application/octet-stream')]
+                start_response(status, headers)
+
+                return [str(open(path_info[15:]).read())]
+
+            elif path_info.startswith('/project'):
+
+                status = '200 OK'
+                headers = [('Content-type', 'text/html')]
+                start_response(status, headers)
+
+                b = proj
+
+                if environ['QUERY_STRING']:
+
+                    b = b.matches_dict(**build_filter(
+                        environ['QUERY_STRING'].split('&')))
+
+                return [str(b.html)]
+
+            elif path_info.startswith('/todo'):
+
+                status = '200 OK'
+                headers = [('Content-type', 'text/html')]
+                start_response(status, headers)
+
+                b = proj.todo
+
+                if environ['QUERY_STRING']:
+
+                    b = b.matches_dict(**build_filter(
+                        environ['QUERY_STRING'].split('&')))
+
+                return [str(b.html)]
+
+
+
 
     httpd = make_server('', 8000, SimpleWSGIApp(proj, args[0]))
     print "Serving on port 8000..."
