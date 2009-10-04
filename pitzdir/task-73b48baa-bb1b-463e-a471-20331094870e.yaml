@@ -1,19 +1,19 @@
 comments: []
 components: []
 created_time: 2009-09-12 22:45:26.365104
-description: "Right now, the Entity class has these required fields:\n\n    class\
+description: "Right now, the Entity class has these required fields::\n\n    class\
   \ Entity(dict):\n\n        required_fields = dict(\n            title=None,\n  \
   \          description='',\n            pscore=0)\n\nAnd every time I subclass Entity,\
-  \ when I want to add more required\nfields, I have to do it like this:\n\n    class\
+  \ when I want to add more required\nfields, I have to do it like this::\n\n    class\
   \ Foo(Entity):\n\n        required_fields = dict(\n            title=None,     #\
   \ same\n            description='', # same\n            pscore=0,       # same\n\
-  \            fibityfoo=99)\n\n\nI would prefer to be able to just write:\n\n   \
-  \ class Foo(Entity):\n\n        required_fields = dict(\n            fibityfoo=99)\n\
+  \            fibityfoo=99)\n\n\nI would prefer to be able to just write::\n\n  \
+  \  class Foo(Entity):\n\n        required_fields = dict(\n            fibityfoo=99)\n\
   \nI need to play with metaclasses or some other trickery to figure out how\nto do\
-  \ this.\n"
+  \ this."
 estimate: !!python/object:uuid.UUID
   int: 53593374283076976629647435265038831042
-html_file_saved: &id001 2009-10-03 16:10:44.414828
+html_file_saved: &id001 2009-10-03 20:13:05.920917
 milestone: !!python/object:uuid.UUID
   int: 246357804921662755488325692659396046179
 modified_time: *id001
@@ -24,4 +24,4 @@ title: Remove need to repeat everything in required_fields attribute
 type: task
 uuid: !!python/object:uuid.UUID
   int: 153798665731430798919121964624589915918
-yaml_file_saved: 2009-10-03 16:10:46.823849
+yaml_file_saved: 2009-10-03 20:13:06.443485
