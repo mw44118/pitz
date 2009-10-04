@@ -10,15 +10,55 @@
 body
 {
     margin:auto;
-    width:720px;
-    padding:10px;
+    width:60em;
     margin-top:10px;
     margin-bottom:10px;
+    font-family:sans-serif;
 }
 
-p
+h1, h2
 {
-    width:40em;
+    margin:10px -20px 10px -20px;
+    background-color:#305275;
+    color:white;
+    padding:10px 20px 10px 20px;
+}
+
+#header
+{
+    text-align:right;
+    margin-bottom: 20px;
+    padding:10px;
+}
+
+#header, #main, #footer
+{
+    background-color:#f2f2f2;
+    padding:0 20px 0 20px;
+}
+
+#header li
+{
+    display:inline;
+    list-style:none;
+    margin-left:20px;
+}
+
+a
+{
+    text-decoration:none;
+    font-weight:bold;
+    color:#305275;
+}
+
+a:hover
+{
+    border-bottom:1px dotted #305275;
+}
+
+#description, #attributes
+{
+    margin-top:20px;
 }
 
 </style>
@@ -27,13 +67,13 @@ p
 
 <body>
 
-<div id="header">
-<a href="/project">index page</a>
-<a href="/todo">Stuff to do</a>
-<a href="/project?type=task">Tasks</a>
-<a href="/project?type=milestone">Milestones</a>
-<a href="/project?type=component">Components</a>
-</div>
+<ul id="header">
+<li><a href="/project">index page</a></li>
+<li><a href="/todo">stuff to do</a></li>
+<li><a href="/project?type=task">tasks</a></li>
+<li><a href="/project?type=milestone">milestones</a></li>
+<li><a href="/project?type=component">components</a></li>
+</ul>
 
 <div id="main">
 {% block content %}{% endblock %}

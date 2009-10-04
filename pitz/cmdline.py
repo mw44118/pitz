@@ -788,17 +788,12 @@ def pitz_webapp():
     """
 
     p = setup_options()
-    p.set_usage('%prog [options] directory-to-html-files')
 
     options, args = p.parse_args()
 
     if options.version:
         print_version()
         return
-
-    if not args:
-        p.print_usage()
-        sys.exit()
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
@@ -807,9 +802,8 @@ def pitz_webapp():
 
     class SimpleWSGIApp(object):
 
-        def __init__(self, proj, path_to_html_files):
+        def __init__(self, proj):
             self.proj = proj
-            self.path_to_html_files = path_to_html_files
 
         def __call__(self, environ, start_response):
 
@@ -853,21 +847,6 @@ def pitz_webapp():
 
                 return [str(open(path_info[15:]).read())]
 
-            elif path_info.startswith('/project'):
-
-                status = '200 OK'
-                headers = [('Content-type', 'text/html')]
-                start_response(status, headers)
-
-                b = proj
-
-                if environ['QUERY_STRING']:
-
-                    b = b.matches_dict(**build_filter(
-                        environ['QUERY_STRING'].split('&')))
-
-                return [str(b.html)]
-
             elif path_info.startswith('/todo'):
 
                 status = '200 OK'
@@ -883,9 +862,24 @@ def pitz_webapp():
 
                 return [str(b.html)]
 
+            # Just return the project page as the fallback.
+            else:
+
+                status = '200 OK'
+                headers = [('Content-type', 'text/html')]
+                start_response(status, headers)
+
+                b = proj
+
+                if environ['QUERY_STRING']:
+
+                    b = b.matches_dict(**build_filter(
+                        environ['QUERY_STRING'].split('&')))
+
+                return [str(b.html)]
 
 
 
-    httpd = make_server('', 8000, SimpleWSGIApp(proj, args[0]))
+    httpd = make_server('', 8000, SimpleWSGIApp(proj))
     print "Serving on port 8000..."
     httpd.serve_forever()

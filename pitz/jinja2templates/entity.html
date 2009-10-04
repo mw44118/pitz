@@ -6,12 +6,14 @@
 
 {%block content %}
 
-<h1>{{ entity['type']}}: {{ title }}</h1>
+<h1>{{ title }}</h1>
 
 {% if entity.description -%}
 <div id="description">
 <h2>Description</h2>
+<div>
 {{ description | safe}}
+</div>
 </div>
 {%- endif %}
 
