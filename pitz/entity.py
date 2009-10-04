@@ -706,7 +706,7 @@ class Entity(dict):
 
         s = tmpl.render(title=self.title,
             description=self.description_as_html, entity=self,
-            UUID=uuid.UUID)
+            UUID=uuid.UUID, project=self.project)
 
         if self.project:
             self.replace_pointers_with_objects()

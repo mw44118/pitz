@@ -34,11 +34,11 @@
 
 <dl>
 {% for attr, val in entity.items() %}
-{% if attr not in ('description', 'attachedfiles', 'title', 'frag') %}
+{% if attr not in ('uuid', 'description', 'attachedfiles', 'title', 'frag') %}
     <dt>{{attr}}</dt>
 
     {% if isinstance(val, UUID) %}
-        <dd><a href="{{val}}.html">{{val}}</a></dd>
+        <dd><a href="{{val}}.html">{{project[val].summarized_view}}</a></dd>
     {% else %}
         <dd>{{val}}</dd>
     {% endif %}

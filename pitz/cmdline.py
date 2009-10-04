@@ -15,6 +15,8 @@ from pitz.bag import Project
 from pitz.entity import Comment, Component, Entity, Estimate, Milestone, \
 Person, Status, Task
 
+from wsgiref.simple_server import make_server
+
 log = logging.getLogger('pitz.cmdline')
 
 
@@ -775,3 +777,58 @@ def pitz_abandon_task():
     t = proj[args[0]]
     t.abandon()
     proj.save_entities_to_yaml_files()
+
+
+def pitz_webapp():
+
+    """
+    Returns files asked for.
+
+    Later on, will be awesome.
+    """
+
+    p = setup_options()
+    p.set_usage('%prog [options] directory-to-html-files')
+
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+        return
+
+    if not args:
+        p.print_usage()
+        sys.exit()
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    class SimpleWSGIApp(object):
+
+        def __init__(self, proj, path_to_html_files):
+            self.proj = proj
+            self.path_to_html_files = path_to_html_files
+
+        def __call__(self, environ, start_response):
+
+            """
+            Return the contents of a file.
+            """
+
+            status = '200 OK'
+            headers = [('Content-type', 'text/html')]
+
+            start_response(status, headers)
+
+            log.debug('PATH_INFO is %(PATH_INFO)s' % environ)
+
+            s = open(os.path.join(
+                self.path_to_html_files, environ['PATH_INFO'][1:])).read()
+
+            return [str(s)]
+
+    httpd = make_server('', 8000, SimpleWSGIApp(proj, args[0]))
+    print "Serving on port 8000..."
+    httpd.serve_forever()

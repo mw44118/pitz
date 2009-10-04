@@ -63,6 +63,7 @@ started pitz.""",
     pitz-finish-task = pitz.cmdline:pitz_finish_task
     pitz-start-task = pitz.cmdline:pitz_start_task
     pitz-abandon-task = pitz.cmdline:pitz_abandon_task
+    pitz-webapp = pitz.cmdline:pitz_webapp
     """,
 
     test_suite = 'nose.collector',
