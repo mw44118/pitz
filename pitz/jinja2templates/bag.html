@@ -15,7 +15,7 @@
 
         <ol>
         {% for entity in bag(type=t) %}
-            <li><a href="/entity/{{entity.uuid}}">{{entity.title}}</a></li>
+            <li>{{entity.html_summarized_view | safe}}</a></li>
         {% endfor %}
         </ol>
 

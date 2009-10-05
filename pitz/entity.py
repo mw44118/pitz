@@ -218,6 +218,7 @@ class Entity(dict):
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
         self.e.globals = {
+            'datetime':datetime,
             'os':os,
             'isinstance':isinstance,
             'hasattr':hasattr,
@@ -474,6 +475,12 @@ class Entity(dict):
 
     def __repr__(self):
         return "<pitz.%s %s>" % (self.__class__.__name__, self.title)
+
+
+    @property
+    def html_summarized_view(self):
+
+        return """<a href="/entity/%(uuid)s">%(title)s</a>""" % self
 
 
     @property

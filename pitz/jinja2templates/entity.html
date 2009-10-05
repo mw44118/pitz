@@ -8,17 +8,29 @@
 
 <h1>{{ title }}</h1>
 
+{% if 'status' in entity or 'estimate' in entity or 'milestone'in entity %}
 <dl id="interestingattributes">
 
-{% for k in ('status', 'estimate', 'milestone') %}
+{% for k in ('status', 'estimate', 'milestone', 'owner') %}
 {% if k in entity %}
 <dt>{{k.title()}}</dt>
-<dd><a href="/entity/{{entity[k]}}">{{project[entity[k]].summarized_view}}</a></dd>
+<dd>{{project[entity[k]].html_summarized_view | safe}}</dd>
 {% endif %}
 {% endfor %}
 
+{% if entity.get('components') %}
+<dt>Components</dt>
+<dd>
+<ul>
+{% for cmp in entity['components'] %}
+<li>{{project[cmp].html_summarized_view | safe}}</li>
+{% endfor %}
+</ul>
+</dd>
+{% endif %}
 
 </dl>
+{% endif %}
 
 {% if entity.description -%}
 <div id="description">
@@ -49,11 +61,18 @@
 
 <dl>
 {% for attr, val in entity.items() %}
-{% if attr not in ('uuid', 'description', 'attachedfiles', 'title', 'frag') %}
+{% if attr not in ('uuid', 'description', 'attachedfiles', 'title', 
+    'frag', 'status', 'estimate', 'milestone', 'components', 'owner',
+    'type', 'comments') %}
     <dt>{{attr}}</dt>
 
     {% if isinstance(val, UUID) %}
-        <dd><a href="/entity/{{val}}">{{project[val].summarized_view}}</a></dd>
+        <dd>{{project[val].html_summarized_view | safe}}</dd>
+
+    {% elif isinstance(val, datetime) %}
+        <dd>{{ val.strftime("%A, %B %d, %Y") }}</dd>
+
+
     {% else %}
         <dd>{{val}}</dd>
     {% endif %}
@@ -61,5 +80,7 @@
 {% endfor %}
 </dl>
 </div>
+
+<div style="clear:both;"></div>
 
 {% endblock %}

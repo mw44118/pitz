@@ -7,6 +7,11 @@
 {% block page_title %}{% endblock %}
 
 <style type="text/css">
+.edit
+{
+    font-size:10px;
+}
+
 body
 {
     margin:auto;
@@ -14,14 +19,28 @@ body
     margin-top:10px;
     margin-bottom:10px;
     font-family:sans-serif;
+    font-size:12px;
 }
 
+h1
+{
+    font-size:14px;
+    margin:10px -20px 10px -20px;
+    padding:10px 20px 10px 20px;
+}
+
+h2
+{
+    font-size:12px;
+    margin:10px -20px 10px -20px;
+    padding:5px 20px;
+    font-weight:lighter;
+}
+    
 h1, h2
 {
-    margin:10px -20px 10px -20px;
     background-color:#305275;
     color:white;
-    padding:10px 20px 10px 20px;
 }
 
 #globalnav
@@ -29,6 +48,7 @@ h1, h2
     text-align:right;
     margin-bottom: 20px;
     padding:10px;
+    font-variant:small-caps;
 }
 
 #globalnav, #main, #footer
@@ -36,6 +56,11 @@ h1, h2
     background-color:#f2f2f2;
     padding:0 20px 0 20px;
     clear:left;
+}
+
+#footer
+{
+    margin-top:20px;
 }
 
 #globalnav li
@@ -57,28 +82,55 @@ a:hover
     border-bottom:1px dotted #305275;
 }
 
-#description, #attributes
+#description
 {
-    margin-top:20px;
-    clear:left;
-}
 
-dl
-{
-    margin-bottom:80px;
-}
-
-dt
-{
-    width:14em;
     float:left;
-    clear:left;
+    width:400px;
 }
 
-dd
+#attributes
+{
+    float:right;
+    width:220px;
+}
+
+#interestingattributes
+{
+    display:none;
+}
+
+#interestingattributes dt
+{
+    float:left;
+    margin-right:0.5em;
+    display:none;
+}
+
+#interestingattributes dd
 {
     margin:0;
     float:left;
+    margin-right:2em;
+}
+
+#interestingattributes ul
+{
+    padding:0;
+    margin:0;
+}
+
+#interestingattributes li
+{
+    list-style:none;
+}
+
+#attributes dt
+{
+    text-align:right;
+    float:left;
+    min-width:8em;
+    margin-right:1em;
 }
 
 </style>
