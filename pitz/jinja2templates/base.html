@@ -24,20 +24,21 @@ h1, h2
     padding:10px 20px 10px 20px;
 }
 
-#header
+#globalnav
 {
     text-align:right;
     margin-bottom: 20px;
     padding:10px;
 }
 
-#header, #main, #footer
+#globalnav, #main, #footer
 {
     background-color:#f2f2f2;
     padding:0 20px 0 20px;
+    clear:left;
 }
 
-#header li
+#globalnav li
 {
     display:inline;
     list-style:none;
@@ -59,6 +60,25 @@ a:hover
 #description, #attributes
 {
     margin-top:20px;
+    clear:left;
+}
+
+dl
+{
+    margin-bottom:80px;
+}
+
+dt
+{
+    width:14em;
+    float:left;
+    clear:left;
+}
+
+dd
+{
+    margin:0;
+    float:left;
 }
 
 </style>
@@ -67,7 +87,7 @@ a:hover
 
 <body>
 
-<ul id="header">
+<ul id="globalnav">
 <li><a href="/project">index page</a></li>
 <li><a href="/todo">stuff to do</a></li>
 <li><a href="/project?type=task">tasks</a></li>
@@ -80,12 +100,7 @@ a:hover
 </div>
 
 <div id="footer">
-{% if entity %}
-<a href="http://pitz.tplus1.com">pitz</a> wrote this HTML file on
-{{ entity['html_file_saved'] }}.
-{% else %}
 <a href="http://pitz.tplus1.com">pitz</a> wrote this HTML file.
-{% endif %}
 </div>
 
 </body>

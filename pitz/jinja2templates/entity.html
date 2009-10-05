@@ -8,6 +8,18 @@
 
 <h1>{{ title }}</h1>
 
+<dl id="interestingattributes">
+
+{% for k in ('status', 'estimate', 'milestone') %}
+{% if k in entity %}
+<dt>{{k.title()}}</dt>
+<dd><a href="/entity/{{entity[k]}}">{{project[entity[k]].summarized_view}}</a></dd>
+{% endif %}
+{% endfor %}
+
+
+</dl>
+
 {% if entity.description -%}
 <div id="description">
 <h2>Description</h2>
