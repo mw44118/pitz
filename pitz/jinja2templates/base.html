@@ -15,7 +15,7 @@
 body
 {
     margin:auto;
-    width:60em;
+    width:70em;
     margin-top:10px;
     margin-bottom:10px;
     font-family:sans-serif;
@@ -46,7 +46,6 @@ h1, h2
 #globalnav
 {
     text-align:right;
-    margin-bottom: 20px;
     padding:10px;
     font-variant:small-caps;
 }
@@ -86,18 +85,17 @@ a:hover
 {
 
     float:left;
-    width:400px;
+    width:40em;
 }
 
 #attributes
 {
     float:right;
-    width:220px;
+    width:22em;
 }
 
 #interestingattributes
 {
-    display:none;
 }
 
 #interestingattributes dt
@@ -131,6 +129,21 @@ a:hover
     float:left;
     min-width:8em;
     margin-right:1em;
+    clear:left;
+}
+
+#attributes dd
+{
+    float:left;
+    margin:0;
+    padding:0;
+}
+
+#globalnav li.first
+{
+    float:left;
+    text-align:left;
+    margin-left:0px;
 }
 
 </style>
@@ -140,11 +153,13 @@ a:hover
 <body>
 
 <ul id="globalnav">
-<li><a href="/project">index page</a></li>
+<li class="first"><a href="/project">index page</a></li>
 <li><a href="/todo">stuff to do</a></li>
 <li><a href="/project?type=task">tasks</a></li>
 <li><a href="/project?type=milestone">milestones</a></li>
 <li><a href="/project?type=component">components</a></li>
+<li><a href="/project?type=estimate">estimates</a></li>
+<li><a href="/project?type=person">people</a></li>
 </ul>
 
 <div id="main">

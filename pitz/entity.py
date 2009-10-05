@@ -977,6 +977,10 @@ class Task(Entity):
     def estimate(self):
         return self['estimate']
 
+    @property
+    def html_summarized_view(self):
+
+        return """<a href="/entity/%(uuid)s">%(title)s</a> (%(status)s)""" % self
 
     @property
     def summarized_view(self):

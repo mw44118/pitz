@@ -13,7 +13,7 @@
 
 <ol>
 {% for t in entity.tasks %}
-    <li><a href="/entity/{{t.uuid}}">{{t.title}}</a></li>
+    <li>{{t.html_summarized_view | safe}}</li>
 {% endfor %}
 </ol>
 {% endif %}

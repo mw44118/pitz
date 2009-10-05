@@ -428,8 +428,7 @@ class Bag(list):
 class Project(Bag):
 
     """
-    The project is the bag that everybody should track, because it is
-    the only thing that keeps references to every other thing.
+    The project keeps references to every entity.
     """
 
     # These are all the classes that I will try to instantiate when
