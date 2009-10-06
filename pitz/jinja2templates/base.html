@@ -15,7 +15,7 @@
 body
 {
     margin:auto;
-    width:70em;
+    width:66em;
     margin-top:10px;
     margin-bottom:10px;
     font-family:sans-serif;
@@ -46,20 +46,22 @@ h1, h2
 #globalnav
 {
     text-align:right;
-    padding:10px;
     font-variant:small-caps;
 }
 
-#globalnav, #main, #footer
+#globalnav, #footer, #description, #attributes, #attachedfiles, #tasks
 {
-    background-color:#f2f2f2;
-    padding:0 20px 0 20px;
-    clear:left;
+    /* background-color:#f2f2f2; */
+    background-color:#ccc;
+    margin:10px -20px 10px -20px;
+    padding:5px 20px;
 }
+
 
 #footer
 {
     margin-top:20px;
+    clear:both;
 }
 
 #globalnav li
@@ -83,44 +85,20 @@ a:hover
 
 #description
 {
-
     float:left;
-    width:40em;
+    width:36em;
 }
 
-#attributes
+#attributes, #attachedfiles, #tasks
 {
     float:right;
-    width:22em;
+    width:26em;
+    clear:right;
 }
 
-#interestingattributes
+#attributes div:hover
 {
-}
-
-#interestingattributes dt
-{
-    float:left;
-    margin-right:0.5em;
-    display:none;
-}
-
-#interestingattributes dd
-{
-    margin:0;
-    float:left;
-    margin-right:2em;
-}
-
-#interestingattributes ul
-{
-    padding:0;
-    margin:0;
-}
-
-#interestingattributes li
-{
-    list-style:none;
+    background-color:white;
 }
 
 #attributes dt

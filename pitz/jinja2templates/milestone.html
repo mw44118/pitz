@@ -9,13 +9,15 @@
 {{ super() }}
 
 {% if entity.tasks %}
-<h2>Tasks linked to this milestone</h2>
+<div id="tasks">
+<h2>Tasks linked to {{entity.title}}</h2>
 
 <ol>
 {% for t in entity.tasks %}
     <li>{{t.html_summarized_view | safe}}</li>
 {% endfor %}
 </ol>
+</div>
 {% endif %}
 
 {% endblock %}

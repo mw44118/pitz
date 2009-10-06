@@ -480,7 +480,11 @@ class Entity(dict):
     @property
     def html_summarized_view(self):
 
-        return """<a href="/entity/%(uuid)s">%(title)s</a>""" % self
+        safe_title = self.title.replace('<', '&lt;').replace('>', '&gt;')
+
+        return (
+            """<a href="/entity/%(uuid)s">%(safe_title)s</a>"""
+            % dict(uuid=self.uuid, safe_title=safe_title))
 
 
     @property

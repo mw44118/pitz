@@ -6,10 +6,25 @@
 
 {%block content %}
 
-<h1>{{ title }}</h1>
+<h1>{{ title }} ({{ entity.type }})</h1>
 
-{% if 'status' in entity or 'estimate' in entity or 'milestone'in entity %}
-<dl id="interestingattributes">
+
+<div id="description">
+<h2>Description</h2>
+<div>
+{% if entity.description -%}
+{{ description | safe}}
+{% else %}
+<span style="font-style:italic;color:#555;">No description</span>
+{%- endif %}
+</div>
+</div>
+
+
+<div id="attributes">
+<h2>Attributes</h2>
+
+<dl>
 
 {% for k in ('status', 'estimate', 'milestone', 'owner') %}
 {% if k in entity %}
@@ -29,17 +44,27 @@
 </dd>
 {% endif %}
 
-</dl>
-{% endif %}
 
-{% if entity.description -%}
-<div id="description">
-<h2>Description</h2>
-<div>
-{{ description | safe}}
+{% for attr, val in entity.items() %}
+{% if attr not in ('uuid', 'description', 'attached_files', 'title', 
+    'frag', 'status', 'estimate', 'milestone', 'components', 'owner',
+    'type', 'comments') %}
+<dt>{{attr}}</dt>
+
+{% if isinstance(val, UUID) %}
+<dd>{{project[val].html_summarized_view | safe}}</dd>
+
+{% elif isinstance(val, datetime) %}
+    <dd>{{ val.strftime("%a, %b %d, %Y %I:%M %P") }}</dd>
+
+
+{% else %}
+    <dd>{{val}}</dd>
+{% endif %}
+{% endif %}
+{% endfor %}
+</dl>
 </div>
-</div>
-{%- endif %}
 
 {% if entity.get('attached_files') %}
 <div id="attachedfiles">
@@ -56,31 +81,5 @@
 </div>
 {% endif %}
 
-<div id="attributes">
-<h2>Attributes</h2>
-
-<dl>
-{% for attr, val in entity.items() %}
-{% if attr not in ('uuid', 'description', 'attachedfiles', 'title', 
-    'frag', 'status', 'estimate', 'milestone', 'components', 'owner',
-    'type', 'comments') %}
-    <dt>{{attr}}</dt>
-
-    {% if isinstance(val, UUID) %}
-        <dd>{{project[val].html_summarized_view | safe}}</dd>
-
-    {% elif isinstance(val, datetime) %}
-        <dd>{{ val.strftime("%A, %B %d, %Y") }}</dd>
-
-
-    {% else %}
-        <dd>{{val}}</dd>
-    {% endif %}
-{% endif %}
-{% endfor %}
-</dl>
-</div>
-
-<div style="clear:both;"></div>
 
 {% endblock %}
