@@ -5,6 +5,8 @@ from __future__ import with_statement
 import logging, optparse, os, subprocess, sys, uuid, warnings
 warnings.simplefilter('ignore', DeprecationWarning)
 
+from wsgiref.simple_server import make_server
+
 from IPython.Shell import IPShellEmbed
 
 from clepy import edit_with_editor, send_through_pager, spinning_distraction
@@ -15,10 +17,9 @@ from pitz.bag import Project
 from pitz.entity import Comment, Component, Entity, Estimate, Milestone, \
 Person, Status, Task
 
-from wsgiref.simple_server import make_server
+from pitz.webapp import SimpleWSGIApp
 
 log = logging.getLogger('pitz.cmdline')
-
 
 def print_version():
 
@@ -799,86 +800,6 @@ def pitz_webapp():
 
     proj = Project.from_pitzdir(pitzdir)
     proj.find_me()
-
-    class SimpleWSGIApp(object):
-
-        def __init__(self, proj):
-            self.proj = proj
-
-        def __call__(self, environ, start_response):
-
-            """
-            Shows a single entity in detail:
-            /entity/d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
-
-            Return the attached a.txt file:
-            /attached_files/tmp/a.txt   
-
-            Views of lots of stuff:
-
-            /project                            Lists everything.
-            /project?type=task                  Lists all tasks
-            /project?type=task&status=def456    Tasks with status def456
-            /?type=task&status=started          Started tasks
-            """
-
-            log.debug('PATH_INFO is %(PATH_INFO)s' % environ)
-            log.debug('QUERY_STRING is %(QUERY_STRING)s' % environ)
-
-            path_info = environ['PATH_INFO']
-
-            if path_info.startswith('/entity'):
-
-                junk, entity_label, uuidstr = path_info.split('/')
-                u = uuid.UUID(uuidstr)
-                entity = proj[u]
-
-                status = '200 OK'
-                headers = [('Content-type', 'text/html')]
-                start_response(status, headers)
-
-                return [str(entity.html)]
-
-            elif path_info.startswith('/attached_files'):
-
-                status = '200 OK'
-                headers = [('Content-type', 'application/octet-stream')]
-                start_response(status, headers)
-
-                return [str(open(path_info[15:]).read())]
-
-            elif path_info.startswith('/todo'):
-
-                status = '200 OK'
-                headers = [('Content-type', 'text/html')]
-                start_response(status, headers)
-
-                b = proj.todo
-
-                if environ['QUERY_STRING']:
-
-                    b = b.matches_dict(**build_filter(
-                        environ['QUERY_STRING'].split('&')))
-
-                return [str(b.html)]
-
-            # Just return the project page as the fallback.
-            else:
-
-                status = '200 OK'
-                headers = [('Content-type', 'text/html')]
-                start_response(status, headers)
-
-                b = proj
-
-                if environ['QUERY_STRING']:
-
-                    b = b.matches_dict(**build_filter(
-                        environ['QUERY_STRING'].split('&')))
-
-                return [str(b.html)]
-
-
 
     httpd = make_server('', 8000, SimpleWSGIApp(proj))
     print "Serving on port 8000..."
