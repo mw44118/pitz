@@ -479,6 +479,10 @@ class Entity(dict):
 
     @property
     def html_summarized_view(self):
+        """
+        Return something like
+            <a href="/entity/abc123">title</a>
+        """
 
         safe_title = self.title.replace('<', '&lt;').replace('>', '&gt;')
 
@@ -984,7 +988,9 @@ class Task(Entity):
     @property
     def html_summarized_view(self):
 
-        return """<a href="/entity/%(uuid)s">%(title)s</a> (%(status)s)""" % self
+        return "%s (%s)""" % (
+            super(Task, self).html_summarized_view,
+            self['status'].html_summarized_view)
 
     @property
     def summarized_view(self):

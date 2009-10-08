@@ -1,6 +1,8 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import logging
+import logging, uuid
+
+from pitz import build_filter
 
 log = logging.getLogger('pitz.cmdline')
 
