@@ -11,7 +11,7 @@
     <ul>
         <li><a href="#description">description</a></li>
         <li><a href="#attributes">attributes</a></li>
-        <li><a href="#tasks">tasks</a></li>
+        <li><a href="#comments">comments</a></li>
     </ul>
 
 </div>
@@ -21,17 +21,18 @@
 
 {{ super() }}
 
-{% if entity.tasks %}
-<div id="tasks">
-    <h2>Tasks linked to {{entity.title}}</h2>
+{% if entity.comments %}
+<div id="comments">
+    <h2>Comments</h2>
     <a class="toplink" href="#globalnav">top</a>
 
     <ol>
-    {% for t in entity.tasks %}
-        <li>{{t.html_summarized_view | safe}}</li>
+    {% for c in entity.comments %}
+        <li>{{c.detailed_view | safe}}</li>
     {% endfor %}
     </ol>
 </div>
 {% endif %}
+
 
 {% endblock %}

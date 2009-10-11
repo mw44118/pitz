@@ -1,6 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import logging, uuid
+import mimetypes, logging, uuid
 
 from pitz import build_filter
 
@@ -17,7 +17,7 @@ class SimpleWSGIApp(object):
         Shows a single entity in detail:
         /entity/d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 
-        Return the attached a.txt file:
+        Return the file /tmp/a.txt:
         /attached_files/tmp/a.txt   
 
         Views of lots of stuff:
@@ -26,6 +26,7 @@ class SimpleWSGIApp(object):
         /project?type=task                  Lists all tasks
         /project?type=task&status=def456    Tasks with status def456
         /?type=task&status=started          Started tasks
+
         """
 
         log.debug('PATH_INFO is %(PATH_INFO)s' % environ)
@@ -45,13 +46,23 @@ class SimpleWSGIApp(object):
 
             return [str(entity.html)]
 
-        elif path_info.startswith('/attached_files'):
+
+        elif path_info.startswith('/static'):
+
+            filename = path_info[7:]
+
+            file_type, encoding = mimetypes.guess_type(filename)
+
+            if type:
+                headers = [('Content-type', file_type)]
+            else:
+                headers = [('Content-type', 'application/octet-stream')]
 
             status = '200 OK'
-            headers = [('Content-type', 'application/octet-stream')]
             start_response(status, headers)
 
-            return [str(open(path_info[15:]).read())]
+            return [str(open(filename).read())]
+
 
         elif path_info.startswith('/todo'):
 

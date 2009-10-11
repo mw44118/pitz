@@ -6,23 +6,22 @@
 
 {%block content %}
 
-<h1>{{ title }} ({{ entity.type }})</h1>
-
-
 <div id="description">
 <h2>Description</h2>
-<div>
+<a class="toplink" href="#globalnav">top</a>
 {% if entity.description -%}
 {{ description | safe}}
+<div class="nonsemantic"></div>
 {% else %}
-<span style="font-style:italic;color:#555;">No description</span>
+<span class="nodescription">No description</span>
+<div class="nonsemantic"></div>
 {%- endif %}
-</div>
 </div>
 
 
 <div id="attributes">
 <h2>Attributes</h2>
+<a class="toplink" href="#globalnav">top</a>
 
 <dl>
 
@@ -64,10 +63,12 @@
 {% endif %}
 {% endfor %}
 </dl>
+<div class="nonsemantic"></div>
 </div>
 
 {% if entity.get('attached_files') %}
 <div id="attachedfiles">
+<a class="toplink" href="#globalnav">top</a>
 <h2>Attached Files</h2>
 
 <ul>

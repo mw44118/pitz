@@ -970,6 +970,7 @@ class Task(Entity):
         components=lambda proj: list(),
     )
 
+    jinja_template = 'task.html'
 
     @property
     def milestone(self):

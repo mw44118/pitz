@@ -12,6 +12,18 @@
     font-size:10px;
 }
 
+.nonsemantic
+{
+    clear:both;
+    margin-bottom:1em;
+}
+
+.nodescription
+{
+    font-style:italic;
+    color:#555;
+}
+
 body
 {
     margin:auto;
@@ -22,11 +34,20 @@ body
     font-size:12px;
 }
 
+p
+{
+    text-align:justify;
+}
+
 h1
 {
     font-size:14px;
+    /*
     margin:10px -20px 10px -20px;
-    padding:10px 20px 10px 20px;
+    */
+    margin:10px -20px 10px -20px;
+    padding:5px 20px;
+    clear:both;
 }
 
 h2
@@ -34,41 +55,104 @@ h2
     font-size:12px;
     margin:10px -20px 10px -20px;
     padding:5px 20px;
-    font-weight:lighter;
+    clear:both;
 }
     
 h1, h2
 {
     background-color:#305275;
     color:white;
+    margin-top:0;
 }
 
-#globalnav
+a.toplink
 {
-    text-align:right;
+    float:right;
+    font-size:16px;
+    padding:0.5em 1em;
+    margin:1em;
+    border:1px dotted #305275;
+    background-color:white;
+}
+
+a.toplink:hover
+{
+    border:1px solid #305275;
+}
+
+#globalnav, #localnav
+{
     font-variant:small-caps;
+    border:2px solid #305275;
 }
 
-#globalnav, #footer, #description, #attributes, #attachedfiles, #tasks
+#globalnav dt
 {
-    /* background-color:#f2f2f2; */
-    background-color:#ccc;
-    margin:10px -20px 10px -20px;
-    padding:5px 20px;
+    float:left;
+    clear:left;
+    min-width:6em;
 }
 
+#globalnav dd
+{
+    float:left;
+}
+
+
+#globalnav, #footer, #description, #attributes, #attachedfiles, #tasks,
+#localnav, #comments
+{
+    background-color:#f2f2f2;
+    margin:10px;
+    padding:0px 20px;
+    clear:left;
+}
+
+#description, #footer, #attributes, #tasks, #comments
+{
+    margin-top:10px;
+    clear:both;
+    border:2px solid #305275;
+    background-color:#f2f2f2;
+}
 
 #footer
 {
-    margin-top:20px;
-    clear:both;
+    padding:1em 20px;
+}
+
+#globalnav ul, #globalnav dd, #tasks ol, #tasks li,
+#globalnav dl
+{
+    padding:0;
+    margin:0;
+}
+
+#globalnav dl
+{
+    margin-top:1em;
 }
 
 #globalnav li
 {
     display:inline;
     list-style:none;
-    margin-left:20px;
+    margin-right:1em;
+    margin-left:1em;
+}
+
+#localnav ul
+{
+    padding:0;
+    margin:0;
+    margin-bottom:1em;
+}
+
+#localnav li
+{
+    display:inline;
+    list-style:none;
+    margin-right:2em;
 }
 
 a
@@ -80,20 +164,24 @@ a
 
 a:hover
 {
-    border-bottom:1px dotted #305275;
+    text-decoration:underline;
 }
 
 #description
 {
+    /*
     float:left;
     width:36em;
+    */
 }
 
 #attributes, #attachedfiles, #tasks
 {
+    /*
     float:right;
     width:26em;
     clear:right;
+    */
 }
 
 #attributes div:hover
@@ -124,23 +212,81 @@ a:hover
     margin-left:0px;
 }
 
+#tasks li
+{
+    margin-bottom:1em;
+    list-style:none;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<ul id="globalnav">
-<li class="first"><a href="/project">index page</a></li>
-<li><a href="/todo">stuff to do</a></li>
-<li><a href="/project?type=task">tasks</a></li>
-<li><a href="/project?type=milestone">milestones</a></li>
-<li><a href="/project?type=component">components</a></li>
-<li><a href="/project?type=estimate">estimates</a></li>
-<li><a href="/project?type=person">people</a></li>
-</ul>
+<div id="globalnav">
 
-<div id="main">
+    <dl>
+
+        <dt>Actions</dt>
+
+        <dd>
+            <ul>
+                <li><a href="/task/add">add task</a></li>
+                <li><a href="/milestone/add">add milestone</a></li>
+                <li><a href="/person/add">add person</a></li>
+                <li><a href="/component/add">add component</a></li>
+            </ul>
+        </dd>
+
+        <dt id="todo">stuff to do</dt>
+
+        <dd>
+            <ul>
+                <li><a href="/todo">By milestone</a></li>
+                <li><a href="/todo">By component</a></li>
+                <li><a href="/todo">By people</a></li>
+            </ul>
+        </dd>
+
+        <dt>Project</dt>
+
+        <dd>
+            <ul>
+                <li><a href="/project/summary">summary</a></li>
+                <li><a href="/project?type=task">tasks</a></li>
+                <li><a href="/project?type=milestone">milestones</a></li>
+                <li><a href="/project?type=component">components</a></li>
+                <li><a href="/project?type=estimate">estimates</a></li>
+                <li><a href="/project?type=person">people</a></li>
+                <li><a href="/project">index page</a></li>
+            </ul>
+        </dd>
+
+    </dl>
+
+    <div class="nonsemantic"></div>
+
+</div>
+
+{%- block localnav -%}
+<div id="localnav">
+{% if entity %}
+    <h1>{{ title }} ({{ entity.type }})</h1>
+{% else %}
+    <h1>{{ title }}</h1>
+{% endif %}
+
+
+    <ul>
+        <li><a href="#description">description</a></li>
+        <li><a href="#attributes">attributes</a></li>
+    </ul>
+
+</div>
+{%- endblock -%}
+
+<div id="content">
 {% block content %}{% endblock %}
 </div>
 

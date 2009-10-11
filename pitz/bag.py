@@ -443,6 +443,8 @@ class Project(Bag):
         comment=Comment,
         component=Component)
 
+    plural_names = dict(
+        [(c.plural_name, c) for c in classes.values()])
 
     def __init__(self, title='', uuid=None, pathname=None, entities=(),
         order_method=by_pscore_and_milestone, load_yaml_files=True,
