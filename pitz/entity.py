@@ -233,6 +233,7 @@ class Entity(dict):
         any further.
         """
 
+
         if attr in self.allowed_values \
         and val not in self.allowed_values[attr]:
 
@@ -264,7 +265,14 @@ class Entity(dict):
                 'modified_time', datetime.now())
 
 
+            
+
+
     def __hash__(self):
+        """
+        Necessary to allow Entity instances to be used as dictionary
+        keys and set elements.
+        """
         return self.uuid.int
 
 
@@ -1020,6 +1028,19 @@ class Task(Entity):
         return b.order(by_created_time)
 
 
+    def __setitem__(self, attr, val):
+        
+        old_val = self.get(attr)
+
+        if getattr(self, 'record_comments_on_changes', False):
+
+            comment = "set %s from %s to %s" % (attr, old_val, val)
+
+            self.comment(title=comment, description='')
+
+        super(Task, self).__setitem__(attr, val)
+
+
     def abandon(self):
 
         if self['status'].title in ['unstarted', 'started']:
@@ -1061,10 +1082,10 @@ class Task(Entity):
             else:
                 who_said_it = Person.choose()
 
-        if not title:
+        if title is None:
             title = '''RE: task %(frag)s "%(title)s"''' % self
 
-        if not description:
+        if description is None:
             description = clepy.edit_with_editor("# Comment goes here")
 
         return Comment(self.project, entity=self.uuid, title=title,
