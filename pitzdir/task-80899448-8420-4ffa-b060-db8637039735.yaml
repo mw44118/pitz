@@ -3,18 +3,18 @@ components: []
 created_time: 2009-07-13 11:58:19.394363
 description: ''
 estimate: !!python/object:uuid.UUID
-  int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-10-03 20:02:59.155600
+  int: 90095269217473032960059910478092208144
+html_file_saved: 2009-10-03 20:02:59.155600
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: *id001
+modified_time: 2009-10-12 09:58:48.908682
 owner: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
-title: Remove duplicate code in pitz-everything and pitz-todo
+title: Pull duplicate code in pitz-everything and pitz-todo
 type: task
 uuid: !!python/object:uuid.UUID
   int: 170855535672028629205043814493898118965
-yaml_file_saved: 2009-10-03 20:03:05.464532
+yaml_file_saved: 2009-10-12 09:58:48.910095

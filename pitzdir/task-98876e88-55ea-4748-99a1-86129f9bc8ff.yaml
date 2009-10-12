@@ -1,0 +1,32 @@
+components:
+- !!python/object:uuid.UUID
+  int: 170479705391647032501098302123768246956
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-10-12 11:21:45.436593
+description: 'At first glance, tracking tasks for developers and complaints filed
+  by
+
+  customers in the same tool seems like a good idea.
+
+
+  Study some good customer support tools and see if there is any
+
+  **natural** overlap for pitz.
+
+
+  I should only do this if it is a good fit.'
+estimate: !!python/object:uuid.UUID
+  int: 90095269217473032960059910478092208144
+milestone: !!python/object:uuid.UUID
+  int: 246357804921662755488325692659396046179
+modified_time: 2009-10-12 11:21:50.079402
+owner: null
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Explore using pitz for customer support issues
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 202745857301885369138787124980660029695
+yaml_file_saved: 2009-10-12 11:21:50.080108
