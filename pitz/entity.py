@@ -860,6 +860,15 @@ class Status(Entity):
             return self.project.tasks(status=self)
 
 
+    @classmethod
+    def setup_defaults(cls, proj):
+
+        for title, pscore in [('started', 3), ('unstarted', 2),
+            ('finished', 4), ('abandoned', 1)]:
+
+            cls(proj, title=title, pscore=pscore)
+
+
 class Milestone(Entity):
     """
     Useful for bundling tasks

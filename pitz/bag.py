@@ -598,6 +598,14 @@ class Project(Bag):
         return pf
 
 
+    def setup_defaults(self):
+    
+        for cls in self.classes.values():
+            if hasattr(cls, 'setup_defaults'):
+                cls.setup_defaults(self)
+
+
+
     @classmethod
     def from_pickle(cls, pf):
         """

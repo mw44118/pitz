@@ -110,15 +110,32 @@ def pitz_setup():
     proj = Project(pathname=pitzdir, title=project_title)
     proj.to_yaml_file()
 
+    print("Now I'll set you up.")
     pitz_me()
 
     for plural, add_function, singular in [
         ('estimates', pitz_add_estimate, 'estimate'),
-        ('statuses', pitz_add_status, 'status'),
         ('milestones', pitz_add_milestone, 'milestone'),
-        ('components', pitz_add_component, 'component')]:
+        ('components', pitz_add_component, 'component'),
+        ('statuses', pitz_add_status, 'status'),
+    ]:
 
-        temp = raw_input("Add some %s to the project? (y/n)" % plural)
+        cls = proj.classes[singular]
+
+        if hasattr(cls, 'setup_defaults'):
+
+            print("Add some %s to the project?" % plural)
+            print("You can go with the defaults (d) make your own (y) or skip it (n)")
+            temp = raw_input("d,y,n")
+
+        else:
+
+            print("Add some %s to the project? (y/n)" % plural)
+            temp = raw_input("y,n")
+
+        if temp.lower().strip() == 'd':
+
+            cls.setup_defaults(proj)
 
         while temp.strip().lower().startswith('y'):
 
