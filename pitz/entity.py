@@ -213,7 +213,7 @@ class Entity(dict):
     def _setup_jinja(self):
         # Set up a template loader.
         self.e = jinja2.Environment(
-            autoescape=True,
+            # autoescape=True,
             extensions=['jinja2.ext.loopcontrols'],
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
@@ -487,6 +487,10 @@ class Entity(dict):
 
     @property
     def html_summarized_view(self):
+        """
+        Return something like
+            <a href="/entity/abc123">title</a>
+        """
 
         safe_title = self.title.replace('<', '&lt;').replace('>', '&gt;')
 
@@ -864,6 +868,15 @@ class Status(Entity):
             return self.project.tasks(status=self)
 
 
+    @classmethod
+    def setup_defaults(cls, proj):
+
+        for title, pscore in [('started', 3), ('unstarted', 2),
+            ('finished', 4), ('abandoned', 1)]:
+
+            cls(proj, title=title, pscore=pscore)
+
+
 class Milestone(Entity):
     """
     Useful for bundling tasks
@@ -974,6 +987,7 @@ class Task(Entity):
         components=lambda proj: list(),
     )
 
+    jinja_template = 'task.html'
 
     @property
     def milestone(self):
@@ -992,7 +1006,9 @@ class Task(Entity):
     @property
     def html_summarized_view(self):
 
-        return """<a href="/entity/%(uuid)s">%(title)s</a> (%(status)s)""" % self
+        return "%s (%s)""" % (
+            super(Task, self).html_summarized_view,
+            self['status'].html_summarized_view)
 
     @property
     def summarized_view(self):

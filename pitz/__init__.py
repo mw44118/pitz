@@ -113,3 +113,25 @@ class ProjectNotFound(PitzException):
     Indicates that the system couldn't find what it needed to create a
     project.
     """
+
+
+def build_filter(args):
+    """
+    Return a dictionary suitable for filtering.
+
+    >>> build_filter(['a=1', 'b=2', 'c=[3,4,5]'])
+    {'a': '1', 'c': ['3', '4', '5'], 'b': '2'}
+
+    """
+
+    d = dict()
+    for a in args:
+        attr, value = a.split('=')
+
+        # Make a list of values if we got a string like "[1, 2, 3]"
+        if value.startswith('[') and value.endswith(']'):
+            value = value.strip('[]').split(',')
+
+        d[attr] = value
+
+    return d

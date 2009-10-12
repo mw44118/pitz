@@ -1,0 +1,32 @@
+components:
+- !!python/object:uuid.UUID
+  int: 292330627916466842239283398422481375639
+- !!python/object:uuid.UUID
+  int: 4957623306508968194182393857812906256
+created_by: &id001 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-10-11 22:06:33.466518
+description: 'I set autoescape=True for all the jinja2 templates.  This is good for
+
+  the HTML views, but bad for the command-line views, because now all the
+
+  < and > characters appear as &lt; and &gt; entities.
+
+
+  I might want to go back and study why I decided to autoescape
+
+  everything.'
+estimate: !!python/object:uuid.UUID
+  int: 194238884256655928753821602839070306529
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: 2009-10-11 22:06:40.742108
+owner: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Prevent html escaping in command-line templates
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 5279439475864590996033345002256742580
+yaml_file_saved: 2009-10-11 22:06:40.742937
