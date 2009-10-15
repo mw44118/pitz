@@ -133,6 +133,7 @@ class Entity(dict):
         # Set some attributes that also get set in __init__.
 
         self.update_modified_time = True
+        self.record_comments_on_changes = True
 
 
     def __init__(self, project=None, **kwargs):
@@ -187,6 +188,7 @@ class Entity(dict):
             self['created_by'] = self.project.current_user
 
         self.update_modified_time = True
+        self.record_comments_on_changes = True
 
 
     def _get_project(self):
@@ -870,6 +872,10 @@ class Status(Entity):
 
     @classmethod
     def setup_defaults(cls, proj):
+        """
+        Create a few statuses, like started, unstarted, finished,
+        and abandoned.
+        """
 
         for title, pscore in [('started', 3), ('unstarted', 2),
             ('finished', 4), ('abandoned', 1)]:
