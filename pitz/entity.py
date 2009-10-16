@@ -1054,7 +1054,9 @@ class Task(Entity):
         
         old_val = self.get(attr)
 
-        if getattr(self, 'record_comments_on_changes', False):
+        if getattr(self, 'record_comments_on_changes', False) \
+        and self.project \
+        and self.project.me:
 
             comment = "set %s from %s to %s" % (attr, old_val, val)
 
