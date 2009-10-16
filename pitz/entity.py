@@ -133,7 +133,7 @@ class Entity(dict):
         # Set some attributes that also get set in __init__.
 
         self.update_modified_time = True
-        self.record_comments_on_changes = True
+        self.record_comments_on_changes = False
 
 
     def __init__(self, project=None, **kwargs):
@@ -188,7 +188,7 @@ class Entity(dict):
             self['created_by'] = self.project.current_user
 
         self.update_modified_time = True
-        self.record_comments_on_changes = True
+        self.record_comments_on_changes = False
 
 
     def _get_project(self):

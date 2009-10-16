@@ -1,0 +1,15 @@
+created_by: &id001 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-10-16 08:54:35.940427
+description: ''
+entity: !!python/object:uuid.UUID
+  int: 27491522258417874058800437159737869326
+modified_time: 2009-10-16 08:54:35.942074
+pscore: 0
+title: set milestone from 20807f20-62fc-4756-b28e-3e00db29b93a to <pitz.Milestone
+  unscheduled>
+type: comment
+uuid: !!python/object:uuid.UUID
+  int: 163674200636573787945912233617229037914
+who_said_it: *id001
+yaml_file_saved: 2009-10-16 09:01:46.182930
