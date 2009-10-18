@@ -192,7 +192,7 @@ class Entity(dict):
 
 
     def _get_project(self):
-        return self._project
+        return getattr(self, '_project', None)
 
 
     def _set_project(self, p):

@@ -610,6 +610,7 @@ class Project(Bag):
     def from_pickle(cls, pf):
         """
         Load a project from pickle file pf.
+
         """
 
         p = pickle.load(open(pf))
@@ -735,7 +736,12 @@ class Project(Bag):
                 for f in glob.glob(os.path.join(pitzdir, '*.yaml'))])
 
             if pickle_timestamp >= newest_yaml:
-                return cls.from_pickle(pickle_path)
+                try:
+                    return cls.from_pickle(pickle_path)
+
+                except EOFError, ex:
+                    log.error("Pickle broken! I'll try yaml next.")
+                    log.exception(ex)
 
         yaml_path = os.path.join(pitzdir, 'project.yaml')
         if os.path.isfile(yaml_path):
