@@ -577,8 +577,7 @@ def pitz_my_tasks():
         print("Use pitz-me to add yourself to the project.")
         sys.exit()
 
-    my_tasks = proj.todo(owner=proj.me)
-    my_tasks.title = "To-do list for %(title)s" % proj.me
+    my_tasks = proj.me.my_tasks
 
     if my_tasks:
         send_through_pager(str(my_tasks))

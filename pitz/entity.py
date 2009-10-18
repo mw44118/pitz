@@ -971,6 +971,21 @@ class Person(Entity):
 
         return me_yaml_path
 
+    @property
+    def my_tasks(self):
+
+        if not self.project:
+            return
+
+        b = self.project.todo(owner=self)
+        b.title = "To-do list for %(title)s" % self
+        return b
+
+
+    @property
+    def summarized_view(self):
+        return self.title
+
 
 class Task(Entity):
 
