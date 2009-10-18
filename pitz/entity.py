@@ -982,11 +982,6 @@ class Person(Entity):
         return b
 
 
-    @property
-    def summarized_view(self):
-        return self.title
-
-
 class Task(Entity):
 
     plural_name = "tasks"
@@ -1040,7 +1035,8 @@ class Task(Entity):
         frag = self['frag']
         title = clepy.maybe_add_ellipses(self.title, 45)
 
-        status = '(%s)' % getattr(self['status'], 'abbr', self['status'])
+        status = getattr(self['status'], 'abbr', self['status'])
+        estimate = getattr(self['estimate'], 'abbr', self['estimate']) 
 
         if 'milestone' in self:
             milestone = getattr(self['milestone'], 'abbr', self['milestone'])
@@ -1049,7 +1045,7 @@ class Task(Entity):
 
         pscore = self['pscore']
 
-        return "%(frag)6s  %(title)-48s  %(milestone)3s  %(status)-11s" \
+        return "%(frag)6s  %(title)-48s  (%(milestone)s, %(status)s, %(estimate)s)" \
         % locals()
 
 
@@ -1195,7 +1191,7 @@ class Component(Entity):
         if not self.project:
             raise NoProject("I need a project before I can look up tasks!")
 
-        tasks = self.project(type='task', milestone=self)
+        tasks = self.project(type='task', components=self)
         tasks.title = 'Tasks in %(title)s' % self
 
         return tasks

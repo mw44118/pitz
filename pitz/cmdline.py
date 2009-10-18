@@ -157,8 +157,6 @@ def setup_options():
     return p
 
 
-
-
 def pitz_everything():
 
     with spinning_distraction():
@@ -800,3 +798,40 @@ def pitz_webapp():
     httpd = make_server('', 8000, SimpleWSGIApp(proj))
     print "Serving on port 8000..."
     httpd.serve_forever()
+
+
+def pitz_estimate_task():
+
+    # Start of code to set up project.
+    p = setup_options()
+    p.set_usage("%prog task [estimate]")
+
+    options, args = p.parse_args()
+
+    if not args:
+        p.print_usage()
+        return
+
+    if options.version:
+        print_version()
+        return
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    # end of code to set up project.
+
+    t = proj[args[0]]
+
+    if len(args) == 2:
+        est = proj[args[1]]
+
+    else:
+        est = Estimate.choose_from_already_instantiated()
+
+    t['estimate'] = est
+
+    # Save the project.
+    proj.save_entities_to_yaml_files()
