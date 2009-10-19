@@ -59,6 +59,8 @@ class Entity(dict):
 
     jinja_template = 'entity.html'
 
+    cli_detailed_view_template = 'entity_detailed_view.txt'
+
     __metaclass__ = MC
 
     # When the value is None, I'll raise an exception when the
@@ -235,7 +237,6 @@ class Entity(dict):
         any further.
         """
 
-
         if attr in self.allowed_values \
         and val not in self.allowed_values[attr]:
 
@@ -265,10 +266,6 @@ class Entity(dict):
 
             super(Entity, self).__setitem__(
                 'modified_time', datetime.now())
-
-
-            
-
 
     def __hash__(self):
         """
@@ -302,6 +299,16 @@ class Entity(dict):
     def description(self):
         return self['description']
 
+    @property
+    def description_view(self):
+
+        tmpl = jinja2.Template("""{% if e.description -%}
+Description
+-----------
+{{e.description}}
+{% endif %}""")
+
+        return tmpl.render(e=self)
 
     @property
     def pscore(self):
@@ -523,8 +530,9 @@ class Entity(dict):
 
     @property
     def detailed_view(self):
+
         """
-        The detailed view of the entity.
+        The command-line detailed view of the entity.
         """
 
         d = dict()
@@ -534,7 +542,7 @@ class Entity(dict):
         d['type'] = self.__class__.__name__
         d['data'] = self
 
-        t = self.e.get_template('entity_detailed_view.txt')
+        t = self.e.get_template(self.cli_detailed_view_template)
 
         return t.render(e=self, **d)
 
@@ -903,6 +911,9 @@ class Milestone(Entity):
 
     jinja_template = 'milestone.html'
 
+    def __str__(self):
+        return self.title
+
     @property
     def tasks(self):
 
@@ -981,10 +992,14 @@ class Person(Entity):
         b.title = "To-do list for %(title)s" % self
         return b
 
+    def __str__(self):
+        return self.title
 
 class Task(Entity):
 
     plural_name = "tasks"
+
+    cli_detailed_view_template = 'task_detailed_view.txt'
 
     allowed_types = dict(
         owner=Person,
@@ -1003,7 +1018,9 @@ class Task(Entity):
         components=lambda proj: list(),
     )
 
+
     jinja_template = 'task.html'
+
 
     @property
     def milestone(self):
@@ -1019,12 +1036,14 @@ class Task(Entity):
     def estimate(self):
         return self['estimate']
 
+
     @property
     def html_summarized_view(self):
 
         return "%s (%s)""" % (
             super(Task, self).html_summarized_view,
             self['status'].html_summarized_view)
+
 
     @property
     def summarized_view(self):
@@ -1059,6 +1078,57 @@ class Task(Entity):
         b.title = 'Comments on %(title)s' % self
 
         return b.order(by_created_time)
+
+
+    @property
+    def comments_view(self):
+
+        tmpl = jinja2.Template("""{% if e.comments %}
+Comments
+--------
+{% for c in e.comments -%}
+{{ c.summarized_view }}
+{% endfor -%}
+{% endif %}""")
+
+        return tmpl.render(e=self)
+
+
+    @property
+    def owner(self):
+        return self.get('owner', 'no owner')
+
+    @property
+    def components(self):
+        return self['components']
+
+    @property
+    def components_view(self):
+        """
+        Return a string (maybe empty) of this task's components.
+        """
+
+        if self['components']:
+            return ', '.join([c.title for c in self.components])
+        
+        else:
+            return 'no components'
+
+
+    @property
+    def interesting_attributes_view(self):
+        """
+        Return a string with the titles of this task's estimate, status,
+        milestone, and any components.
+        """
+
+        return ' | '.join([str(s) for s in (
+            self.owner, self.estimate, 
+            
+            self.milestone, 
+            self.status,
+            
+            self.components_view)])
 
 
     def __setitem__(self, attr, val):
@@ -1151,11 +1221,12 @@ class Comment(Entity):
     @property
     def summarized_view(self):
 
-        title = self['title'].strip().replace('\n', ' ')
-        title = "%s..." % title[:60] if len(title) > 60 else title
+        title = clepy.maybe_add_ellipses(
+            self['title'].strip().replace('\n', ' '),
+            )
 
         who_said_it = self['who_said_it']
-        who_said_it = getattr(who_said_it, 'title', who_said_it)
+        who_said_it = getattr(who_said_it, 'abbr', who_said_it)
 
         return "%(who_said_it)s said: %(title)s" % dict(
             who_said_it=who_said_it,

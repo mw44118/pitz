@@ -1,0 +1,19 @@
+{{e.title}}
+{% for equalsign in e.title -%}={% endfor %}
+
+{{ e.interesting_attributes_view }}
+
+{{ e.description_view }}
+
+Attributes
+----------
+{% for k, v in data.items() -%}
+{% if k in ('title', 'description', 'status', 'estimate', 'milestone', 'components') %}{% continue %}{% endif -%}
+{{ '%-18s' | format(k) }}: {% if hasattr(data[k], 'summarized_view') -%} 
+{{ data[k].summarized_view }}
+{% else -%} 
+{{ data[k] }}
+{% endif -%}
+{% endfor -%}
+
+{{ e.comments_view }}

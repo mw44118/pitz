@@ -284,7 +284,6 @@ pitz_add = pitz_add_task
 
 def pitz_show():
 
-
     p = setup_options()
 
     options, args = p.parse_args()
@@ -295,7 +294,7 @@ def pitz_show():
 
     if not args:
         p.print_usage()
-        sys.exit()
+        return
 
     path_to_yaml_file = options.pitzdir or Project.find_file()
 

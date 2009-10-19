@@ -3,11 +3,11 @@ components: []
 created_time: 2009-06-07 10:26:50.183328
 description: ''
 estimate: !!python/object:uuid.UUID
-  int: 69442089652494008692236859468511326791
+  int: 207205260775652781422748338617572801073
 html_file_saved: 2009-10-03 20:02:58.580939
 milestone: !!python/object:uuid.UUID
-  int: 43202488294965147244317640483158997306
-modified_time: 2009-10-18 20:33:13.477221
+  int: 286057988816149038667284962231564097114
+modified_time: 2009-10-18 20:34:59.398940
 owner: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 pscore: 0
@@ -18,4 +18,4 @@ title: Alter detailed view to show information like related milestones, componen
 type: task
 uuid: !!python/object:uuid.UUID
   int: 27491522258417874058800437159737869326
-yaml_file_saved: 2009-10-18 20:33:13.477924
+yaml_file_saved: 2009-10-18 20:34:59.400222
