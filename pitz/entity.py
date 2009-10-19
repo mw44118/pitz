@@ -1123,11 +1123,9 @@ Comments
         """
 
         return ' | '.join([str(s) for s in (
-            self.owner, self.estimate, 
-            
+            self.estimate, 
             self.milestone, 
             self.status,
-            
             self.components_view)])
 
 
