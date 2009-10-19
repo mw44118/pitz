@@ -7,15 +7,15 @@ estimate: !!python/object:uuid.UUID
 html_file_saved: 2009-10-03 20:02:58.580939
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: 2009-10-18 15:48:50.879328
+modified_time: 2009-10-18 20:33:13.477221
 owner: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 336444450266496547059833010238290292739
 title: Alter detailed view to show information like related milestones, components,
   comments, etc.
 type: task
 uuid: !!python/object:uuid.UUID
   int: 27491522258417874058800437159737869326
-yaml_file_saved: 2009-10-18 15:48:50.880562
+yaml_file_saved: 2009-10-18 20:33:13.477924

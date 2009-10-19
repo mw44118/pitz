@@ -2,7 +2,8 @@
 
 from __future__ import with_statement
 
-import logging, optparse, os, subprocess, sys, uuid, warnings
+import contextlib, logging, optparse, os, subprocess, sys, uuid, warnings
+
 warnings.simplefilter('ignore', DeprecationWarning)
 
 from wsgiref.simple_server import make_server
@@ -834,4 +835,40 @@ def pitz_estimate_task():
     t['estimate'] = est
 
     # Save the project.
+    proj.save_entities_to_yaml_files()
+
+
+def pitz_attach_file():
+
+    # Generic.
+    p = setup_options()
+
+    # Every script may have a slightly different usage.
+    p.set_usage("%prog entity file-to-attach")
+
+    # This is generic.
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+        return
+    # End of generic stuff.
+
+    # Every script may have different required args.
+    if len(args) != 2:
+        p.print_usage()
+        return
+
+    # Generic code to build the project.
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    proj = Project.from_pitzdir(pitzdir)
+    proj.find_me()
+
+    # Start of interesting stuff that is specific just for this script.
+    e, filepath = proj[args[0]], args[1]
+
+    e.save_attachment(filepath)
+
+    # Save the project. (This could also be generic).
     proj.save_entities_to_yaml_files()

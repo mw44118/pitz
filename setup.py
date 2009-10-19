@@ -65,6 +65,7 @@ started pitz.""",
     pitz-abandon-task = pitz.cmdline:pitz_abandon_task
     pitz-webapp = pitz.cmdline:pitz_webapp
     pitz-estimate-task = pitz.cmdline:pitz_estimate_task
+    pitz-attach-file = pitz.cmdline:pitz_attach_file
     """,
 
     test_suite = 'nose.collector',
