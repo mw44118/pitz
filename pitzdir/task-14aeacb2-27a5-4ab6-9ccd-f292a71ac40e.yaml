@@ -1,21 +1,23 @@
 comments: []
 components: []
 created_time: 2009-06-07 10:26:50.183328
-description: ''
+description: 'I''ll need to this separately for each type.  Tasks have a different
+  set
+
+  of attributes than milestones or components.'
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 html_file_saved: 2009-10-03 20:02:58.580939
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-10-18 20:34:59.398940
+modified_time: 2009-10-21 21:54:04.157870
 owner: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 336444450266496547059833010238290292739
-title: Alter detailed view to show information like related milestones, components,
-  comments, etc.
+title: Show related milestones, components, comments, in task's detailed view
 type: task
 uuid: !!python/object:uuid.UUID
   int: 27491522258417874058800437159737869326
-yaml_file_saved: 2009-10-18 20:34:59.400222
+yaml_file_saved: 2009-10-21 21:54:04.159474
