@@ -259,7 +259,7 @@ class Bag(list):
     def contents(self):
 
         """
-        Return string describing contents of the bag.
+        Describe contents and the ordering method.
 
         >>> Bag().contents
         '(empty)'
@@ -280,7 +280,15 @@ class Bag(list):
 
                 for typename, typecount in self.values('type')]
 
-            return "(%s)" % ', '.join(nasty_list_comprehension)
+            if self.order_method.__doc__:
+
+                return "(%s, ordered by %s)" \
+                % (', '.join(nasty_list_comprehension),
+                    self.order_method.__doc__)
+
+            else:
+                return "(%s)" % (', '.join(nasty_list_comprehension))
+
 
         else:
             return '(empty)'

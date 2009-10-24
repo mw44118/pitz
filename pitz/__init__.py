@@ -49,7 +49,7 @@ def by_whatever(func_name, *whatever, **kwargs):
             
         return y
 
-    f.__doc__ = "by_whatever(%s)" % list(whatever)
+    f.__doc__ = str(list(whatever))
     f.func_name = func_name
         
     return f

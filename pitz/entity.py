@@ -936,6 +936,9 @@ class Milestone(Entity):
 
     @property
     def summarized_view(self):
+        """
+        One-line description of the milestone
+        """
 
         finished = Status(title='finished')
 
@@ -1052,7 +1055,7 @@ class Task(Entity):
         """
 
         frag = self['frag']
-        title = clepy.maybe_add_ellipses(self.title, 45)
+        title = clepy.maybe_add_ellipses(self.title, 66)
 
         status = getattr(self['status'], 'abbr', self['status'])
         estimate = getattr(self['estimate'], 'abbr', self['estimate']) 
@@ -1062,9 +1065,9 @@ class Task(Entity):
         else:
             milestone = '...'
 
-        pscore = self['pscore']
+        interesting_attributes = self.interesting_attributes_view
 
-        return "%(frag)6s  %(title)-48s  (%(milestone)s, %(status)s, %(estimate)s)" \
+        return "%(frag)6s  %(title)s\n        %(interesting_attributes)s\n" \
         % locals()
 
 
@@ -1122,11 +1125,12 @@ Comments
         milestone, and any components.
         """
 
-        return ' | '.join([str(s) for s in (
+        return ' | '.join(['%s' % s for s in (
+            self.status,
             self.estimate, 
             self.milestone, 
-            self.status,
-            self.components_view)])
+            self.components_view,
+        )])
 
 
     def __setitem__(self, attr, val):
