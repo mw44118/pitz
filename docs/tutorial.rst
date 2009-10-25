@@ -4,13 +4,6 @@ How to start using pitz
 
 The goal here is for me to walk you through how to start using pitz.
 
-Install pitz
-============
-
-Until I release 1.0, I suggest cloning the repository at github::
-
-    $ git clone git://github.com/mw44118/pitz.git
-
 Set up a project to use pitz
 ============================
 

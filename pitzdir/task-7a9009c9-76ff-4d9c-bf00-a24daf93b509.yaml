@@ -1,7 +1,7 @@
 components:
 - !!python/object:uuid.UUID
   int: 4957623306508968194182393857812906256
-created_by: &id002 !!python/object:uuid.UUID
+created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 created_time: 2009-10-01 22:09:29.580927
 description: 'It would be nice to use tab completion at the command-line.  Not sure
@@ -11,16 +11,16 @@ description: 'It would be nice to use tab completion at the command-line.  Not s
   workon script in virtualenvwrapper does tab completion.'
 estimate: !!python/object:uuid.UUID
   int: 53593374283076976629647435265038831042
-html_file_saved: &id001 2009-10-03 20:13:04.796450
+html_file_saved: 2009-10-03 20:13:04.796450
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
-owner: *id002
+modified_time: 2009-10-25 11:57:25.948790
+owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 181191650815078915740523248343325601886
 title: Add tab completion on uuids at command-line
 type: task
 uuid: !!python/object:uuid.UUID
   int: 162913704736763723661533408579437180169
-yaml_file_saved: 2009-10-03 20:13:06.425309
+yaml_file_saved: 2009-10-25 11:57:25.949440

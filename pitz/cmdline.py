@@ -873,3 +873,27 @@ def pitz_attach_file():
 
     # Save the project. (This could also be generic).
     proj.save_entities_to_yaml_files()
+
+
+def frags():
+    """
+    Prints all the frags in this project.
+
+    I wrote this for command-line tab completion.
+    """
+
+    p = setup_options()
+    p.set_usage("%prog")
+    options, args = p.parse_args()
+
+    if options.version:
+        print_version()
+        return
+
+    pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    print('\n'.join([
+        x.split('-')[1][:6]
+        for x in os.listdir(pitzdir)
+        if '-' in x]))
+
