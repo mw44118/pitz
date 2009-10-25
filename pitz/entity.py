@@ -407,6 +407,14 @@ Description
             if a not in self:
                 return
 
+            if a in self.allowed_types:
+                typename = self.allowed_types[a].__name__.lower()
+            else:
+                typename = None
+
+            # ev stands for "entity value".
+            ev = self[a]
+
             # Possibly translate this object from its UUID/frag/title
             # representation to the actual object.
 
@@ -420,21 +428,19 @@ Description
 
                 else:
 
-                    # When v is a frag or a UUID, convert it to the object
-                    # it refers to.
+                    # When v is a frag or a UUID, convert it to the
+                    # object it refers to.
                     if v in self.project.entities_by_frag \
                     or v in self.project.entities_by_uuid:
 
                         v = self.project[v]
 
-                    if a in self.allowed_types:
-                        typename = self.allowed_types[a].__name__.lower()
+                    if typename:
 
                         results = self.project(type=typename, title=v)
+                        
                         if results.length == 1:
                             v = results[0]
-
-            ev = self[a]
             
             # Do all this stuff when the entity has a different value
             # than the one passed in.
@@ -454,9 +460,38 @@ Description
 
                 # ev is a scalar, v is a list.
                 if not isinstance(ev, (list, tuple)) \
-                and isinstance(v, (list, tuple)) \
-                and ev not in v:
-                    return
+                and isinstance(v, (list, tuple)):
+
+                    if ev in v:
+                        return self
+
+                    else:
+
+                        # Compare each element in v to ev.
+                        for vv in v:
+
+                            # Check UUIDs and frags.
+                            if vv in self.project.entities_by_uuid \
+                            or vv in self.project.entities_by_frag:
+
+                                vv = self.project[vv]
+
+                            # Now check typenames and titles.
+                            results = self.project(
+                                type=typename,
+                                title=vv)
+                            
+                            if results.length == 1:
+                                vv = results[0]
+
+                            if vv == ev:
+                                return self
+
+                        # Lookup by UUID.
+
+                        # Lookup by type and title.
+
+                        return
         
                 # Both are lists, so test if ev intersects with v.
                 if isinstance(ev, (list, tuple)) \

@@ -232,9 +232,44 @@ class TestMatchesDict(unittest.TestCase):
 
         assert 'priority' in self.e.allowed_types
 
+        print("self.e['priority'] is %(priority)s" % self.e)
+
         assert self.e.matches_dict(
             priority=self.important.title) == self.e, \
         "Lookup using title failed"
+
+
+    def test_matches_dict_4(self):
+        """
+        Verify we can match with lists of titles.
+        """
+
+        print("self.e['priority'] is %(priority)s" % self.e)
+
+        assert self.e.matches_dict(
+            priority=[self.important.title]) == self.e, \
+        "Lookup using list of titles failed"
+
+
+    def test_matches_dict_5(self):
+        """
+        Verify we can match with lists of titles.
+        """
+
+        assert self.e.matches_dict(priority=["bogus"]) is None, \
+        "Matching too much!"
+
+
+    def test_matches_dict_6(self):
+        """
+        Verify we can match with lists of titles.
+        """
+
+        print("self.e['priority'] is %(priority)s" % self.e)
+
+        assert self.e.matches_dict(
+            priority=[self.important.frag]) == self.e, \
+        "Lookup using list of titles failed"
 
 
 class TestEntityComparisons(unittest.TestCase):
