@@ -265,7 +265,9 @@ def pitz_add_task():
         estimate=Estimate.choose_from_already_instantiated(
             Estimate(proj, title='not estimated')),
 
-        owner=Person.choose_from_already_instantiated(),
+        owner=Person.choose_from_already_instantiated(
+            Person(proj, title='no owner')),
+
     )
 
     proj.append(t)

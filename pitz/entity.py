@@ -1031,7 +1031,8 @@ class Person(Entity):
         return b
 
     def __str__(self):
-        return self.title
+        return getattr(self, 'abbr', self.title)
+
 
 class Task(Entity):
 
@@ -1050,6 +1051,7 @@ class Task(Entity):
         title=None,
         description='',
         pscore=0,
+        owner=lambda proj: Person(proj, title="no owner"),
         milestone=lambda proj: Milestone(proj, title='unscheduled'),
         status=lambda proj: Status(proj, title='unstarted'),
         estimate=lambda proj: Estimate(proj, title='not estimated'),
@@ -1153,6 +1155,7 @@ class Task(Entity):
         """
 
         return ' | '.join(['%s' % s for s in (
+            self.owner,
             self.status,
             self.estimate, 
             self.milestone, 
