@@ -1,0 +1,3 @@
+{{ '%-68s' | format(title) }}  ({{ frag }})
+{{ who_said_it }}, {{ how_long_ago }}
+{{ description_excerpt }}

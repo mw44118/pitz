@@ -1086,15 +1086,7 @@ class Task(Entity):
     @property
     def comments_view(self):
 
-        tmpl = jinja2.Template("""{% if e.comments %}
-Comments
---------
-{% for c in e.comments -%}
-{{ c.summarized_view }}
-{% endfor -%}
-{% endif %}""")
-
-        return tmpl.render(e=self)
+        return self.e.get_template('task_comments_view.txt').render(e=self)
 
 
     @property
@@ -1223,19 +1215,28 @@ class Comment(Entity):
     @property
     def summarized_view(self):
 
+        """
+        Shorter description of the comment.
+        """
+
         title = clepy.maybe_add_ellipses(
-            self['title'].strip().replace('\n', ' '),
-            )
+            self['title'].strip().replace('\n', ' '), 65)
 
-        who_said_it = self['who_said_it']
-        who_said_it = getattr(who_said_it, 'abbr', who_said_it)
+        description_excerpt = clepy.maybe_add_ellipses(
+            self['description'].strip().replace('\n', ' '))
 
-        return "%(who_said_it)s said: %(title)s" % dict(
-            who_said_it=who_said_it,
-            time=self['created_time'].strftime("%I:%M %P, %a, %m/%d/%y"),
-            title=title,
-        )
+        if description_excerpt:
+            description_excerpt += '\n'
 
+        frag = self['frag']
+
+        author = self['who_said_it']
+        who_said_it = getattr(author, 'title', author)
+
+        how_long_ago = clepy.time_ago(self['created_time'])
+
+        return self.e.get_template(
+            'comment_summarized_view.txt').render(locals())
 
     @property
     def detailed_view(self):
@@ -1245,9 +1246,10 @@ class Comment(Entity):
         who_said_it = getattr(who_said_it, 'title', who_said_it)
         time = self['created_time'].strftime("%A, %B %d, %Y, at %I:%M %P")
         description = self.description
-        tmpl = self.e.get_template('comment_detailed_view.txt')
 
-        return tmpl.render(locals())
+        return self.e.get_template(
+            'comment_detailed_view.txt').render(locals())
+
 
 
 

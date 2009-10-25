@@ -1,0 +1,7 @@
+{% if e.comments %}
+Comments
+--------
+{% for c in e.comments -%}
+{{ c.summarized_view }}
+{% endfor -%}
+{% endif %}
