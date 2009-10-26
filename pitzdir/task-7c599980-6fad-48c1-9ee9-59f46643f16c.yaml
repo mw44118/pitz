@@ -1,0 +1,24 @@
+components:
+- !!python/object:uuid.UUID
+  int: 170479705391647032501098302123768246956
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-10-26 10:53:49.759276
+description: "Example::\n\n    >>> Person(title='T')\n\nWill find a person with a\
+  \ title starting with T.  Not sure what to do if\nmore than one person is found.\
+  \  Maybe return a bag?"
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 281829325005055660957328011118288254534
+modified_time: 2009-10-26 10:55:02.426404
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Search by substrings of Entity titles
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 165289499282175652269443154300998250860
+yaml_file_saved: 2009-10-26 10:55:02.427253

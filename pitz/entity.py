@@ -99,18 +99,15 @@ class Entity(dict):
         if 'title' not in kwargs:
             raise TypeError("%s requires a title!" % cls.__name__)
 
-        k = kwargs['title']
+        title = kwargs['title']
 
-        if k in cls.already_instantiated:
-
-            o = cls.already_instantiated[k]
-            return cls.already_instantiated[k]
-
+        if title in cls.already_instantiated:
+            return cls.already_instantiated[title]
 
         else:
-            o = super(Entity, cls).__new__(cls, project, **kwargs)
-            cls.already_instantiated[k] = o
-            return o
+            self = super(Entity, cls).__new__(cls, project, **kwargs)
+            cls.already_instantiated[title] = self
+            return self
 
 
     def __setstate__(self, d):
@@ -1287,9 +1284,6 @@ class Comment(Entity):
 
         return self.e.get_template(
             'comment_detailed_view.txt').render(locals())
-
-
-
 
 
 class Component(Entity):
