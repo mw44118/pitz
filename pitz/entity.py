@@ -307,6 +307,14 @@ Description
 
         return tmpl.render(e=self)
 
+
+    @property
+    def description_excerpt(self):
+
+        return clepy.maybe_add_ellipses(
+            self['description'].replace('\n', ' '), 66)
+
+
     @property
     def pscore(self):
         return self['pscore']
@@ -539,6 +547,13 @@ Description
             """<a href="/entity/%(uuid)s">%(safe_title)s</a>"""
             % dict(uuid=self.uuid, safe_title=safe_title))
 
+    @property
+    def one_line_view(self):
+        """
+        Shorter description, meant to fit within 72 characters.
+        """
+
+        return "%(frag)s: %(title)s" % self
 
     @property
     def summarized_view(self):
@@ -1100,8 +1115,9 @@ class Task(Entity):
             milestone = '...'
 
         interesting_attributes = self.interesting_attributes_view
+        description_excerpt = self.description_excerpt
 
-        return "%(frag)6s  %(title)s\n        %(interesting_attributes)s\n" \
+        return "%(frag)6s  %(title)s\n        %(interesting_attributes)s\n        %(description_excerpt)s\n" \
         % locals()
 
 

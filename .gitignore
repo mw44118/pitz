@@ -11,3 +11,4 @@ pitzdir/html
 pitz_prof
 *.pickle
 pitzdir/me.yaml
+pitzdir/pitz.pid
