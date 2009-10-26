@@ -1,0 +1,26 @@
+# Matt's homemade .screenrc.
+
+# Draw that blue and red bar across the bottom of the terminal, with the cute
+# stuff like the window names and system CPU load.
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{.bW}%-w%{.rW}%n %t%{-}%+w %=%{..G} %H %l %{..Y} %m/%d %C%a "
+
+# Let me scroll back a thousand lines or so.
+defscrollback 1024
+
+# terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+
+# tell screen how to set colors. AB = background, AF=foreground
+termcapinfo mlterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+# erase background with current bg color
+defbce "on"
+
+# Automatically start up a bunch of windows.
+screen -t "shell" 0
+screen -t "code" 1 
+screen -t "tests" 2 
+screen -t "docs" 3
