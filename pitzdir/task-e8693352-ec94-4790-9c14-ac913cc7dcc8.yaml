@@ -18,13 +18,13 @@ estimate: !!python/object:uuid.UUID
   int: 194238884256655928753821602839070306529
 milestone: !!python/object:uuid.UUID
   int: 281829325005055660957328011118288254534
-modified_time: 2009-10-24 22:31:43.097677
+modified_time: 2009-10-26 14:32:29.911254
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
-title: Set task's summarized view based on mode
+title: Set task's summarized view based on order method
 type: task
 uuid: !!python/object:uuid.UUID
   int: 308927127165063473114284879685158952136
-yaml_file_saved: 2009-10-24 22:31:43.098116
+yaml_file_saved: 2009-10-26 14:32:29.927886
