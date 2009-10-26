@@ -6,20 +6,22 @@ created_by: &id001 !!python/object:uuid.UUID
 created_time: 2009-10-25 11:04:21.951531
 description: "I changed the summarized view to use more than one line.  Generally,\n\
   this is a better way to go; it looks prettier and I can show more\ninformation.\n\
-  \nBut it would be nice to be able to force scripts to use a single-line\napproach,\
-  \ sort of like this::\n\n    $ pitz-my-tasks --terse\n\nThen the output would just\
-  \ be a single line for each task."
+  \nBut it would be nice to be able to force scripts to use a particular\nview, sort\
+  \ of like these examples::\n\n    $ pitz-my-tasks --one-line\n    $ pitz-my-tasks\
+  \ --summarized-view\n    $ pitz-my-tasks --detailed-view\n    $ pitz-my-tasks --abbr-view\n\
+  \    $ pitz-my-tasks --frag-view\n\nIn order to do that, bags need to know how to\
+  \ tell entities how to print\nthemselves."
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 281829325005055660957328011118288254534
-modified_time: 2009-10-26 10:24:45.851161
+modified_time: 2009-10-26 19:47:04.375031
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 336444450266496547059833010238290292739
+  int: 327359014471868074244219043980996376403
 title: Add a --one-line option to scripts
 type: task
 uuid: !!python/object:uuid.UUID
   int: 39415329908130783319904631853648026519
-yaml_file_saved: 2009-10-26 10:24:45.851223
+yaml_file_saved: 2009-10-26 19:47:04.377067
