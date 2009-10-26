@@ -1,7 +1,7 @@
 components:
 - !!python/object:uuid.UUID
   int: 4957623306508968194182393857812906256
-created_by: &id002 !!python/object:uuid.UUID
+created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 created_time: 2009-10-03 12:03:08.677439
 description: "Here's the bug:\n\n1.  In one terminal, I start a pitz-shell session.\n\
@@ -18,16 +18,16 @@ description: "Here's the bug:\n\n1.  In one terminal, I start a pitz-shell sessi
   \ only load the pickle\ninto one process at a time."
 estimate: !!python/object:uuid.UUID
   int: 194238884256655928753821602839070306529
-html_file_saved: &id001 2009-10-03 20:02:31.377237
+html_file_saved: 2009-10-03 20:02:31.377237
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
-owner: *id002
+modified_time: 2009-10-25 21:02:16.805931
+owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 181191650815078915740523248343325601886
 title: Don't allow saving pickle over fresh yaml
 type: task
 uuid: !!python/object:uuid.UUID
   int: 114899869833498279986455571549004555295
-yaml_file_saved: 2009-10-03 20:03:04.901545
+yaml_file_saved: 2009-10-25 21:02:16.806595

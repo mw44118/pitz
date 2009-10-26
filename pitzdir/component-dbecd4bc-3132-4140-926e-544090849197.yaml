@@ -1,10 +1,13 @@
+attached_files: []
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
 created_time: 2009-06-15 11:06:06.930369
 description: ''
-html_file_saved: &id001 2009-10-03 20:01:50.601629
-modified_time: *id001
+html_file_saved: 2009-10-03 20:01:50.601629
+modified_time: 2009-10-25 19:19:32.475516
 pscore: 0
-title: web interface
+title: web
 type: component
 uuid: !!python/object:uuid.UUID
   int: 292330627916466842239283398422481375639
-yaml_file_saved: 2009-10-03 20:03:04.298650
+yaml_file_saved: 2009-10-25 19:19:37.598548

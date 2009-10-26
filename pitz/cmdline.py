@@ -22,12 +22,80 @@ from pitz.webapp import SimpleWSGIApp
 
 log = logging.getLogger('pitz.cmdline')
 
+
+class PitzScript(object):
+
+    """
+    Got this idea from a commenter, Linus, on my blog here:
+
+    http://blog.tplus1.com/index.php/2009/10/18/help-me-rewrite-some-repetitive-scripts/
+
+    Thanks Linus!
+    """
+
+    def handle_p(self, p):
+        """
+        Use this to monkey with the optparse.OptionParser instance p.
+        For example, set a specific usage or add an extra option.
+        """
+
+    def handle_options_and_args(self, p, options, args):
+        """
+        Use this to monkey with the options and args parsed from the
+        command line.
+        """
+
+    def handle_proj(self, p, options, args, proj):
+        """
+        Do the interesting stuff of the script in here.
+        """
+
+    def __call__(self):
+
+        p = setup_options()
+
+        self.handle_p(p)
+
+        options, args = p.parse_args()
+
+        if options.version:
+            print_version()
+            return
+
+        self.handle_options_and_args(p, options, args)
+
+        pitzdir = Project.find_pitzdir(options.pitzdir)
+        pidfile = write_pidfile_or_die(pitzdir)
+        proj = Project.from_pitzdir(pitzdir)
+        proj.find_me()
+
+        self.handle_proj(p, options, args, proj)
+
+        proj.save_entities_to_yaml_files()
+        os.remove(pidfile)
+
 def print_version():
 
     from pitz import __version__
     print(__version__)
 
 
+def write_pidfile_or_die(pitzdir):
+
+    # If the pidfile exists, warn and quit.
+    pidfile = os.path.join(pitzdir, 'pitz.pid')
+
+    if os.path.exists(pidfile):
+
+        print("Sorry, found a pidfile!  Kill process %s or remove %s." 
+            % (open(pidfile).read(), pidfile))
+
+        raise SystemExit
+
+    # Create the pidfile and write this process's pid inside.
+    open(pidfile, 'w').write(str(os.getpid()))
+
+    return pidfile
 def pitz_shell():
     """
     Start an ipython session after loading in a project.
@@ -42,6 +110,8 @@ def pitz_shell():
         return
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
+
+    pidfile = write_pidfile_or_die(pitzdir)
 
     p = Project.from_pitzdir(pitzdir)
     p._shell_mode = True
@@ -63,6 +133,9 @@ def pitz_shell():
         p.to_yaml_file()
         p.to_pickle()
         p.save_entities_to_yaml_files()
+
+    # Remove the pidfile.
+    os.remove(pidfile)
 
 
 def mk_pitzdir():
@@ -246,6 +319,8 @@ def pitz_add_task():
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
+    pidfile = write_pidfile_or_die(pitzdir)
+
     proj = Project.from_pitzdir(pitzdir)
     proj.find_me()
 
@@ -278,7 +353,10 @@ def pitz_add_task():
     print("Added %s to the project." % t.summarized_view)
     proj.save_entities_to_yaml_files()
 
+    os.remove(pidfile)
+
     return t
+
 
 
 pitz_add = pitz_add_task
@@ -375,15 +453,18 @@ def pitz_edit():
         p.print_usage()
         sys.exit()
 
-    path_to_yaml_file = options.pitzdir or Project.find_file()
+    pitzdir = Project.find_pitzdir(options.pitzdir)
 
-    proj = Project.from_yaml_file(path_to_yaml_file)
+    pidfile = write_pidfile_or_die(pitzdir)
 
+    proj = Project.from_pitzdir(pitzdir)
     e = proj[args[0]]
     e.edit(args[1])
 
     print("Edited %s on %s." % (args[1], args[0]))
     proj.save_entities_to_yaml_files()
+
+    os.remove(pidfile)
 
 
 def pitz_add_milestone():
@@ -399,6 +480,8 @@ def pitz_add_milestone():
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
+    pidfile = write_pidfile_or_die(pitzdir)
+
     proj = Project.from_pitzdir(pitzdir)
     proj.find_me()
 
@@ -412,6 +495,8 @@ def pitz_add_milestone():
     proj.append(m)
     print("Added %s to the project." % m.summarized_view)
     proj.save_entities_to_yaml_files()
+
+    os.remove(pidfile)
 
 
 def pitz_add_person():
@@ -715,40 +800,29 @@ def pitz_finish_task():
     t.finish()
     proj.save_entities_to_yaml_files()
 
+class PitzStartTask(PitzScript):
 
-def pitz_start_task():
+    def handle_p(self, p):
+        p.set_usage("%prog task")
 
-    """
-    Set the task's status to started and set the owner to you.
-    """
+    def handle_options_and_args(self, p, options, args):
 
-    p = setup_options()
-    p.set_usage("%prog task")
+        if not args:
+            p.print_usage()
+            raise SystemExit
 
-    options, args = p.parse_args()
+    def handle_proj(self, p, options, args, proj):
 
-    if not args:
-        p.print_usage()
-        return
+        if not proj.me:
+            print("Sorry, I don't know who you are.")
+            print("Use pitz-me to add yourself to the project.")
+            sys.exit()
 
-    if options.version:
-        print_version()
-        return
+        t = proj[args[0]]
+        t.assign(proj.me)
+        t.start()
 
-    pitzdir = Project.find_pitzdir(options.pitzdir)
-
-    proj = Project.from_pitzdir(pitzdir)
-    proj.find_me()
-
-    if not proj.me:
-        print("Sorry, I don't know who you are.")
-        print("Use pitz-me to add yourself to the project.")
-        sys.exit()
-
-    t = proj[args[0]]
-    t.assign(proj.me)
-    t.start()
-    proj.save_entities_to_yaml_files()
+pitz_start_task = PitzStartTask()
 
 
 def pitz_abandon_task():
@@ -839,6 +913,8 @@ def pitz_estimate_task():
     proj.save_entities_to_yaml_files()
 
 
+
+
 def pitz_attach_file():
 
     # Generic.
@@ -879,7 +955,7 @@ def frags():
     """
     Prints all the frags in this project.
 
-    I wrote this for command-line tab completion.
+    I wrote this for command-line tab completion on fragments.
     """
 
     p = setup_options()
@@ -896,4 +972,3 @@ def frags():
         x.split('-')[1][:6]
         for x in os.listdir(pitzdir)
         if '-' in x]))
-
