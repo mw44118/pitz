@@ -9,7 +9,7 @@ package, which is a grab bag of fanciness.
 
 from __future__ import with_statement
 
-import logging, os, subprocess, tempfile
+import logging
 
 __version__ = "0.3"
 

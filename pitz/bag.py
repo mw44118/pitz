@@ -7,11 +7,11 @@ Bags and Bag subclasses.
 from __future__ import with_statement
 
 from collections import defaultdict
-import csv, glob, logging, os, pickle
+import csv, glob, logging, os, pickle, subprocess
 from uuid import UUID, uuid4
 from urllib import quote_plus
 
-import clepy, jinja2, pkg_resources, tempita
+import clepy, jinja2, tempita
 
 from pitz.entity import *
 from pitz import *
@@ -65,6 +65,7 @@ class Bag(list):
         self.e.globals = {
             'isinstance':isinstance,
             'hasattr':hasattr,
+            'getattr':getattr,
             'enumerate':enumerate,
             'len':len,
             'looper':tempita.looper,
@@ -230,12 +231,11 @@ class Bag(list):
         
     @property
     def summarized_view(self):
-        s2 = "'%s' %s sorted by %s"
+        s2 = "'%s' %s"
 
         return s2 % (
             self.title,
-            self.contents,
-            self.order_method.__doc__)
+            self.contents)
 
     @property
     def shell_mode(self):
@@ -252,7 +252,24 @@ class Bag(list):
         t = self.e.get_template('bag_detailed_view.txt')
 
         return t.render(bag=self, entities=self,
-            shell_mode=self.shell_mode)
+            shell_mode=self.shell_mode,
+            entity_view='summarized_view')
+
+
+    def custom_view(self, entity_view='summarized_view'):
+        """
+        Print the entities using the entity view given.
+        """
+
+        self.order()
+
+        self._setup_jinja()
+
+        t = self.e.get_template('bag_detailed_view.txt')
+
+        return t.render(bag=self, entities=self,
+            shell_mode=self.shell_mode,
+            entity_view=entity_view)
 
 
     @property
