@@ -6,8 +6,8 @@
 
 {% for x, e in looper(entities) -%}
 {% if shell_mode -%}
-{{'%4d' | format(x.index)}}: {{getattr(e, entity_view)}}
+{{ '%4d' | format(x.index) }}: {{ getattr(e, entity_view) }}
 {% else -%}
-{{e.summarized_view}}
+{{ getattr(e, entity_view) }}
 {% endif -%}
 {% endfor %}

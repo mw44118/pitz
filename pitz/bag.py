@@ -223,6 +223,11 @@ class Bag(list):
 
 
     @property
+    def pitzdir(self):
+        return self.pathname
+
+
+    @property
     def html_filename(self):
 
         return self._html_filename \
@@ -236,6 +241,7 @@ class Bag(list):
         return s2 % (
             self.title,
             self.contents)
+
 
     @property
     def shell_mode(self):

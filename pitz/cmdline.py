@@ -39,40 +39,75 @@ class PitzScript(object):
         For example, set a specific usage or add an extra option.
         """
 
+
     def handle_options_and_args(self, p, options, args):
         """
-        Use this to monkey with the options and args parsed from the
-        command line.
+        Use this to examine the options and args parsed from the
+        command line.  Usually, at this point, scripts will make sure
+        they got all the right args and options.
         """
+
 
     def handle_proj(self, p, options, args, proj):
         """
         Do the interesting stuff of the script in here.
         """
 
-    def __call__(self):
 
-        p = setup_options()
+    def setup_p(self):
+        p = optparse.OptionParser()
 
-        self.handle_p(p)
+        p.add_option('-p', '--pitzdir')
+
+        p.add_option('--version', action='store_true',
+            help='show pitz version')
+
+        return p
+
+    def setup_options_and_args(self, p):
 
         options, args = p.parse_args()
 
         if options.version:
-            print_version()
-            return
+            from pitz import __version__
+            print(__version__)
+            raise SystemExit
 
-        self.handle_options_and_args(p, options, args)
+        return options, args
+
+
+    def setup_proj(self, p, options, args):
 
         pitzdir = Project.find_pitzdir(options.pitzdir)
         pidfile = write_pidfile_or_die(pitzdir)
         proj = Project.from_pitzdir(pitzdir)
+        proj.pidfile = pidfile
         proj.find_me()
 
+        return proj
+
+
+    def __call__(self):
+
+        p = self.setup_p()
+            
+        # Call to the first specialized function.
+        self.handle_p(p)
+
+        options, args = self.setup_options_and_args(p)
+
+        # Call the second specialized function.
+        self.handle_options_and_args(p, options, args)
+
+        proj = self.setup_proj(p, options, args)
+
+        # Third special function.
         self.handle_proj(p, options, args, proj)
 
+        # Save and close.
         proj.save_entities_to_yaml_files()
-        os.remove(pidfile)
+        os.remove(proj.pidfile)
+
 
 def print_version():
 
@@ -96,6 +131,8 @@ def write_pidfile_or_die(pitzdir):
     open(pidfile, 'w').write(str(os.getpid()))
 
     return pidfile
+
+
 def pitz_shell():
     """
     Start an ipython session after loading in a project.
@@ -642,34 +679,44 @@ def pitz_destroy():
     proj.save_entities_to_yaml_files()
 
 
-def pitz_my_tasks():
+class MyTasks(PitzScript):
 
-    p = setup_options()
+    def handle_p(self, p):
 
-    options, args = p.parse_args()
+        p.add_option('--one-line-view', help='single line view',
+            dest='custom_view', action='store_const', const='one_line_view')
 
-    if options.version:
-        print_version()
-        return
+        p.add_option('--summarized-view', help='summarized view (default)',
+            dest='custom_view', action='store_const', const='summarized_view')
 
-    pitzdir = Project.find_pitzdir(options.pitzdir)
+        p.add_option('--detailed-view', help='detailed view',
+            dest='custom_view', action='store_const', const='detailed_view')
 
-    proj = Project.from_pitzdir(pitzdir)
-    proj.find_me()
+        p.add_option('--abbr-view', help='abbreviated view',
+            dest='custom_view', action='store_const', const='abbr')
 
-    if not proj.me:
-        print("Sorry, I don't know who you are.")
-        print("Use pitz-me to add yourself to the project.")
-        sys.exit()
+        p.add_option('--frag-view', help='fragment view',
+            dest='custom_view', action='store_const', const='frag')
 
-    my_tasks = proj.me.my_tasks
 
-    if my_tasks:
-        send_through_pager(str(my_tasks))
+    def handle_proj(self, p, options, args, proj):
 
-    else:
-        print("I didn't find any tasks for you (%(title)s)."
-            % proj.me)
+        if not proj.me:
+            print("Sorry, I don't know who you are.")
+            print("Use pitz-me to add yourself to the project.")
+            raise SystemExit
+
+        if proj.me.my_tasks:
+
+            send_through_pager(proj.me.my_tasks.custom_view(
+                options.custom_view or 'summarized_view'))
+
+        else:
+            print("I didn't find any tasks for you (%(title)s)."
+                % proj.me)
+
+
+pitz_my_tasks = MyTasks()
 
 
 def pitz_me():
@@ -911,8 +958,6 @@ def pitz_estimate_task():
 
     # Save the project.
     proj.save_entities_to_yaml_files()
-
-
 
 
 def pitz_attach_file():
