@@ -38,6 +38,7 @@ class TestPitzCmdLine(unittest.TestCase):
 
 class TestPitzEverything(TestPitzCmdLine):
 
+    @raises(SystemExit)
     def test_version(self):
 
         # This just feels wrong.  There's gotta be a better way to set
@@ -74,6 +75,7 @@ class TestPitzEverything(TestPitzCmdLine):
 
 class TestPitzTodo(TestPitzCmdLine):
 
+    @raises(SystemExit)
     def test_version(self):
 
         # This just feels wrong.  There's gotta be a better way to set
