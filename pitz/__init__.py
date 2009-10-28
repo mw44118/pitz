@@ -11,7 +11,7 @@ from __future__ import with_statement
 
 import logging
 
-__version__ = "0.3"
+__version__ = "0.4.0"
 
 
 # This bugs me.  I don't like how instead of just defining stuff, I'm
