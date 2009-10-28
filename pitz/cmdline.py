@@ -31,6 +31,8 @@ class PitzScript(object):
     http://blog.tplus1.com/index.php/2009/10/18/help-me-rewrite-some-repetitive-scripts/
 
     Thanks Linus!
+
+    This is the generic script class.
     """
 
     def handle_p(self, p):
@@ -53,6 +55,24 @@ class PitzScript(object):
         Do the interesting stuff of the script in here.
         """
 
+    def apply_filter_and_grep(self, p, options, args, b):
+        """
+        Return a new bag after filtering and using grep on the bag b
+        passed in.
+        """
+
+        filter = build_filter(args)
+
+        results = b
+
+        if filter:
+            results = results(**filter)
+
+        if options.grep:
+            results = results.grep(options.grep)
+        
+        return results
+
 
     def setup_p(self):
         p = optparse.OptionParser()
@@ -63,6 +83,7 @@ class PitzScript(object):
             help='show pitz version')
 
         return p
+
 
     def setup_options_and_args(self, p):
 
@@ -86,20 +107,49 @@ class PitzScript(object):
 
         return proj
 
+    def add_grep_option(self, p):
+
+        p.add_option('-g', '--grep',
+            help='Filter to entities matching a regex')
+
+        return p
+
+
+    def add_view_options(self, p):
+
+        p.add_option('--one-line-view', help='single line view',
+            dest='custom_view', action='store_const', const='one_line_view')
+
+        p.add_option('--summarized-view', help='summarized view (default)',
+            dest='custom_view', action='store_const', const='summarized_view')
+
+        p.add_option('--detailed-view', help='detailed view',
+            dest='custom_view', action='store_const', const='detailed_view')
+
+        p.add_option('--abbr-view', help='abbreviated view',
+            dest='custom_view', action='store_const', const='abbr')
+
+        p.add_option('--frag-view', help='fragment view',
+            dest='custom_view', action='store_const', const='frag')
+
+        return p
+
 
     def __call__(self):
 
-        p = self.setup_p()
-            
-        # Call to the first specialized function.
-        self.handle_p(p)
+        with spinning_distraction():
 
-        options, args = self.setup_options_and_args(p)
+            p = self.setup_p()
+                
+            # Call to the first specialized function.
+            self.handle_p(p)
 
-        # Call the second specialized function.
-        self.handle_options_and_args(p, options, args)
+            options, args = self.setup_options_and_args(p)
 
-        proj = self.setup_proj(p, options, args)
+            # Call the second specialized function.
+            self.handle_options_and_args(p, options, args)
+
+            proj = self.setup_proj(p, options, args)
 
         # Third special function.
         self.handle_proj(p, options, args, proj)
@@ -107,6 +157,63 @@ class PitzScript(object):
         # Save and close.
         proj.save_entities_to_yaml_files()
         os.remove(proj.pidfile)
+
+
+class MyTasks(PitzScript):
+
+    def handle_p(self, p):
+        self.add_grep_option(p)
+        self.add_view_options(p)
+
+
+    def handle_proj(self, p, options, args, proj):
+
+        if not proj.me:
+            print("Sorry, I don't know who you are.")
+            print("Use pitz-me to add yourself to the project.")
+            raise SystemExit
+
+        if proj.me.my_tasks:
+
+            results = self.apply_filter_and_grep(
+                p, options, args, proj.me.my_tasks)
+
+            send_through_pager(results.custom_view(
+                options.custom_view or 'summarized_view'))
+
+        else:
+            print("I didn't find any tasks for you (%(title)s)."
+                % proj.me)
+
+
+class PitzEverything(PitzScript):
+
+    def handle_p(self, p):
+        self.add_grep_option(p)
+        self.add_view_options(p)
+
+
+    def handle_proj(self, p, options, args, proj):
+
+        results = self.apply_filter_and_grep(p, options, args, proj)
+
+        send_through_pager(results.custom_view(
+            options.custom_view or 'summarized_view'))
+
+
+class PitzTodo(PitzScript):
+
+    def handle_p(self, p):
+        self.add_grep_option(p)
+        self.add_view_options(p)
+
+
+    def handle_proj(self, p, options, args, proj):
+
+        results = self.apply_filter_and_grep(p, options, args, proj.todo)
+
+        send_through_pager(results.custom_view(
+            options.custom_view or 'summarized_view'))
 
 
 def print_version():
@@ -266,77 +373,6 @@ def setup_options():
         help='show pitz version')
 
     return p
-
-
-def pitz_everything():
-
-    with spinning_distraction():
-
-        p = setup_options()
-
-        p.add_option('-g', '--grep',
-            help='Filter to entities matching a regex')
-
-        options, args = p.parse_args()
-
-        if options.version:
-            print_version()
-            return
-
-        pitzdir = Project.find_pitzdir(options.pitzdir)
-
-        proj = Project.from_pitzdir(pitzdir)
-        proj.find_me()
-
-        d = build_filter(args)
-
-        results = proj
-
-        if d:
-            results = results(**d)
-
-        if options.grep:
-            results = results.grep(options.grep)
-
-    send_through_pager(str(results))
-
-
-def pitz_todo():
-
-    with spinning_distraction():
-
-        p = setup_options()
-
-        p.add_option('-g', '--grep',
-            help='Filter to entities matching a regex')
-
-        options, args = p.parse_args()
-
-        if options.version:
-            print_version()
-            return
-
-        pitzdir = Project.find_pitzdir(options.pitzdir)
-
-        proj = Project.from_pitzdir(pitzdir)
-        proj.find_me()
-
-        d = build_filter(args)
-
-        # This line here is the only thing different from
-        # pitz_everything, so these two functions should be
-        # consolidated.
-        results = proj.todo
-
-        # Apply filters.
-        if d:
-            results = results(**d)
-
-        # Apply grep.
-        if options.grep:
-            results = results.grep(options.grep)
-
-    send_through_pager(str(results))
 
 
 def pitz_add_task():
@@ -679,44 +715,6 @@ def pitz_destroy():
     proj.save_entities_to_yaml_files()
 
 
-class MyTasks(PitzScript):
-
-    def handle_p(self, p):
-
-        p.add_option('--one-line-view', help='single line view',
-            dest='custom_view', action='store_const', const='one_line_view')
-
-        p.add_option('--summarized-view', help='summarized view (default)',
-            dest='custom_view', action='store_const', const='summarized_view')
-
-        p.add_option('--detailed-view', help='detailed view',
-            dest='custom_view', action='store_const', const='detailed_view')
-
-        p.add_option('--abbr-view', help='abbreviated view',
-            dest='custom_view', action='store_const', const='abbr')
-
-        p.add_option('--frag-view', help='fragment view',
-            dest='custom_view', action='store_const', const='frag')
-
-
-    def handle_proj(self, p, options, args, proj):
-
-        if not proj.me:
-            print("Sorry, I don't know who you are.")
-            print("Use pitz-me to add yourself to the project.")
-            raise SystemExit
-
-        if proj.me.my_tasks:
-
-            send_through_pager(proj.me.my_tasks.custom_view(
-                options.custom_view or 'summarized_view'))
-
-        else:
-            print("I didn't find any tasks for you (%(title)s)."
-                % proj.me)
-
-
-pitz_my_tasks = MyTasks()
 
 
 def pitz_me():
@@ -847,6 +845,7 @@ def pitz_finish_task():
     t.finish()
     proj.save_entities_to_yaml_files()
 
+
 class PitzStartTask(PitzScript):
 
     def handle_p(self, p):
@@ -868,8 +867,6 @@ class PitzStartTask(PitzScript):
         t = proj[args[0]]
         t.assign(proj.me)
         t.start()
-
-pitz_start_task = PitzStartTask()
 
 
 def pitz_abandon_task():
@@ -1017,3 +1014,9 @@ def frags():
         x.split('-')[1][:6]
         for x in os.listdir(pitzdir)
         if '-' in x]))
+
+# These are all the scripts.
+pitz_my_tasks = MyTasks()
+pitz_start_task = PitzStartTask()
+pitz_everything = PitzEverything()
+pitz_todo = PitzTodo()
