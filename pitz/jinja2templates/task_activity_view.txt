@@ -1,0 +1,7 @@
+{% if activity %}
+{{ activity.title }}
+{% for dash in activity.title %}-{% endfor %}
+{% for a in activity -%}
+{{ a.summarized_view }}
+{% endfor -%}
+{% endif %}

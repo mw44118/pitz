@@ -16,3 +16,5 @@ Attributes
 {% endfor -%}
 
 {{ e.comments_view }}
+
+{{ e.recent_activity_view }}

@@ -84,11 +84,13 @@ class Entity(dict):
     # key.
     do_not_update_modified_time_for_these_keys = [
         'yaml_file_saved', 'html_file_saved', 'modified_time',
+        'created_by',
     ]
 
     # Don't track activity on these attributes.
     do_not_track_activity_for_these_keys = [
         'yaml_file_saved', 'html_file_saved', 'modified_time',
+        'created_by',
     ]
 
 
@@ -137,7 +139,7 @@ class Entity(dict):
         # Set some attributes that also get set in __init__.
 
         self.update_modified_time = True
-        self.record_activity_on_changes = False
+        self.record_activity_on_changes = True
 
 
     def __init__(self, project=None, **kwargs):
@@ -220,7 +222,6 @@ class Entity(dict):
     def _setup_jinja(self):
         # Set up a template loader.
         self.e = jinja2.Environment(
-            # autoescape=True,
             extensions=['jinja2.ext.loopcontrols'],
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
@@ -292,8 +293,11 @@ class Entity(dict):
 
             old_val = self.get(attr)
 
-            activity_title = "%s set %s from %s to %s" \
-            % (self.project.me.abbr, attr, old_val, val)
+            activity_title = "%s set %s from %s to %s on %s" \
+            % (self.project.me.abbr, attr,
+                clepy.maybe_add_ellipses(old_val, 16),
+                clepy.maybe_add_ellipses(val, 16),
+                self.frag)
 
             return Activity(self.project, entity=self.uuid,
                 title=activity_title,
@@ -1199,16 +1203,18 @@ class Task(Entity):
         interesting_attributes = self.interesting_attributes_view
         description_excerpt = self.description_excerpt
 
-        return "%(frag)6s  %(title)s\n        %(interesting_attributes)s\n        %(description_excerpt)s\n" \
-        % locals()
-
-
+        return (
+            "%(frag)6s  %(title)s\n"
+            "        %(interesting_attributes)s\n"
+            "        %(description_excerpt)s\n"
+        % locals())
 
 
     @property
     def comments_view(self):
 
-        return self.e.get_template('task_comments_view.txt').render(e=self)
+        return self.e.get_template(
+            'task_comments_view.txt').render(e=self)
 
 
     @property
@@ -1246,6 +1252,30 @@ class Task(Entity):
             self.milestone, 
             self.components_view,
         )])
+
+    @property
+    def recent_activity(self, how_many=5):
+        """
+        Return some (specified by how_many) activities.
+        """
+
+        # Importing this here because the bag module also imports this.
+        # When I fix slicing on bags, this won't be necessary.
+        from pitz.bag import Bag
+
+        recent_activities = self.activities[:how_many]
+        b = Bag(
+            'Recent activity',
+            entities=recent_activities,
+            order_method=self.activities.order_method)
+
+        return b
+
+    @property
+    def recent_activity_view(self):
+
+        return self.e.get_template('task_activity_view.txt')\
+        .render(activity=self.recent_activity)
 
 
     def abandon(self, comment_title=None, comment_description=None):
@@ -1353,7 +1383,10 @@ class Comment(Entity):
         title = textwrap.fill(self['title'].strip().replace('\n', '  '))
         who_said_it = self['who_said_it']
         who_said_it = getattr(who_said_it, 'title', who_said_it)
-        time = self['created_time'].strftime("%A, %B %d, %Y, at %I:%M %P")
+
+        time = self['created_time'].strftime(
+            "%A, %B %d, %Y, at %I:%M %P")
+
         description = self.description
 
         return self.e.get_template(
@@ -1379,6 +1412,10 @@ class Activity(Entity):
         who_did_it=Person,
         entity=Entity,
     )
+
+    @property
+    def summarized_view(self):
+        return self.title
     
 
 class Component(Entity):
@@ -1391,7 +1428,8 @@ class Component(Entity):
     def tasks(self):
 
         if not self.project:
-            raise NoProject("I need a project before I can look up tasks!")
+            raise NoProject(
+                "I need a project before I can look up tasks!")
 
         tasks = self.project(type='task', components=self)
         tasks.title = 'Tasks in %(title)s' % self

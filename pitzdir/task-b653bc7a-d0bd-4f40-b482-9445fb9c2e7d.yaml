@@ -6,20 +6,22 @@ description: "Right now, there's a method task.start() and it would be nice to c
   \ pitz-finish, and pitz-abandon, we\nshould add a -m or --message option that allows\
   \ the user to pas in a\ncomment.\n\nSo this command-line action::\n\n    $ pitz-start\
   \ --message \"should be done this afternoon\" abc123\n\nwould run this underneath::\n\
-  \n    >>> p['abc123'].start(\"should be done this afternoon\")"
+  \n    >>> p['abc123'].start(\"should be done this afternoon\")\n\nI'm choosing -m\
+  \ and --message to resemble how svn and git work, even\nthough I would prefer something\
+  \ like --comment."
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 html_file_saved: 2009-10-03 20:02:30.034573
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-10-28 13:39:32.907849
+modified_time: 2009-10-28 14:37:32.460559
 owner: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 336444450266496547059833010238290292739
-title: Allow adding comments when starting, abandoning, and finishing task
+title: Accept comments when starting, abandoning, and finishing task
 type: task
 uuid: !!python/object:uuid.UUID
   int: 242354278695556136099247632992203189885
-yaml_file_saved: 2009-10-28 13:39:32.909648
+yaml_file_saved: 2009-10-28 14:37:32.478508

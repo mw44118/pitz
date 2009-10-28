@@ -2,7 +2,7 @@
 
 from __future__ import with_statement
 
-import contextlib, logging, optparse, os, subprocess, sys, uuid, warnings
+import logging, optparse, os, sys, warnings
 
 warnings.simplefilter('ignore', DeprecationWarning)
 
@@ -10,12 +10,13 @@ from wsgiref.simple_server import make_server
 
 from IPython.Shell import IPShellEmbed
 
-from clepy import edit_with_editor, send_through_pager, spinning_distraction
+from clepy import edit_with_editor, send_through_pager, \
+spinning_distraction
 
 from pitz import *
 from pitz.bag import Project
 
-from pitz.entity import Comment, Component, Entity, Estimate, Milestone, \
+from pitz.entity import Component, Entity, Estimate, Milestone, \
 Person, Status, Task
 
 from pitz.webapp import SimpleWSGIApp
