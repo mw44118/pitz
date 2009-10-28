@@ -472,7 +472,8 @@ class Project(Bag):
         person=Person,
         milestone=Milestone,
         comment=Comment,
-        component=Component)
+        component=Component,
+        activity=Activity)
 
     plural_names = dict(
         [(c.plural_name, c) for c in classes.values()])

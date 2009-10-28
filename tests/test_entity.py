@@ -500,7 +500,7 @@ class TestEntity(unittest.TestCase):
     def test_created_by_2(self):
 
         p = Project()
-        p.current_user = 'matt'
+        p.current_user = Person(p, title='matt')
         e = Entity(p, title="entity")
         assert e['created_by'] == p.current_user
 

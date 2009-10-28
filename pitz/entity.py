@@ -19,7 +19,7 @@ import clepy
 
 from pitz import NoProject
 
-from pitz import by_created_time
+from pitz import by_created_time, by_whatever
 
 log = logging.getLogger('pitz.entity')
 
@@ -86,6 +86,11 @@ class Entity(dict):
         'yaml_file_saved', 'html_file_saved', 'modified_time',
     ]
 
+    # Don't track activity on these attributes.
+    do_not_track_activity_for_these_keys = [
+        'yaml_file_saved', 'html_file_saved', 'modified_time',
+    ]
+
 
     def __new__(cls, project=None, **kwargs):
 
@@ -132,12 +137,13 @@ class Entity(dict):
         # Set some attributes that also get set in __init__.
 
         self.update_modified_time = True
-        self.record_comments_on_changes = False
+        self.record_activity_on_changes = False
 
 
     def __init__(self, project=None, **kwargs):
 
         self.update_modified_time = False
+        self.record_activity_on_changes = False
 
         # Make sure we got all the required fields.
         for rf, default_value in self.required_fields.items():
@@ -187,7 +193,7 @@ class Entity(dict):
             self['created_by'] = self.project.current_user
 
         self.update_modified_time = True
-        self.record_comments_on_changes = False
+        self.record_activity_on_changes = True
 
 
     def _get_project(self):
@@ -253,16 +259,12 @@ class Entity(dict):
                 raise TypeError("%s must be an instance of %s, not %s!"
                     % (attr, self.allowed_types[attr], type(val)))
 
+        self.maybe_update_modified_time(attr)
+        self.maybe_record_activity(attr, val)
 
-        # Now that we made it through the gauntlet, do the assignment.
-
+        # Finally, do the setitem.
         super(Entity, self).__setitem__(attr, val)
 
-        if self.update_modified_time \
-        and attr not in self.do_not_update_modified_time_for_these_keys:
-
-            super(Entity, self).__setitem__(
-                'modified_time', datetime.now())
 
     def __hash__(self):
         """
@@ -270,6 +272,82 @@ class Entity(dict):
         keys and set elements.
         """
         return self.uuid.int
+
+
+    def maybe_update_modified_time(self, attr):
+
+        if self.update_modified_time \
+        and attr not in self.do_not_update_modified_time_for_these_keys:
+
+            super(Entity, self).__setitem__(
+                'modified_time', datetime.now())
+
+
+    def maybe_record_activity(self, attr, val):
+
+        if getattr(self, 'record_activity_on_changes', False) \
+        and self.project \
+        and self.project.me \
+        and attr not in self.do_not_track_activity_for_these_keys:
+
+            old_val = self.get(attr)
+
+            activity_title = "%s set %s from %s to %s" \
+            % (self.project.me.abbr, attr, old_val, val)
+
+            return Activity(self.project, entity=self.uuid,
+                title=activity_title,
+                who_did_it=self.project.me,
+                description='')
+
+
+    def comment(self, who_said_it=None, title=None, description=None):
+
+        """
+        Store a comment on this entity.
+        """
+
+        if not who_said_it:
+
+            if self.project and hasattr(self.project, 'me'):
+                who_said_it = self.project.me
+
+            else:
+                who_said_it = Person.choose()
+
+        if title is None:
+            title = '''RE: task %(frag)s "%(title)s"''' % self
+
+        if description is None:
+            description = clepy.edit_with_editor("# Comment goes here")
+
+        return Comment(self.project, entity=self.uuid, title=title,
+            who_said_it=who_said_it, description=description)
+
+
+    @property
+    def comments(self):
+        """
+        Return all comments on this entity.
+        """
+
+        b = self.project(type='comment', entity=self)
+        b.title = 'Comments on %(title)s' % self
+
+        return b.order(by_created_time)
+
+    @property
+    def activities(self):
+        """
+        Return all activities on this entity.
+        """
+
+        b = self.project(type='activity', entity=self)
+        b.title = 'Activity on %(title)s' % self
+
+        return b.order(by_whatever(
+            'created_time (reversed)',
+            'created_time', reverse=True))
 
 
     @property
@@ -687,6 +765,7 @@ Description
             raise NoProject("I can't replace pointers without a project")
 
         self.update_modified_time = False
+        self.record_activity_on_changes = False
 
         for attr, val in self.items():
 
@@ -701,6 +780,7 @@ Description
                 self[attr] = [self.project.by_uuid(x) for x in val]
 
         self.update_modified_time = True
+        self.record_activity_on_changes = True
         return self
 
 
@@ -714,6 +794,7 @@ Description
         """
 
         self.update_modified_time = False
+        self.record_activity_on_changes = False
 
         for attr, val in self.items():
             self[attr] = getattr(val, 'uuid', val)
@@ -722,6 +803,7 @@ Description
                 self[attr] = [getattr(e, 'uuid', e) for e in val]
 
         self.update_modified_time = True
+        self.record_activity_on_changes = True
         return self
 
 
@@ -1121,16 +1203,6 @@ class Task(Entity):
         % locals()
 
 
-    @property
-    def comments(self):
-        """
-        Return all comments on this task.
-        """
-
-        b = self.project(type='comment', entity=self)
-        b.title = 'Comments on %(title)s' % self
-
-        return b.order(by_created_time)
 
 
     @property
@@ -1176,35 +1248,36 @@ class Task(Entity):
         )])
 
 
-    def __setitem__(self, attr, val):
-        
-        old_val = self.get(attr)
-
-        if getattr(self, 'record_comments_on_changes', False) \
-        and self.project \
-        and self.project.me:
-
-            comment = "set %s from %s to %s" % (attr, old_val, val)
-
-            self.comment(title=comment, description='')
-
-        super(Task, self).__setitem__(attr, val)
-
-
-    def abandon(self):
+    def abandon(self, comment_title=None, comment_description=None):
 
         if self['status'].title in ['unstarted', 'started']:
             self['status'] = Status(title='abandoned')
+
+            if comment_title and self.project and self.project.me:
+
+                Comment(self.project, who_said_it=self.project.me,
+                    title=comment_title,
+                    description=comment_description)
+
             return self
 
         else:
-            raise ValueError('You can only abandon unstarted or started tasks.')
+            raise ValueError(
+                'You can only abandon unstarted or started tasks.')
 
 
-    def start(self):
+    def start(self, comment_title=None, comment_description=None):
+
 
         if self['status'].title in ['unstarted', 'abandoned']:
             self['status'] = Status(title='started')
+
+            if comment_title and self.project and self.project.me:
+
+                Comment(self.project, who_said_it=self.project.me,
+                    title=comment_title,
+                    description=comment_description)
+
             return self
 
         else:
@@ -1212,34 +1285,19 @@ class Task(Entity):
                 'You can only start unstarted or abandoned tasks.')
 
 
-    def finish(self):
+    def finish(self, comment_title=None, comment_description=None):
 
         self['status'] = Status(title='finished')
+
+        if comment_title and self.project and self.project.me:
+
+            Comment(self.project, who_said_it=self.project.me,
+                title=comment_title,
+                description=comment_description)
+
         return self
 
 
-    def comment(self, who_said_it=None, title=None, description=None):
-
-        """
-        Store a comment on this task.
-        """
-
-        if not who_said_it:
-
-            if self.project and hasattr(self.project, 'me'):
-                who_said_it = self.project.me
-
-            else:
-                who_said_it = Person.choose()
-
-        if title is None:
-            title = '''RE: task %(frag)s "%(title)s"''' % self
-
-        if description is None:
-            description = clepy.edit_with_editor("# Comment goes here")
-
-        return Comment(self.project, entity=self.uuid, title=title,
-            who_said_it=who_said_it, description=description)
 
 
     def assign(self, owner):
@@ -1301,6 +1359,27 @@ class Comment(Entity):
         return self.e.get_template(
             'comment_detailed_view.txt').render(locals())
 
+
+class Activity(Entity):
+    """
+    Tracks interesting changes to the data model.
+    """
+
+    plural_name = "activities"
+
+    required_fields = dict(
+        title=None,
+        description='',
+        pscore=0,
+        who_did_it=None,
+        entity=None,
+    )
+
+    allowed_types = dict(
+        who_did_it=Person,
+        entity=Entity,
+    )
+    
 
 class Component(Entity):
 
