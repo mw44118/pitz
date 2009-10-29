@@ -63,6 +63,9 @@ def by_whatever(func_name, *whatever, **kwargs):
 by_spiciness = by_whatever('by_spiciness', 'peppers')
 by_created_time = by_whatever('by_created_time', 'created_time')
 
+by_descending_created_time = by_whatever('by descending created time',
+    'created_time', reverse=True)
+
 by_type_status_created_time = by_whatever('by_type_status_created_time',
     'type', 'status', 'created time')
 

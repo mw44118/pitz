@@ -217,6 +217,12 @@ class PitzTodo(PitzScript):
             options.custom_view or 'summarized_view'))
 
 
+class RecentActivity(PitzScript):
+
+    def handle_proj(self, p, options, args, proj):
+        send_through_pager(proj.recent_activity.detailed_view)
+
+
 def print_version():
 
     from pitz import __version__
@@ -1021,3 +1027,4 @@ pitz_my_tasks = MyTasks()
 pitz_start_task = PitzStartTask()
 pitz_everything = PitzEverything()
 pitz_todo = PitzTodo()
+pitz_recent_activity= RecentActivity()

@@ -824,8 +824,6 @@ class Project(Bag):
         return p
 
 
-
-
     @property
     def todo(self):
 
@@ -838,8 +836,24 @@ class Project(Bag):
 
         return b
 
+    @property
+    def recent_activity(self):
+
+        return Bag(
+            "Recent activity",
+            entities=self(type='activity')[:10],
+            order_method=by_descending_created_time)
+
 
     # TODO: replace all these properties with some metaclass tomfoolery.
+    @property
+    def activities(self):
+        b = self(type='activity')
+        b.title="Activities"
+        b.order(by_descending_created_time)
+        return b
+
+
     @property
     def milestones(self):
         b = self(type='milestone')
