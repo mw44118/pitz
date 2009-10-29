@@ -885,6 +885,34 @@ class PitzUnassignTask(PitzStartTask):
             t['title'] = t['title']
 
 
+class PitzPrioritizeAbove(PitzScript):
+
+    def handle_p(self, p):
+        p.set_usage("%prog frag1 frag2")
+
+        p.add_option('-m', '--message',
+            help="Store a comment")
+
+    def handle_proj(self, p, options, args, proj):
+        t1 = proj[args[0]]
+        t2 = proj[args[1]]
+        t1.prioritize_above(t2)
+
+        if options.message:
+            t1.comment(title=options.message, description='')
+    
+
+class PitzPrioritizeBelow(PitzPrioritizeAbove):
+
+    def handle_proj(self, p, options, args, proj):
+        t1 = proj[args[0]]
+        t2 = proj[args[1]]
+        t1.prioritize_below(t2)
+
+        if options.message:
+            t1.comment(title=options.message, description='')
+
+
 def pitz_webapp():
 
     """
@@ -1015,3 +1043,4 @@ pitz_unassign_task = PitzUnassignTask()
 pitz_everything = PitzEverything()
 pitz_todo = PitzTodo()
 pitz_recent_activity= RecentActivity()
+pitz_prioritize_above = PitzPrioritizeAbove()

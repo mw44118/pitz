@@ -306,10 +306,17 @@ class Entity(dict):
 
     def prioritize_above(self, other):
         """
-        Set my pscore to the other person's pscore + 1.
+        Set my pscore to the other entity's pscore + 1.
         """
 
         self['pscore'] = other['pscore'] + 1
+
+    def prioritize_below(self, other):
+        """
+        Set my pscore to the other entity's pscore - 1.
+        """
+
+        self['pscore'] = other['pscore'] - 1
 
 
     def comment(self, who_said_it=None, title=None, description=None):
@@ -1258,7 +1265,6 @@ class Task(Entity):
             self.estimate, 
             self.milestone, 
             self.components_view,
-            self.pscore,
         )])
 
     @property
@@ -1341,8 +1347,6 @@ class Task(Entity):
                 description=comment_description)
 
         return self
-
-
 
 
     def assign(self, owner):

@@ -69,6 +69,8 @@ started pitz.""",
     pitz-attach-file = pitz.cmdline:pitz_attach_file
     pitz-frags = pitz.cmdline:frags
     pitz-recent-activity = pitz.cmdline:pitz_recent_activity
+    pitz-prioritize-above = pitz.cmdline:pitz_prioritize_above
+    pitz-prioritize-below = pitz.cmdline:pitz_prioritize_below
     
     """,
 
