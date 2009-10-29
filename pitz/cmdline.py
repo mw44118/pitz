@@ -828,35 +828,13 @@ def pitz_assign_task():
     proj.save_entities_to_yaml_files()
 
 
-def pitz_finish_task():
-
-    p = setup_options()
-    p.set_usage("%prog task")
-
-    options, args = p.parse_args()
-
-    if not args:
-        p.print_usage()
-        return
-
-    if options.version:
-        print_version()
-        return
-
-    pitzdir = Project.find_pitzdir(options.pitzdir)
-
-    proj = Project.from_pitzdir(pitzdir)
-    proj.find_me()
-
-    t = proj[args[0]]
-    t.finish()
-    proj.save_entities_to_yaml_files()
-
-
 class PitzStartTask(PitzScript):
 
     def handle_p(self, p):
         p.set_usage("%prog task")
+
+        p.add_option('-m', '--message',
+            help="Store a comment")
 
     def handle_options_and_args(self, p, options, args):
 
@@ -873,32 +851,35 @@ class PitzStartTask(PitzScript):
 
         t = proj[args[0]]
         t.assign(proj.me)
-        t.start()
+        t.start(options.message)
 
 
-def pitz_abandon_task():
+class PitzFinishTask(PitzStartTask):
 
-    p = setup_options()
-    p.set_usage("%prog task")
+    def handle_proj(self, p, options, args, proj):
 
-    options, args = p.parse_args()
+        if not proj.me:
+            print("Sorry, I don't know who you are.")
+            print("Use pitz-me to add yourself to the project.")
+            sys.exit()
 
-    if not args:
-        p.print_usage()
-        return
+        t = proj[args[0]]
+        t.assign(proj.me)
+        t.finish(options.message)
 
-    if options.version:
-        print_version()
-        return
 
-    pitzdir = Project.find_pitzdir(options.pitzdir)
+class PitzAbandonTask(PitzStartTask):
 
-    proj = Project.from_pitzdir(pitzdir)
-    proj.find_me()
+    def handle_proj(self, p, options, args, proj):
+        proj[args[0]].abandon(options.message)
 
-    t = proj[args[0]]
-    t.abandon()
-    proj.save_entities_to_yaml_files()
+
+class PitzUnassignTask(PitzStartTask):
+
+    def handle_proj(self, p, options, args, proj):
+        t = proj[args[0]]
+        if 'owner' in t:
+            t.pop('owner')
 
 
 def pitz_webapp():
@@ -1025,6 +1006,9 @@ def frags():
 # These are all the scripts.
 pitz_my_tasks = MyTasks()
 pitz_start_task = PitzStartTask()
+pitz_finish_task = PitzFinishTask()
+pitz_abandon_task = PitzAbandonTask()
+pitz_unassign_task = PitzUnassignTask()
 pitz_everything = PitzEverything()
 pitz_todo = PitzTodo()
 pitz_recent_activity= RecentActivity()

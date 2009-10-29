@@ -1,0 +1,14 @@
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2009-10-28 20:43:56.527108
+description: null
+entity: !!python/object:uuid.UUID
+  int: 100115325687576323946480532856438635079
+modified_time: *id001
+pscore: 0
+title: Really easy
+type: comment
+uuid: !!python/object:uuid.UUID
+  int: 87059419597503801051249092703334207815
+who_said_it: *id002
+yaml_file_saved: 2009-10-28 20:43:56.542994

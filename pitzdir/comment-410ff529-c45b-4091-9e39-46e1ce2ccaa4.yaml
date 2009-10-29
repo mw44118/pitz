@@ -1,0 +1,14 @@
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2009-10-28 20:58:27.104505
+description: null
+entity: !!python/object:uuid.UUID
+  int: 186922056415685443626901748167734307254
+modified_time: *id001
+pscore: 0
+title: Later, might want to allow me.yaml to control how many activities to see.
+type: comment
+uuid: !!python/object:uuid.UUID
+  int: 86482676678374490989469705712467495588
+who_said_it: *id002
+yaml_file_saved: 2009-10-28 20:58:27.113419

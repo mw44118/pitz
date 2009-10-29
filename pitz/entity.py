@@ -17,7 +17,7 @@ from docutils.utils import SystemMessage
 
 import clepy
 
-from pitz import NoProject
+from pitz import NoProject, by_descending_created_time
 
 from pitz import by_created_time, by_whatever
 
@@ -338,7 +338,7 @@ class Entity(dict):
         b = self.project(type='comment', entity=self)
         b.title = 'Comments on %(title)s' % self
 
-        return b.order(by_created_time)
+        return b.order(by_descending_created_time)
 
     @property
     def activities(self):
@@ -1281,12 +1281,17 @@ class Task(Entity):
     def abandon(self, comment_title=None, comment_description=None):
 
         if self['status'].title in ['unstarted', 'started']:
+
             self['status'] = Status(title='abandoned')
+
+            if 'owner' in self:
+                self.pop('owner')
 
             if comment_title and self.project and self.project.me:
 
                 Comment(self.project, who_said_it=self.project.me,
                     title=comment_title,
+                    entity=self,
                     description=comment_description)
 
             return self
@@ -1305,6 +1310,7 @@ class Task(Entity):
             if comment_title and self.project and self.project.me:
 
                 Comment(self.project, who_said_it=self.project.me,
+                    entity=self,
                     title=comment_title,
                     description=comment_description)
 
@@ -1323,6 +1329,7 @@ class Task(Entity):
 
             Comment(self.project, who_said_it=self.project.me,
                 title=comment_title,
+                entity=self,
                 description=comment_description)
 
         return self
@@ -1361,11 +1368,12 @@ class Comment(Entity):
         title = clepy.maybe_add_ellipses(
             self['title'].strip().replace('\n', ' '), 65)
 
-        description_excerpt = clepy.maybe_add_ellipses(
-            self['description'].strip().replace('\n', ' '))
+        if self['description']:
+            description_excerpt = clepy.maybe_add_ellipses(
+                self['description'].strip().replace('\n', ' ')) + '\n'
 
-        if description_excerpt:
-            description_excerpt += '\n'
+        else:
+            description_excerpt = ''
 
         frag = self['frag']
 
