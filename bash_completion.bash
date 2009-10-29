@@ -14,3 +14,5 @@ complete -o default -o nospace -F _pitz_frags pitz-abandon-task
 complete -o default -o nospace -F _pitz_frags pitz-claim-task
 complete -o default -o nospace -F _pitz_frags pitz-assign-task
 complete -o default -o nospace -F _pitz_frags pitz-unassign-task
+complete -o default -o nospace -F _pitz_frags pitz-prioritize-above
+complete -o default -o nospace -F _pitz_frags pitz-prioritize-below

@@ -1044,3 +1044,5 @@ pitz_everything = PitzEverything()
 pitz_todo = PitzTodo()
 pitz_recent_activity= RecentActivity()
 pitz_prioritize_above = PitzPrioritizeAbove()
+pitz_prioritize_below = PitzPrioritizeBelow()
+
