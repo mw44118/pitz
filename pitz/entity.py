@@ -295,14 +295,21 @@ class Entity(dict):
 
             activity_title = "%s set %s from %s to %s on %s" \
             % (self.project.me.abbr, attr,
-                clepy.maybe_add_ellipses(old_val, 16),
-                clepy.maybe_add_ellipses(val, 16),
+                clepy.maybe_add_ellipses(str(old_val), 16),
+                clepy.maybe_add_ellipses(str(val), 16),
                 self.frag)
 
             return Activity(self.project, entity=self.uuid,
                 title=activity_title,
                 who_did_it=self.project.me,
                 description='')
+
+    def prioritize_above(self, other):
+        """
+        Set my pscore to the other person's pscore + 1.
+        """
+
+        self['pscore'] = other['pscore'] + 1
 
 
     def comment(self, who_said_it=None, title=None, description=None):
@@ -1251,6 +1258,7 @@ class Task(Entity):
             self.estimate, 
             self.milestone, 
             self.components_view,
+            self.pscore,
         )])
 
     @property
