@@ -881,6 +881,9 @@ class PitzUnassignTask(PitzStartTask):
         if 'owner' in t:
             t.pop('owner')
 
+            # This is just to force the yaml file to be rewritten out.
+            t['title'] = t['title']
+
 
 def pitz_webapp():
 
