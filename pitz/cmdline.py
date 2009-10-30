@@ -36,9 +36,10 @@ class PitzScript(object):
     This is the generic script class.
     """
 
-    def __init__(self, save_proj=True, **filter):
+    def __init__(self, title=None, save_proj=True, **filter):
         self.save_proj = save_proj
         self.filter = filter
+        self.title = title
 
 
     def handle_p(self, p):
@@ -56,7 +57,7 @@ class PitzScript(object):
         """
 
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
         """
         Do the interesting stuff of the script in here.
         """
@@ -169,7 +170,7 @@ class PitzScript(object):
             results = self.setup_results(p, options, args, proj)
 
         # Third special function.
-        self.handle_proj(p, options, args, results)
+        self.handle_proj(p, options, args, proj, results)
 
         if self.save_proj:
             proj.save_entities_to_yaml_files()
@@ -183,7 +184,7 @@ class MyTasks(PitzScript):
         self.add_grep_option(p)
         self.add_view_options(p)
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
 
         if not proj.me:
             print("Sorry, I don't know who you are.")
@@ -210,9 +211,12 @@ class PitzEverything(PitzScript):
         self.add_view_options(p)
 
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
 
-        results = self.apply_filter_and_grep(p, options, args, proj)
+        results = self.apply_filter_and_grep(p, options, args, results)
+
+        if self.title:
+            results.title = "%s: %s" % (proj.title, self.title)
 
         send_through_pager(results.custom_view(
             options.custom_view or 'summarized_view'))
@@ -220,14 +224,16 @@ class PitzEverything(PitzScript):
 
 class PitzTodo(PitzScript):
 
+
     def handle_p(self, p):
         self.add_grep_option(p)
         self.add_view_options(p)
 
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
 
         results = self.apply_filter_and_grep(p, options, args, proj.todo)
+        results.title = proj.todo.title
 
         send_through_pager(results.custom_view(
             options.custom_view or 'summarized_view'))
@@ -239,7 +245,7 @@ class RecentActivity(PitzScript):
         self.add_grep_option(p)
         self.add_view_options(p)
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
 
         results = self.apply_filter_and_grep(
             p, options, args, proj.recent_activity)
@@ -320,14 +326,7 @@ def mk_pitzdir():
     Creates a folder and returns the absolute path.
     """
 
-    msg = """\
-I need to make a directory named 'pitzdir'.  Where should I put it?
-The default place is right here (.)."""
-
-    x = raw_input(msg)
-
-    if not x:
-        x = '.'
+    x = os.getcwd()
 
     if not os.access(x, os.W_OK):
         raise ValueError("I can't write to path %s!" % x)
@@ -355,47 +354,21 @@ def pitz_setup():
     pwd = os.path.basename(os.getcwd())
 
     project_title = raw_input(
-        "Project name?  (defaults to %s) " % pwd).strip()
+        "Project name (enter for %s): " % pwd).strip()
+
+    if not project_title:
+        project_title = pwd
 
     pitzdir = mk_pitzdir()
 
     proj = Project(pathname=pitzdir, title=project_title)
     proj.to_yaml_file()
 
-    print("Now I'll set you up.")
-    pitz_me()
-
-    for plural, add_function, singular in [
-        ('estimates', pitz_add_estimate, 'estimate'),
-        ('milestones', pitz_add_milestone, 'milestone'),
-        ('components', pitz_add_component, 'component'),
-        ('statuses', pitz_add_status, 'status'),
-    ]:
-
-        cls = proj.classes[singular]
-
-        if hasattr(cls, 'setup_defaults'):
-
-            print("Add some %s to the project?" % plural)
-            print("You can go with the defaults (d) make your own (y) or skip it (n)")
-            temp = raw_input("d,y,n")
-
-        else:
-
-            print("Add some %s to the project? (y/n)" % plural)
-            temp = raw_input("y,n")
-
-        if temp.lower().strip() == 'd':
-
-            cls.setup_defaults(proj)
-
-        while temp.strip().lower().startswith('y'):
-
-            add_function()
-            temp = raw_input("Add another %s? (y/n)" % singular)
+    Status.setup_defaults(proj)
 
     proj.save_entities_to_yaml_files()
     print("All done!")
+    print("Run pitz-add-task to add a task, or run pitz-help for help.")
 
 
 def setup_options():
@@ -786,6 +759,7 @@ def pitz_me():
 
         return
 
+    print("I'll add you to pitz.")
     pitz_add_person()
 
 
@@ -869,7 +843,7 @@ class PitzStartTask(PitzScript):
             p.print_usage()
             raise SystemExit
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
 
         if not proj.me:
             print("Sorry, I don't know who you are.")
@@ -883,7 +857,7 @@ class PitzStartTask(PitzScript):
 
 class PitzFinishTask(PitzStartTask):
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
 
         if not proj.me:
             print("Sorry, I don't know who you are.")
@@ -897,13 +871,13 @@ class PitzFinishTask(PitzStartTask):
 
 class PitzAbandonTask(PitzStartTask):
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
         proj[args[0]].abandon(options.message)
 
 
 class PitzUnassignTask(PitzStartTask):
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
         t = proj[args[0]]
         if 'owner' in t:
             t.pop('owner')
@@ -920,7 +894,7 @@ class PitzPrioritizeAbove(PitzScript):
         p.add_option('-m', '--message',
             help="Store a comment")
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
         t1 = proj[args[0]]
         t2 = proj[args[1]]
         t1.prioritize_above(t2)
@@ -931,7 +905,7 @@ class PitzPrioritizeAbove(PitzScript):
 
 class PitzPrioritizeBelow(PitzPrioritizeAbove):
 
-    def handle_proj(self, p, options, args, proj):
+    def handle_proj(self, p, options, args, proj, results):
         t1 = proj[args[0]]
         t2 = proj[args[1]]
         t1.prioritize_below(t2)
@@ -1073,12 +1047,24 @@ pitz_prioritize_below = PitzPrioritizeBelow()
 # These scripts just read.
 pitz_my_tasks = MyTasks(save_proj=False)
 pitz_everything = PitzEverything(save_proj=False)
-pitz_todo = PitzEverything(save_proj=False,
-    type='task', status=['started', 'unstarted'])
+
+pitz_todo = PitzTodo(save_proj=False)
 
 pitz_recent_activity= RecentActivity()
-pitz_tasks = PitzEverything(save_proj=False, type='task')
-pitz_milestones = PitzEverything(save_proj=False, type='milestone')
-pitz_statuses = PitzEverything(save_proj=False, type='status')
-pitz_estimates = PitzEverything(save_proj=False, type='estimate')
-pitz_components = PitzEverything(save_proj=False, type='component')
+
+pitz_tasks = PitzEverything(title="tasks", save_proj=False, type='task')
+
+pitz_milestones = PitzEverything(title="milestones", save_proj=False,
+    type='milestone')
+
+pitz_statuses = PitzEverything(title="statuses", save_proj=False,
+    type='status')
+
+pitz_estimates = PitzEverything(title="estimates", save_proj=False,
+    type='estimate')
+
+pitz_components = PitzEverything(title="components", save_proj=False,
+    type='component')
+
+pitz_people = PitzEverything(title="people", save_proj=False,
+    type='person')

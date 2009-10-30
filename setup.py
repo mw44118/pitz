@@ -5,6 +5,7 @@ from pitz import __version__
 version = __version__
 
 setup(
+
     name='pitz',
     version=version,
     description="Python to-do tracker inspired by ditz (ditz.rubyforge.org)",
@@ -72,6 +73,12 @@ started pitz.""",
     pitz-prioritize-above = pitz.cmdline:pitz_prioritize_above
     pitz-prioritize-below = pitz.cmdline:pitz_prioritize_below
     pitz-tasks = pitz.cmdline:pitz_tasks
+    pitz-milestones = pitz.cmdline:pitz_milestones
+    pitz-estimates = pitz.cmdline:pitz_estimates
+    pitz-components = pitz.cmdline:pitz_components
+    pitz-people = pitz.cmdline:pitz_people
+    pitz-statuses = pitz.cmdline:pitz_statuses
+
     """,
 
     test_suite = 'nose.collector',

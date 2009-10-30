@@ -194,21 +194,7 @@ class TestMkPitzdir(unittest.TestCase):
         assert os.path.isdir('./pitzdir')
 
 
-    @patch('__builtin__.raw_input')
-    def test_2(self, m):
-
-        m.return_value = '/tmp'
-
-        mk_pitzdir()
-
-        assert os.path.isdir('/tmp/pitzdir')
-
-
-    @raises(ValueError)
-    @patch('__builtin__.raw_input')
-    def test_3(self, m):
-
-        m.return_value = '/nonexistent'
+    def test_2(self):
 
         mk_pitzdir()
 
