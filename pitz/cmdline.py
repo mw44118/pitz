@@ -36,6 +36,11 @@ class PitzScript(object):
     This is the generic script class.
     """
 
+    def __init__(self, save_proj=True, **filter):
+        self.save_proj = save_proj
+        self.filter = filter
+
+
     def handle_p(self, p):
         """
         Use this to monkey with the optparse.OptionParser instance p.
@@ -108,6 +113,16 @@ class PitzScript(object):
 
         return proj
 
+    def setup_results(self, p, options, args, proj):
+
+        if self.filter:
+            results = proj(**self.filter)
+
+        else:
+            results = proj
+
+        return results
+
     def add_grep_option(self, p):
 
         p.add_option('-g', '--grep',
@@ -151,12 +166,14 @@ class PitzScript(object):
             self.handle_options_and_args(p, options, args)
 
             proj = self.setup_proj(p, options, args)
+            results = self.setup_results(p, options, args, proj)
 
         # Third special function.
-        self.handle_proj(p, options, args, proj)
+        self.handle_proj(p, options, args, results)
 
-        # Save and close.
-        proj.save_entities_to_yaml_files()
+        if self.save_proj:
+            proj.save_entities_to_yaml_files()
+
         os.remove(proj.pidfile)
 
 
@@ -165,7 +182,6 @@ class MyTasks(PitzScript):
     def handle_p(self, p):
         self.add_grep_option(p)
         self.add_view_options(p)
-
 
     def handle_proj(self, p, options, args, proj):
 
@@ -219,8 +235,17 @@ class PitzTodo(PitzScript):
 
 class RecentActivity(PitzScript):
 
+    def handle_p(self, p):
+        self.add_grep_option(p)
+        self.add_view_options(p)
+
     def handle_proj(self, p, options, args, proj):
-        send_through_pager(proj.recent_activity.detailed_view)
+
+        results = self.apply_filter_and_grep(
+            p, options, args, proj.recent_activity)
+
+        send_through_pager(results.custom_view(
+            options.custom_view or 'summarized_view'))
 
 
 def print_version():
@@ -327,8 +352,10 @@ def pitz_setup():
         print_version()
         return
 
+    pwd = os.path.basename(os.getcwd())
+
     project_title = raw_input(
-        "Project name?  (you can change it later) ").strip()
+        "Project name?  (defaults to %s) " % pwd).strip()
 
     pitzdir = mk_pitzdir()
 
@@ -1034,15 +1061,24 @@ def frags():
         for x in os.listdir(pitzdir)
         if '-' in x]))
 
-# These are all the scripts.
-pitz_my_tasks = MyTasks()
+
+# These scripts change stuff.
 pitz_start_task = PitzStartTask()
 pitz_finish_task = PitzFinishTask()
 pitz_abandon_task = PitzAbandonTask()
 pitz_unassign_task = PitzUnassignTask()
-pitz_everything = PitzEverything()
-pitz_todo = PitzTodo()
-pitz_recent_activity= RecentActivity()
 pitz_prioritize_above = PitzPrioritizeAbove()
 pitz_prioritize_below = PitzPrioritizeBelow()
 
+# These scripts just read.
+pitz_my_tasks = MyTasks(save_proj=False)
+pitz_everything = PitzEverything(save_proj=False)
+pitz_todo = PitzEverything(save_proj=False,
+    type='task', status=['started', 'unstarted'])
+
+pitz_recent_activity= RecentActivity()
+pitz_tasks = PitzEverything(save_proj=False, type='task')
+pitz_milestones = PitzEverything(save_proj=False, type='milestone')
+pitz_statuses = PitzEverything(save_proj=False, type='status')
+pitz_estimates = PitzEverything(save_proj=False, type='estimate')
+pitz_components = PitzEverything(save_proj=False, type='component')

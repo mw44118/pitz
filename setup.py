@@ -71,7 +71,7 @@ started pitz.""",
     pitz-recent-activity = pitz.cmdline:pitz_recent_activity
     pitz-prioritize-above = pitz.cmdline:pitz_prioritize_above
     pitz-prioritize-below = pitz.cmdline:pitz_prioritize_below
-    
+    pitz-tasks = pitz.cmdline:pitz_tasks
     """,
 
     test_suite = 'nose.collector',
