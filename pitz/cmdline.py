@@ -24,6 +24,24 @@ from pitz.webapp import SimpleWSGIApp
 log = logging.getLogger('pitz.cmdline')
 
 
+class PitzHelp(object):
+
+    def add_to_list_of_scripts(self, f, script_name):
+
+        if not hasattr(self, 'scripts'):
+            self.scripts = {}
+
+        self.scripts[script_name] = f
+
+        return f
+
+
+    def __call__(self):
+    
+        for script_name in self.scripts:
+            print(script_name)
+
+
 class PitzScript(object):
 
     """
@@ -1013,7 +1031,7 @@ def pitz_attach_file():
     proj.save_entities_to_yaml_files()
 
 
-def frags():
+def pitz_frags():
     """
     Prints all the frags in this project.
 
@@ -1036,6 +1054,9 @@ def frags():
         if '-' in x]))
 
 
+pitz_help = PitzHelp()
+    
+
 # These scripts change stuff.
 pitz_start_task = PitzStartTask()
 pitz_finish_task = PitzFinishTask()
@@ -1044,9 +1065,14 @@ pitz_unassign_task = PitzUnassignTask()
 pitz_prioritize_above = PitzPrioritizeAbove()
 pitz_prioritize_below = PitzPrioritizeBelow()
 
-# These scripts just read.
-pitz_my_tasks = MyTasks(save_proj=False)
-pitz_everything = PitzEverything(save_proj=False)
+# These scripts just read the data and report on it.
+pitz_my_tasks = pitz_help.add_to_list_of_scripts(
+    MyTasks(save_proj=False),
+    'pitz-my-tasks')
+
+pitz_everything = pitz_help.add_to_list_of_scripts(
+    PitzEverything(save_proj=False),
+    'pitz-everything')
 
 pitz_todo = PitzTodo(save_proj=False)
 
