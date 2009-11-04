@@ -68,7 +68,7 @@ started pitz.""",
     pitz-webapp = pitz.cmdline:pitz_webapp
     pitz-estimate-task = pitz.cmdline:pitz_estimate_task
     pitz-attach-file = pitz.cmdline:pitz_attach_file
-    pitz-frags = pitz.cmdline:frags
+    pitz-frags = pitz.cmdline:pitz_frags
     pitz-recent-activity = pitz.cmdline:pitz_recent_activity
     pitz-prioritize-above = pitz.cmdline:pitz_prioritize_above
     pitz-prioritize-below = pitz.cmdline:pitz_prioritize_below
