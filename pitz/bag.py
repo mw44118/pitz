@@ -7,7 +7,8 @@ Bags and Bag subclasses.
 from __future__ import with_statement
 
 from collections import defaultdict
-import csv, glob, logging, os, pickle, subprocess
+import csv, glob, logging, os, subprocess
+import cPickle as pickle
 from uuid import UUID, uuid4
 from urllib import quote_plus
 
@@ -35,7 +36,7 @@ class Bag(list):
         self._html_filename = html_filename
         self.jinja_template = jinja_template or 'bag.html'
         self._shell_mode = shell_mode
-        
+
         if uuid:
             self.uuid = uuid
 
@@ -139,7 +140,7 @@ class Bag(list):
 
 
     def matches_dict(self, **d):
-        
+
         matches = [e for e in self if e.matches_dict(**d)]
 
         return Bag(title='subset of %s' % self.title,
@@ -153,7 +154,7 @@ class Bag(list):
 
         matches = [e for e in self if e.does_not_match_dict(**d)]
 
-        return Bag(title='subset of %s' % self.title, 
+        return Bag(title='subset of %s' % self.title,
             pathname=self.pathname, entities=matches,
             order_method=self.order_method, load_yaml_files=False,
             jinja_template=self.jinja_template,
@@ -185,7 +186,7 @@ class Bag(list):
                 return self.entities_by_frag[frag]
             except KeyError:
                 return obj
-            
+
 
     def by_frag(self, frag):
         return self.entities_by_frag[frag]
@@ -233,7 +234,7 @@ class Bag(list):
         return self._html_filename \
         or "%s.html" % quote_plus(self.title.lower())
 
-        
+
     @property
     def summarized_view(self):
         s2 = "'%s' %s"
@@ -334,7 +335,7 @@ class Bag(list):
         for e in self:
             if e.project:
                 e.replace_pointers_with_objects()
-            
+
 
     def replace_objects_with_pointers(self):
         """
@@ -631,7 +632,7 @@ class Project(Bag):
 
 
     def setup_defaults(self):
-    
+
         for cls in self.classes.values():
             if hasattr(cls, 'setup_defaults'):
                 cls.setup_defaults(self)
@@ -652,7 +653,7 @@ class Project(Bag):
         p.loaded_from = 'pickle'
         p._shell_mode = False
         return p
-    
+
 
     @classmethod
     def find_file(cls, filename='project.yaml', walkdown=False):
@@ -670,7 +671,7 @@ class Project(Bag):
 
         if os.path.isfile(yamlpath):
             return yamlpath
-        
+
         starting_path = os.getcwd()
 
         # Walk up...
@@ -709,7 +710,7 @@ class Project(Bag):
 
         # Check parameter.
         if pitzdir:
-            
+
             if os.path.isdir(pitzdir):
                 return os.path.abspath(pitzdir)
 
@@ -748,13 +749,13 @@ class Project(Bag):
 
         # Maybe walk down the filesystem.
 
- 
+
     @classmethod
     def from_pitzdir(cls, pitzdir):
 
         """
         Return a project (or subclass) instance based on data in
-        pitzdir.  
+        pitzdir.
         """
 
         # If we have a project.pickle, compare the timestamp of the
@@ -763,8 +764,8 @@ class Project(Bag):
         if os.path.isfile(pickle_path):
 
             pickle_timestamp = os.stat(pickle_path).st_mtime
-            
-            newest_yaml = max([os.stat(f).st_mtime 
+
+            newest_yaml = max([os.stat(f).st_mtime
                 for f in glob.glob(os.path.join(pitzdir, '*.yaml'))])
 
             if pickle_timestamp >= newest_yaml:
@@ -951,6 +952,6 @@ class Project(Bag):
 
         if not os.path.isfile(me_yaml):
             return
-        
+
         self.current_user = self[yaml.load(open(me_yaml))]
         return self.current_user

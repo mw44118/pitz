@@ -157,14 +157,6 @@ class TestPitzAdd(TestPitzCmdLine):
         assert proj(title='foo')
 
 
-class TestPitzShow(unittest.TestCase):
-
-    def test_version(self):
-
-        sys.argv = ['pitz-show', '--version']
-        pitz_show()
-
-
 class TestPitzHtml(unittest.TestCase):
 
     def test_version(self):

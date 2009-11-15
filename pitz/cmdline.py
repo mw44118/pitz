@@ -37,7 +37,7 @@ class PitzHelp(object):
 
 
     def __call__(self):
-    
+
         for script_name in self.scripts:
             print(script_name)
 
@@ -95,7 +95,7 @@ class PitzScript(object):
 
         if options.grep:
             results = results.grep(options.grep)
-        
+
         return results
 
 
@@ -175,7 +175,7 @@ class PitzScript(object):
         with spinning_distraction():
 
             p = self.setup_p()
-                
+
             # Call to the first specialized function.
             self.handle_p(p)
 
@@ -285,7 +285,7 @@ def write_pidfile_or_die(pitzdir):
 
     if os.path.exists(pidfile):
 
-        print("Sorry, found a pidfile!  Kill process %s or remove %s." 
+        print("Sorry, found a pidfile!  Kill process %s or remove %s."
             % (open(pidfile).read(), pidfile))
 
         raise SystemExit
@@ -456,35 +456,28 @@ def pitz_add_task():
     return t
 
 
-
 pitz_add = pitz_add_task
 
 
-def pitz_show():
+class PitzShow(PitzScript):
 
-    p = setup_options()
+    def handle_p(self, p):
+        p.set_usage("%prog frag")
 
-    options, args = p.parse_args()
+    def handle_options_and_args(self, p, options, args):
+        if not args:
+            p.print_usage()
+            raise SystemExit
 
-    if options.version:
-        print_version()
-        return
+    def handle_proj(self, p, options, args, proj, results):
 
-    if not args:
-        p.print_usage()
-        return
+        e = proj[args[0]]
 
-    path_to_yaml_file = options.pitzdir or Project.find_file()
+        if isinstance(e, Entity):
+            send_through_pager(e.detailed_view)
 
-    proj = Project.from_yaml_file(path_to_yaml_file)
-
-    e = proj[args[0]]
-
-    if isinstance(e, Entity):
-        send_through_pager(e.detailed_view)
-
-    else:
-        print("Sorry, couldn't find %s" % args[1])
+        else:
+            print("Sorry, couldn't find %s" % args[1])
 
 
 def pitz_html():
@@ -782,7 +775,7 @@ def pitz_me():
 
 
 def pitz_claim_task():
-    
+
     p = setup_options()
     p.set_usage("%prog task")
 
@@ -919,7 +912,7 @@ class PitzPrioritizeAbove(PitzScript):
 
         if options.message:
             t1.comment(title=options.message, description='')
-    
+
 
 class PitzPrioritizeBelow(PitzPrioritizeAbove):
 
@@ -1055,7 +1048,7 @@ def pitz_frags():
 
 
 pitz_help = PitzHelp()
-    
+
 
 # These scripts change stuff.
 pitz_start_task = PitzStartTask()
@@ -1094,3 +1087,5 @@ pitz_components = PitzEverything(title="components", save_proj=False,
 
 pitz_people = PitzEverything(title="people", save_proj=False,
     type='person')
+
+pitz_show = PitzShow()
