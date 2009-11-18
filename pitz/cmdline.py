@@ -2,7 +2,7 @@
 
 from __future__ import with_statement
 
-import logging, optparse, os, sys, warnings
+import logging, optparse, os, pwd, sys, warnings
 
 warnings.simplefilter('ignore', DeprecationWarning)
 
@@ -38,8 +38,12 @@ class PitzHelp(object):
 
     def __call__(self):
 
-        for script_name in self.scripts:
-            print(script_name)
+        for script_name, script in self.scripts.items():
+
+            print(
+                "    %-20s %-50s"
+                % (script_name, script.__doc__.strip() if script.__doc__
+                else 'No description'))
 
 
 class PitzScript(object):
@@ -197,6 +201,10 @@ class PitzScript(object):
 
 
 class MyTasks(PitzScript):
+
+    """
+    chicken
+    """
 
     def handle_p(self, p):
         self.add_grep_option(p)
@@ -369,13 +377,13 @@ def pitz_setup():
         print_version()
         return
 
-    pwd = os.path.basename(os.getcwd())
+    dir = os.path.basename(os.getcwd())
 
     project_title = raw_input(
-        "Project name (enter for %s): " % pwd).strip()
+        "Project name (hit ENTER for %s): " % dir).strip()
 
     if not project_title:
-        project_title = pwd
+        project_title = dir
 
     pitzdir = mk_pitzdir()
 
@@ -383,6 +391,15 @@ def pitz_setup():
     proj.to_yaml_file()
 
     Status.setup_defaults(proj)
+
+    pw_name = pwd.getpwuid(os.getuid()).pw_name
+
+    name = raw_input("Your name (hit ENTER for %s): " % pw_name).strip()
+
+    if not name:
+        name = pw_name
+
+    person = Person(proj, title=name)
 
     proj.save_entities_to_yaml_files()
     print("All done!")
