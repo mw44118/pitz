@@ -10,8 +10,8 @@ from wsgiref.simple_server import make_server
 
 from IPython.Shell import IPShellEmbed
 
-from clepy import edit_with_editor, send_through_pager, \
-spinning_distraction
+from clepy import edit_with_editor, maybe_add_ellipses, \
+send_through_pager, spinning_distraction
 
 from pitz import *
 from pitz.bag import Project
@@ -26,24 +26,24 @@ log = logging.getLogger('pitz.cmdline')
 
 class PitzHelp(object):
 
-    def add_to_list_of_scripts(self, f, script_name):
+    def add_to_list_of_scripts(self, f):
 
         if not hasattr(self, 'scripts'):
             self.scripts = {}
 
-        self.scripts[script_name] = f
+        self.scripts[f.script_name] = f.__doc__.strip() \
+        if f.__doc__ else 'No description'
 
         return f
 
 
     def __call__(self):
 
-        for script_name, script in self.scripts.items():
+        for name, description in sorted(self.scripts.items()):
+            print("    %-26s %-44s" % (name, maybe_add_ellipses(description, 44)))
 
-            print(
-                "    %-20s %-50s"
-                % (script_name, script.__doc__.strip() if script.__doc__
-                else 'No description'))
+pitz_help = PitzHelp()
+f = pitz_help.add_to_list_of_scripts
 
 
 class PitzScript(object):
@@ -58,11 +58,18 @@ class PitzScript(object):
     This is the generic script class.
     """
 
-    def __init__(self, title=None, save_proj=True, **filter):
+    def __init__(self, title=None, save_proj=True, script_name=None,
+        doc=None, **filter):
+
         self.save_proj = save_proj
         self.filter = filter
         self.title = title
 
+        if script_name:
+            self.script_name = script_name
+
+        if doc:
+            self.__doc__ = doc
 
     def handle_p(self, p):
         """
@@ -203,8 +210,10 @@ class PitzScript(object):
 class MyTasks(PitzScript):
 
     """
-    chicken
+    List my tasks
     """
+
+    script_name = 'pitz-my-tasks'
 
     def handle_p(self, p):
         self.add_grep_option(p)
@@ -232,6 +241,12 @@ class MyTasks(PitzScript):
 
 class PitzEverything(PitzScript):
 
+    """
+    Everything in the project
+    """
+
+    script_name = 'pitz-everything'
+
     def handle_p(self, p):
         self.add_grep_option(p)
         self.add_view_options(p)
@@ -249,6 +264,12 @@ class PitzEverything(PitzScript):
 
 
 class PitzTodo(PitzScript):
+
+    """
+    List every unstarted and started task in the project.
+    """
+
+    script_name = 'pitz-todo'
 
 
     def handle_p(self, p):
@@ -303,7 +324,6 @@ def write_pidfile_or_die(pitzdir):
 
     return pidfile
 
-
 def pitz_shell():
     """
     Start an ipython session after loading in a project.
@@ -345,6 +365,9 @@ def pitz_shell():
     # Remove the pidfile.
     os.remove(pidfile)
 
+pitz_shell.script_name = 'pitz-shell'
+f(pitz_shell)
+
 
 def mk_pitzdir():
 
@@ -365,6 +388,10 @@ def mk_pitzdir():
 
 
 def pitz_setup():
+
+    """
+    Start a new project
+    """
 
     p = optparse.OptionParser()
 
@@ -405,6 +432,8 @@ def pitz_setup():
     print("All done!")
     print("Run pitz-add-task to add a task, or run pitz-help for help.")
 
+pitz_setup.script_name = 'pitz-setup'
+f(pitz_setup)
 
 def setup_options():
     p = optparse.OptionParser()
@@ -472,11 +501,20 @@ def pitz_add_task():
 
     return t
 
+pitz_add_task.script_name = 'pitz-add-task'
+f(pitz_add_task)
+
 
 pitz_add = pitz_add_task
 
 
 class PitzShow(PitzScript):
+
+    """
+    Show detailed view of one entity
+    """
+
+    script_name = 'pitz-show'
 
     def handle_p(self, p):
         p.set_usage("%prog frag")
@@ -823,6 +861,12 @@ def pitz_claim_task():
 
 def pitz_assign_task():
 
+    """
+    Add this task to somebody's to-do list
+    """
+
+    script_name = 'pitz-assign-task'
+
     p = setup_options()
     p.set_usage("%prog task [person]")
 
@@ -859,6 +903,12 @@ def pitz_assign_task():
 
 class PitzStartTask(PitzScript):
 
+    """
+    Begin a task
+    """
+
+    script_name = 'pitz-start-task'
+
     def handle_p(self, p):
         p.set_usage("%prog task")
 
@@ -885,6 +935,12 @@ class PitzStartTask(PitzScript):
 
 class PitzFinishTask(PitzStartTask):
 
+    """
+    Finish a task
+    """
+
+    script_name = 'pitz-finish-task'
+
     def handle_proj(self, p, options, args, proj, results):
 
         if not proj.me:
@@ -899,11 +955,23 @@ class PitzFinishTask(PitzStartTask):
 
 class PitzAbandonTask(PitzStartTask):
 
+    """
+    Abandon a task
+    """
+
+    script_name = 'pitz-abandon-task'
+
     def handle_proj(self, p, options, args, proj, results):
         proj[args[0]].abandon(options.message)
 
 
 class PitzUnassignTask(PitzStartTask):
+
+    """
+    Take this task off somebody's list of stuff to do.
+    """
+
+    script_name = 'pitz-unassign-task'
 
     def handle_proj(self, p, options, args, proj, results):
         t = proj[args[0]]
@@ -915,6 +983,12 @@ class PitzUnassignTask(PitzStartTask):
 
 
 class PitzPrioritizeAbove(PitzScript):
+
+    """
+    Put one task in front of another task
+    """
+
+    script_name = 'pitz-prioritize-above'
 
     def handle_p(self, p):
         p.set_usage("%prog frag1 frag2")
@@ -932,6 +1006,12 @@ class PitzPrioritizeAbove(PitzScript):
 
 
 class PitzPrioritizeBelow(PitzPrioritizeAbove):
+
+    """
+    Put one task behind another task
+    """
+
+    script_name = 'pitz-prioritize-below'
 
     def handle_proj(self, p, options, args, proj, results):
         t1 = proj[args[0]]
@@ -1064,45 +1144,55 @@ def pitz_frags():
         if '-' in x]))
 
 
-pitz_help = PitzHelp()
-
-
 # These scripts change stuff.
-pitz_start_task = PitzStartTask()
-pitz_finish_task = PitzFinishTask()
-pitz_abandon_task = PitzAbandonTask()
-pitz_unassign_task = PitzUnassignTask()
-pitz_prioritize_above = PitzPrioritizeAbove()
-pitz_prioritize_below = PitzPrioritizeBelow()
+pitz_start_task = pitz_help.add_to_list_of_scripts(PitzStartTask())
+pitz_finish_task = f(PitzFinishTask())
+pitz_abandon_task = f(PitzAbandonTask())
+pitz_unassign_task = f(PitzUnassignTask())
+pitz_prioritize_above = f(PitzPrioritizeAbove())
+pitz_prioritize_below = f(PitzPrioritizeBelow())
 
 # These scripts just read the data and report on it.
-pitz_my_tasks = pitz_help.add_to_list_of_scripts(
-    MyTasks(save_proj=False),
-    'pitz-my-tasks')
+pitz_my_tasks = f(MyTasks(save_proj=False))
 
-pitz_everything = pitz_help.add_to_list_of_scripts(
-    PitzEverything(save_proj=False),
-    'pitz-everything')
+pitz_everything = f(PitzEverything(save_proj=False))
 
-pitz_todo = PitzTodo(save_proj=False)
+pitz_todo = f(
+    PitzTodo(save_proj=False))
 
-pitz_recent_activity= RecentActivity()
+pitz_recent_activity= f(
+    RecentActivity(
+        script_name='pitz-recent-activity',
+        doc='10 recent activities'))
 
-pitz_tasks = PitzEverything(title="tasks", save_proj=False, type='task')
+pitz_tasks = f(
+    PitzEverything(title="tasks", save_proj=False, type='task',
+        script_name='pitz-tasks',
+        doc='All tasks in the project'))
 
-pitz_milestones = PitzEverything(title="milestones", save_proj=False,
-    type='milestone')
+pitz_milestones = f(
+    PitzEverything(title="milestones", save_proj=False,
+    type='milestone', script_name='pitz-milestones',
+    doc='All milestones in the project'))
 
-pitz_statuses = PitzEverything(title="statuses", save_proj=False,
-    type='status')
+pitz_statuses = f(
+    PitzEverything(title="statuses", save_proj=False,
+        type='status', script_name='pitz-statuses',
+        doc='All statuses in the project'))
 
-pitz_estimates = PitzEverything(title="estimates", save_proj=False,
-    type='estimate')
+pitz_estimates = f(
+    PitzEverything(title="estimates", save_proj=False,
+        type='estimate', script_name='pitz-estimates',
+        doc='All estimates in the project'))
 
-pitz_components = PitzEverything(title="components", save_proj=False,
-    type='component')
+pitz_components = f(
+    PitzEverything(title="components", save_proj=False,
+        type='component', script_name='pitz-components',
+        doc='All components in the project'))
 
-pitz_people = PitzEverything(title="people", save_proj=False,
-    type='person')
+pitz_people = f(
+    PitzEverything(title="people", save_proj=False,
+        type='person', script_name='pitz-people',
+        doc='All people in the project'))
 
-pitz_show = PitzShow()
+pitz_show = f(PitzShow())
