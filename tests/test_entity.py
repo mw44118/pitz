@@ -85,7 +85,7 @@ def test_html():
 
 @patch('__builtin__.open')
 def test_to_html_file(o):
- 
+
     global e
     e.to_html_file('bogus filepath')
 
@@ -156,7 +156,7 @@ class TestPicklingEntity(unittest.TestCase):
 
     def test_unpickle(self):
 
-        assert isinstance(self.e['c'], Entity) 
+        assert isinstance(self.e['c'], Entity)
         assert self.e.project
         s = pickle.dumps(self.e)
         e = pickle.loads(s)
@@ -164,7 +164,7 @@ class TestPicklingEntity(unittest.TestCase):
         assert e.uuid == self.e.uuid
         assert isinstance(self.c, Entity)
         assert e['c'] == self.c, e['c']
-        assert isinstance(self.e['c'], Entity) 
+        assert isinstance(self.e['c'], Entity)
 
         e.summarized_view
         e.detailed_view
@@ -208,6 +208,30 @@ class TestMatchesDict(unittest.TestCase):
         assert self.e.matches_dict(
             creator=['Matt', 'Nobody'],
             tags=['fun', 'boring']) == self.e
+
+
+    def test_order_independence_of_query(self):
+
+        """
+        Test two attributes with lists as values
+        """
+
+        assert not self.e.matches_dict(creator=['Matt'],
+            title=['DO NOT MATCH'])
+
+        assert not self.e.matches_dict(creator=['DO NOT MATCH'],
+            title=['Clean cat box'])
+
+
+    def test_order_independence_of_subquery(self):
+
+        """
+        Test two attributes with lists, and one of the lists has a title
+        as an element.
+        """
+
+        assert not self.e.matches_dict(priority=[self.important.title],
+            tags=['DOES NOT MATCH'])
 
 
     def test_matches_dict_2(self):
@@ -318,7 +342,7 @@ class TestHilariousBug(unittest.TestCase):
     The bug was that the entity's new UUID wasn't added to the
     project.entities_by_uuid dictionary, so, some entities couldn't
     replace pointers with objects.
-    
+
     Entity.__new__ checks if an entity already exists with the same type
     and title.  If it does, __new__ returns a reference to that one.
 
@@ -463,7 +487,7 @@ class TestEntity(unittest.TestCase):
         Verify entities retrieved from already_instantiated don't
         overwrite required fields.
         """
-        
+
         f = Entity(title='foo', description='fibityfoo')
         f2 = Entity(title='foo')
         assert f2['description'] == 'fibityfoo', f2['description']
@@ -512,7 +536,7 @@ class TestEntity(unittest.TestCase):
 
         p = Project()
 
-        t = Task(p, title='Clean cat box please!', 
+        t = Task(p, title='Clean cat box please!',
             status=Status(title='unstarted'),
             creator='Matt',
             description='It is gross!')
@@ -599,9 +623,9 @@ class TestMisc(unittest.TestCase):
 
         for m in p.milestones:
             m.todo
-        
+
     def test_milestone_todo(self):
-        
+
         p = self.p
 
         for m in p.milestones:
@@ -652,7 +676,7 @@ class TestMisc(unittest.TestCase):
 
 
     def test_abandon_task(self):
-        
+
         p = self.p
         t = Task(p, title="wash dishes")
         t.abandon()
