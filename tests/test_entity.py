@@ -230,8 +230,10 @@ class TestMatchesDict(unittest.TestCase):
         as an element.
         """
 
-        assert not self.e.matches_dict(priority=[self.important.title],
-            tags=['DOES NOT MATCH'])
+        assert not self.e.matches_dict(
+            priority=[self.important.title], # this one matches
+            tags=['DOES NOT MATCH']          # but not this one.
+        )
 
 
     def test_matches_dict_2(self):
@@ -286,14 +288,14 @@ class TestMatchesDict(unittest.TestCase):
 
     def test_matches_dict_6(self):
         """
-        Verify we can match with lists of titles.
+        Verify we can match with lists of frags.
         """
 
         print("self.e['priority'] is %(priority)s" % self.e)
 
         assert self.e.matches_dict(
             priority=[self.important.frag]) == self.e, \
-        "Lookup using list of titles failed"
+        "Lookup using list of frags failed"
 
 
 class TestEntityComparisons(unittest.TestCase):

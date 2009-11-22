@@ -152,7 +152,7 @@ class Entity(dict):
 
             if rf not in kwargs and rf not in self:
 
-                # Use a default value if we got one.  
+                # Use a default value if we got one.
                 if default_value is not None:
 
                     kwargs[rf] = default_value(project) \
@@ -180,7 +180,7 @@ class Entity(dict):
 
         # Handle attributes with defaults.
         if not self.get('created_time'):
-            self['created_time'] = datetime.now() 
+            self['created_time'] = datetime.now()
 
         if not self.get('modified_time'):
             self['modified_time'] = self['created_time']
@@ -539,13 +539,13 @@ Description
                     if typename:
 
                         results = self.project(type=typename, title=v)
-                        
+
                         if results.length == 1:
                             v = results[0]
-            
+
             # Do all this stuff when the entity has a different value
             # than the one passed in.
-            if ev != v: 
+            if ev != v:
 
                 # Neither are lists, so don't bother doing anything
                 # else.
@@ -563,10 +563,7 @@ Description
                 if not isinstance(ev, (list, tuple)) \
                 and isinstance(v, (list, tuple)):
 
-                    if ev in v:
-                        return self
-
-                    else:
+                    if ev not in v:
 
                         # Compare each element in v to ev.
                         for vv in v:
@@ -581,19 +578,14 @@ Description
                             results = self.project(
                                 type=typename,
                                 title=vv)
-                            
+
                             if results.length == 1:
                                 vv = results[0]
 
-                            if vv == ev:
-                                return self
+                            if vv != ev:
+                                return
 
-                        # Lookup by UUID.
 
-                        # Lookup by type and title.
-
-                        return
-        
                 # Both are lists, so test if ev intersects with v.
                 if isinstance(ev, (list, tuple)) \
                 and isinstance(v, (list, tuple)) \
@@ -736,7 +728,7 @@ Description
             f.write(self.yaml)
             f.close()
 
-            return fp 
+            return fp
 
 
     def save_attachment(self, filepath):
@@ -763,7 +755,7 @@ Description
             self['attached_files'] = []
 
         self['attached_files'].append(new_filepath)
-        
+
         return new_filepath
 
 
@@ -871,7 +863,7 @@ Description
             log.exception(ex)
 
             return """<pre>%(description)s</pre>""" % self
- 
+
 
     @property
     def html(self):
@@ -961,7 +953,7 @@ Description
     def __cmp__(self, other):
 
         try:
-            
+
             if 'pscore' not in other:
                 return -1
 
@@ -1207,7 +1199,7 @@ class Task(Entity):
         title = clepy.maybe_add_ellipses(self.title, 66)
 
         status = getattr(self['status'], 'abbr', self['status'])
-        estimate = getattr(self['estimate'], 'abbr', self['estimate']) 
+        estimate = getattr(self['estimate'], 'abbr', self['estimate'])
 
         if 'milestone' in self:
             milestone = getattr(self['milestone'], 'abbr', self['milestone'])
@@ -1247,7 +1239,7 @@ class Task(Entity):
 
         if self['components']:
             return ', '.join([c.title for c in self.components])
-        
+
         else:
             return 'no components'
 
@@ -1262,8 +1254,8 @@ class Task(Entity):
         return ' | '.join(['%s' % s for s in (
             self.owner,
             self.status,
-            self.estimate, 
-            self.milestone, 
+            self.estimate,
+            self.milestone,
             self.components_view,
         )])
 
@@ -1436,7 +1428,7 @@ class Activity(Entity):
     @property
     def summarized_view(self):
         return self.title
-    
+
 
 class Component(Entity):
 
