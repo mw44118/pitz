@@ -213,7 +213,7 @@ class TestMatchesDict(unittest.TestCase):
     def test_order_independence_of_query(self):
 
         """
-        Test two attributes with lists as values
+        Test two attributes with lists as values.
         """
 
         assert not self.e.matches_dict(creator=['Matt'],
