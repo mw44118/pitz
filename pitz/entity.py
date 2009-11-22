@@ -1079,10 +1079,12 @@ class Milestone(Entity):
         One-line description of the milestone
         """
 
+        started = Status(title='started')
         finished = Status(title='finished')
+        unstarted = Status(title='unstarted')
 
         a = self.tasks(status=finished).length
-        b = self.tasks.length
+        b = self.tasks(status=[finished, started, unstarted]).length
 
         if b is not 0:
             pct_complete = 100*(float(a)/b)
