@@ -1019,8 +1019,28 @@ class Estimate(Entity):
         pscore=int,
         points=int)
 
+    ranges = [
+
+        ("Matt's choice", [
+            dict(title='trivial', points=1, pscore=100),
+            dict(title='straightforward', points=2, pscore=90),
+            dict(title='difficult', points=4, pscore=80),
+            dict(title='maybe impossible', points=4, pscore=70)]),
+
+        ("easy-medium-hard", [
+            dict(title='easy', points=1, pscore=100),
+            dict(title='medium', points=2, pscore=90),
+            dict(title='hard', points=3, pscore=80)]),
+
+        ("zero to ten points", [
+            dict(title=i, points=i, pscore=100-i*10)
+            for i in xrange(1, 11)])
+    ]
+
+
     def __str__(self):
         return self.title
+
 
     @property
     def tasks(self):
@@ -1033,6 +1053,63 @@ class Estimate(Entity):
 
         else:
             return self.project.tasks(estimate=self)
+
+
+    @property
+    def points(self):
+        return self['points']
+
+
+    @classmethod
+    def choose_estimate_range(cls):
+
+        """
+        Print all the estimate ranges available and ask for a choice.
+
+        Returns the chosen range.
+        """
+
+        print("Choose from any of:")
+
+        for num, (title, values) in enumerate(cls.ranges):
+
+            s = "%s." % (num + 1)
+            print("%-3s %s" % (s, title))
+
+            for val in values:
+                print("    *   %(title)s (%(points)s points)" % val)
+
+            print("")
+
+        choice = raw_input(
+            "Choose a number, or hit ENTER to do nothing: ").strip()
+
+        if choice:
+            return cls.ranges[int(choice)-1]
+
+
+    @classmethod
+    def add_range_of_estimates_to_project(cls, proj, range):
+        """
+        Add all estimates in the range to the project.
+        """
+
+        title, values = range
+        for val in values:
+            est = cls(proj, **val)
+
+        return proj
+
+
+    @classmethod
+    def choose_estimate_range_and_add(cls, proj):
+
+        estimate_range = cls.choose_estimate_range()
+
+        if estimate_range:
+            cls.add_range_of_estimates_to_project(proj, estimate_range)
+
+
 
 
 class Status(Entity):
