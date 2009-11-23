@@ -3,7 +3,7 @@
 import glob, os, pickle, unittest, uuid
 
 from pitz.entity import *
-from pitz.bag import Project
+from pitz.bag import Bag, Project
 from pitz import NoProject
 
 from nose.tools import raises
@@ -586,6 +586,8 @@ class TestEntity(unittest.TestCase):
         assert e['pscore'] == 99, 'pscore is %(pscore)s' % e
 
 
+
+
 class TestMisc(unittest.TestCase):
 
 
@@ -741,3 +743,60 @@ class TestMisc(unittest.TestCase):
 
         results = Entity.choose_many_from_already_instantiated()
         assert len(results) == 2
+
+
+class TestAllowedTypes(unittest.TestCase):
+
+    def setUp(self):
+
+        class E(Entity):
+
+            allowed_types = dict(
+                owner=Entity,
+                related_entities=[Entity],
+                pscore=int,
+                junk=list)
+
+        self.E = E
+
+
+    def test_setitem(self):
+
+        """
+        Test allowed_types dictionary.
+        """
+
+        e1 = self.E(title='e1')
+        e2 = self.E(title='e2')
+
+        e1.__setitem__('related_entities', [e2])
+        e1.__setitem__('related_entities', Bag(entities=[e2]))
+
+        self.assertRaises(
+            TypeError,
+            e1.__setitem__,
+            'related_entities',
+            [1,2,3])
+
+        self.assertRaises(
+            TypeError,
+            e1.__setitem__,
+            'related_entities',
+            e2)
+
+        e1.__setitem__('owner', Entity(title="matt"))
+        e1.__setitem__('junk', [1,2,3])
+        e1.__setitem__('pscore', '99')
+
+
+    @patch('pitz.entity.Entity.choose_many_from_already_instantiated')
+    def test_edit(self, m):
+        """
+        Verify we ask for many instances of an attribute when
+        appropriate.
+        """
+
+        e1 = self.E(title='e1')
+        e1.edit('related_entities')
+        assert m.called
+

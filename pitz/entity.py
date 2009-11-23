@@ -248,17 +248,39 @@ class Entity(dict):
                 % (attr, self.allowed_values[attr], val))
 
 
-        elif attr in self.allowed_types \
-        and not isinstance(val,
-            (NoneType, uuid.UUID, self.allowed_types[attr])):
+        elif attr in self.allowed_types:
 
-            try:
-                val = self.allowed_types[attr](val)
+            allowed_type = self.allowed_types[attr]
 
-            except (TypeError, ValueError), ex:
+            # Handle stuff like foo=[Entity] here.
+            if isinstance(allowed_type, list) \
+            and len(allowed_type) == 1 \
+            and issubclass(allowed_type[0], Entity):
 
-                raise TypeError("%s must be an instance of %s, not %s!"
-                    % (attr, self.allowed_types[attr], type(val)))
+                cls = allowed_type[0]
+
+                for v in val:
+                    if not isinstance(v, (NoneType, uuid.UUID, cls)):
+
+                        raise TypeError(
+                            "%s must be a list of %s instances, not %s!"
+                            % (attr, cls, type(val)))
+
+
+            # Handle stuff like foo=Entity here.
+            elif not isinstance(val,
+                (NoneType, uuid.UUID, allowed_type)):
+
+                try:
+                    val = allowed_type(val)
+
+                except (TypeError, ValueError), ex:
+
+                    raise TypeError("%s must be an instance of %s, not %s!"
+                        % (attr, allowed_type, type(val)))
+
+
+            # Handle stuff like
 
         self.maybe_update_modified_time(attr)
         self.maybe_record_activity(attr, val)
@@ -935,14 +957,30 @@ Description
     def edit(self, attr):
 
         """
-        if attr points to an Entity subclass, then show a list of all
-        instances of the subclass and ask for a choice.
+        if attr is in the allowed_types dictionary, and the allowed type
+        is an Entity subclass, then show a list of all instances of the
+        subclass and ask for a choice.
 
         Otherwise, open an editor with the value for this attr.
         """
 
-        if issubclass(self.allowed_types.get(attr, object), Entity):
-            self[attr] = self.allowed_types[attr].choose()
+        if attr in self.allowed_types:
+            allowed_type = self.allowed_types[attr]
+
+            # Handle stuff like foo=[Entity] here.
+            if isinstance(allowed_type, list) \
+            and len(allowed_type) == 1 \
+            and issubclass(allowed_type[0], Entity):
+
+                self[attr] = allowed_type[0]\
+                .choose_many_from_already_instantiated()
+
+
+            # Handle stuff like foo=Entity here.
+            elif issubclass(allowed_type, Entity):
+
+                self[attr] = \
+                allowed_type.choose_from_already_instantiated()
 
         else:
             self[attr] = clepy.edit_with_editor(self.get(attr))
