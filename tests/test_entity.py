@@ -797,6 +797,11 @@ class TestAllowedTypes(unittest.TestCase):
         """
 
         e1 = self.E(title='e1')
+        e2 = self.E(title='e2')
+        e3 = self.E(title='e3')
+
+        m.return_value = [e2, e3]
+
         e1.edit('related_entities')
         assert m.called
 

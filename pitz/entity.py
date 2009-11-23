@@ -1178,6 +1178,35 @@ class Person(Entity):
         return getattr(self, 'abbr', self.title)
 
 
+class Component(Entity):
+
+    plural_name = "components"
+
+    jinja_template = 'component.html'
+
+    @property
+    def tasks(self):
+
+        if not self.project:
+            raise NoProject(
+                "I need a project before I can look up tasks!")
+
+        tasks = self.project(type='task', components=self)
+        tasks.title = 'Tasks in %(title)s' % self
+
+        return tasks
+
+    @property
+    def todo(self):
+
+        unfinished = self.tasks.does_not_match_dict(
+            status=Status(title='finished'))\
+        .does_not_match_dict(status=Status(title='abandoned'))
+
+        unfinished.title = "Unfinished tasks in %(title)s" % self
+        return unfinished
+
+
 class Task(Entity):
 
     plural_name = "tasks"
@@ -1189,7 +1218,8 @@ class Task(Entity):
         points=int,
         milestone=Milestone,
         status=Status,
-        estimate=Estimate)
+        estimate=Estimate,
+        components=[Component])
 
     required_fields = dict(
         title=None,
@@ -1470,30 +1500,3 @@ class Activity(Entity):
         return self.title
 
 
-class Component(Entity):
-
-    plural_name = "components"
-
-    jinja_template = 'component.html'
-
-    @property
-    def tasks(self):
-
-        if not self.project:
-            raise NoProject(
-                "I need a project before I can look up tasks!")
-
-        tasks = self.project(type='task', components=self)
-        tasks.title = 'Tasks in %(title)s' % self
-
-        return tasks
-
-    @property
-    def todo(self):
-
-        unfinished = self.tasks.does_not_match_dict(
-            status=Status(title='finished'))\
-        .does_not_match_dict(status=Status(title='abandoned'))
-
-        unfinished.title = "Unfinished tasks in %(title)s" % self
-        return unfinished
