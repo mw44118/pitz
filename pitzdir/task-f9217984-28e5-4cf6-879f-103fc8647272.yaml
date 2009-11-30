@@ -1,0 +1,33 @@
+components:
+- !!python/object:uuid.UUID
+  int: 292330627916466842239283398422481375639
+- !!python/object:uuid.UUID
+  int: 4957623306508968194182393857812906256
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-11-30 16:19:17.089872
+description: 'One of the neat things about ditz is how it can make a bunch of HTML
+
+  pages that can be browsed offline.
+
+
+  It would be nice to have a way to make a zip file that contains every
+
+  entity in a project converted to HTML.  Then we could email that zipfile
+
+  to somebody and have them view it all.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 281829325005055660957328011118288254534
+modified_time: 2009-11-30 16:19:30.027775
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Create a zipfile of HTML pages for a project
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 331151581389111803252873164992010285682
+yaml_file_saved: 2009-11-30 16:19:30.041050
