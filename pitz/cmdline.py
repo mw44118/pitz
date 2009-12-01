@@ -683,16 +683,33 @@ def pitz_add_estimate():
     p = setup_options()
     p.add_option('-t', '--title', help='Estimate title')
 
+    p.add_option('--from-builtin-estimates',
+        action='store_true',
+        help='Choose from estimates I already made')
+
     options, args = p.parse_args()
 
     if options.version:
         print_version()
-        return
+        raise SystemExit
 
     pitzdir = Project.find_pitzdir(options.pitzdir)
 
     proj = Project.from_pitzdir(pitzdir)
     proj.find_me()
+
+    if options.from_builtin_estimates:
+
+        print("Right now, you got %d estimates in your project."
+            % (proj.estimates.length))
+
+        range = Estimate.choose_estimate_range()
+        if range:
+            print("Adding...")
+            Estimate.add_range_of_estimates_to_project(proj, range)
+            proj.save_entities_to_yaml_files()
+
+        raise SystemExit
 
     est = Estimate(
         proj,
@@ -951,6 +968,7 @@ class PitzFinishTask(PitzStartTask):
         t = proj[args[0]]
         t.assign(proj.me)
         t.finish(options.message)
+
 
 
 class PitzAbandonTask(PitzStartTask):

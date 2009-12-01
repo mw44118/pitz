@@ -1019,6 +1019,8 @@ class Estimate(Entity):
         pscore=int,
         points=int)
 
+    # Maybe this should be a dictionary of bags, not a dictionary of
+    # lists.
     ranges = [
 
         ("Matt's choice", [
@@ -1032,7 +1034,7 @@ class Estimate(Entity):
             dict(title='medium', points=2, pscore=90),
             dict(title='hard', points=3, pscore=80)]),
 
-        ("zero to ten points", [
+        ("one to ten points", [
             dict(title=i, points=i, pscore=100-i*10)
             for i in xrange(1, 11)])
     ]
@@ -1040,7 +1042,6 @@ class Estimate(Entity):
 
     def __str__(self):
         return self.title
-
 
     @property
     def tasks(self):
@@ -1066,7 +1067,7 @@ class Estimate(Entity):
         """
         Print all the estimate ranges available and ask for a choice.
 
-        Returns the chosen range.
+        Returns a bag of estimates if a range was chosen.
         """
 
         print("Choose from any of:")
@@ -1099,16 +1100,6 @@ class Estimate(Entity):
             est = cls(proj, **val)
 
         return proj
-
-
-    @classmethod
-    def choose_estimate_range_and_add(cls, proj):
-
-        estimate_range = cls.choose_estimate_range()
-
-        if estimate_range:
-            cls.add_range_of_estimates_to_project(proj, estimate_range)
-
 
 
 
