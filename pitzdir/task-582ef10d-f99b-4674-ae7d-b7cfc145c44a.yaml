@@ -1,0 +1,26 @@
+components:
+- !!python/object:uuid.UUID
+  int: 4957623306508968194182393857812906256
+created_by: &id001 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-12-05 11:05:37.812461
+description: "Right now, there's no way after pulling down a bunch of new yaml files\n\
+  to update the pickle.\n\nI want a script like this::\n\n    $ pitz-refresh-pickle\n\
+  \nThat script will find the pitzdir, test if the pickle needs to be\nrefreshed,\
+  \ and then refresh it if necessary.\n\nI also might want to improve the code that\
+  \ discovers whether to use the\npickle or the yaml files so that they announce their\
+  \ decision."
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 281829325005055660957328011118288254534
+modified_time: 2009-12-05 11:05:41.400555
+owner: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Write a CLI script to create or update pickle
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 117215798452495275290060695037085598794
+yaml_file_saved: 2009-12-05 11:05:41.414548
