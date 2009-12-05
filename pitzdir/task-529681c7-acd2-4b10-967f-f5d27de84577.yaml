@@ -1,0 +1,24 @@
+components:
+- !!python/object:uuid.UUID
+  int: 4957623306508968194182393857812906256
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2009-12-05 11:17:43.897477
+description: "Right now, to delete a bunch of entities at the command line, you gotta\n\
+  do::\n\n    $ pitz-destroy abc123\n    $ pitz-destroy def456\n\nI would prefer to\
+  \ type::\n\n    $ pitz-destroy abc123 def456"
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 281829325005055660957328011118288254534
+modified_time: 2009-12-05 11:17:48.121587
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Allow destroying numerous entities at once
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 109778172433872187721348824765263529335
+yaml_file_saved: 2009-12-05 11:17:48.136749
