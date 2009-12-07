@@ -947,7 +947,11 @@ class PitzStartTask(PitzScript):
 
         t = proj[args[0]]
         t.assign(proj.me)
-        t.start(options.message)
+
+        try:
+            t.start(options.message)
+        except ValueError, ex:
+            print(ex.message)
 
 
 class PitzFinishTask(PitzStartTask):
