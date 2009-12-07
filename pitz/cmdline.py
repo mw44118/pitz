@@ -954,6 +954,19 @@ class PitzStartTask(PitzScript):
             print(ex.message)
 
 
+class RefreshPickle(PitzScript):
+
+    """
+    Rebuild the pickle file from the yaml files.
+    """
+
+    script_name = 'pitz-refresh-pickle'
+
+    def handle_proj(self, p, options, args, proj, results):
+
+        proj.save_entities_to_yaml_files()
+
+
 class PitzFinishTask(PitzStartTask):
 
     """
@@ -1173,6 +1186,7 @@ pitz_abandon_task = f(PitzAbandonTask())
 pitz_unassign_task = f(PitzUnassignTask())
 pitz_prioritize_above = f(PitzPrioritizeAbove())
 pitz_prioritize_below = f(PitzPrioritizeBelow())
+pitz_refresh_pickle = f(RefreshPickle())
 
 # These scripts just read the data and report on it.
 pitz_my_tasks = f(MyTasks(save_proj=False))
