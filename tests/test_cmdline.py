@@ -191,3 +191,21 @@ class TestMkPitzdir(unittest.TestCase):
         mk_pitzdir()
 
         assert os.path.isdir('/tmp/pitzdir')
+
+
+class TestPitzScript(unittest.TestCase):
+
+
+    def test_apply_filter_and_grep_1(self):
+        """
+        Make sure nothing blows up.
+        """
+
+        bogus_options = Mock()
+        bogus_options.grep = False
+
+        script = PitzScript(title='bogus pitz script')
+        b = script.apply_filter_and_grep(
+            None, bogus_options, [], 'bogus')
+
+        assert b == 'bogus', 'b is %s!' % b

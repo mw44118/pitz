@@ -46,7 +46,7 @@ def by_whatever(func_name, *whatever, **kwargs):
 
         if kwargs.get('reverse'):
             y *= -1
-            
+
         return y
 
     if 'reverse' in kwargs:
@@ -55,7 +55,7 @@ def by_whatever(func_name, *whatever, **kwargs):
         f.__doc__ = str(list(whatever))
 
     f.func_name = func_name
-        
+
     return f
 
 
