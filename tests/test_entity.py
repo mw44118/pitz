@@ -300,6 +300,21 @@ class TestMatchesDict(unittest.TestCase):
         "Lookup using list of frags failed"
 
 
+    def test_matches_dict_7(self):
+        """
+        Test allowed_types['components'] = [Entity]
+        """
+
+        e = Entity(self.p, title='Clean cat box', creator='Matt',
+            components=[Entity(self.p, title='abc')],
+            tags=['boring', 'chore'], priority=self.important)
+
+        e.matches_dict(
+            components='bogus component'
+        )
+
+
+
 class TestEntityComparisons(unittest.TestCase):
 
     def setUp(self):
