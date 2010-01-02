@@ -306,12 +306,12 @@ class TestMatchesDict(unittest.TestCase):
         """
 
         e = Entity(self.p, title='Clean cat box', creator='Matt',
-            components=[Entity(self.p, title='abc')],
+            components=[Entity(self.p, title='bogus component')],
             tags=['boring', 'chore'], priority=self.important)
 
-        e.matches_dict(
+        assert e.matches_dict(
             components='bogus component'
-        )
+        ) == e, 'OH NOES'
 
 
 
