@@ -183,6 +183,8 @@ class TestMatchesDict(unittest.TestCase):
 
         Entity.allowed_types['priority'] = Entity
 
+        Entity.allowed_types['components'] = [Entity]
+
         self.e = Entity(self.p, title='Clean cat box', creator='Matt',
             tags=['boring', 'chore'], priority=self.important)
 
