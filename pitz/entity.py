@@ -536,6 +536,10 @@ Description
         >>> Entity.what_they_really_mean(
         ...    {'foo':int}, 'foo', '99')
         99
+
+        >>> [bar] == Entity.what_they_really_mean(
+        ...    {'foo':Entity}, 'foo', ['bar'])
+        True
         """
 
         if a not in allowed_types:
@@ -548,7 +552,12 @@ Description
             return inner_at(title=v)
 
         elif issubclass(at, Entity):
-            return at(title=v)
+
+            if isinstance(v, list):
+                return [at(title=vv) for vv in v]
+
+            else:
+                return at(title=v)
 
         else:
             return at(v)
@@ -576,6 +585,9 @@ Description
 
             if a not in self:
                 return
+
+            what_they_really_meant = self.what_they_really_mean(
+                self.allowed_types, a, v)
 
             # at stands for allowed type.
             at = self.allowed_types.get(a)
