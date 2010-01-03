@@ -525,17 +525,44 @@ Description
         True
         """
 
+
+        # This function looks for any excuse to return None, and if it
+        # can't find any excuse, at the very bottom, it returns self.
+        # It's a "gauntlet" pattern, in that if you survive to the end,
+        # you win.
+
         for a, v in d.items():
 
             if a not in self:
                 return
 
-            if a in self.allowed_types:
-                typename = self.allowed_types[a].__name__.lower()
+            # The v passed in might be a string, and we might need to
+            # convert it some entity.
+            what_they_really_want = v
+
+            # at stands for allowed type.
+            at = self.allowed_types.get(a)
+
+            if at:
+
+                # Figure out if at is an Entity subclass.
+                try:
+                    is_an_entity_subclass = issubclass(at, Entity)
+
+                except TypeError:
+                    is_an_entity_subclass = False
+
+                if is_an_entity_subclass:
+                    typename = at.__name__.lower()
+
+                else:
+                    typename = None
+
             else:
                 typename = None
 
-            # ev stands for "entity value".
+            # ev stands for "entity value", and it's the entity's value
+            # for that attribute.
             ev = self[a]
 
             # Possibly translate this object from its UUID/frag/title
@@ -607,13 +634,13 @@ Description
                             if vv != ev:
                                 return
 
-
                 # Both are lists, so test if ev intersects with v.
                 if isinstance(ev, (list, tuple)) \
                 and isinstance(v, (list, tuple)) \
                 and not (set(ev) & set(v)):
                     return
 
+        # If we made it through the gauntlet, then we must match.
         return self
 
 
@@ -821,7 +848,7 @@ Description
         Replaces the value of an entity with just the string of the
         entity's uuid.
 
-        In other words, replaces the object stored at sef['creator']
+        In other words, replaces the object stored at self['creator']
         with just the uuid of that object.
         """
 
