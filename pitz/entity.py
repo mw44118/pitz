@@ -497,6 +497,7 @@ Description
             print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
 
         print("Use commas or spaces to pick more than one.")
+
         temp = raw_input("Hit <ENTER> to not pick any.")
 
         if temp is None:
@@ -505,9 +506,11 @@ Description
         results = []
 
         for choice in re.split(",| ", temp):
+
             if choice:
 
                 e = choices[int(choice)-1]
+
                 results.append(e)
 
         return results
@@ -517,10 +520,15 @@ Description
     def what_they_really_mean(cls, allowed_types, a, v):
 
         """
-        Try to convert strings to more interesting objects.
+        Try to convert strings, UUIDs, and frags to more interesting
+        objects.
 
         >>> from pitz.bag import Project
         >>> bar = Entity(title='bar')
+
+        >>> bar == Entity.what_they_really_mean(
+        ...    {'foo':Entity}, 'foo', bar)
+        True
 
         >>> Entity.what_they_really_mean({}, 'foo', 'bar')
         'bar'
@@ -540,16 +548,37 @@ Description
         >>> [bar] == Entity.what_they_really_mean(
         ...    {'foo':Entity}, 'foo', ['bar'])
         True
+
+        >>> [bar] == Entity.what_they_really_mean(
+        ...    {'foo':Entity}, 'foo', [bar])
+        True
+
+        >>> bar.uuid == Entity.what_they_really_mean(
+        ...    {'foo':Entity}, 'foo', bar.uuid)
+        True
+
+        >>> bar.frag == Entity.what_they_really_mean(
+        ...    {'foo':Entity}, 'foo', bar.frag)
+        True
+
+        >>> [bar.frag] == Entity.what_they_really_mean(
+        ...    {'foo':Entity}, 'foo', [bar.frag])
+        True
+
         """
 
-        if a not in allowed_types:
+        if a not in allowed_types \
+        or isinstance(v, (Entity, uuid.UUID)):
+
             return v
 
         at = allowed_types[a]
 
         if isinstance(at, list):
             inner_at = at[0]
-            return inner_at(title=v)
+
+            if v in inner_at.already_instantiated:
+                return inner_at(title=v)
 
         elif issubclass(at, Entity):
 
@@ -557,7 +586,12 @@ Description
                 return [at(title=vv) for vv in v]
 
             else:
-                return at(title=v)
+
+                if v in at.already_instantiated:
+                    return at(title=v)
+
+                else:
+                    return v
 
         else:
             return at(v)
@@ -575,76 +609,19 @@ Description
         True
         """
 
-
-        # This function looks for any excuse to return None, and if it
-        # can't find any excuse, at the very bottom, it returns self.
-        # It's a "gauntlet" pattern, in that if you survive to the end,
-        # you win.
-
         for a, v in d.items():
 
             if a not in self:
                 return
 
-            what_they_really_meant = self.what_they_really_mean(
-                self.allowed_types, a, v)
-
-            # at stands for allowed type.
-            at = self.allowed_types.get(a)
-
-            if at:
-
-                # Figure out if at is an Entity subclass.
-                try:
-                    is_an_entity_subclass = issubclass(at, Entity)
-
-                except TypeError:
-                    is_an_entity_subclass = False
-
-                if is_an_entity_subclass:
-                    typename = at.__name__.lower()
-
-                else:
-                    typename = None
-
-
-            else:
-                typename = None
-
-            # ev stands for "entity value", and it's the entity's value
-            # for that attribute.
-            ev = self[a]
-
-            # Possibly translate this object from its UUID/frag/title
-            # representation to the actual object.
+            v = self.what_they_really_mean(self.allowed_types, a, v)
 
             if self.project:
+                v = self.project[v]
 
-                try:
-                    hash(v)
+            if self[a] != v:
 
-                except TypeError:
-                    v = v
-
-                else:
-
-                    # When v is a frag or a UUID, convert it to the
-                    # object it refers to.
-                    if v in self.project.entities_by_frag \
-                    or v in self.project.entities_by_uuid:
-
-                        v = self.project[v]
-
-                    if typename:
-
-                        results = self.project(type=typename, title=v)
-
-                        if results.length == 1:
-                            v = results[0]
-
-            # Do all this stuff when the entity has a different value
-            # than the one passed in.
-            if ev != v:
+                ev = self[a]
 
                 # Neither are lists, so don't bother doing anything
                 # else.
@@ -674,6 +651,10 @@ Description
                                 vv = self.project[vv]
 
                             # Now check typenames and titles.
+                            typename = self.allowed_types[a].__name__ \
+                            if a in self.allowed_types \
+                            else None
+
                             results = self.project(
                                 type=typename,
                                 title=vv)
@@ -690,7 +671,6 @@ Description
                 and not (set(ev) & set(v)):
                     return
 
-        # If we made it through the gauntlet, then we must match.
         return self
 
 

@@ -246,6 +246,8 @@ class TestMatchesDict(unittest.TestCase):
 
         assert self.e.matches_dict(priority=self.important) == self.e
 
+        print("got %s" % self.e.matches_dict(priority=self.important.uuid))
+
         assert self.e.matches_dict(priority=self.important.uuid) == self.e
 
         frag = self.important.frag
@@ -284,8 +286,9 @@ class TestMatchesDict(unittest.TestCase):
         Verify we can match with lists of titles.
         """
 
-        assert self.e.matches_dict(priority=["bogus"]) is None, \
-        "Matching too much!"
+        temp = self.e.matches_dict(priority=["bogus"])
+
+        assert temp is None, "temp (%s) should be None!" % temp
 
 
     def test_matches_dict_6(self):

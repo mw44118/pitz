@@ -177,6 +177,11 @@ class Bag(list):
         uuid = getattr(obj, 'uuid', obj)
 
         try:
+            hash(obj)
+        except TypeError:
+            return obj
+
+        try:
             return self.entities_by_uuid[uuid]
 
         except KeyError:
