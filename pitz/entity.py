@@ -536,9 +536,6 @@ Description
         >>> Entity.what_they_really_mean(
         ...    {'foo':int}, 'foo', '99')
         99
-
-        >>> Entity.what_they_really_mean(
-        ...    {'foo':Entity}, 'foo', 'baz')
         """
 
         if a not in allowed_types:
