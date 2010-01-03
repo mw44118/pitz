@@ -516,8 +516,7 @@ Description
         return results
 
 
-    @classmethod
-    def what_they_really_mean(cls, allowed_types, a, v):
+    def what_they_really_mean(self, a, v):
 
         """
         Try to convert strings, UUIDs, and frags to more interesting
@@ -526,53 +525,56 @@ Description
         >>> from pitz.bag import Project
         >>> bar = Entity(title='bar')
 
-        >>> bar == Entity.what_they_really_mean(
-        ...    {'foo':Entity}, 'foo', bar)
+        >>> e = Entity(title='bogus entity')
+        >>> e.allowed_types = {'foo':Entity}
+
+        >>> bar == e.what_they_really_mean('foo', bar)
         True
 
-        >>> Entity.what_they_really_mean({}, 'foo', 'bar')
+        >>> e.allowed_types = {}
+        >>> e.what_they_really_mean('foo', 'bar')
         'bar'
 
-        >>> bar == Entity.what_they_really_mean(
-        ...    {'foo':Entity}, 'foo', 'bar')
+        >>> e.allowed_types = {'foo':Entity}
+        >>> bar == e.what_they_really_mean('foo', 'bar')
         True
 
-        >>> bar == Entity.what_they_really_mean(
-        ...    {'foo':[Entity]}, 'foo', 'bar')
+        >>> e.allowed_types = {'foo':[Entity]}
+        >>> bar == e.what_they_really_mean('foo', 'bar')
         True
 
-        >>> Entity.what_they_really_mean(
-        ...    {'foo':int}, 'foo', '99')
+        >>> e.allowed_types = {'foo':int}
+        >>> e.what_they_really_mean('foo', '99')
         99
 
-        >>> [bar] == Entity.what_they_really_mean(
-        ...    {'foo':Entity}, 'foo', ['bar'])
+        >>> e.allowed_types = {'foo':Entity}
+        >>> [bar] == e.what_they_really_mean('foo', ['bar'])
         True
 
-        >>> [bar] == Entity.what_they_really_mean(
-        ...    {'foo':Entity}, 'foo', [bar])
+        >>> e.allowed_types = {'foo':Entity}
+        >>> [bar] == e.what_they_really_mean('foo', [bar])
         True
 
-        >>> bar.uuid == Entity.what_they_really_mean(
-        ...    {'foo':Entity}, 'foo', bar.uuid)
+        >>> e.allowed_types = {'foo':Entity}
+        >>> bar.uuid == e.what_they_really_mean('foo', bar.uuid)
         True
 
-        >>> bar.frag == Entity.what_they_really_mean(
-        ...    {'foo':Entity}, 'foo', bar.frag)
+        >>> e.allowed_types = {'foo':Entity}
+        >>> bar.frag == e.what_they_really_mean('foo', bar.frag)
         True
 
-        >>> [bar.frag] == Entity.what_they_really_mean(
-        ...    {'foo':Entity}, 'foo', [bar.frag])
+        >>> e.allowed_types = {'foo':Entity}
+        >>> [bar.frag] == e.what_they_really_mean('foo', [bar.frag])
         True
 
         """
 
-        if a not in allowed_types \
+        if a not in self.allowed_types \
         or isinstance(v, (Entity, uuid.UUID)):
 
             return v
 
-        at = allowed_types[a]
+        at = self.allowed_types[a]
 
         if isinstance(at, list):
             inner_at = at[0]
