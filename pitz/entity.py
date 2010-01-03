@@ -513,6 +513,56 @@ Description
         return results
 
 
+    @classmethod
+    def what_they_really_mean(cls, allowed_types, a, v):
+
+        """
+        Try to convert strings to more interesting objects.
+
+        >>> from pitz.bag import Project
+        >>> bar = Entity(title='bar')
+
+        >>> Entity.what_they_really_mean({}, 'foo', 'bar')
+        'bar'
+
+        >>> bar == Entity.what_they_really_mean(
+        ...    {'foo':Entity}, 'foo', 'bar')
+        True
+
+        >>> bar == Entity.what_they_really_mean(
+        ...    {'foo':[Entity]}, 'foo', 'bar')
+        True
+
+        >>> Entity.what_they_really_mean(
+        ...    {'foo':int}, 'foo', '99')
+        99
+
+        """
+
+        if a not in allowed_types:
+            return v
+
+        at = allowed_types[a]
+
+        # Catch the {'foo':[Entity]} scenario here.
+        if isinstance(at, list):
+            inner_at = at[0]
+            return inner_at(title=v)
+
+        elif issubclass(at, Entity):
+            return at(title=v)
+
+        # Handle {'foo':int}
+        else:
+            return at(v)
+
+
+
+
+
+
+
+
     def matches_dict(self, **d):
         """
         Return self or None, depending on whether we match all the
@@ -536,10 +586,6 @@ Description
             if a not in self:
                 return
 
-            # The v passed in might be a string, and we might need to
-            # convert it some entity.
-            what_they_really_want = v
-
             # at stands for allowed type.
             at = self.allowed_types.get(a)
 
@@ -557,6 +603,7 @@ Description
 
                 else:
                     typename = None
+
 
             else:
                 typename = None
