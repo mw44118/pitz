@@ -537,6 +537,8 @@ Description
         ...    {'foo':int}, 'foo', '99')
         99
 
+        >>> Entity.what_they_really_mean(
+        ...    {'foo':Entity}, 'foo', 'baz')
         """
 
         if a not in allowed_types:
@@ -544,7 +546,6 @@ Description
 
         at = allowed_types[a]
 
-        # Catch the {'foo':[Entity]} scenario here.
         if isinstance(at, list):
             inner_at = at[0]
             return inner_at(title=v)
@@ -552,15 +553,8 @@ Description
         elif issubclass(at, Entity):
             return at(title=v)
 
-        # Handle {'foo':int}
         else:
             return at(v)
-
-
-
-
-
-
 
 
     def matches_dict(self, **d):
