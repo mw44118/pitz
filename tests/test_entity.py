@@ -825,3 +825,84 @@ class TestAllowedTypes(unittest.TestCase):
         e1.edit('related_entities')
         assert m.called
 
+
+class TestWhatTheyReallyMean(unittest.TestCase):
+
+    def setUp(self):
+        proj = Project(title='bogus')
+        self.bar = Entity(proj, title='bar')
+        self.e = Entity(proj, title='bogus entity')
+        self.e.allowed_types = {'foo':Entity, 'i':int}
+
+    def test_1(self):
+        """
+        Verify we don't alter entities.
+        """
+
+        assert self.bar == self.e.what_they_really_mean('foo', self.bar)
+
+    def test_2(self):
+        """
+        Verify we don't alter look ups that we can't map to entities.
+        """
+
+        assert 'sniz' == self.e.what_they_really_mean('baz', 'sniz')
+
+    def test_3(self):
+        assert self.bar == self.e.what_they_really_mean('foo', 'bar')
+
+    def test_5(self):
+        """
+        Verify we type-cast when appropriate.
+        """
+
+        assert 99 == self.e.what_they_really_mean('i', '99')
+
+    def test_6(self):
+        """
+        Convert a list of titles to a list of entities.
+        """
+
+        assert [self.bar] == self.e.what_they_really_mean('foo', ['bar'])
+
+
+    def test_7(self):
+        """
+        Pass a list of entities through.
+        """
+
+        temp = self.e.what_they_really_mean('foo', [self.bar])
+
+        assert [self.bar] == temp, \
+        'got %s and wanted %s!' % (temp, [self.bar])
+
+
+    def test_by_uuid_1(self):
+        """
+        Look up with UUID.
+        """
+
+        assert self.bar == \
+        self.e.what_they_really_mean('foo', self.bar.uuid)
+
+
+    def test_9(self):
+
+        """
+        Look up with a frag.
+        """
+
+        assert self.bar == \
+        self.e.what_they_really_mean('foo', self.bar.frag)
+
+
+    def test_10(self):
+
+        """
+        Look up with a list of fragments.
+        """
+
+        temp = self.e.what_they_really_mean('foo', [self.bar.frag])
+
+        assert [self.bar] == temp, \
+        'got %s and I wanted %s!' % (temp, [self.bar])

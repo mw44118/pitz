@@ -522,49 +522,14 @@ Description
         Try to convert strings, UUIDs, and frags to more interesting
         objects.
 
-        >>> from pitz.bag import Project
         >>> bar = Entity(title='bar')
-
         >>> e = Entity(title='bogus entity')
-        >>> e.allowed_types = {'foo':Entity}
-
-        >>> bar == e.what_they_really_mean('foo', bar)
-        True
-
-        >>> e.allowed_types = {}
-        >>> e.what_they_really_mean('foo', 'bar')
-        'bar'
-
-        >>> e.allowed_types = {'foo':Entity}
-        >>> bar == e.what_they_really_mean('foo', 'bar')
-        True
-
-        >>> e.allowed_types = {'foo':[Entity]}
-        >>> bar == e.what_they_really_mean('foo', 'bar')
-        True
-
-        >>> e.allowed_types = {'foo':int}
-        >>> e.what_they_really_mean('foo', '99')
+        >>> e.allowed_types = {'foo':Entity, 'i':int}
+        >>> e.what_they_really_mean('i', '99')
         99
-
-        >>> e.allowed_types = {'foo':Entity}
+        >>> bar == e.what_they_really_mean('foo', 'bar')
+        True
         >>> [bar] == e.what_they_really_mean('foo', ['bar'])
-        True
-
-        >>> e.allowed_types = {'foo':Entity}
-        >>> [bar] == e.what_they_really_mean('foo', [bar])
-        True
-
-        >>> e.allowed_types = {'foo':Entity}
-        >>> bar.uuid == e.what_they_really_mean('foo', bar.uuid)
-        True
-
-        >>> e.allowed_types = {'foo':Entity}
-        >>> bar.frag == e.what_they_really_mean('foo', bar.frag)
-        True
-
-        >>> e.allowed_types = {'foo':Entity}
-        >>> [bar.frag] == e.what_they_really_mean('foo', [bar.frag])
         True
 
         """
