@@ -286,6 +286,11 @@ class TestMatchesDict(unittest.TestCase):
         Verify we can match with lists of titles.
         """
 
+        print('priority is %(priority)s' % self.e)
+
+        print('what they really meant: %s'
+            % self.e.what_they_really_mean('priority', ['bogus']))
+
         temp = self.e.matches_dict(priority=["bogus"])
 
         assert temp is None, "temp (%s) should be None!" % temp
@@ -849,7 +854,12 @@ class TestWhatTheyReallyMean(unittest.TestCase):
         assert 'sniz' == self.e.what_they_really_mean('baz', 'sniz')
 
     def test_3(self):
-        assert self.bar == self.e.what_they_really_mean('foo', 'bar')
+        """
+        Convert title of an entity to an entity.
+        """
+
+        assert self.bar == \
+        self.e.what_they_really_mean('foo', self.bar.title)
 
     def test_5(self):
         """
@@ -876,33 +886,52 @@ class TestWhatTheyReallyMean(unittest.TestCase):
         assert [self.bar] == temp, \
         'got %s and wanted %s!' % (temp, [self.bar])
 
+    def test_invalid_title(self):
+
+        assert 'fizzle' == self.e.what_they_really_mean('foo', 'fizzle')
+
+    def test_list_of_invalid_titles(self):
+
+        temp = self.e.what_they_really_mean('foo', ['fizzle'])
+
+        assert ['fizzle'] == temp, \
+        'got %s, expected %s!' % (temp, ['fizzle'])
+
 
     def test_by_uuid_1(self):
         """
-        Look up with UUID.
+        Convert a UUID into an entity.
         """
 
-        assert self.bar == \
-        self.e.what_they_really_mean('foo', self.bar.uuid)
+        temp = self.e.what_they_really_mean('foo', self.bar.uuid)
+        assert self.bar == temp, 'got %r, expected %s!' % (temp, self.bar)
 
-
-    def test_9(self):
-
+    def test_list_of_uuids(self):
         """
-        Look up with a frag.
+        Convert a list of UUIDs to a list of entities.
+        """
+
+        temp = self.e.what_they_really_mean('foo', [self.bar.uuid])
+
+        assert [self.bar] == temp, \
+        'got %r, expected %s!' % (temp, [self.bar])
+
+
+    def test_by_frag(self):
+        """
+        Convert a UUID fragment into an entity.
         """
 
         assert self.bar == \
         self.e.what_they_really_mean('foo', self.bar.frag)
 
-
-    def test_10(self):
+    def test_list_of_frags(self):
 
         """
-        Look up with a list of fragments.
+        Convert a list of fragments to a list of entities.
         """
 
-        temp = self.e.what_they_really_mean('foo', [self.bar.frag])
+        assert [self.bar] == \
+        self.e.what_they_really_mean('foo', [self.bar.frag])
 
-        assert [self.bar] == temp, \
-        'got %s and I wanted %s!' % (temp, [self.bar])
+

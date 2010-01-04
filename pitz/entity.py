@@ -531,26 +531,58 @@ Description
         True
         >>> [bar] == e.what_they_really_mean('foo', ['bar'])
         True
+        >>> 'fizzle' == e.what_they_really_mean('baz', 'fizzle')
+        True
 
         """
 
         if a not in self.allowed_types \
-        or isinstance(v, (Entity, uuid.UUID)):
-
+        or isinstance(v, Entity):
             return v
+
+        if isinstance(v, uuid.UUID) and self.project:
+            return self.project.by_uuid(v)
+
+        if isinstance(v, basestring) and self.project \
+        and v in self.project.entities_by_frag:
+
+            return self.project.by_frag(v)
 
         at = self.allowed_types[a]
 
         if isinstance(at, list):
             inner_at = at[0]
 
-            if v in inner_at.already_instantiated:
+            if isinstance(v, basestring) \
+            and v in inner_at.already_instantiated:
+
                 return inner_at(title=v)
 
         elif issubclass(at, Entity):
 
             if isinstance(v, list):
-                return [at(title=vv) for vv in v]
+
+                new_list = []
+                for vv in v:
+
+                    if isinstance(vv, Entity):
+                        new_list.append(vv)
+
+                    elif isinstance(vv, uuid.UUID) and self.project:
+                        new_list.append(self.project.by_uuid(vv))
+
+                    elif vv in at.already_instantiated:
+                        new_list.append(at(title=vv))
+
+                    elif isinstance(vv, basestring) and self.project \
+                    and vv in self.project.entities_by_frag:
+
+                        new_list.append(self.project.by_frag(vv))
+
+                    else:
+                        new_list.append(vv)
+
+                return new_list
 
             else:
 
@@ -581,7 +613,7 @@ Description
             if a not in self:
                 return
 
-            v = self.what_they_really_mean(self.allowed_types, a, v)
+            v = self.what_they_really_mean(a, v)
 
             if self.project:
                 v = self.project[v]
