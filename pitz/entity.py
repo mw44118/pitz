@@ -553,10 +553,23 @@ Description
         if isinstance(at, list):
             inner_at = at[0]
 
+            # When v is a title, look up an entity.
             if isinstance(v, basestring) \
             and v in inner_at.already_instantiated:
 
                 return inner_at(title=v)
+
+            # When v is a list, go through each element inside.
+            elif isinstance(v, list):
+
+                new_list = []
+                for vv in v:
+
+                    # is this gonna work?
+                    new_list.append(self.what_they_really_mean(a, vv))
+
+                return new_list
+
 
         elif issubclass(at, Entity):
 

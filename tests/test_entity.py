@@ -901,6 +901,17 @@ class TestWhatTheyReallyMean(unittest.TestCase):
         'got %s and wanted %s!' % (temp, [self.bar])
 
 
+    def test_list_of_entities_3(self):
+        """
+        Verify I convert a list of titles.
+        """
+
+        temp = self.e.what_they_really_mean('foolist', [self.bar.title])
+
+        assert [self.bar] == temp, \
+        'got %s and wanted %s!' % (temp, [self.bar])
+
+
     def test_invalid_title(self):
 
         assert 'fizzle' == self.e.what_they_really_mean('foo', 'fizzle')
