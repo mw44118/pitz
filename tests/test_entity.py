@@ -838,7 +838,9 @@ class TestWhatTheyReallyMean(unittest.TestCase):
         proj = Project(title='bogus')
         self.bar = Entity(proj, title='bar')
         self.e = Entity(proj, title='bogus entity')
-        self.e.allowed_types = {'foo':Entity, 'i':int}
+
+        self.e.allowed_types = {
+            'foo':Entity, 'i':int, 'foolist':[Entity]}
 
     def test_1(self):
         """
@@ -886,6 +888,18 @@ class TestWhatTheyReallyMean(unittest.TestCase):
 
         assert [self.bar] == temp, \
         'got %s and wanted %s!' % (temp, [self.bar])
+
+
+    def test_list_of_entities_2(self):
+        """
+        Verify I don't mess up a list of entities.
+        """
+
+        temp = self.e.what_they_really_mean('foolist', [self.bar])
+
+        assert [self.bar] == temp, \
+        'got %s and wanted %s!' % (temp, [self.bar])
+
 
     def test_invalid_title(self):
 
