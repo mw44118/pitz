@@ -615,9 +615,6 @@ Description
 
             v = self.what_they_really_mean(a, v)
 
-            if self.project:
-                v = self.project[v]
-
             if self[a] != v:
 
                 ev = self[a]

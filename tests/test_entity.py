@@ -186,7 +186,7 @@ class TestMatchesDict(unittest.TestCase):
         Entity.allowed_types['components'] = [Entity]
 
         self.e = Entity(self.p, title='Clean cat box', creator='Matt',
-            tags=['boring', 'chore'], priority=self.important)
+            pscore=99, tags=['boring', 'chore'], priority=self.important)
 
 
     def test_matches_dict_1(self):
@@ -202,6 +202,7 @@ class TestMatchesDict(unittest.TestCase):
         assert self.e.matches_dict(tags='chore') == self.e
         assert self.e.matches_dict(creator=['Matt']) == self.e
         assert self.e.matches_dict(creator=['Matt', 'Nobody']) == self.e
+        assert self.e.matches_dict(pscore=99) == self.e
 
         assert self.e.matches_dict(
             creator=['Matt', 'Nobody'],
