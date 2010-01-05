@@ -1,0 +1,26 @@
+components:
+- !!python/object:uuid.UUID
+  int: 4957623306508968194182393857812906256
+created_time: 2010-01-05 14:17:58.435590
+description: 'Evan and Tim both discovered that when they tried to use pitz-me to
+  add
+
+  themselves, it crashed.
+
+
+  They hit enter, meaning None, and it crashed.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: 2010-01-05 14:18:01.325714
+owner: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Fix crashing pitz-me
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 262369716968719990219407745822654622308
+yaml_file_saved: 2010-01-05 14:18:01.347245
