@@ -22,4 +22,3 @@ completion. To use that, add these lines to the end of your ~/.bashrc::
 
 Of course, you may need to change that line to point to where that file
 lives on your box.
-

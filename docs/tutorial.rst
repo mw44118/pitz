@@ -4,8 +4,8 @@ How to start using pitz
 
 The goal here is for me to walk you through how to start using pitz.
 
-Set up a project to use pitz
-============================
+Set up a project
+================
 
 Pretend that I'm starting work on a project named frotz::
 
@@ -20,16 +20,43 @@ You'll get asked lots of questions, and at the end, get dumped back out
 to the command line, and a fancy new pitzdir directory will hold your
 stuff.
 
+Tell your SCM to ignore some files
+==================================
+
+You should **not** track changes in these files, since they do stuff
+like cache data for quicker retrieval and protect against multiple
+processes working simultaneously on the same data.
+
+*   project.pickle
+*   pitz.pid
+
+me.yaml
+-------
+
+The me.yaml file can be tracked as long as you know you're the only one on the
+project.  If many people have checkouts, each person's me.yaml file
+should be different, and so you should not track changes to it.
+
+
+git example
+-----------
+
+I always add these lines to my .gitignore file::
+
+    pitzdir/project.pickle
+    pitzdir/pitz.pid
+    pitzdir/me.yaml
+
 
 Create a task
 =============
 
 ::
 
-    $ pitz-add-task 
+    $ pitz-add-task
 
 You'll get asked for a title, a description, a milestone, an estimate, and for
-components.  
+components.
 
 
 List stuff to do
@@ -37,7 +64,7 @@ List stuff to do
 
 ::
 
-    $ pitz-todo 
+    $ pitz-todo
     /==================
     frotz: stuff to do
     ==================
@@ -92,5 +119,5 @@ It blew up because pitz doesn't know who you are.  Fix that like this::
 
     $ pitz-add-person
 
-    
+
 
