@@ -805,8 +805,6 @@ def pitz_destroy():
     proj.save_entities_to_yaml_files()
 
 
-
-
 def pitz_me():
 
     """
@@ -834,13 +832,15 @@ def pitz_me():
 
     if Person.already_instantiated:
         print("You may already be in pitz:")
-        person = Person.choose_from_already_instantiated()
-        person.save_as_me_yaml()
+        choice = Person.choose_from_already_instantiated()
+        if choice:
+            person = choice
+            person.save_as_me_yaml()
 
-        print("OK, I'll recognize you as %(title)s from now on."
-            % person)
+            print("OK, I'll recognize you as %(title)s from now on."
+                % person)
 
-        return
+            return
 
     print("I'll add you to pitz.")
     pitz_add_person()
