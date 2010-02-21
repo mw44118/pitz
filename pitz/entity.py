@@ -6,7 +6,7 @@ The Entity class and Entity subclasses.
 
 from __future__ import with_statement
 
-import logging, os, re, shutil, textwrap, uuid, weakref
+import collections, logging, os, re, shutil, textwrap, uuid, weakref
 from datetime import datetime
 from types import NoneType
 

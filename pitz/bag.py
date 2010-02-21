@@ -6,8 +6,7 @@ Bags and Bag subclasses.
 
 from __future__ import with_statement
 
-from collections import defaultdict
-import csv, glob, logging, os, subprocess
+import collections, csv, glob, logging, os, subprocess
 import cPickle as pickle
 from uuid import UUID, uuid4
 from urllib import quote_plus
@@ -20,10 +19,10 @@ from pitz import *
 log = logging.getLogger('pitz.bag')
 
 
-class Bag(list):
+class Bag(collections.MutableSequence):
 
     """
-    Bags are really just lists with some useful methods.
+    Bags act like lists with a few extra methods.
     """
 
     def __init__(self, title='', html_filename=None, uuid=None,
@@ -36,6 +35,8 @@ class Bag(list):
         self._html_filename = html_filename
         self.jinja_template = jinja_template or 'bag.html'
         self._shell_mode = shell_mode
+
+        self._elements = list()
 
         if uuid:
             self.uuid = uuid
@@ -105,20 +106,36 @@ class Bag(list):
         """
 
         try:
-            return super(Bag, self).__getitem__(i)
+            return self._elements[i]
         except TypeError:
             return self.by_uuid(i)
 
 
+    def __delitem__(self, element):
+        return self._elements.__delitem__(element)
+
+    def __setitem__(self, index, element):
+        return self._elements.__setitem__(index, element)
+
+    def insert(self, index, element):
+        return self._elements.insert(index, element)
+
+    def __len__(self):
+        return len(self._elements)
+
     def __getslice__(self, i, j):
 
-        entities = super(Bag, self).__getslice__(i, j)
+        entities = self._elements.__getslice__(i, j)
 
         return Bag(title='slice from %s' % self.title,
             pathname=self.pathname, entities=entities,
             order_method=self.order_method, load_yaml_files=False,
             jinja_template=self.jinja_template,
             shell_mode=self.shell_mode)
+
+
+    def sort(self, cmp=None, key=None, reverse=False):
+        return self._elements.sort(cmp, key, reverse)
 
 
     def order(self, order_method=None):
@@ -357,7 +374,7 @@ class Bag(list):
         attributes in any entity in this bag.
         """
 
-        dd = defaultdict(int)
+        dd = collections.defaultdict(int)
 
         for e in self:
             for a in e:
@@ -371,7 +388,7 @@ class Bag(list):
         Return a sorted list of tuples like (value, count) for all the
         values for the attr.
         """
-        dd = defaultdict(int)
+        dd = collections.defaultdict(int)
 
         for e in self:
             if attr in e:
@@ -633,6 +650,7 @@ class Project(Bag):
 
         pf = os.path.join(pathname, 'project.pickle')
         pickle.dump(self, open(pf, 'w'))
+
         return pf
 
 
