@@ -260,7 +260,8 @@ class PitzEverything(PitzScript):
             results.title = "%s: %s" % (proj.title, self.title)
 
         clepy.send_through_pager(results.custom_view(
-            options.custom_view or 'summarized_view'))
+            options.custom_view or 'summarized_view'),
+            clepy.figure_out_pager())
 
 
 class PitzTodo(PitzScript):
@@ -283,7 +284,8 @@ class PitzTodo(PitzScript):
         results.title = proj.todo.title
 
         clepy.send_through_pager(results.custom_view(
-            options.custom_view or 'summarized_view'))
+            options.custom_view or 'summarized_view'),
+            clepy.figure_out_pager())
 
 
 class RecentActivity(PitzScript):
@@ -298,7 +300,8 @@ class RecentActivity(PitzScript):
             p, options, args, proj.recent_activity)
 
         clepy.send_through_pager(results.custom_view(
-            options.custom_view or 'summarized_view'))
+            options.custom_view or 'summarized_view'),
+            clepy.figure_out_pager())
 
 
 def print_version():
