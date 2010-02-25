@@ -1,0 +1,6 @@
+{% if e.description -%}
+Description
+-----------
+
+{{e.description}}
+{% endif %}

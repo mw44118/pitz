@@ -10,11 +10,16 @@ Description
 
 Attributes
 ----------
+
+=================   ====================================================
+key                 value
+=================   ====================================================
 {% for k, v in data.items() -%}
 {% if k in ('title', 'description') %}{% continue %}{% endif -%}
-{{ '%-18s' | format(k) }}: {% if hasattr(data[k], 'summarized_view') -%} 
+{{ '%-18s' | format(k) }} {% if hasattr(data[k], 'summarized_view') -%}
 {{ data[k].summarized_view -}}
-{% else -%} 
+{% else -%}
 {{ data[k] -}}
 {% endif %}
 {% endfor %}
+=================   ====================================================

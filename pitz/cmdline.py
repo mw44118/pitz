@@ -10,8 +10,7 @@ from wsgiref.simple_server import make_server
 
 from IPython.Shell import IPShellEmbed
 
-from clepy import edit_with_editor, maybe_add_ellipses, \
-send_through_pager, spinning_distraction
+import clepy
 
 from pitz import *
 from pitz.bag import Project
@@ -40,7 +39,7 @@ class PitzHelp(object):
     def __call__(self):
 
         for name, description in sorted(self.scripts.items()):
-            print("    %-26s %-44s" % (name, maybe_add_ellipses(description, 44)))
+            print("    %-26s %-44s" % (name, clepy.maybe_add_ellipses(description, 44)))
 
 pitz_help = PitzHelp()
 f = pitz_help.add_to_list_of_scripts
@@ -183,7 +182,7 @@ class PitzScript(object):
 
     def __call__(self):
 
-        with spinning_distraction():
+        with clepy.spinning_distraction():
 
             p = self.setup_p()
 
@@ -231,8 +230,9 @@ class MyTasks(PitzScript):
             results = self.apply_filter_and_grep(
                 p, options, args, proj.me.my_tasks)
 
-            send_through_pager(results.custom_view(
-                options.custom_view or 'summarized_view'))
+            clepy.send_through_pager(results.custom_view(
+                options.custom_view or 'summarized_view'),
+                clepy.figure_out_pager())
 
         else:
             print("I didn't find any tasks for you (%(title)s)."
@@ -259,7 +259,7 @@ class PitzEverything(PitzScript):
         if self.title:
             results.title = "%s: %s" % (proj.title, self.title)
 
-        send_through_pager(results.custom_view(
+        clepy.send_through_pager(results.custom_view(
             options.custom_view or 'summarized_view'))
 
 
@@ -282,7 +282,7 @@ class PitzTodo(PitzScript):
         results = self.apply_filter_and_grep(p, options, args, proj.todo)
         results.title = proj.todo.title
 
-        send_through_pager(results.custom_view(
+        clepy.send_through_pager(results.custom_view(
             options.custom_view or 'summarized_view'))
 
 
@@ -297,7 +297,7 @@ class RecentActivity(PitzScript):
         results = self.apply_filter_and_grep(
             p, options, args, proj.recent_activity)
 
-        send_through_pager(results.custom_view(
+        clepy.send_through_pager(results.custom_view(
             options.custom_view or 'summarized_view'))
 
 
@@ -349,8 +349,8 @@ def pitz_shell():
     # namespace in the shell.
     ns = dict([(C.__name__, C) for C in p.classes.values()])
     ns['p'] = p
-    ns['send_through_pager'] = send_through_pager
-    ns['edit_with_editor'] = edit_with_editor
+    ns['send_through_pager'] = clepy.send_through_pager
+    ns['edit_with_editor'] = clepy.edit_with_editor
 
     s = IPShellEmbed(['-colors', 'Linux'])
     s(local_ns=ns)
@@ -474,7 +474,7 @@ def pitz_add_task():
 
         title=options.title or raw_input("Task title: ").strip(),
 
-        description=edit_with_editor('# Task description goes here'),
+        description=clepy.edit_with_editor('# Task description goes here'),
 
         status=Status(proj, title='unstarted'),
 
@@ -529,7 +529,10 @@ class PitzShow(PitzScript):
         e = proj[args[0]]
 
         if isinstance(e, Entity):
-            send_through_pager(e.detailed_view)
+
+            clepy.send_through_pager(
+                e.detailed_view,
+                clepy.figure_out_pager())
 
         else:
             print("Sorry, couldn't find %s" % args[1])
@@ -541,7 +544,7 @@ def pitz_html():
     Write out a bunch of HTML files.
     """
 
-    with spinning_distraction():
+    with clepy.spinning_distraction():
 
         p = setup_options()
         p.set_usage('%prog [options] directory')
@@ -634,7 +637,7 @@ def pitz_add_milestone():
     m = Milestone(
         proj,
         title=options.title or raw_input("Milestone title: ").strip(),
-        description=edit_with_editor('# Milestone description goes here'),
+        description=clepy.edit_with_editor('# Milestone description goes here'),
         reached=Milestone.choose_from_allowed_values('reached', False),
     )
 
@@ -664,7 +667,7 @@ def pitz_add_person():
     person = Person(
         proj,
         title=options.title or raw_input("Person title: ").strip(),
-        description=edit_with_editor('# Person description goes here'),
+        description=clepy.edit_with_editor('# Person description goes here'),
     )
 
     proj.append(person)
@@ -714,7 +717,7 @@ def pitz_add_estimate():
     est = Estimate(
         proj,
         title=options.title or raw_input("Estimate title: ").strip(),
-        description=edit_with_editor('# Estimate description goes here'),
+        description=clepy.edit_with_editor('# Estimate description goes here'),
         points=int(raw_input("Points: ").strip()),
     )
 
@@ -742,7 +745,7 @@ def pitz_add_component():
     c = Component(
         proj,
         title=options.title or raw_input("Component title: ").strip(),
-        description=edit_with_editor('# Component description goes here'),
+        description=clepy.edit_with_editor('# Component description goes here'),
     )
 
     proj.append(c)
@@ -769,7 +772,7 @@ def pitz_add_status():
     s = Status(
         proj,
         title=options.title or raw_input("Status title: ").strip(),
-        description=edit_with_editor('# Status description goes here'),
+        description=clepy.edit_with_editor('# Status description goes here'),
     )
 
     proj.append(s)

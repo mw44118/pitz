@@ -18,8 +18,15 @@ from pitz import *
 
 log = logging.getLogger('pitz.bag')
 
+# Not too happy about this code, but I don't know how to make this work
+# in 2.5 otherwise.
+if hasattr(collections, 'MutableSequence'):
+    BagSuperclass = collections.MutableSequence
+else:
+    BagSuperclass = object
 
-class Bag(collections.MutableSequence):
+
+class Bag(BagSuperclass):
 
     """
     Bags act like lists with a few extra methods.
@@ -57,6 +64,23 @@ class Bag(collections.MutableSequence):
         self.replace_pointers_with_objects()
 
         self._setup_jinja()
+
+
+    def walk_through_elements(self):
+        for el in self._elements:
+            yield el
+
+
+    def __iter__(self):
+        return self.walk_through_elements()
+
+
+    def __contains__(self, element):
+        return element in self._elements
+
+
+    def index(self, value):
+        return self._elements.index(value)
 
 
     def _setup_jinja(self):
@@ -224,7 +248,7 @@ class Bag(collections.MutableSequence):
         # Don't add the same entity twice.
         if e.uuid not in self.entities_by_uuid:
 
-            super(Bag, self).append(e)
+            self._elements.append(e)
             self.entities_by_uuid[e.uuid] = e
             self.entities_by_frag[e.frag] = e
             self.entities_by_yaml_filename[e.yaml_filename] = e
@@ -237,7 +261,7 @@ class Bag(collections.MutableSequence):
 
     def pop(self, index=-1):
 
-        e = super(Bag, self).pop(index)
+        e = self._elements.pop(index)
         self.entities_by_uuid.pop(e.uuid)
         self.entities_by_frag.pop(e.frag)
         self.entities_by_yaml_filename.pop(e.yaml_filename)
