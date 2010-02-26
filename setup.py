@@ -36,7 +36,6 @@ started pitz.""",
         'nose',
         'jinja2',
         'Tempita',
-          # -*- Extra requirements: -*-
     ],
 
 
@@ -84,5 +83,9 @@ started pitz.""",
     """,
 
     test_suite = 'nose.collector',
+
+    package_data = {
+        '': ['*.html', '*.txt'],
+    },
 
 )
