@@ -40,14 +40,14 @@ def test_new_bag():
     assert t2 in b2
 
     b.order()
-    
+
 
 def test_append_1():
 
     b = Bag()
     b.append(pitz.entity.Entity(title='blah', status='irrelevant'))
 
-    
+
 def test_values():
 
     b = Bag()
@@ -69,7 +69,7 @@ def test_to_csv(o):
 
     global b
     b.to_csv('bogus', 'title')
-    
+
 
 def test_order_1():
 
@@ -86,7 +86,7 @@ def test_order_2():
 
     b.append(pitz.entity.Entity(title='blah', difficulty='hard',
         status='unstarted'))
-    
+
     b.order_method = None
     b.order()
 
@@ -101,7 +101,7 @@ def test_detailed_view():
 
     global b
     b.detailed_view
-    
+
 
 def test_contents_1():
 
@@ -171,7 +171,7 @@ def test_html():
 
 @patch('__builtin__.open')
 def test_to_html(o):
-    
+
     global b
     b.to_html('bogus filepath')
 
@@ -226,12 +226,14 @@ class TestSorting1(unittest.TestCase):
 
         self.e3['pscore'] = 10
         self.p.order()
- 
+
         print("After second pscore change")
         for e in self.p:
             print "%(title)s %(pscore)s" % e
 
-        assert self.p == [self.e3, self.e2, self.e4, self.e1]
+        assert list(self.p) == [self.e3, self.e2, self.e4, self.e1], \
+        "self.p is \n---\n%s\n---\n" % self.p
+
 
 
 class TestSorting2(unittest.TestCase):
@@ -382,7 +384,7 @@ class TestBag(unittest.TestCase):
 
         b = Bag(uuid='99999999')
         assert b.uuid == '99999999'
-        
+
 
     def test_slice(self):
 
@@ -392,3 +394,5 @@ class TestBag(unittest.TestCase):
         b2 = b[0:2]
 
         assert isinstance(b2, Bag), "b2 is a %s" % type(b2)
+
+

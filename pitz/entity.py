@@ -6,7 +6,7 @@ The Entity class and Entity subclasses.
 
 from __future__ import with_statement
 
-import logging, os, re, shutil, textwrap, uuid, weakref
+import collections, logging, os, re, shutil, textwrap, uuid, weakref
 from datetime import datetime
 from types import NoneType
 
@@ -326,12 +326,14 @@ class Entity(dict):
                 who_did_it=self.project.me,
                 description='')
 
+
     def prioritize_above(self, other):
         """
         Set my pscore to the other entity's pscore + 1.
         """
 
         self['pscore'] = other['pscore'] + 1
+
 
     def prioritize_below(self, other):
         """
@@ -376,6 +378,7 @@ class Entity(dict):
 
         return b.order(by_descending_created_time)
 
+
     @property
     def activities(self):
         """
@@ -414,16 +417,19 @@ class Entity(dict):
     def description(self):
         return self['description']
 
+
+    @property
+    def attributes_view(self):
+
+        t = self.e.get_template('entity_attributes_table.txt')
+        return t.render(e=self)
+
+
     @property
     def description_view(self):
 
-        tmpl = jinja2.Template("""{% if e.description -%}
-Description
------------
-{{e.description}}
-{% endif %}""")
-
-        return tmpl.render(e=self)
+        t = self.e.get_template('description_view.txt')
+        return t.render(e=self)
 
 
     @property
@@ -1480,6 +1486,7 @@ class Task(Entity):
             order_method=self.activities.order_method)
 
         return b
+
 
     @property
     def recent_activity_view(self):

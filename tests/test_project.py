@@ -60,7 +60,7 @@ def test_save_entities_1():
 @patch('__builtin__.open')
 @patch('pickle.dump')
 def test_to_yaml_file_1(m1, m2):
-    
+
     p = Project("Bogus")
     p.to_yaml_file('bogus-pathname')
 
@@ -68,7 +68,7 @@ def test_to_yaml_file_1(m1, m2):
 @patch('__builtin__.open')
 @raises(ValueError)
 def test_to_yaml_file_2(o):
-    
+
     p = Project("Bogus")
     p.to_yaml_file()
 
@@ -94,7 +94,7 @@ def test_from_yaml_file_1(m1, m2, m3):
 
 def test_grep():
 
-    p = Project("Bogus", pathname="/tmp") 
+    p = Project("Bogus", pathname="/tmp")
     e1 = Entity(title="bogus entity 1")
     e2 = Entity(title="bogus entity 2")
     p.append(e1)
@@ -213,7 +213,7 @@ class TestFromPitzdir(unittest.TestCase):
 
         p = Project.from_pitzdir('/tmp')
         assert p.loaded_from == 'pickle', p.loaded_from
-        
+
 
     def test_stale_pickle(self):
         """
@@ -225,10 +225,10 @@ class TestFromPitzdir(unittest.TestCase):
         os.utime('/tmp/project.pickle',
             (stat.st_atime-1, stat.st_mtime-1))
 
-        print("pickle file: %s" 
+        print("pickle file: %s"
             % os.stat('/tmp/project.pickle').st_mtime)
 
-        print("newest yaml file: %s" 
+        print("newest yaml file: %s"
             % max([os.stat(f).st_mtime for f in glob.glob('/tmp/*.yaml')]))
 
         p = Project.from_pitzdir('/tmp')

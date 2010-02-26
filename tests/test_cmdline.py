@@ -48,7 +48,7 @@ class TestPitzEverything(TestPitzCmdLine):
         pitz_everything()
 
 
-    @patch('pitz.cmdline.send_through_pager')
+    @patch('clepy.send_through_pager')
     def test_nofilter(self, m1):
 
         sys.argv = ['pitz-everything']
@@ -56,7 +56,7 @@ class TestPitzEverything(TestPitzCmdLine):
         pitz_everything()
 
 
-    @patch('pitz.cmdline.send_through_pager')
+    @patch('clepy.send_through_pager')
     def test_filter(self, m1):
 
         sys.argv = ['pitz-everything', 'type=task']
@@ -64,7 +64,7 @@ class TestPitzEverything(TestPitzCmdLine):
         pitz_everything()
 
 
-    @patch('pitz.cmdline.send_through_pager')
+    @patch('clepy.send_through_pager')
     @patch('pitz.bag.Bag.grep')
     def test_grep(self, m1, m2):
 
@@ -85,7 +85,7 @@ class TestPitzTodo(TestPitzCmdLine):
         pitz_todo()
 
 
-    @patch('pitz.cmdline.send_through_pager')
+    @patch('clepy.send_through_pager')
     def test_nofilter(self, m1):
 
         sys.argv = ['pitz-todo']
@@ -93,7 +93,7 @@ class TestPitzTodo(TestPitzCmdLine):
         pitz_todo()
 
 
-    @patch('pitz.cmdline.send_through_pager')
+    @patch('clepy.send_through_pager')
     def test_filter(self, m1):
 
         sys.argv = ['pitz-todo', 'type=task']
@@ -101,7 +101,7 @@ class TestPitzTodo(TestPitzCmdLine):
         pitz_todo()
 
 
-    @patch('pitz.cmdline.send_through_pager')
+    @patch('clepy.send_through_pager')
     @patch('pitz.bag.Bag.grep')
     def test_grep(self, m1, m2):
 
@@ -142,7 +142,7 @@ class TestPitzAdd(TestPitzCmdLine):
 
 
     @patch('__builtin__.raw_input')
-    @patch('pitz.cmdline.edit_with_editor')
+    @patch('clepy.edit_with_editor')
     def test_created_by(self, m1, m2):
 
         sys.argv = ['pitz-add', '--pitzdir=/tmp/pitzdir', '--title=foo']

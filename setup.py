@@ -29,14 +29,13 @@ started pitz.""",
 
     install_requires=[
         'mock==0.4',
-        'clepy>=0.3.13',
+        'clepy>=0.3.17',
         'IPython',
         'PyYAML',
         'sphinx',
         'nose',
         'jinja2',
         'Tempita',
-          # -*- Extra requirements: -*-
     ],
 
 
@@ -84,5 +83,9 @@ started pitz.""",
     """,
 
     test_suite = 'nose.collector',
+
+    package_data = {
+        '': ['*.html', '*.txt'],
+    },
 
 )

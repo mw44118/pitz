@@ -3,15 +3,15 @@
 """
 Stuff that is useful in lots of different places goes in here.
 
-Stuff that is really REALLY useful should be in the awesome clepy
-package, which is a grab bag of fanciness.
+Stuff that is REALLY useful should be in the awesome clepy package,
+which is a grab bag of fanciness.
 """
 
 from __future__ import with_statement
 
 import logging
 
-__version__ = "0.4.0"
+__version__ = "1.0.3"
 
 
 # This bugs me.  I don't like how instead of just defining stuff, I'm

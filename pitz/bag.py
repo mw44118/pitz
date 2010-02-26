@@ -6,8 +6,7 @@ Bags and Bag subclasses.
 
 from __future__ import with_statement
 
-from collections import defaultdict
-import csv, glob, logging, os, subprocess
+import collections, csv, glob, logging, os, subprocess
 import cPickle as pickle
 from uuid import UUID, uuid4
 from urllib import quote_plus
@@ -19,11 +18,18 @@ from pitz import *
 
 log = logging.getLogger('pitz.bag')
 
+# Not too happy about this code, but I don't know how to make this work
+# in 2.5 otherwise.
+if hasattr(collections, 'MutableSequence'):
+    BagSuperclass = collections.MutableSequence
+else:
+    BagSuperclass = object
 
-class Bag(list):
+
+class Bag(BagSuperclass):
 
     """
-    Bags are really just lists with some useful methods.
+    Bags act like lists with a few extra methods.
     """
 
     def __init__(self, title='', html_filename=None, uuid=None,
@@ -36,6 +42,8 @@ class Bag(list):
         self._html_filename = html_filename
         self.jinja_template = jinja_template or 'bag.html'
         self._shell_mode = shell_mode
+
+        self._elements = list()
 
         if uuid:
             self.uuid = uuid
@@ -56,6 +64,23 @@ class Bag(list):
         self.replace_pointers_with_objects()
 
         self._setup_jinja()
+
+
+    def walk_through_elements(self):
+        for el in self._elements:
+            yield el
+
+
+    def __iter__(self):
+        return self.walk_through_elements()
+
+
+    def __contains__(self, element):
+        return element in self._elements
+
+
+    def index(self, value):
+        return self._elements.index(value)
 
 
     def _setup_jinja(self):
@@ -105,20 +130,36 @@ class Bag(list):
         """
 
         try:
-            return super(Bag, self).__getitem__(i)
+            return self._elements[i]
         except TypeError:
             return self.by_uuid(i)
 
 
+    def __delitem__(self, element):
+        return self._elements.__delitem__(element)
+
+    def __setitem__(self, index, element):
+        return self._elements.__setitem__(index, element)
+
+    def insert(self, index, element):
+        return self._elements.insert(index, element)
+
+    def __len__(self):
+        return len(self._elements)
+
     def __getslice__(self, i, j):
 
-        entities = super(Bag, self).__getslice__(i, j)
+        entities = self._elements.__getslice__(i, j)
 
         return Bag(title='slice from %s' % self.title,
             pathname=self.pathname, entities=entities,
             order_method=self.order_method, load_yaml_files=False,
             jinja_template=self.jinja_template,
             shell_mode=self.shell_mode)
+
+
+    def sort(self, cmp=None, key=None, reverse=False):
+        return self._elements.sort(cmp, key, reverse)
 
 
     def order(self, order_method=None):
@@ -207,7 +248,7 @@ class Bag(list):
         # Don't add the same entity twice.
         if e.uuid not in self.entities_by_uuid:
 
-            super(Bag, self).append(e)
+            self._elements.append(e)
             self.entities_by_uuid[e.uuid] = e
             self.entities_by_frag[e.frag] = e
             self.entities_by_yaml_filename[e.yaml_filename] = e
@@ -220,7 +261,7 @@ class Bag(list):
 
     def pop(self, index=-1):
 
-        e = super(Bag, self).pop(index)
+        e = self._elements.pop(index)
         self.entities_by_uuid.pop(e.uuid)
         self.entities_by_frag.pop(e.frag)
         self.entities_by_yaml_filename.pop(e.yaml_filename)
@@ -357,7 +398,7 @@ class Bag(list):
         attributes in any entity in this bag.
         """
 
-        dd = defaultdict(int)
+        dd = collections.defaultdict(int)
 
         for e in self:
             for a in e:
@@ -371,7 +412,7 @@ class Bag(list):
         Return a sorted list of tuples like (value, count) for all the
         values for the attr.
         """
-        dd = defaultdict(int)
+        dd = collections.defaultdict(int)
 
         for e in self:
             if attr in e:
@@ -633,6 +674,7 @@ class Project(Bag):
 
         pf = os.path.join(pathname, 'project.pickle')
         pickle.dump(self, open(pf, 'w'))
+
         return pf
 
 
