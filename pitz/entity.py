@@ -1642,6 +1642,7 @@ class Activity(Entity):
 
     @property
     def summarized_view(self):
-        return self.title
 
-
+        return '%s (%s)' % (
+            self,
+            clepy.time_ago(self['created_time']))
