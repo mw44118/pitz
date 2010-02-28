@@ -1,0 +1,27 @@
+components:
+- !!python/object:uuid.UUID
+  int: 170479705391647032501098302123768246956
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2010-02-26 10:03:45.042625
+description: 'After I used pitz-destroy to get rid of a task, I ran
+
+  pitz-recent-activity, and it crashed.
+
+
+  I suspect that some activities pointed to the destroyed task.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: 2010-02-26 10:03:48.202706
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Make pitz-destroy clean up related activity entities
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 215358700129406542433302315512004491529
+yaml_file_saved: 2010-02-26 10:03:48.210122
