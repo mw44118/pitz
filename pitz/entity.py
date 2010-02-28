@@ -729,13 +729,17 @@ class Entity(dict):
             """<a href="/entity/%(uuid)s">%(safe_title)s</a>"""
             % dict(uuid=self.uuid, safe_title=safe_title))
 
+
     @property
     def one_line_view(self):
         """
         Shorter description, meant to fit within 72 characters.
         """
 
-        return "%(frag)s: %(title)s" % self
+        return clepy.maybe_add_ellipses(
+            "%(frag)s: %(title)s" % self,
+            )
+
 
     @property
     def summarized_view(self):

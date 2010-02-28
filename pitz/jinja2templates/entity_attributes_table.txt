@@ -3,7 +3,9 @@ key                value
 ================== ====================================================
 {% for k, v in e.items() -%}
 {% if k in ('title', 'description') %}{% continue %}{% endif -%}
-{{ '%-18s' | format(k) }} {% if hasattr(v, 'summarized_view') -%}
+{{ '%-18s' | format(k) }} {% if hasattr(v, 'one_line_view') -%}
+{{ v.one_line_view }}
+{% elif hasattr(v, 'summarized_view') -%}
 {{ v.summarized_view -}}
 {% else -%}
 {{ v -}}
