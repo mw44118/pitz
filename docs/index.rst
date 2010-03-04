@@ -11,3 +11,4 @@ Contents:
     examples.rst
     data-model.rst
     project.rst
+    hooks.rst
