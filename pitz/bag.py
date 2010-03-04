@@ -462,7 +462,6 @@ class Bag(BagSuperclass):
                 for s in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout])
 
 
-
     def to_html(self, filepath):
         """
         Write this bag out as HTML to a file at filepath.

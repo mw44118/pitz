@@ -135,6 +135,7 @@ class TestPitzSetup(unittest.TestCase):
 
 class TestPitzAdd(TestPitzCmdLine):
 
+    @raises(SystemExit)
     def test_version(self):
 
         sys.argv = ['pitz-add', '--version']

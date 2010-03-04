@@ -21,6 +21,8 @@ from pitz import NoProject, by_descending_created_time
 
 from pitz import by_created_time, by_whatever
 
+import pitz
+
 log = logging.getLogger('pitz.entity')
 
 
@@ -1379,6 +1381,11 @@ class Task(Entity):
 
     jinja_template = 'task.html'
 
+    def __init__(self, project=None, **kwargs):
+        super(Task, self).__init__(project, **kwargs)
+
+        if project and project.pitzdir:
+            pitz.run_add_task_hooks(project.pitzdir)
 
     @property
     def milestone(self):

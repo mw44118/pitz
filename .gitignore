@@ -12,3 +12,4 @@ pitz_prof
 *.pickle
 pitzdir/me.yaml
 pitzdir/pitz.pid
+pitzdir/hooks/after_add_task

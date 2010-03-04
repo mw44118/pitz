@@ -9,7 +9,7 @@ which is a grab bag of fanciness.
 
 from __future__ import with_statement
 
-import logging
+import logging, os, subprocess
 
 __version__ = "1.0.3"
 
@@ -142,3 +142,18 @@ def build_filter(args):
         d[attr] = value
 
     return d
+
+
+def run_add_task_hooks(pitzdir):
+
+    """
+    Run pitzdir/hooks/after_add_task (if it exists), passing in the
+    pitzdir as $1.
+    """
+
+    try:
+        subprocess.Popen(
+            [os.path.join(pitzdir, 'hooks', 'after_add_task'), pitzdir])
+
+    except OSError, ex:
+        log.debug(ex)

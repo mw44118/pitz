@@ -73,7 +73,8 @@ class PitzScript(object):
     def handle_p(self, p):
         """
         Use this to monkey with the optparse.OptionParser instance p.
-        For example, set a specific usage or add an extra option.
+        For example, set a specific usage message, or add an extra
+        option.
         """
 
 
@@ -447,68 +448,6 @@ def setup_options():
         help='show pitz version')
 
     return p
-
-
-def pitz_add_task():
-
-    """
-    Walks through the setup of a new Task.
-    """
-
-    p = setup_options()
-    p.add_option('-t', '--title', help='Task title')
-
-    options, args = p.parse_args()
-
-    if options.version:
-        print_version()
-        return
-
-    pitzdir = Project.find_pitzdir(options.pitzdir)
-
-    pidfile = write_pidfile_or_die(pitzdir)
-
-    proj = Project.from_pitzdir(pitzdir)
-    proj.find_me()
-
-    t = Task(
-
-        proj,
-
-        title=options.title or raw_input("Task title: ").strip(),
-
-        description=clepy.edit_with_editor('# Task description goes here'),
-
-        status=Status(proj, title='unstarted'),
-
-        milestone=Milestone.choose_from_already_instantiated(
-            Milestone(proj, title='unscheduled')),
-
-        estimate=Estimate.choose_from_already_instantiated(
-            Estimate(proj, title='not estimated')),
-
-        owner=Person.choose_from_already_instantiated(
-            Person(proj, title='no owner')),
-
-    )
-
-    proj.append(t)
-
-    t['components'] = Component.choose_many_from_already_instantiated()
-
-
-    print("Added %s to the project." % t.summarized_view)
-    proj.save_entities_to_yaml_files()
-
-    os.remove(pidfile)
-
-    return t
-
-pitz_add_task.script_name = 'pitz-add-task'
-f(pitz_add_task)
-
-
-pitz_add = pitz_add_task
 
 
 class PitzShow(PitzScript):
@@ -1063,6 +1002,44 @@ class PitzPrioritizeBelow(PitzPrioritizeAbove):
             t1.comment(title=options.message, description='')
 
 
+class PitzAddTask(PitzScript):
+
+    script_name = 'pitz-add-task'
+
+    def handle_p(self, p):
+        p.add_option('-t', '--title', help='Task title')
+
+    def handle_proj(self, p, options, args, proj, results):
+
+        t = Task(
+
+            proj,
+
+            title=options.title or raw_input("Task title: ").strip(),
+
+            description=clepy.edit_with_editor(
+                '# Task description goes here'),
+
+            status=Status(proj, title='unstarted'),
+
+            milestone=Milestone.choose_from_already_instantiated(
+                Milestone(proj, title='unscheduled')),
+
+            estimate=Estimate.choose_from_already_instantiated(
+                Estimate(proj, title='not estimated')),
+
+            owner=Person.choose_from_already_instantiated(
+                Person(proj, title='no owner')),
+
+            components=Component.choose_many_from_already_instantiated(),
+
+        )
+
+        proj.append(t)
+
+        print("Added %r to the project." % t)
+
+
 def pitz_webapp():
 
     """
@@ -1193,6 +1170,8 @@ pitz_unassign_task = f(PitzUnassignTask())
 pitz_prioritize_above = f(PitzPrioritizeAbove())
 pitz_prioritize_below = f(PitzPrioritizeBelow())
 pitz_refresh_pickle = f(RefreshPickle())
+pitz_add_task = f(PitzAddTask())
+pitz_add = pitz_add_task
 
 # These scripts just read the data and report on it.
 pitz_my_tasks = f(MyTasks(save_proj=False))
