@@ -1,0 +1,21 @@
+components:
+- !!python/object:uuid.UUID
+  int: 170479705391647032501098302123768246956
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-03-04 08:33:07.332933
+description: Tagging is fun and easy.
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Add a tags attribute (list of strings) to entities
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 157997303152755001408219248819303824237
+yaml_file_saved: 2010-03-04 08:33:07.358181
