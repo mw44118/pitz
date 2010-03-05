@@ -715,7 +715,11 @@ class Entity(dict):
 
 
     def __repr__(self):
-        return "<pitz.%s %s>" % (self.__class__.__name__, self.title)
+
+        return "<pitz.%s %s %s>" % (
+            self.__class__.__name__,
+            self.frag,
+            clepy.maybe_add_ellipses(self.title, 60))
 
 
     @property
