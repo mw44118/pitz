@@ -39,6 +39,11 @@ See all the attributes on tasks::
 
     $ pitz-show hjkl98 # hjkl98 is a UUID fragment.
 
+Print a very pretty PDF example of a task::
+
+    $ pitz-show abc123 | rst2pdf | lp
+
+
 Examples from within pitz-shell
 ===============================
 
@@ -56,11 +61,11 @@ Link a task to a milestone::
     >>> m1 = p.milestones[0] # doctest: +SKIP
 
     >>> # you can use UUID fragments to get things
-    >>> t = p['hjkl98'] # doctest: +SKIP 
+    >>> t = p['hjkl98'] # doctest: +SKIP
     >>> t['milestone'] = m1 # doctest: +SKIP
 
 Comment on a task t::
 
-    >>> Comment(entity=t, who_said_it="matt', 
+    >>> Comment(entity=t, who_said_it="matt',
     ...         title='blah blah',
     ...         text='Blah, blah, blah...') # doctest: +SKIP
