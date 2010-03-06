@@ -1009,6 +1009,10 @@ class PitzAddTask(PitzScript):
     def handle_p(self, p):
         p.add_option('-t', '--title', help='Task title')
 
+        p.add_option('--no-description',
+            action='store_true',
+            help='Stores this task with an empty description')
+
     def handle_proj(self, p, options, args, proj, results):
 
         t = Task(
@@ -1017,7 +1021,7 @@ class PitzAddTask(PitzScript):
 
             title=options.title or raw_input("Task title: ").strip(),
 
-            description=clepy.edit_with_editor(
+            description='' if options.no_description else clepy.edit_with_editor(
                 '# Task description goes here'),
 
             status=Status(proj, title='unstarted'),

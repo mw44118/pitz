@@ -1212,8 +1212,14 @@ class Status(Entity):
         and abandoned.
         """
 
-        for title, pscore in [('started', 3), ('unstarted', 2),
-            ('finished', 4), ('abandoned', 1)]:
+        for title, pscore in [
+            ('finished', 4),
+            ('started', 3),
+            ('paused', 2),
+            ('queued', 2),
+            ('unstarted', 2),
+            ('abandoned', 1),
+            ]:
 
             cls(proj, title=title, pscore=pscore)
 
