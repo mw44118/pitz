@@ -20,6 +20,7 @@ Person, Status, Task
 
 from pitz.webapp import SimpleWSGIApp
 
+
 log = logging.getLogger('pitz.cmdline')
 
 class PitzHelp(object):
@@ -143,6 +144,7 @@ class PitzScript(object):
 
         return proj
 
+
     def setup_results(self, p, options, args, proj):
 
         if self.filter:
@@ -152,6 +154,7 @@ class PitzScript(object):
             results = proj
 
         return results
+
 
     def add_grep_option(self, p):
 
@@ -1221,3 +1224,7 @@ pitz_people = f(
         doc='All people in the project'))
 
 pitz_show = f(PitzShow())
+
+from pitz.cmdline.pitzcomment import PitzComment
+
+pitz_comment = f(PitzComment())

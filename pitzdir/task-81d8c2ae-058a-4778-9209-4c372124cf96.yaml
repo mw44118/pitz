@@ -1,0 +1,29 @@
+components:
+- !!python/object:uuid.UUID
+  int: 170479705391647032501098302123768246956
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-03-07 11:41:09.772004
+description: 'I don''tsee the point in supporting a components attribute that can
+  hold
+
+  a list of entities, and then a separate tags attribute that will hold a
+
+  list of strings.
+
+
+  I''d rather just repurpose components as tags.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Rename components to tags
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 172595896152575650602776827590353407894
+yaml_file_saved: 2010-03-07 11:41:09.795396

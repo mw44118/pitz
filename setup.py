@@ -79,6 +79,7 @@ started pitz.""",
     pitz-statuses = pitz.cmdline:pitz_statuses
     pitz-help = pitz.cmdline:pitz_help
     pitz-refresh-pickle = pitz.cmdline:pitz_refresh_pickle
+    pitz-comment = pitz.cmdline:pitz_comment
 
     """,
 
