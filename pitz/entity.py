@@ -370,6 +370,13 @@ class Entity(dict):
 
 
     @property
+    def pitzdir_replace_directive(self):
+
+        if self.project:
+            return ".. |pitzdir| replace:: %s" % self.project.pitzdir
+
+
+    @property
     def comments(self):
         """
         Return all comments on this entity.

@@ -1,27 +1,26 @@
+attached_files:
+- /home/matt/checkouts/pitz/pitzdir/attached_files/DC00212.jpg
 components:
 - !!python/object:uuid.UUID
   int: 292330627916466842239283398422481375639
 created_time: 2010-01-12 10:05:11.632187
-description: 'I would like to be able to embed images in the description section and
-
-  those images should be attached files.
-
-
-  I need to test this out and see if it works already or write the code to
-
-  make it happen.'
+description: "I would like to be able to embed images in the description section and\n\
+  those images should be attached files.\n\nI need to test this out and see if it\
+  \ works already or write the code to\nmake it happen.\n\nHere's an attempt:\n\n\
+  .. image:: /home/matt/checkouts/pitz/pitzdir/attached_files/DC00212.jpg\n    :alt:\
+  \ picture of me\n\nThis is pitzdir: |pitzdir|."
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 281829325005055660957328011118288254534
-modified_time: 2010-01-12 10:05:17.792273
+modified_time: 2010-03-06 22:43:49.920722
 owner: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 336444450266496547059833010238290292739
 title: Find out if I can embed links to attached files that contain images in description
 type: task
 uuid: !!python/object:uuid.UUID
   int: 205927058821702586343176271850284832565
-yaml_file_saved: 2010-01-12 10:05:17.793189
+yaml_file_saved: 2010-03-06 22:43:49.954640

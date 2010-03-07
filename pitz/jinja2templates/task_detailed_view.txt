@@ -13,3 +13,5 @@ Attributes
 {{ e.comments_view -}}
 
 {{ e.recent_activity_view }}
+
+{{ e.pitzdir_replace_directive }}

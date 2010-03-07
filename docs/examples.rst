@@ -64,8 +64,22 @@ Link a task to a milestone::
     >>> t = p['hjkl98'] # doctest: +SKIP
     >>> t['milestone'] = m1 # doctest: +SKIP
 
-Comment on a task t::
+Comment on a task::
 
     >>> Comment(entity=t, who_said_it="matt',
     ...         title='blah blah',
     ...         text='Blah, blah, blah...') # doctest: +SKIP
+
+
+More advanced stuff
+===================
+
+You can embed an image in a task's description.  Just use regular
+restructured text markup, like::
+
+    ..  image:: /home/matt/checkouts/pitz/pitzdir/attached_files/DC00212.jpg
+        :alt: picture of me
+
+Right now, you have to use the absolute path to the image file.  I'm
+looking for a way to pass in the pitzdir in as a variable.
+

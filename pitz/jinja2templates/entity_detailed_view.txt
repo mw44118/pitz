@@ -12,3 +12,5 @@ Attributes
 ----------
 
 {{ e.attributes_view }}
+
+{{ e.pitzdir_replace_directive }}
