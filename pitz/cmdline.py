@@ -22,7 +22,6 @@ from pitz.webapp import SimpleWSGIApp
 
 log = logging.getLogger('pitz.cmdline')
 
-
 class PitzHelp(object):
 
     def add_to_list_of_scripts(self, f):
@@ -92,6 +91,7 @@ class PitzScript(object):
         """
 
     def apply_filter_and_grep(self, p, options, args, b):
+
         """
         Return a new bag after filtering and using grep on the bag b
         passed in.
