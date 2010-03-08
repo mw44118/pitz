@@ -314,22 +314,50 @@ def print_version():
     print(__version__)
 
 
+def pid_is_running(pid):
+
+    """
+    Return pid if pid is still going.
+
+    >>> import os
+    >>> mypid = os.getpid()
+    >>> mypid == pid_is_running(mypid)
+    True
+    >>> pid_is_running(1000000) == None
+    True
+    """
+
+    try:
+        os.kill(pid, 0)
+
+    except OSError:
+        return
+
+    else:
+        return pid
+
+
 def write_pidfile_or_die(pitzdir):
 
-    # If the pidfile exists, warn and quit.
     pidfile = os.path.join(pitzdir, 'pitz.pid')
 
     if os.path.exists(pidfile):
 
-        print("Sorry, found a pidfile!  Kill process %s or remove %s."
-            % (open(pidfile).read(), pidfile))
+        pid = int(open(pidfile).read())
 
-        raise SystemExit
+        if pid_is_running(pid):
 
-    # Create the pidfile and write this process's pid inside.
+            print("Sorry, found a pidfile!  Kill process %s." % pid)
+
+            raise SystemExit
+
+        else:
+
+            os.remove(pidfile)
+
     open(pidfile, 'w').write(str(os.getpid()))
-
     return pidfile
+
 
 def pitz_shell():
     """

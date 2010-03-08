@@ -1,0 +1,29 @@
+components:
+- !!python/object:uuid.UUID
+  int: 4957623306508968194182393857812906256
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-03-07 19:09:35.063553
+description: "I've been playing around with generating static HTML and PDF files from\n\
+  tasks like this::\n\n    $ pitz-show abc123 | rst2pdf > abc123.pdf\n    $ pitz-show\
+  \ abc123 | rst2html > abc123.html\n\nFor the HTML, there's a few things I want to\
+  \ figure out:\n\n*   How do I embed my own CSS?\n*   Can I add a custom header and/or\
+  \ footer to all the output?  This\n    might be nice for PDF output too.\n\nI don't\
+  \ want any header or footer showing up in the regular console\noutput, so maybe\
+  \ I'll only display them when certain options are passed\nin, like this::\n\n  \
+  \  $ pitz-show --with-header --with-footer abc123\n\nThe idea here is that I add\
+  \ in those headers."
+estimate: !!python/object:uuid.UUID
+  int: 194238884256655928753821602839070306529
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Explore using rst2html in pitz-webapp
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 168601913809746999173600207762758571384
+yaml_file_saved: 2010-03-07 19:09:35.080196
