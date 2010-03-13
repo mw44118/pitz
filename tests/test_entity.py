@@ -5,6 +5,7 @@ import glob, os, pickle, unittest, uuid
 from pitz.entity import *
 from pitz.bag import Bag, Project
 from pitz import NoProject
+import pitz
 
 from nose.tools import raises
 from mock import Mock, patch
@@ -90,13 +91,62 @@ def test_to_html_file(o):
     e.to_html_file('bogus filepath')
 
 
-def test_self_destruct():
+def test_self_destruct_1():
+
+    """
+    Delete an entity.
+    """
+
 
     p = Project()
     p.pathname = '/tmp'
     e1 = Entity(p, title="e1", a=1, b=2)
-    e1.to_yaml_file('/tmp')
-    e1.self_destruct(p)
+    file_written = e1.to_yaml_file(p.pathname)
+
+    files_deleted = e1.self_destruct(p)
+
+    assert files_deleted == [file_written]
+    assert not os.path.exists(file_written)
+
+
+def test_self_destruct_2():
+
+    """
+    Delete an entity with activities and verify activities are gone too.
+    """
+
+    p = Project()
+    p.pathname = '/tmp'
+    p.current_user = Person(p, title="matt")
+
+    e1 = Entity(p, title="entity for test_self_destruct_2", a=1, b=2)
+    file_written = e1.to_yaml_file(p.pathname)
+
+    print("file_written is %s" % file_written)
+
+    c = e1.comment(who_said_it="matt", title="blah", description="")
+    comment_yaml_file = c.to_yaml_file(p.pathname)
+
+    # Update an attribute (to generate an activity).
+    e1.record_activity_on_changes = True
+    e1['a'] = 11
+
+    assert e1.activities.length == 1, e1.activities.length
+
+    a = e1.activities[0]
+    activity_yaml_file = a.to_yaml_file(p.pathname)
+
+    files_deleted = sorted(e1.self_destruct(p))
+
+    files_created = sorted(
+        [file_written, comment_yaml_file, activity_yaml_file])
+
+    print("files_deleted is %s" % files_deleted)
+    print("files_created is %s" % files_created)
+
+    assert files_deleted == files_created
+
+    assert not os.path.exists(file_written)
 
 
 @raises(TypeError)

@@ -281,9 +281,6 @@ class Entity(dict):
                     raise TypeError("%s must be an instance of %s, not %s!"
                         % (attr, allowed_type, type(val)))
 
-
-            # Handle stuff like
-
         self.maybe_update_modified_time(attr)
         self.maybe_record_activity(attr, val)
 
@@ -1018,20 +1015,34 @@ class Entity(dict):
         """
         Remove this entity from the project.  Delete a yaml file if it
         exists.
+
+        Return a list of yaml files deleted.
         """
 
         # Remove this entity from the project.
         i = proj.index(self)
         proj.pop(i)
 
+        files_deleted = []
+
+        log.debug('destroying %r' % self)
+
         # Delete any yaml file.
         if proj.pathname and os.path.isdir(proj.pathname):
+
             absolute_path = os.path.join(proj.pathname, self.yaml_filename)
 
             if os.path.exists(absolute_path):
                 os.unlink(absolute_path)
+                files_deleted.append(absolute_path)
 
-        return self
+            for a in self.activities:
+                files_deleted.extend(a.self_destruct(proj))
+
+            for c in self.comments:
+                files_deleted.extend(c.self_destruct(proj))
+
+        return files_deleted
 
 
     @property
