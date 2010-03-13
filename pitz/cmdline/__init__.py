@@ -20,7 +20,6 @@ Person, Status, Task
 
 from pitz.webapp import SimpleWSGIApp
 
-
 log = logging.getLogger('pitz.cmdline')
 
 class PitzHelp(object):
@@ -376,14 +375,14 @@ def pitz_shell():
 
     pidfile = write_pidfile_or_die(pitzdir)
 
-    p = Project.from_pitzdir(pitzdir)
-    p._shell_mode = True
-    p.find_me()
+    proj = Project.from_pitzdir(pitzdir)
+    proj._shell_mode = True
+    proj.find_me()
 
     # Everything in this dictionary will be added to the top-level
     # namespace in the shell.
-    ns = dict([(C.__name__, C) for C in p.classes.values()])
-    ns['p'] = p
+    ns = dict([(C.__name__, C) for C in proj.classes.values()])
+    ns['p'] = proj
     ns['send_through_pager'] = clepy.send_through_pager
     ns['edit_with_editor'] = clepy.edit_with_editor
 
@@ -393,9 +392,9 @@ def pitz_shell():
     # This stuff happens when you close the IPython session.
     answer = raw_input("Write out updated yaml files? ([y]/n) ").strip()
     if answer.lower() not in ['n', 'no']:
-        p.to_yaml_file()
-        p.to_pickle()
-        p.save_entities_to_yaml_files()
+        proj.to_yaml_file()
+        proj.to_pickle()
+        proj.save_entities_to_yaml_files()
 
     # Remove the pidfile.
     os.remove(pidfile)

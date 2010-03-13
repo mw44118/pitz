@@ -13,15 +13,20 @@ import logging, os, subprocess
 
 __version__ = "1.0.3"
 
+def setup_logging():
+    log = logging.getLogger('pitz')
 
-# This bugs me.  I don't like how instead of just defining stuff, I'm
-# making stuff really happen.
+    log.setLevel(logging.DEBUG)
+
+    h = logging.StreamHandler()
+    h.setLevel(logging.DEBUG)
+
+    f = logging.Formatter("%(levelname)s %(name)s: %(message)s")
+    h.setFormatter(f)
+
+    log.addHandler(h)
+
 log = logging.getLogger('pitz')
-log.setLevel(logging.DEBUG)
-
-h = logging.StreamHandler()
-h.setLevel(logging.DEBUG)
-log.addHandler(h)
 
 # TODO: Move this into the clepy package.
 def by_whatever(func_name, *whatever, **kwargs):
