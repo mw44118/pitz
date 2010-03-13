@@ -13,6 +13,8 @@ import logging, os, subprocess
 
 __version__ = "1.0.3"
 
+log = logging.getLogger('pitz')
+
 def setup_logging():
     log = logging.getLogger('pitz')
 
@@ -26,7 +28,6 @@ def setup_logging():
 
     log.addHandler(h)
 
-log = logging.getLogger('pitz')
 
 # TODO: Move this into the clepy package.
 def by_whatever(func_name, *whatever, **kwargs):
