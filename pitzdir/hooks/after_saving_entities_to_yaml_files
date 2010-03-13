@@ -1,0 +1,5 @@
+#! /bin/bash
+
+echo "Starting the after_saving_entities_to_yaml_files hook..."
+git add $1/.
+echo "Finished the after_saving_entities_to_yaml_files hook."

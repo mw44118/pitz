@@ -116,9 +116,8 @@ class NoProject(PitzException):
     """
 
 class ProjectNotFound(PitzException):
-   """
-    Indicates that the system couldn't find what it needed to create a
-    project.
+    """
+    Could not find a project.
     """
 
 
@@ -144,16 +143,15 @@ def build_filter(args):
     return d
 
 
-def run_add_task_hooks(pitzdir):
+def run_hook(pitzdir, hookscript):
 
     """
-    Run pitzdir/hooks/after_add_task (if it exists), passing in the
-    pitzdir as $1.
+    Run pitzdir/hooks/hookscript, passing in the pitzdir as $1.
     """
 
     try:
-        subprocess.Popen(
-            [os.path.join(pitzdir, 'hooks', 'after_add_task'), pitzdir])
+        subprocess.call(
+            [os.path.join(pitzdir, 'hooks', hookscript), pitzdir])
 
     except OSError, ex:
         log.debug(ex)

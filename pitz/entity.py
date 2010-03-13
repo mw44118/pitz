@@ -1220,12 +1220,12 @@ class Status(Entity):
         """
 
         for title, pscore in [
-            ('finished', 4),
-            ('started', 3),
-            ('paused', 2),
-            ('queued', 2),
-            ('unstarted', 2),
-            ('abandoned', 1),
+            ('finished', 100),
+            ('started', 50),
+            ('paused', 40),
+            ('queued', 30),
+            ('unstarted', 20),
+            ('abandoned', 10),
             ]:
 
             cls(proj, title=title, pscore=pscore)
@@ -1398,11 +1398,10 @@ class Task(Entity):
 
     jinja_template = 'task.html'
 
+
     def __init__(self, project=None, **kwargs):
         super(Task, self).__init__(project, **kwargs)
 
-        if project and project.pitzdir:
-            pitz.run_add_task_hooks(project.pitzdir)
 
     @property
     def milestone(self):
@@ -1436,17 +1435,10 @@ class Task(Entity):
         frag = self['frag']
         title = clepy.maybe_add_ellipses(self.title, 66)
 
-        status = getattr(self['status'], 'abbr', self['status'])
-        estimate = getattr(self['estimate'], 'abbr', self['estimate'])
-
-        if 'milestone' in self:
-            milestone = getattr(self['milestone'], 'abbr', self['milestone'])
-        else:
-            milestone = '...'
-
         interesting_attributes = self.interesting_attributes_view
         description_excerpt = self.description_excerpt
 
+        # TODO: move this into an external template.
         return (
             "%(frag)6s  %(title)s\n"
             "        %(interesting_attributes)s\n"

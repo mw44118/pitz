@@ -1,0 +1,27 @@
+components:
+- !!python/object:uuid.UUID
+  int: 4957623306508968194182393857812906256
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-03-10 08:42:59.306319
+description: "Right now, the summarized view of a task looks a little like this:\n\
+  \n    abc123   This is where the title is....\n             status | owner | estimate\
+  \ | milestone | components\n             This is the first 60 characters of the\
+  \ description...\n\nI'm using a whole lot of white space for the frag in the top\
+  \ left\ncorner.\n\nI need the frag to be clear, but maybe I don't need it to be\
+  \ so\nprominent.\n\nThere might be some better ways to organize the layout, so that\
+  \ we don't\nhave so much unused space."
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Experiment with different task summarized views
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 20519601449757322644367744635111430594
+yaml_file_saved: 2010-03-10 08:42:59.357125

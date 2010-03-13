@@ -938,9 +938,9 @@ class RefreshPickle(PitzScript):
 
     script_name = 'pitz-refresh-pickle'
 
-    def handle_proj(self, p, options, args, proj, results):
+    def hande_project(self, p, options, args, proj, results):
+        proj.to_pickle()
 
-        proj.save_entities_to_yaml_files()
 
 
 class PitzFinishTask(PitzStartTask):
@@ -1204,7 +1204,7 @@ pitz_abandon_task = f(PitzAbandonTask())
 pitz_unassign_task = f(PitzUnassignTask())
 pitz_prioritize_above = f(PitzPrioritizeAbove())
 pitz_prioritize_below = f(PitzPrioritizeBelow())
-pitz_refresh_pickle = f(RefreshPickle())
+pitz_refresh_pickle = f(RefreshPickle(save_proj=False))
 pitz_add_task = f(PitzAddTask())
 pitz_add = pitz_add_task
 

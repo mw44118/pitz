@@ -19,7 +19,7 @@ from pitz import *
 log = logging.getLogger('pitz.bag')
 
 # Not too happy about this code, but I don't know how to make this work
-# in 2.5 otherwise.
+# pythton in 2.5 any other way.
 if hasattr(collections, 'MutableSequence'):
     BagSuperclass = collections.MutableSequence
 else:
@@ -613,7 +613,13 @@ class Project(Bag):
         updated_yaml_files = \
         [e for e in self if e.to_yaml_file(self.pathname)]
 
+        if updated_yaml_files:
+            run_hook(
+                self.pitzdir,
+                'after_saving_entities_to_yaml_files')
+
         self.to_pickle()
+
 
         return updated_yaml_files
 
