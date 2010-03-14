@@ -66,6 +66,18 @@ class Bag(BagSuperclass):
         self._setup_jinja()
 
 
+    def __add__(self, other):
+
+        if not isinstance(other, Bag):
+            raise TypeError("Can't add %s" % other)
+
+        title = "%s and %s" % (self.title, other.title)
+
+        return Bag(
+            title=title,
+            entities=list(self)+list(other))
+
+
     def walk_through_elements(self):
         for el in self._elements:
             yield el
