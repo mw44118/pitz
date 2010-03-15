@@ -396,3 +396,5 @@ class TestBag(unittest.TestCase):
         assert isinstance(b2, Bag), "b2 is a %s" % type(b2)
 
 
+
+

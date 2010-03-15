@@ -702,7 +702,6 @@ class Project(Bag):
                 cls.setup_defaults(self)
 
 
-
     @classmethod
     def from_pickle(cls, pf):
         """
@@ -738,6 +737,8 @@ class Project(Bag):
 
         starting_path = os.getcwd()
 
+        log.debug("starting_path is %s" % starting_path)
+
         # Walk up...
         for dir in clepy.walkup(starting_path):
 
@@ -746,12 +747,18 @@ class Project(Bag):
             if os.path.isfile(a):
                 return a
 
+        log.debug("walkdown is %s" % walkdown)
+
         # Walk down...
         if walkdown:
             for root, dirs, files in os.walk(starting_path):
 
+                log.debug('root is %s' % root)
+                log.debug('dirs is %s' % dirs)
+                log.debug('files is %s' % files)
+
                 if 'pitzdir' in dirs:
-                    a = os.path.join(dir, 'pitzdir', filename)
+                    a = os.path.join(root, 'pitzdir', filename)
 
                 if os.path.isfile(a):
                     return a
@@ -807,7 +814,7 @@ class Project(Bag):
 
                 if 'pitzdir' in dirs:
                     return os.path.abspath(
-                        os.path.join(dir, 'pitzdir'))
+                        os.path.join(root, 'pitzdir'))
 
         raise ProjectNotFound("Started looking at %s" % starting_path)
 

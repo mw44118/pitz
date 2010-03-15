@@ -19,9 +19,15 @@ tasks = [
         status='not very important'),
 ]
 
+
 def teardown():
-    for f in glob.glob('/tmp/*.yaml'):
-        os.unlink(f)
+
+    for f in glob.glob('/tmp/*.yaml') + [
+        '/tmp/project.pickle',
+        '/tmp/index.html']:
+
+        if os.path.exists(f):
+            os.unlink(f)
 
 
 def test_to_and_from_yaml_files_1():
@@ -30,6 +36,7 @@ def test_to_and_from_yaml_files_1():
     p.save_entities_to_yaml_files('/tmp')
 
     Project().load_entities_from_yaml_files('/tmp')
+
 
 @raises(ValueError)
 def test_load_entities_1():
@@ -122,15 +129,27 @@ class TestPicklingProject(unittest.TestCase):
         self.c = Entity(self.p, title="c")
         self.e = Entity(self.p, title="t", c=self.c)
 
+
     def tearDown(self):
         self.c.self_destruct(self.p)
         self.e.self_destruct(self.p)
-        os.remove('/tmp/project.pickle')
 
-    def test_to_pickle(self):
+        if os.path.exists('/tmp/project.pickle'):
+            os.remove('/tmp/project.pickle')
+
+
+    def test_to_pickle1(self):
+
+        self.assertRaises(
+            ValueError,
+            self.p.to_pickle)
+
+
+    def test_to_pickle2(self):
 
         self.p.to_pickle('/tmp')
         assert os.path.exists('/tmp/project.pickle')
+
 
     def test_unpickle(self):
 
@@ -187,6 +206,15 @@ class TestFindPitzdir(unittest.TestCase):
 
         os.chdir('/tmp/pitzdir/foo')
         assert Project.find_pitzdir() == '/tmp/pitzdir'
+
+
+    def test_5(self):
+        """
+        Verify we can walk down and find the pitzdir.
+        """
+
+        # Still need to write this one.
+        raise SkipTest
 
 
 class TestFromPitzdir(unittest.TestCase):
@@ -248,9 +276,106 @@ class TestFromPitzdir(unittest.TestCase):
 
 class TestProject(unittest.TestCase):
 
-
     def test_html_then_pickle(self):
 
         p = Project(pathname='/tmp')
         p.to_html('/tmp')
         p.save_entities_to_yaml_files()
+
+
+class TestSaveToYaml(unittest.TestCase):
+
+    def test_missing_pathname(self):
+
+        p = Project(
+            entities=[
+                Entity(title='abc'),
+                Entity(title='def'),
+                Entity(title='ghi')])
+
+        self.assertRaises(
+            ValueError,
+            p.save_entities_to_yaml_files)
+
+
+class TestSetupDefaults(unittest.TestCase):
+
+    def test_setup_defaults(self):
+
+        """
+        Verify the project calls setup_defaults.
+        """
+
+        p = Project(
+            entities=[
+                Entity(title='abc'),
+                Entity(title='def'),
+                Entity(title='ghi')])
+
+        m = Mock()
+
+        p.classes = dict(bogus_entity=m)
+
+        p.setup_defaults()
+
+        assert ('setup_defaults', (p, ), {}) in m.method_calls, \
+        m.method_calls
+
+
+class TestFindFile(unittest.TestCase):
+
+    def setUp(self):
+        os.chdir('/tmp')
+
+        os.mkdir('/tmp/test_find_file')
+        os.mkdir('/tmp/test_find_file/test_find_file_2')
+        os.mkdir('/tmp/test_find_file/test_find_file_2/pitzdir')
+
+
+    def tearDown(self):
+
+        for f in glob.glob('/tmp/test_find_file/test_find_file_2/pitzdir/*'):
+
+            if os.path.isfile(f):
+                os.remove(f)
+
+        for d in [
+            '/tmp/test_find_file/test_find_file_2/pitzdir',
+            '/tmp/test_find_file/test_find_file_2',
+            '/tmp/test_find_file',
+        ]:
+
+            if os.path.exists(d):
+                os.rmdir(d)
+
+
+    def test_find_file_1(self):
+
+        """Test walking up the filesystem"""
+
+        p = Project(
+            pathname='/tmp',
+            entities=[
+                Entity(title='abc'),
+                Entity(title='def'),
+                Entity(title='ghi')])
+
+        p.to_yaml_file()
+
+        print("Found file %s." % p.find_file())
+
+
+    def test_find_file_2(self):
+
+
+        p = Project(
+            pathname='/tmp/test_find_file/test_find_file_2/pitzdir',
+            entities=[
+                Entity(title='abc'),
+                Entity(title='def'),
+                Entity(title='ghi')])
+
+        p.to_yaml_file()
+
+        print("Found file %s." %
+            p.find_file(walkdown=True))
