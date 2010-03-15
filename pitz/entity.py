@@ -1551,22 +1551,16 @@ class Task(Entity):
 
     def start(self, comment_title=None, comment_description=None):
 
+        self['status'] = Status(title='started')
 
-        if self['status'].title in ['unstarted', 'abandoned']:
-            self['status'] = Status(title='started')
+        if comment_title and self.project and self.project.me:
 
-            if comment_title and self.project and self.project.me:
+            Comment(self.project, who_said_it=self.project.me,
+                entity=self,
+                title=comment_title,
+                description=comment_description)
 
-                Comment(self.project, who_said_it=self.project.me,
-                    entity=self,
-                    title=comment_title,
-                    description=comment_description)
-
-            return self
-
-        else:
-            raise ValueError(
-                'You can only start unstarted or abandoned tasks.')
+        return self
 
 
     def finish(self, comment_title=None, comment_description=None):
