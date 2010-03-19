@@ -206,7 +206,7 @@ Using a project is easy.  Just pass it in as the first argument when you
 make an entity.  Imagine I want to link some tasks to Matt and some
 other tasks to Lindsey.  First I make a project::
 
-    >>> from pitz.bag import Project
+    >>> from pitz.project import Project
     >>> weekend_chores = Project(title="Weekend chores")
 
 Now I make the rest of the entities::
@@ -227,7 +227,7 @@ Now it is easy to get tasks for matt::
 
 Pointers
 ========
-    
+
 There's a problem in that last example: when I send this mow_the_yard
 entity out to a YAML file, what will I store as the value for the
 "assigned_to" attribute?

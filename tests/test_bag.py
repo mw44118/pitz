@@ -4,7 +4,8 @@ import glob, os, unittest
 
 import pitz
 from pitz.entity import Entity
-from pitz.bag import Bag, Project
+from pitz.bag import Bag
+from pitz.project import Project
 
 from nose.tools import raises
 from nose import SkipTest

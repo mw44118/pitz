@@ -13,7 +13,7 @@ from IPython.Shell import IPShellEmbed
 import clepy
 
 from pitz import *
-from pitz.bag import Project
+from pitz.project import Project
 
 from pitz.entity import Component, Entity, Estimate, Milestone, \
 Person, Status, Task

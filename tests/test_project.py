@@ -2,7 +2,7 @@
 
 import glob, os, random, time, unittest
 from pitz.entity import Entity
-from pitz.bag import Project
+from pitz.project import Project
 
 from nose import SkipTest
 from nose.tools import raises
@@ -88,7 +88,7 @@ def test_from_yaml_file_1(m1, m2, m3):
     # yaml.load(...) will return m2.
     m2.return_value = {
         'order_method_name':'bogus_method',
-        'module':'pitz.bag',
+        'module':'pitz.project',
         'classname':'Project'}
 
     # globals() will return m3.

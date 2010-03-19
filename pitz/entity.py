@@ -46,7 +46,7 @@ class Entity(dict):
     a type and title that matches something that already exists, I'll
     return the original one.
 
-    >>> from pitz.bag import Project
+    >>> from pitz.project import Project
     >>> p = Project(title="Blah")
     >>> ie1 = Entity(p, title="a")
     >>> ie2 = Entity(p, title="a")

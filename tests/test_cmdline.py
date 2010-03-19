@@ -8,7 +8,7 @@ from mock import Mock, patch, patch_object
 from IPython.Shell import IPShellEmbed
 
 from pitz.cmdline import *
-from pitz.bag import Project
+from pitz.project import Project
 from pitz.entity import Entity
 
 

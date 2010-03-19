@@ -3,7 +3,7 @@
 import glob, os, pickle, unittest, uuid
 
 from pitz.entity import *
-from pitz.bag import Bag, Project
+from pitz.project import Bag, Project
 from pitz import NoProject
 import pitz
 
