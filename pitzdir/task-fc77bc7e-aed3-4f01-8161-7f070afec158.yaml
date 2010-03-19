@@ -1,9 +1,9 @@
 components:
 - !!python/object:uuid.UUID
   int: 4957623306508968194182393857812906256
-created_by: &id002 !!python/object:uuid.UUID
+created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
-created_time: &id001 2010-03-16 13:45:11.582915
+created_time: 2010-03-16 13:45:11.582915
 description: "When I run::\n\n    $ pitz-add-task --title \"Wash car\" --no-description\
   \ --use-defaults\n\npitz shouldn't ask me about any milestone, estimate, owner,\
   \ or\ncomponents.  All of those should be the default choices."
@@ -11,13 +11,13 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
-owner: *id002
+modified_time: 2010-03-19 14:13:05.540445
+owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 181191650815078915740523248343325601886
 title: Add --use-defaults option to pitz-add-task
 type: task
 uuid: !!python/object:uuid.UUID
   int: 335587161393824255922475238985119482200
-yaml_file_saved: 2010-03-16 13:45:11.609762
+yaml_file_saved: 2010-03-19 14:13:05.549924

@@ -1043,7 +1043,16 @@ class PitzAddTask(PitzScript):
             action='store_true',
             help='Stores this task with an empty description')
 
+        p.add_option('--use-defaults',
+            action='store_true',
+            help="Don't prompt for milestone, estimate, owner, or components")
+
     def handle_proj(self, p, options, args, proj, results):
+
+        default_milestone = Milestone(proj, title='unscheduled')
+        default_estimate = Estimate(proj, title='not estimated')
+        default_owner = Person(proj, title='no owner')
+        default_components = list()
 
         t = Task(
 
@@ -1056,16 +1065,17 @@ class PitzAddTask(PitzScript):
 
             status=Status(proj, title='unstarted'),
 
-            milestone=Milestone.choose_from_already_instantiated(
-                Milestone(proj, title='unscheduled')),
+            milestone=default_milestone if options.use_defaults \
+            else Milestone.choose_from_already_instantiated(default_milestone),
 
-            estimate=Estimate.choose_from_already_instantiated(
-                Estimate(proj, title='not estimated')),
+            estimate=default_estimate if options.use_defaults \
+            else Estimate.choose_from_already_instantiated(default_estimate),
 
-            owner=Person.choose_from_already_instantiated(
-                Person(proj, title='no owner')),
+            owner=default_owner if options.use_defaults \
+            else Person.choose_from_already_instantiated(default_owner),
 
-            components=Component.choose_many_from_already_instantiated(),
+            components=default_components if options.use_defaults \
+            else Component.choose_many_from_already_instantiated(),
 
         )
 

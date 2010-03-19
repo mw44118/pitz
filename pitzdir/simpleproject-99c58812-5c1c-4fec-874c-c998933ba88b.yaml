@@ -1,5 +1,5 @@
 classname: Project
-module: pitz.bag
+module: pitz.project
 order_method_name: by_milestone_status_pscore_created_time
 title: Pitz
 uuid: 99c58812-5c1c-4fec-874c-c998933ba88b
