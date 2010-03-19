@@ -3,6 +3,7 @@
 import glob, os, random, time, unittest
 from pitz.entity import Entity
 from pitz.project import Project
+import pitz
 
 from nose import SkipTest
 from nose.tools import raises
@@ -175,6 +176,11 @@ class TestFindPitzdir(unittest.TestCase):
         os.mkdir('/tmp/walkdown/foo/bar/baz')
         os.mkdir('/tmp/walkdown/foo/bar/baz/pitzdir')
 
+        os.mkdir('/tmp/deadend')
+        os.mkdir('/tmp/deadend/foo')
+        os.mkdir('/tmp/deadend/foo/bar')
+        os.mkdir('/tmp/deadend/foo/bar/baz')
+
         os.environ['PITZDIR'] = 'xxx'
 
     def tearDown(self):
@@ -188,6 +194,12 @@ class TestFindPitzdir(unittest.TestCase):
         os.rmdir('/tmp/walkup/pitzdir/foo')
         os.rmdir('/tmp/walkup/pitzdir')
         os.rmdir('/tmp/walkup')
+
+        os.rmdir('/tmp/deadend/foo/bar/baz')
+        os.rmdir('/tmp/deadend/foo/bar')
+        os.rmdir('/tmp/deadend/foo')
+        os.rmdir('/tmp/deadend')
+
 
     def test_1(self):
         """
@@ -235,6 +247,12 @@ class TestFindPitzdir(unittest.TestCase):
 
         assert pitzdir_location == '/tmp/walkdown/foo/bar/baz/pitzdir', \
         pitzdir_location
+
+
+    def test_6(self):
+
+        os.chdir('/tmp/deadend')
+        self.assertRaises(pitz.ProjectNotFound, Project.find_pitzdir)
 
 
 class TestFromPitzdir(unittest.TestCase):
@@ -340,3 +358,57 @@ class TestSetupDefaults(unittest.TestCase):
 
         assert ('setup_defaults', (p, ), {}) in m.method_calls, \
         m.method_calls
+
+
+class TestProperties(unittest.TestCase):
+
+    def setUp(self):
+
+        self.p = Project(
+            entities=[
+                Entity(title='abc'),
+                Entity(title='def'),
+                Entity(title='ghi')])
+
+
+    def test_recent_activity(self):
+
+        assert self.p.recent_activity.order_method \
+        == pitz.by_descending_created_time
+
+
+    def test_activities(self):
+
+        assert self.p.activities.order_method \
+        == pitz.by_descending_created_time
+
+
+    def test_milestones(self):
+        assert not self.p.milestones
+
+    def test_components(self):
+        assert not self.p.components
+
+    def test_tasks(self):
+        assert not self.p.tasks
+
+    def test_people(self):
+        assert not self.p.people
+
+    def test_comments(self):
+        assert not self.p.comments
+
+    def test_estimates(self):
+        assert not self.p.estimates
+
+    def test_statuses(self):
+        assert not self.p.statuses
+
+    def test_unscheduled(self):
+        assert not self.p.unscheduled
+
+    def test_started(self):
+        assert not self.p.started
+
+    def test_me(self):
+        assert self.p.me is None
