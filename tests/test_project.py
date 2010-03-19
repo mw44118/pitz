@@ -166,29 +166,45 @@ class TestPicklingProject(unittest.TestCase):
 class TestFindPitzdir(unittest.TestCase):
 
     def setUp(self):
-        os.mkdir('/tmp/pitzdir')
-        os.mkdir('/tmp/pitzdir/foo')
+        os.mkdir('/tmp/walkup')
+        os.mkdir('/tmp/walkup/pitzdir')
+        os.mkdir('/tmp/walkup/pitzdir/foo')
+        os.mkdir('/tmp/walkdown')
+        os.mkdir('/tmp/walkdown/foo')
+        os.mkdir('/tmp/walkdown/foo/bar')
+        os.mkdir('/tmp/walkdown/foo/bar/baz')
+        os.mkdir('/tmp/walkdown/foo/bar/baz/pitzdir')
+
         os.environ['PITZDIR'] = 'xxx'
 
     def tearDown(self):
+
         os.chdir(os.environ['HOME'])
-        os.rmdir('/tmp/pitzdir/foo')
-        os.rmdir('/tmp/pitzdir')
+        os.rmdir('/tmp/walkdown/foo/bar/baz/pitzdir')
+        os.rmdir('/tmp/walkdown/foo/bar/baz')
+        os.rmdir('/tmp/walkdown/foo/bar')
+        os.rmdir('/tmp/walkdown/foo')
+        os.rmdir('/tmp/walkdown')
+        os.rmdir('/tmp/walkup/pitzdir/foo')
+        os.rmdir('/tmp/walkup/pitzdir')
+        os.rmdir('/tmp/walkup')
 
     def test_1(self):
         """
         Verify we can use the parameter
         """
 
-        assert Project.find_pitzdir('/tmp/pitzdir') == '/tmp/pitzdir'
+        assert Project.find_pitzdir('/tmp/walkup/pitzdir') \
+        == '/tmp/walkup/pitzdir'
 
     def test_2(self):
         """
         Verify we check os.environ.
         """
 
-        os.environ['PITZDIR'] = '/tmp/pitzdir'
-        assert Project.find_pitzdir() == '/tmp/pitzdir'
+        os.environ['PITZDIR'] = '/tmp/walkup/pitzdir'
+
+        assert Project.find_pitzdir() == '/tmp/walkup/pitzdir'
 
     @raises(IOError)
     def test_3(self):
@@ -204,8 +220,8 @@ class TestFindPitzdir(unittest.TestCase):
         Verify we can walk up and find pitzdir.
         """
 
-        os.chdir('/tmp/pitzdir/foo')
-        assert Project.find_pitzdir() == '/tmp/pitzdir'
+        os.chdir('/tmp/walkup/pitzdir/foo')
+        assert Project.find_pitzdir() == '/tmp/walkup/pitzdir'
 
 
     def test_5(self):
@@ -213,8 +229,12 @@ class TestFindPitzdir(unittest.TestCase):
         Verify we can walk down and find the pitzdir.
         """
 
-        # Still need to write this one.
-        raise SkipTest
+        os.chdir('/tmp/walkdown')
+
+        pitzdir_location = Project.find_pitzdir(walkdown=True)
+
+        assert pitzdir_location == '/tmp/walkdown/foo/bar/baz/pitzdir', \
+        pitzdir_location
 
 
 class TestFromPitzdir(unittest.TestCase):
@@ -320,62 +340,3 @@ class TestSetupDefaults(unittest.TestCase):
 
         assert ('setup_defaults', (p, ), {}) in m.method_calls, \
         m.method_calls
-
-
-class TestFindFile(unittest.TestCase):
-
-    def setUp(self):
-        os.chdir('/tmp')
-
-        os.mkdir('/tmp/test_find_file')
-        os.mkdir('/tmp/test_find_file/test_find_file_2')
-        os.mkdir('/tmp/test_find_file/test_find_file_2/pitzdir')
-
-
-    def tearDown(self):
-
-        for f in glob.glob('/tmp/test_find_file/test_find_file_2/pitzdir/*'):
-
-            if os.path.isfile(f):
-                os.remove(f)
-
-        for d in [
-            '/tmp/test_find_file/test_find_file_2/pitzdir',
-            '/tmp/test_find_file/test_find_file_2',
-            '/tmp/test_find_file',
-        ]:
-
-            if os.path.exists(d):
-                os.rmdir(d)
-
-
-    def test_find_file_1(self):
-
-        """Test walking up the filesystem"""
-
-        p = Project(
-            pathname='/tmp',
-            entities=[
-                Entity(title='abc'),
-                Entity(title='def'),
-                Entity(title='ghi')])
-
-        p.to_yaml_file()
-
-        print("Found file %s." % p.find_file())
-
-
-    def test_find_file_2(self):
-
-
-        p = Project(
-            pathname='/tmp/test_find_file/test_find_file_2/pitzdir',
-            entities=[
-                Entity(title='abc'),
-                Entity(title='def'),
-                Entity(title='ghi')])
-
-        p.to_yaml_file()
-
-        print("Found file %s." %
-            p.find_file(walkdown=True))
