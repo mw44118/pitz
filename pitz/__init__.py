@@ -11,7 +11,7 @@ from __future__ import with_statement
 
 import logging, os, subprocess
 
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 
 log = logging.getLogger('pitz')
 
