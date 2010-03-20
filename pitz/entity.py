@@ -222,6 +222,7 @@ class Entity(dict):
 
 
     def _setup_jinja(self):
+
         # Set up a template loader.
         self.e = jinja2.Environment(
             extensions=['jinja2.ext.loopcontrols'],

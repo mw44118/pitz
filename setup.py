@@ -21,9 +21,17 @@ started pitz.""",
     author_email='matt@tplus1.com',
     url='http://pitz.tplus1.com',
     license='BSD',
-    packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+    packages=find_packages(exclude=['docs', 'pitzdir', 'tests']),
     include_package_data=True,
+
     package_dir={'pitz':'pitz'},
+
+    package_data = {
+        'pitz': [
+            'jinja2templates/*.html',
+            'jinja2templates/*.txt',
+        ],
+    },
 
     zip_safe=False,
 
@@ -85,8 +93,5 @@ started pitz.""",
 
     test_suite = 'nose.collector',
 
-    package_data = {
-        '': ['*.html', '*.txt'],
-    },
 
 )
