@@ -8,6 +8,6 @@
 {% if shell_mode -%}
 {{ '%4d' | format(x.index) }}: {{ getattr(e, entity_view) }}
 {% else -%}
-{{ getattr(e, entity_view) }}
+{{ e.custom_view(entity_view) }}
 {% endif -%}
 {% endfor %}

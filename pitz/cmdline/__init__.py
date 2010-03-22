@@ -174,6 +174,9 @@ class PitzScript(object):
         p.add_option('--detailed-view', help='detailed view',
             dest='custom_view', action='store_const', const='detailed_view')
 
+        p.add_option('--verbose-view', help='verbose view (shows everything)',
+            dest='custom_view', action='store_const', const='verbose_view')
+
         p.add_option('--abbr-view', help='abbreviated view',
             dest='custom_view', action='store_const', const='abbr')
 
@@ -490,6 +493,7 @@ class PitzShow(PitzScript):
 
     def handle_p(self, p):
         p.set_usage("%prog frag")
+        self.add_view_options(p)
 
     def handle_options_and_args(self, p, options, args):
         if not args:
@@ -503,7 +507,7 @@ class PitzShow(PitzScript):
         if isinstance(e, Entity):
 
             clepy.send_through_pager(
-                e.detailed_view,
+                e.custom_view(options.custom_view),
                 clepy.figure_out_pager())
 
         else:
@@ -1260,7 +1264,7 @@ pitz_people = f(
         type='person', script_name='pitz-people',
         doc='All people in the project'))
 
-pitz_show = f(PitzShow())
+pitz_show = f(PitzShow(save_proj=False))
 
 from pitz.cmdline.pitzcomment import PitzComment
 

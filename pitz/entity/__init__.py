@@ -62,6 +62,7 @@ class Entity(dict):
     jinja_template = 'entity.html'
 
     cli_detailed_view_template = 'entity_detailed_view.txt'
+    cli_verbose_view_template = 'entity_detailed_view.txt'
 
     __metaclass__ = MC
 
@@ -295,6 +296,21 @@ class Entity(dict):
         keys and set elements.
         """
         return self.uuid.int
+
+
+    def custom_view(self, name_of_view=None, default_view='detailed_view'):
+
+        """
+        Just a little nicer than writing all that getattr(...) stuff.
+        """
+
+        log.debug("Inside custom_view with name_of_view %s" % name_of_view)
+
+        if name_of_view is None or not hasattr(self, name_of_view):
+            return getattr(self, default_view)
+
+        else:
+            return getattr(self, name_of_view)
 
 
     def maybe_update_modified_time(self, attr):
@@ -776,7 +792,7 @@ class Entity(dict):
     def detailed_view(self):
 
         """
-        The command-line detailed view of the entity.
+        The detailed view of the entity.
         """
 
         d = dict()
@@ -789,6 +805,26 @@ class Entity(dict):
         t = self.e.get_template(self.cli_detailed_view_template)
 
         return t.render(e=self, **d)
+
+
+    @property
+    def verbose_view(self):
+
+        """
+        Everything you could possibly want to know about this entity.
+        """
+
+        d = dict()
+        d.update(self)
+        d['summarized_view'] = self.summarized_view
+        d['line_of_dashes'] = "-" * len(self.summarized_view)
+        d['type'] = self.__class__.__name__
+        d['data'] = self
+
+        t = self.e.get_template(self.cli_verbose_view_template)
+
+        return t.render(e=self, **d)
+
 
 
     @property

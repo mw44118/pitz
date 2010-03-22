@@ -1,0 +1,26 @@
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-03-22 09:18:40.378549
+description: 'I could show all the comments, or none of them, or just a few.  If I
+
+  show just a few, which ones do I pick?
+
+
+  *   The first few
+
+  *   The most recent
+
+
+  I think maybe the right solution is just to indicate if this entity has
+
+  any comments.'
+entity: !!python/object:uuid.UUID
+  int: 45466410924488756096089287771564870468
+modified_time: *id001
+pscore: 0
+title: Maybe I should also show a few comments
+type: comment
+uuid: !!python/object:uuid.UUID
+  int: 323190460728513837194144137999599886918
+who_said_it: *id002
+yaml_file_saved: 2010-03-22 09:18:40.386494

@@ -5,11 +5,13 @@ import clepy
 from pitz.entity import Component, Entity, Person, Milestone, \
 Status, Estimate
 
+
 class Task(Entity):
 
     plural_name = "tasks"
 
     cli_detailed_view_template = 'task_detailed_view.txt'
+    cli_verbose_view_template = 'task_verbose_view.txt'
 
     allowed_types = dict(
         owner=Person,
