@@ -1,0 +1,7 @@
+{{ "\033[1;37m" | safe -}}
+{{'%-63s' | format(clepy.maybe_add_ellipses(title, 59))-}}
+{{ "\033[0m" | safe -}}
+{{ "\033[1;33m" | safe -}}{{frag}}{{- "\033[0m" | safe }}
+{{ "\033[1;34m" | safe }}{{interesting_attributes}}{{ "\033[0m" | safe }}
+{{description_excerpt}}
+

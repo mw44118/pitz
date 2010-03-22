@@ -1,7 +1,7 @@
 components:
 - !!python/object:uuid.UUID
   int: 4957623306508968194182393857812906256
-created_by: !!python/object:uuid.UUID
+created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 created_time: 2009-10-25 21:21:22.111795
 description: It might be fun to use pretty colors in the command-line.
@@ -9,14 +9,13 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 281829325005055660957328011118288254534
-modified_time: 2009-10-25 21:21:24.724453
-owner: !!python/object:uuid.UUID
-  int: 219503519214021148627266826050732492225
+modified_time: 2010-03-22 16:50:33.090166
+owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 336444450266496547059833010238290292739
 title: Experiment with colorized CLI output
 type: task
 uuid: !!python/object:uuid.UUID
   int: 93159992463594158320850170614503023801
-yaml_file_saved: 2009-10-25 21:21:24.726547
+yaml_file_saved: 2010-03-22 16:50:33.104413

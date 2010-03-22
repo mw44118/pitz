@@ -75,12 +75,8 @@ class Task(Entity):
         interesting_attributes = self.interesting_attributes_view
         description_excerpt = self.description_excerpt
 
-        # TODO: move this into an external template.
-        return (
-            "%(frag)6s  %(title)s\n"
-            "        %(interesting_attributes)s\n"
-            "        %(description_excerpt)s\n"
-        % locals())
+        return self.e.get_template('task_summarized_view.txt')\
+        .render(locals())
 
 
     @property

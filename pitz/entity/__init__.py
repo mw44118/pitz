@@ -61,6 +61,7 @@ class Entity(dict):
 
     jinja_template = 'entity.html'
 
+    cli_summarized_view_template = 'entity_summarized_view.txt'
     cli_detailed_view_template = 'entity_detailed_view.txt'
     cli_verbose_view_template = 'entity_verbose_view.txt'
 
@@ -230,6 +231,7 @@ class Entity(dict):
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
         self.e.globals = {
+            'clepy':clepy,
             'datetime':datetime,
             'os':os,
             'isinstance':isinstance,

@@ -101,6 +101,7 @@ class Bag(BagSuperclass):
             loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
 
         self.e.globals = {
+            'clepy':clepy,
             'isinstance':isinstance,
             'hasattr':hasattr,
             'getattr':getattr,

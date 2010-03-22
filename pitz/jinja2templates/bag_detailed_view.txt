@@ -1,6 +1,12 @@
+{{ "\033[1;37m" | safe -}}
 {%  for equalsign in bag.title -%}={% endfor %}
+{{ "\033[0m" | safe -}}
+{{ "\033[1;37m" | safe -}}
 {{ bag.title }}
+{{ "\033[0m" | safe -}}
+{{ "\033[1;37m" | safe -}}
 {%  for equalsign in bag.title -%}={% endfor %}
+{{- "\033[0m" | safe }}
 
 {{ bag.contents }}
 
