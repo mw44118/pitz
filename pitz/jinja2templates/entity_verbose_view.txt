@@ -5,8 +5,12 @@
 Description
 -----------
 {{e.description}}
-{% else %}No description
 
 {%- endif %}
+
+Attributes
+----------
+
+{{ e.attributes_view }}
 
 {{ e.pitzdir_replace_directive }}

@@ -62,7 +62,7 @@ class Entity(dict):
     jinja_template = 'entity.html'
 
     cli_detailed_view_template = 'entity_detailed_view.txt'
-    cli_verbose_view_template = 'entity_detailed_view.txt'
+    cli_verbose_view_template = 'entity_verbose_view.txt'
 
     __metaclass__ = MC
 
