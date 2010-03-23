@@ -1,7 +1,7 @@
 components: []
-created_by: &id002 !!python/object:uuid.UUID
+created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
-created_time: &id001 2010-03-15 20:56:55.228934
+created_time: 2010-03-15 20:56:55.228934
 description: 'Right now, it ain''t clear how I would install the package and then
   use
 
@@ -10,13 +10,13 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
-owner: *id002
+modified_time: 2010-03-23 11:04:02.367451
+owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 181191650815078915740523248343325601886
 title: Figure out how use template files from an install rather than a checkout
 type: task
 uuid: !!python/object:uuid.UUID
   int: 275886890879929374412177604966731564845
-yaml_file_saved: 2010-03-15 20:56:55.271629
+yaml_file_saved: 2010-03-23 11:04:02.402587

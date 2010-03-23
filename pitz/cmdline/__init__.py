@@ -118,6 +118,9 @@ class PitzScript(object):
         p.add_option('--version', action='store_true',
             help='show pitz version')
 
+        if self.__doc__:
+            p.epilog = self.__doc__.lstrip()
+
         return p
 
 
@@ -406,72 +409,6 @@ pitz_shell.script_name = 'pitz-shell'
 f(pitz_shell)
 
 
-def mk_pitzdir():
-
-    """
-    Creates a folder and returns the absolute path.
-    """
-
-    x = os.getcwd()
-
-    if not os.access(x, os.W_OK):
-        raise ValueError("I can't write to path %s!" % x)
-
-    pitzdir = os.path.abspath(os.path.join(x, 'pitzdir'))
-
-    os.mkdir(pitzdir)
-
-    return pitzdir
-
-
-def pitz_setup():
-
-    """
-    Start a new project
-    """
-
-    p = optparse.OptionParser()
-
-    p.add_option('--version', action='store_true',
-        help='show pitz version')
-
-    options, args = p.parse_args()
-
-    if options.version:
-        print_version()
-        return
-
-    dir = os.path.basename(os.getcwd())
-
-    project_title = raw_input(
-        "Project name (hit ENTER for %s): " % dir).strip()
-
-    if not project_title:
-        project_title = dir
-
-    pitzdir = mk_pitzdir()
-
-    proj = Project(pathname=pitzdir, title=project_title)
-    proj.to_yaml_file()
-
-    Status.setup_defaults(proj)
-
-    pw_name = pwd.getpwuid(os.getuid()).pw_name
-
-    name = raw_input("Your name (hit ENTER for %s): " % pw_name).strip()
-
-    if not name:
-        name = pw_name
-
-    person = Person(proj, title=name)
-
-    proj.save_entities_to_yaml_files()
-    print("All done!")
-    print("Run pitz-add-task to add a task, or run pitz-help for help.")
-
-pitz_setup.script_name = 'pitz-setup'
-f(pitz_setup)
-
 def setup_options():
     p = optparse.OptionParser()
 
@@ -486,7 +423,7 @@ def setup_options():
 class PitzShow(PitzScript):
 
     """
-    Show detailed view of one entity
+    Show a custom view of one entity (detailed by default)
     """
 
     script_name = 'pitz-show'
@@ -1241,6 +1178,8 @@ pitz_show = f(PitzShow(save_proj=False))
 
 from pitz.cmdline.pitzcomment import PitzComment
 from pitz.cmdline.pitzedit import PitzEdit
+from pitz.cmdline.pitzsetup import pitz_setup
 
 pitz_comment = f(PitzComment())
 pitz_edit = f(PitzEdit())
+pitz_setup = f(pitz_setup)
