@@ -10,9 +10,9 @@
 
 {{ bag.contents }}
 
-{% for x, e in looper(entities) -%}
+{% for i, e in enumerate(entities) -%}
 {% if shell_mode -%}
-{{ '%4d' | format(x.index) }}: {{ getattr(e, entity_view) }}
+{{ '%4d' | format(i) }}: {{ getattr(e, entity_view) }}
 {% else -%}
 {{ e.custom_view(entity_view) }}
 {% endif -%}

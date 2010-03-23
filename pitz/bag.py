@@ -11,7 +11,7 @@ import cPickle as pickle
 from uuid import UUID, uuid4
 from urllib import quote_plus
 
-import clepy, jinja2, tempita
+import clepy, jinja2
 
 from pitz.entity import *
 from pitz import *
@@ -107,7 +107,6 @@ class Bag(BagSuperclass):
             'getattr':getattr,
             'enumerate':enumerate,
             'len':len,
-            'looper':tempita.looper,
         }
 
         if not hasattr(self, 'jinja_template'):

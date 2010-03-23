@@ -84,11 +84,10 @@ def test_html():
     e.html
 
 
-@patch('__builtin__.open')
-def test_to_html_file(o):
+def test_to_html_file():
 
     global e
-    e.to_html_file('bogus filepath')
+    e.to_html_file('/tmp')
 
 
 def test_self_destruct_1():

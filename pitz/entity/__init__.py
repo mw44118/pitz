@@ -4,13 +4,18 @@
 The Entity class and Entity subclasses.
 """
 
-from __future__ import with_statement
+# Lots of packages don't work on the app engine.
+try:
+    import shutil
 
-import collections, logging, os, re, shutil, textwrap, uuid, weakref
+except ImportError:
+    shutil = None
+
+import collections, logging, os, re, uuid, weakref
 from datetime import datetime
 from types import NoneType
 
-import jinja2, tempita, yaml
+import jinja2, yaml
 
 from docutils.core import publish_parts
 from docutils.utils import SystemMessage
@@ -236,7 +241,6 @@ class Entity(dict):
             'os':os,
             'isinstance':isinstance,
             'hasattr':hasattr,
-            'looper':tempita.looper,
             'colors':pitz.colors,
         }
 
@@ -891,6 +895,9 @@ class Entity(dict):
         Save the file in filepath in the pitzdir.
         """
 
+        if not shutil:
+            raise NotImplementedError("Sorry, I need shutil for this")
+
         if not self.project:
             raise NoProject("I can't save attachments without a project.")
 
@@ -996,8 +1003,10 @@ class Entity(dict):
 
             filepath = os.path.join(htmldir, self.html_filename)
 
-            with open(filepath, 'w') as f:
-                f.write(self.html)
+            f = open(filepath, 'w')
+
+            f.write(self.html)
+            f.close()
 
             return filepath
 
@@ -1454,7 +1463,7 @@ class Comment(Entity):
     @property
     def detailed_view(self):
 
-        title = textwrap.fill(self['title'].strip().replace('\n', '  '))
+        title = self['title'].strip().replace('\n', '  ')
         who_said_it = self['who_said_it']
         who_said_it = getattr(who_said_it, 'title', who_said_it)
 

@@ -7,8 +7,6 @@ Stuff that is REALLY useful should be in the awesome clepy package,
 which is a grab bag of fanciness.
 """
 
-from __future__ import with_statement
-
 import logging, os, subprocess
 
 __version__ = "1.0.5"
