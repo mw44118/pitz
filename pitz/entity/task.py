@@ -5,6 +5,7 @@ import clepy
 from pitz.entity import Component, Entity, Person, Milestone, \
 Status, Estimate
 
+import pitz
 
 class Task(Entity):
 
@@ -41,6 +42,26 @@ class Task(Entity):
 
 
     @property
+    def colorized_title(self):
+        """
+        Return the title string dressed up in a bash color.
+        """
+
+        status_title_colors = dict(
+            finished='dark_green',
+            started='green',
+            paused='yellow',
+            queued='white',
+            unstarted='white',
+            abandoned='gray',
+        )
+
+        return '%s%-62s%s' % (
+            pitz.colors[status_title_colors[self.status.title]],
+            clepy.maybe_add_ellipses(self.title, 59),
+            pitz.colors['clear'])
+
+    @property
     def milestone(self):
         return self['milestone']
 
@@ -74,6 +95,8 @@ class Task(Entity):
 
         interesting_attributes = self.interesting_attributes_view
         description_excerpt = self.description_excerpt
+
+        e = self
 
         return self.e.get_template('task_summarized_view.txt')\
         .render(locals())

@@ -1,7 +1,4 @@
-{{ colors['white'] | safe -}}
-{{'%-63s' | format(clepy.maybe_add_ellipses(title, 59))-}}
-{{ colors['clear'] | safe -}}
-{{ colors['yellow'] | safe -}}{{frag}}{{- colors['clear'] | safe }}
+{{ e.colorized_title }} {{ e.colorized_frag }}
 {{interesting_attributes}}
 {{description_excerpt}}
 

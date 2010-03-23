@@ -8,14 +8,14 @@ description: It might be fun to use pretty colors in the command-line.
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
-  int: 281829325005055660957328011118288254534
-modified_time: 2010-03-22 16:50:33.090166
+  int: 286057988816149038667284962231564097114
+modified_time: 2010-03-23 10:02:43.713191
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 336444450266496547059833010238290292739
+  int: 181191650815078915740523248343325601886
 title: Experiment with colorized CLI output
 type: task
 uuid: !!python/object:uuid.UUID
   int: 93159992463594158320850170614503023801
-yaml_file_saved: 2010-03-22 16:50:33.104413
+yaml_file_saved: 2010-03-23 10:02:43.748341

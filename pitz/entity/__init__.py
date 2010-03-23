@@ -428,6 +428,12 @@ class Entity(dict):
     def frag(self):
         return self['frag']
 
+    @property
+    def colorized_frag(self):
+        return (
+            pitz.colors['dark_yellow'] +
+            self.frag +
+            pitz.colors['clear'])
 
     @property
     def uuid(self):
