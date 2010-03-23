@@ -2,8 +2,8 @@
 
 import clepy
 
-from pitz.entity import Component, Entity, Person, Milestone, \
-Status, Estimate
+from pitz.entity import Component, Entity, Estimate, Person, \
+Milestone, Status, Tag
 
 import pitz
 
@@ -20,7 +20,8 @@ class Task(Entity):
         milestone=Milestone,
         status=Status,
         estimate=Estimate,
-        components=[Component])
+        components=[Component],
+        tags=[Tag])
 
     required_fields = dict(
         title=None,
@@ -31,6 +32,7 @@ class Task(Entity):
         status=lambda proj: Status(proj, title='unstarted'),
         estimate=lambda proj: Estimate(proj, title='not estimated'),
         components=lambda proj: list(),
+        tags=lambda proj: list(),
     )
 
 
@@ -116,6 +118,21 @@ class Task(Entity):
     @property
     def components(self):
         return self['components']
+
+    @property
+    def tags(self):
+        return self['tags']
+
+
+    @property
+    def tags_view(self):
+
+        if self['tags']:
+            return ', '.join([t.title for t in self.tags])
+
+        else:
+            return 'no tags'
+
 
     @property
     def components_view(self):

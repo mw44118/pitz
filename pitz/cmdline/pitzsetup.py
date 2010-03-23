@@ -4,6 +4,7 @@ import optparse, os, pwd
 
 from pitz.project import Project
 from pitz.entity import Person, Status
+from pitz.cmdline import print_version
 
 
 def mk_pitzdir():

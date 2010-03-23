@@ -1359,6 +1359,23 @@ class Milestone(Entity):
         s = "%(frag)s %(title)s: %(pct_complete)0.0f%% complete (%(num_finished_tasks)d / %(num_tasks)d tasks)"
         return s % d
 
+class Tag(Entity):
+
+    plural_name = "tags"
+    jinja_template = 'tag.html'
+
+    @property
+    def tasks(self):
+
+        if not self.project:
+            raise NoProject(
+                "I need a project before I can look up tasks!")
+
+        tasks = self.project(type='task', tags=self)
+        tasks.title = 'Tasks in %(title)s' % self
+
+        return tasks
+
 
 class Component(Entity):
 

@@ -8,6 +8,7 @@ from mock import Mock, patch, patch_object
 from IPython.Shell import IPShellEmbed
 
 from pitz.cmdline import *
+from pitz.cmdline.pitzsetup import mk_pitzdir
 from pitz.project import Project
 from pitz.entity import Entity
 
@@ -172,9 +173,14 @@ class TestMkPitzdir(unittest.TestCase):
         os.chdir('/tmp')
 
     def tearDown(self):
-        d = '/tmp/pitzdir'
-        if os.path.isdir(d):
-            os.rmdir(d)
+
+        if os.path.isdir('/tmp/pitzdir/hooks'):
+            for f in glob.glob('/tmp/pitzdir/hooks/*'):
+                os.remove(f)
+            os.rmdir('/tmp/pitzdir/hooks')
+
+        if os.path.isdir('/tmp/pitzdir'):
+            os.rmdir('/tmp/pitzdir')
 
 
     @patch('__builtin__.raw_input')
