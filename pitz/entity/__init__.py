@@ -230,10 +230,15 @@ class Entity(dict):
 
     def _setup_jinja(self):
 
+        # Figure out the path to the jinja2templates.
+        jinja2dir = os.path.join(
+            os.path.split(os.path.dirname(__file__))[0],
+            'jinja2templates')
+
         # Set up a template loader.
         self.e = jinja2.Environment(
             extensions=['jinja2.ext.loopcontrols'],
-            loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
+            loader=jinja2.FileSystemLoader(jinja2dir))
 
         self.e.globals = {
             'clepy':clepy,

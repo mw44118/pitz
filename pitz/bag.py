@@ -97,8 +97,12 @@ class Bag(BagSuperclass):
 
     def _setup_jinja(self):
 
+        # Figure out the path to the jinja2templates.
+        jinja2dir = os.path.join(
+            os.path.dirname(__file__), 'jinja2templates')
+
         self.e = jinja2.Environment(
-            loader=jinja2.PackageLoader('pitz', 'jinja2templates'))
+            loader=jinja2.FileSystemLoader(jinja2dir))
 
         self.e.globals = {
             'clepy':clepy,
