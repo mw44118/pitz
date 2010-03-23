@@ -511,7 +511,7 @@ class PitzShow(PitzScript):
                 clepy.figure_out_pager())
 
         else:
-            print("Sorry, couldn't find %s" % args[1])
+            print("Sorry, couldn't find %s" % args[0])
 
 
 def pitz_html():
@@ -563,33 +563,6 @@ def pitz_html():
         proj.save_entities_to_yaml_files()
 
 
-def pitz_edit():
-
-    p = setup_options()
-    p.set_usage('%prog frag attribute-to-edit')
-
-    options, args = p.parse_args()
-
-    if options.version:
-        print_version()
-        return
-
-    if not args:
-        p.print_usage()
-        sys.exit()
-
-    pitzdir = Project.find_pitzdir(options.pitzdir)
-
-    pidfile = write_pidfile_or_die(pitzdir)
-
-    proj = Project.from_pitzdir(pitzdir)
-    e = proj[args[0]]
-    e.edit(args[1])
-
-    print("Edited %s on %s." % (args[1], args[0]))
-    proj.save_entities_to_yaml_files()
-
-    os.remove(pidfile)
 
 
 def pitz_add_milestone():
@@ -1267,5 +1240,7 @@ pitz_people = f(
 pitz_show = f(PitzShow(save_proj=False))
 
 from pitz.cmdline.pitzcomment import PitzComment
+from pitz.cmdline.pitzedit import PitzEdit
 
 pitz_comment = f(PitzComment())
+pitz_edit = f(PitzEdit())
