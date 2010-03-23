@@ -1,0 +1,25 @@
+components:
+- !!python/object:uuid.UUID
+  int: 4957623306508968194182393857812906256
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-03-22 17:18:41.194256
+description: "It is possible to do this::\n\n    $ pitz-show-task abc123 | rst2pdf\
+  \ > abc123.pdf\n\nAnd then view a pretty PDF version of task abc123.\n\nI had to\
+  \ tweak the template used by pitz-show-task so that it would\noutput stuff with\
+  \ restructured text syntax.\n\nNow I should do the same thing for the detailed view\
+  \ property on bags."
+estimate: !!python/object:uuid.UUID
+  int: 194238884256655928753821602839070306529
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+title: Make bag summarized view compatible with rst tools
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 66876418195955973428071570831679533708
+yaml_file_saved: 2010-03-22 17:18:41.198984

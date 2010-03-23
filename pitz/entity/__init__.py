@@ -237,6 +237,7 @@ class Entity(dict):
             'isinstance':isinstance,
             'hasattr':hasattr,
             'looper':tempita.looper,
+            'colors':pitz.colors,
         }
 
 
