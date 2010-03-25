@@ -1,4 +1,5 @@
 {{ e.colorized_title }} {{ e.colorized_frag }}
-{{interesting_attributes}}
-{{description_excerpt}}
+{{ e.interesting_attributes_view }}
+{{ e.tags_view }}
+{{ e.description_excerpt }}
 

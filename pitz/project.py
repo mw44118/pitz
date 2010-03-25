@@ -20,15 +20,17 @@ class Project(Bag):
     # These are all the classes that I will try to instantiate when
     # reading yaml files.
     classes = dict(
-        entity=Entity,
-        status=Status,
-        estimate=Estimate,
-        task=Task,
-        person=Person,
-        milestone=Milestone,
+        activity=Activity,
         comment=Comment,
         component=Component,
-        activity=Activity)
+        entity=Entity,
+        estimate=Estimate,
+        milestone=Milestone,
+        person=Person,
+        status=Status,
+        tag=Tag,
+        task=Task,
+    )
 
     plural_names = dict(
         [(c.plural_name, c) for c in classes.values()])

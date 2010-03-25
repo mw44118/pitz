@@ -28,6 +28,8 @@ class PitzEdit(PitzScript):
 
         e = proj[args[0]]
 
+        print(e.one_line_view)
+
         if not isinstance(e, Entity):
             print("I couldn't find an entity %s" % args[0])
             raise SystemExit

@@ -12,6 +12,7 @@ class Task(Entity):
     plural_name = "tasks"
 
     cli_detailed_view_template = 'task_detailed_view.txt'
+    colorized_detailed_view_template = 'colorized_task_detailed_view.txt'
     cli_verbose_view_template = 'task_verbose_view.txt'
 
     allowed_types = dict(
@@ -35,18 +36,15 @@ class Task(Entity):
         tags=lambda proj: list(),
     )
 
-
     jinja_template = 'task.html'
-
 
     def __init__(self, project=None, **kwargs):
         super(Task, self).__init__(project, **kwargs)
 
-
     @property
-    def colorized_title(self):
+    def title_color(self):
         """
-        Return the title string dressed up in a bash color.
+        Return the color to use for the title
         """
 
         status_title_colors = dict(
@@ -58,8 +56,16 @@ class Task(Entity):
             abandoned='gray',
         )
 
+        return pitz.colors[status_title_colors[self.status.title]]
+
+    @property
+    def colorized_title(self):
+        """
+        Return the title string dressed up in a bash color.
+        """
+
         return '%s%-62s%s' % (
-            pitz.colors[status_title_colors[self.status.title]],
+            self.title_color,
             clepy.maybe_add_ellipses(self.title, 59),
             pitz.colors['clear'])
 
@@ -92,16 +98,8 @@ class Task(Entity):
         Short description of the task.
         """
 
-        frag = self['frag']
-        title = clepy.maybe_add_ellipses(self.title, 66)
-
-        interesting_attributes = self.interesting_attributes_view
-        description_excerpt = self.description_excerpt
-
-        e = self
-
         return self.e.get_template('task_summarized_view.txt')\
-        .render(locals())
+        .render(e=self)
 
 
     @property
@@ -121,6 +119,9 @@ class Task(Entity):
 
     @property
     def tags(self):
+
+        if 'tags' not in self:
+            self['tags'] = self.required_fields['tags'](self.project)
         return self['tags']
 
 
@@ -141,26 +142,46 @@ class Task(Entity):
         """
 
         if self['components']:
-            return ', '.join([c.title for c in self.components])
+            return ', '.join(c.title for c in self.components)
 
         else:
             return 'no components'
+
+    @property
+    def tags_view(self):
+
+        """
+        Return a string like:
+
+            web, tests, documentation, data model, CLI
+
+        made from this task's tags.
+        """
+
+        if self.tags:
+            return ', '.join(tag.title for tag in self.tags)
+
+        else:
+            return 'no tags'
 
 
     @property
     def interesting_attributes_view(self):
         """
-        Return a string with the titles of this task's estimate, status,
-        milestone, and any components.
+        Return a string like:
+
+            owner | status | estimate | milestone
+
+        using this task's values for those attributes
         """
 
-        return ' | '.join(['%s' % s for s in (
+        return ' | '.join([str(s) for s in (
             self.owner,
             self.status,
             self.estimate,
             self.milestone,
-            self.components_view,
         )])
+
 
     @property
     def recent_activity(self, how_many=5):

@@ -9,13 +9,16 @@ estimate: !!python/object:uuid.UUID
   int: 69442089652494008692236859468511326791
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-06 16:42:27.249374
+modified_time: 2010-03-25 08:59:32.391853
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
 title: Add a --no-description option to pitz-add-task
 type: task
 uuid: !!python/object:uuid.UUID
   int: 72507283293022509750905627322979601860
-yaml_file_saved: 2010-03-06 16:42:27.282507
+yaml_file_saved: 2010-03-25 09:01:09.179393

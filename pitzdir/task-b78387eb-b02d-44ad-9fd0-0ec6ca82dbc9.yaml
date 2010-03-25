@@ -15,13 +15,16 @@ estimate: !!python/object:uuid.UUID
 html_file_saved: 2009-10-03 20:13:04.027446
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2009-10-13 20:48:30.908338
+modified_time: 2010-03-25 08:59:32.395146
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags:
+- !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
 title: Create Status instances automatically
 type: task
 uuid: !!python/object:uuid.UUID
   int: 243931670915546438702523425202383281097
-yaml_file_saved: 2009-10-13 20:48:30.914551
+yaml_file_saved: 2010-03-25 09:01:09.187491

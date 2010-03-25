@@ -3,4 +3,4 @@ Description
 -----------
 
 {{e.description}}
-{% endif %}
+{% else %}no description{% endif %}

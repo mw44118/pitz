@@ -1,0 +1,12 @@
+attached_files: []
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-03-25 08:20:43.196591
+description: ''
+modified_time: *id001
+pscore: 0
+title: data model
+type: tag
+uuid: !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
+yaml_file_saved: 2010-03-25 08:49:54.829753

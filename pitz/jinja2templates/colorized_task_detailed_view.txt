@@ -1,0 +1,8 @@
+{{ e.colorized_title }}
+{{ e.title_color }}{% for equalsign in e.title -%}={% endfor %}{{ colors['clear'] }}
+{{ e.interesting_attributes_view }}
+{{ e.tags_view }}
+
+{{ e.colorized_description_view }}
+{% if e.comments %}See comments on the verbose view.{% endif %}
+{{ e.pitzdir_replace_directive }}

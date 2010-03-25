@@ -18,13 +18,16 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-22 12:34:30.361350
+modified_time: 2010-03-25 08:59:32.450824
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags:
+- !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
 title: Add an "interesting details" view
 type: task
 uuid: !!python/object:uuid.UUID
   int: 45466410924488756096089287771564870468
-yaml_file_saved: 2010-03-22 12:34:30.370928
+yaml_file_saved: 2010-03-25 09:01:09.339733

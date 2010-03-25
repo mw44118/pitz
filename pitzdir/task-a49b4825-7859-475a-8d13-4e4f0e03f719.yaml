@@ -20,13 +20,16 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 281829325005055660957328011118288254534
-modified_time: 2010-02-27 22:34:11.201401
+modified_time: 2010-03-25 08:59:32.499752
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
 title: Convert a task into a restructured text file
 type: task
 uuid: !!python/object:uuid.UUID
   int: 218799660623978709921597515487766640409
-yaml_file_saved: 2010-02-27 22:34:11.211000
+yaml_file_saved: 2010-03-25 09:01:09.455582

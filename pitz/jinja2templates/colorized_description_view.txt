@@ -1,0 +1,6 @@
+{% if e.description -%}
+{{ colors['cyan'] }}Description
+-----------{{ colors['clear'] }}
+
+{{e.description}}
+{% else %}no description{% endif %}

@@ -966,7 +966,7 @@ class PitzAddTask(PitzScript):
         default_milestone = Milestone(proj, title='unscheduled')
         default_estimate = Estimate(proj, title='not estimated')
         default_owner = Person(proj, title='no owner')
-        default_components = list()
+        default_tags = list()
 
         t = Task(
 
@@ -988,8 +988,8 @@ class PitzAddTask(PitzScript):
             owner=default_owner if options.use_defaults \
             else Person.choose_from_already_instantiated(default_owner),
 
-            components=default_components if options.use_defaults \
-            else Component.choose_many_from_already_instantiated(),
+            tags=default_tags if options.use_defaults \
+            else Tag.choose_many_from_already_instantiated(),
 
         )
 
@@ -1168,6 +1168,11 @@ pitz_components = f(
     PitzEverything(title="components", save_proj=False,
         type='component', script_name='pitz-components',
         doc='All components in the project'))
+
+pitz_tags = f(
+    PitzEverything(title="tags", save_proj=False,
+        type='tag', script_name='pitz-tags',
+        doc='All tags in the project'))
 
 pitz_people = f(
     PitzEverything(title="people", save_proj=False,

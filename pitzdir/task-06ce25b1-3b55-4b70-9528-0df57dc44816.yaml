@@ -3,20 +3,23 @@ components:
   int: 4957623306508968194182393857812906256
 created_by: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
-created_time: &id001 2010-03-05 11:18:40.943524
+created_time: 2010-03-05 11:18:40.943524
 description: It should set the task's status to paused.
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
+modified_time: 2010-03-25 08:59:32.468675
 owner: !!python/object:uuid.UUID
   int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
 title: Write a pitz-pause-task script
 type: task
 uuid: !!python/object:uuid.UUID
   int: 9045745618470500393889574583298967574
-yaml_file_saved: 2010-03-05 11:18:40.952558
+yaml_file_saved: 2010-03-25 09:01:09.393209

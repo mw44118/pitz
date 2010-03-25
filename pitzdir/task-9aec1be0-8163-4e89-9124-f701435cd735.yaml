@@ -17,14 +17,17 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 281829325005055660957328011118288254534
-modified_time: 2010-03-07 19:34:03.896364
+modified_time: 2010-03-25 08:59:32.525158
 owner: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags:
+- !!python/object:uuid.UUID
+  int: 115897731472495632588122822348854247787
 title: Find out if I can embed links to attached files that contain images in description
 type: task
 uuid: !!python/object:uuid.UUID
   int: 205927058821702586343176271850284832565
-yaml_file_saved: 2010-03-07 19:34:03.905679
+yaml_file_saved: 2010-03-25 09:01:09.524915

@@ -14,13 +14,16 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: 2010-03-13 08:21:26.418129
+modified_time: 2010-03-25 08:59:32.563131
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags:
+- !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
 title: Make pitz-destroy clean up related activity entities
 type: task
 uuid: !!python/object:uuid.UUID
   int: 215358700129406542433302315512004491529
-yaml_file_saved: 2010-03-13 08:21:26.432444
+yaml_file_saved: 2010-03-25 09:01:09.626355

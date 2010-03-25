@@ -275,6 +275,13 @@ class Entity(dict):
 
                 cls = allowed_type[0]
 
+                try:
+                    iter(val)
+                except TypeError:
+                    raise TypeError(
+                        "%s must be a list of %s instances, not %s!"
+                        % (attr, cls, type(val)))
+
                 for v in val:
                     if not isinstance(v, (NoneType, uuid.UUID, cls)):
 
@@ -474,11 +481,21 @@ class Entity(dict):
 
 
     @property
+    def colorized_description_view(self):
+
+        t = self.e.get_template('colorized_description_view.txt')
+        return t.render(e=self)
+
+
+    @property
     def description_excerpt(self):
 
-        return clepy.maybe_add_ellipses(
-            self['description'].replace('\n', ' '), 66)
+        if self.description:
+            return clepy.maybe_add_ellipses(
+                self['description'].replace('\n', ' '), 66)
 
+        else:
+            return 'no description'
 
     @property
     def pscore(self):
@@ -805,6 +822,15 @@ class Entity(dict):
         else:
             return self.title
 
+    @property
+    def colorized_detailed_view(self):
+        """
+        Detailed view, but with colors!
+        """
+
+        return self.e.get_template(
+            self.colorized_detailed_view_template).render(
+                e=self)
 
     @property
     def detailed_view(self):

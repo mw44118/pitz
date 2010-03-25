@@ -14,13 +14,16 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-12 21:07:46.330078
+modified_time: 2010-03-25 08:59:32.472263
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
 title: Starting one task should offer to pause other started tasks
 type: task
 uuid: !!python/object:uuid.UUID
   int: 247418884702067670060756817562405305575
-yaml_file_saved: 2010-03-12 21:07:46.345102
+yaml_file_saved: 2010-03-25 09:01:09.401591
