@@ -1,16 +1,16 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os, unittest
+import glob
+import os
+import unittest
+
+from nose.tools import raises
+from mock import patch
 
 import pitz
 from pitz.entity import Entity
 from pitz.bag import Bag
 from pitz.project import Project
-
-from nose.tools import raises
-from nose import SkipTest
-
-from mock import Mock, patch
 
 b = Bag("Testing bag")
 
@@ -110,7 +110,6 @@ def test_contents_1():
     b.append(Entity(title='A'))
 
 
-
 def test_str():
 
     global b
@@ -184,11 +183,9 @@ def test_length():
 
 
 class TestSorting1(unittest.TestCase):
-
     """
     Verify that we can sort on the pscore attribute.
     """
-
 
     def setUp(self):
 
@@ -202,7 +199,6 @@ class TestSorting1(unittest.TestCase):
 
         for e in self.p:
             print("%(title)s %(pscore)s" % e)
-
 
     def test_sort(self):
 
@@ -236,13 +232,10 @@ class TestSorting1(unittest.TestCase):
         "self.p is \n---\n%s\n---\n" % self.p
 
 
-
 class TestSorting2(unittest.TestCase):
-
     """
     Sort entities based on their status attribute.
     """
-
 
     def setUp(self):
 
@@ -260,7 +253,6 @@ class TestSorting2(unittest.TestCase):
         self.e2 = Entity(self.p, title="e2", status=self.unstarted)
         self.e3 = Entity(self.p, title="e3", status=self.unstarted)
         self.e4 = Entity(self.p, title="e4", status=self.unstarted)
-
 
     def test_sort(self):
 
@@ -281,7 +273,6 @@ class TestSorting2(unittest.TestCase):
 
 class TestBag(unittest.TestCase):
 
-
     def setUp(self):
 
         b = Bag('Everything', pathname='/tmp')
@@ -297,7 +288,6 @@ class TestBag(unittest.TestCase):
 
         self.b = b
 
-
     def tearDown(self):
 
         if os.path.isfile('/tmp/project.pickle'):
@@ -305,7 +295,6 @@ class TestBag(unittest.TestCase):
 
         for f in glob.glob('/tmp/*.yaml'):
             os.unlink(f)
-
 
     def test_matches_dict(self):
 
@@ -315,23 +304,19 @@ class TestBag(unittest.TestCase):
 
         unimportant_stuff = self.b.matches_dict(importance='not very')
 
-
     def test_by_frag(self):
 
         e1, e2 = self.b
         assert e1 == self.b.by_frag(e1.frag)
-
 
     def test_by_uuid_1(self):
 
         e1, e2 = self.b
         assert e1 == self.b.by_uuid(e1.uuid)
 
-
     def test_by_uuid_2(self):
 
         assert 'abc' == self.b.by_uuid('abc')
-
 
     def test_grep_1(self):
 
@@ -343,18 +328,15 @@ class TestBag(unittest.TestCase):
 
         assert self.b.grep('EXAMPLE', ignore_case=True).length == 2
 
-
     def test_grep_2(self):
 
         b = Bag()
         b.pathname = '/tmp'
         assert b.grep('foo') == b
 
-
     def test_html_filename(self):
 
         assert self.b.html_filename.endswith('.html')
-
 
     def test_does_not_match_dict(self):
 
@@ -362,7 +344,6 @@ class TestBag(unittest.TestCase):
         b2 = self.b.does_not_match_dict(title=e1.title)
         assert e2 in b2
         assert e1 not in b2
-
 
     def test_pop(self):
 
@@ -374,18 +355,15 @@ class TestBag(unittest.TestCase):
         assert e2.frag not in self.b.entities_by_frag
         assert e2.yaml_filename not in self.b.entities_by_yaml_filename
 
-
     def test_contents(self):
 
         b = Bag()
         assert b.contents == '(empty)'
 
-
     def test_init(self):
 
         b = Bag(uuid='99999999')
         assert b.uuid == '99999999'
-
 
     def test_slice(self):
 
@@ -395,7 +373,3 @@ class TestBag(unittest.TestCase):
         b2 = b[0:2]
 
         assert isinstance(b2, Bag), "b2 is a %s" % type(b2)
-
-
-
-

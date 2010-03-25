@@ -1,13 +1,15 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os, random, time, unittest
+import glob
+import os
+import unittest
+
+from nose.tools import raises
+from mock import Mock, patch
+
 from pitz.entity import Entity
 from pitz.project import Project
 import pitz
-
-from nose import SkipTest
-from nose.tools import raises
-from mock import Mock, patch
 
 p = Project("Testing project")
 
@@ -59,11 +61,13 @@ def test_save_entities_1():
     p = Project("Bogus")
     p.save_entities_to_yaml_files()
 
+
 @raises(ValueError)
 def test_save_entities_1():
 
     p = Project("Bogus")
     p.save_entities_to_yaml_files('nonexistent directory')
+
 
 @patch('__builtin__.open')
 @patch('pickle.dump')
@@ -88,9 +92,9 @@ def test_from_yaml_file_1(m1, m2, m3):
 
     # yaml.load(...) will return m2.
     m2.return_value = {
-        'order_method_name':'bogus_method',
-        'module':'pitz.project',
-        'classname':'Project'}
+        'order_method_name': 'bogus_method',
+        'module': 'pitz.project',
+        'classname': 'Project'}
 
     # globals() will return m3.
     m3.return_value = {'bogus_method': lambda e1, e2: 1}
@@ -122,6 +126,7 @@ def test_grep():
     assert e2 not in g3
     assert len(g3) == 1
 
+
 class TestPicklingProject(unittest.TestCase):
 
     def setUp(self):
@@ -130,7 +135,6 @@ class TestPicklingProject(unittest.TestCase):
         self.c = Entity(self.p, title="c")
         self.e = Entity(self.p, title="t", c=self.c)
 
-
     def tearDown(self):
         self.c.self_destruct(self.p)
         self.e.self_destruct(self.p)
@@ -138,19 +142,16 @@ class TestPicklingProject(unittest.TestCase):
         if os.path.exists('/tmp/project.pickle'):
             os.remove('/tmp/project.pickle')
 
-
     def test_to_pickle1(self):
 
         self.assertRaises(
             ValueError,
             self.p.to_pickle)
 
-
     def test_to_pickle2(self):
 
         self.p.to_pickle('/tmp')
         assert os.path.exists('/tmp/project.pickle')
-
 
     def test_unpickle(self):
 
@@ -200,7 +201,6 @@ class TestFindPitzdir(unittest.TestCase):
         os.rmdir('/tmp/deadend/foo')
         os.rmdir('/tmp/deadend')
 
-
     def test_1(self):
         """
         Verify we can use the parameter
@@ -226,7 +226,6 @@ class TestFindPitzdir(unittest.TestCase):
 
         Project.find_pitzdir('/tmp/boguspitzdir')
 
-
     def test_4(self):
         """
         Verify we can walk up and find pitzdir.
@@ -234,7 +233,6 @@ class TestFindPitzdir(unittest.TestCase):
 
         os.chdir('/tmp/walkup/pitzdir/foo')
         assert Project.find_pitzdir() == '/tmp/walkup/pitzdir'
-
 
     def test_5(self):
         """
@@ -247,7 +245,6 @@ class TestFindPitzdir(unittest.TestCase):
 
         assert pitzdir_location == '/tmp/walkdown/foo/bar/baz/pitzdir', \
         pitzdir_location
-
 
     def test_6(self):
 
@@ -271,7 +268,6 @@ class TestFromPitzdir(unittest.TestCase):
         if os.path.isfile('/tmp/project.pickle'):
             os.unlink('/tmp/project.pickle')
 
-
     def test_fresh_pickle(self):
         """
         Verify we use the pickle when we can.
@@ -279,7 +275,6 @@ class TestFromPitzdir(unittest.TestCase):
 
         p = Project.from_pitzdir('/tmp')
         assert p.loaded_from == 'pickle', p.loaded_from
-
 
     def test_stale_pickle(self):
         """
@@ -299,7 +294,6 @@ class TestFromPitzdir(unittest.TestCase):
 
         p = Project.from_pitzdir('/tmp')
         assert p.loaded_from == 'yaml', p.loaded_from
-
 
     def test_from_yaml_files(self):
         """
@@ -339,7 +333,6 @@ class TestSaveToYaml(unittest.TestCase):
 class TestSetupDefaults(unittest.TestCase):
 
     def test_setup_defaults(self):
-
         """
         Verify the project calls setup_defaults.
         """
@@ -370,18 +363,15 @@ class TestProperties(unittest.TestCase):
                 Entity(title='def'),
                 Entity(title='ghi')])
 
-
     def test_recent_activity(self):
 
         assert self.p.recent_activity.order_method \
         == pitz.by_descending_created_time
 
-
     def test_activities(self):
 
         assert self.p.activities.order_method \
         == pitz.by_descending_created_time
-
 
     def test_milestones(self):
         assert not self.p.milestones

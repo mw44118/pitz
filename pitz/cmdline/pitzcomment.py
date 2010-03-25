@@ -1,8 +1,11 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-from pitz.cmdline import PitzScript
+import sys
 
 import clepy
+
+from pitz.cmdline import PitzScript
+
 
 class PitzComment(PitzScript):
     """
@@ -20,7 +23,6 @@ class PitzComment(PitzScript):
             help='Stores this comment with an empty description')
 
         p.set_usage("%prog frag-to-comment-on")
-
 
     def handle_proj(self, p, options, args, proj, results):
 

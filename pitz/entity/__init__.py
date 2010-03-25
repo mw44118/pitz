@@ -7,32 +7,32 @@ The Entity class and Entity subclasses.
 # Lots of packages don't work on the app engine.
 try:
     import shutil
-
 except ImportError:
     shutil = None
 
-import collections, logging, os, re, uuid, weakref
+import logging
+import os
+import re
+import uuid
+import weakref
 from datetime import datetime
 from types import NoneType
 
-import jinja2, yaml
-
+import jinja2
+import yaml
 from docutils.core import publish_parts
 from docutils.utils import SystemMessage
-
 import clepy
 
-from pitz import NoProject, by_descending_created_time
-
-from pitz import by_created_time, by_whatever
-
 import pitz
+from pitz import NoProject, by_descending_created_time
+from pitz import by_whatever
+from pitz.entity.person import Person
 
 log = logging.getLogger('pitz.entity')
 
 
 class MC(type):
-
     """
     This metaclass adds a dictionary named already_instantiated to the
     cls.
@@ -43,7 +43,6 @@ class MC(type):
 
 
 class Entity(dict):
-
     """
     Acts like a regular dictionary with some extra tweaks.
 
@@ -102,9 +101,7 @@ class Entity(dict):
         'created_by',
     ]
 
-
     def __new__(cls, project=None, **kwargs):
-
         """
         Checks if we already have something with this exact type and
         title.  If we do, then we just return that.
@@ -125,9 +122,7 @@ class Entity(dict):
             cls.already_instantiated[title] = self
             return self
 
-
     def __setstate__(self, d):
-
         """
         Stuff loaded from the pickle file sidesteps both __new__ and
         __init__, so you can use this method to make sure some stuff
@@ -149,7 +144,6 @@ class Entity(dict):
 
         self.update_modified_time = True
         self.record_activity_on_changes = True
-
 
     def __init__(self, project=None, **kwargs):
 
@@ -206,10 +200,8 @@ class Entity(dict):
         self.update_modified_time = True
         self.record_activity_on_changes = True
 
-
     def _get_project(self):
         return getattr(self, '_project', None)
-
 
     def _set_project(self, p):
 
@@ -224,9 +216,7 @@ class Entity(dict):
             if self.project:
                 self.replace_pointers_with_objects()
 
-
     project = property(_get_project, _set_project)
-
 
     def _setup_jinja(self):
 
@@ -241,17 +231,15 @@ class Entity(dict):
             loader=jinja2.FileSystemLoader(jinja2dir))
 
         self.e.globals = {
-            'clepy':clepy,
-            'datetime':datetime,
-            'os':os,
-            'isinstance':isinstance,
-            'hasattr':hasattr,
-            'colors':pitz.colors,
+            'clepy': clepy,
+            'datetime': datetime,
+            'os': os,
+            'isinstance': isinstance,
+            'hasattr': hasattr,
+            'colors': pitz.colors,
         }
 
-
     def __setitem__(self, attr, val):
-
         """
         Make sure that the value is allowed for this attr before going
         any further.
@@ -262,7 +250,6 @@ class Entity(dict):
 
             raise ValueError("%s must be in %s, not %s!"
                 % (attr, self.allowed_values[attr], val))
-
 
         elif attr in self.allowed_types:
 
@@ -308,7 +295,6 @@ class Entity(dict):
         # Finally, do the setitem.
         super(Entity, self).__setitem__(attr, val)
 
-
     def __hash__(self):
         """
         Necessary to allow Entity instances to be used as dictionary
@@ -316,9 +302,7 @@ class Entity(dict):
         """
         return self.uuid.int
 
-
     def custom_view(self, name_of_view=None, default_view='detailed_view'):
-
         """
         Just a little nicer than writing all that getattr(...) stuff.
         """
@@ -331,7 +315,6 @@ class Entity(dict):
         else:
             return getattr(self, name_of_view)
 
-
     def maybe_update_modified_time(self, attr):
 
         if self.update_modified_time \
@@ -339,7 +322,6 @@ class Entity(dict):
 
             super(Entity, self).__setitem__(
                 'modified_time', datetime.now())
-
 
     def maybe_record_activity(self, attr, val):
 
@@ -361,14 +343,12 @@ class Entity(dict):
                 who_did_it=self.project.me,
                 description='')
 
-
     def prioritize_above(self, other):
         """
         Set my pscore to the other entity's pscore + 1.
         """
 
         self['pscore'] = other['pscore'] + 1
-
 
     def prioritize_below(self, other):
         """
@@ -377,9 +357,7 @@ class Entity(dict):
 
         self['pscore'] = other['pscore'] - 1
 
-
     def comment(self, who_said_it=None, title=None, description=None):
-
         """
         Store a comment on this entity.
         """
@@ -401,13 +379,11 @@ class Entity(dict):
         return Comment(self.project, entity=self.uuid, title=title,
             who_said_it=who_said_it, description=description)
 
-
     @property
     def pitzdir_replace_directive(self):
 
         if self.project:
             return ".. |pitzdir| replace:: %s" % self.project.pitzdir
-
 
     @property
     def comments(self):
@@ -419,7 +395,6 @@ class Entity(dict):
         b.title = 'Comments on %(title)s' % self
 
         return b.order(by_descending_created_time)
-
 
     @property
     def activities(self):
@@ -434,11 +409,9 @@ class Entity(dict):
             'created_time (reversed)',
             'created_time', reverse=True))
 
-
     @property
     def yaml_filename(self):
         return '%(type)s-%(uuid)s.yaml' % self
-
 
     @property
     def frag(self):
@@ -509,7 +482,7 @@ class Entity(dict):
 
         print("Choose a value for %s" % attr)
         for i, e in enumerate(choices):
-            print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
+            print("%4d: %s" % (i + 1, getattr(e, 'summarized_view', e)))
 
         choice = raw_input(
             "Pick a %s or hit <ENTER> to choose %s: "
@@ -523,7 +496,6 @@ class Entity(dict):
         except (TypeError, ValueError):
             return default
 
-
     @classmethod
     def choose(cls, default=None):
 
@@ -531,7 +503,7 @@ class Entity(dict):
 
         print("Choose a %s" % cls.__name__)
         for i, e in enumerate(choices):
-            print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
+            print("%4d: %s" % (i + 1, getattr(e, 'summarized_view', e)))
 
         choice = raw_input(
             "Pick a %s or hit <ENTER> to choose %s: "
@@ -558,7 +530,7 @@ class Entity(dict):
         choices = sorted(cls.already_instantiated.values(), reverse=True)
 
         for i, e in enumerate(choices):
-            print("%4d: %s" % (i+1, getattr(e, 'summarized_view', e)))
+            print("%4d: %s" % (i + 1, getattr(e, 'summarized_view', e)))
 
         print("Use commas or spaces to pick more than one.")
 
@@ -579,9 +551,7 @@ class Entity(dict):
 
         return results
 
-
     def what_they_really_mean(self, a, v):
-
         """
         Try to convert strings, UUIDs, and frags to more interesting
         objects.
@@ -634,7 +604,6 @@ class Entity(dict):
 
                 return new_list
 
-
         elif issubclass(at, Entity):
 
             if isinstance(v, list):
@@ -671,7 +640,6 @@ class Entity(dict):
 
         else:
             return at(v)
-
 
     def matches_dict(self, **d):
         """
@@ -746,7 +714,6 @@ class Entity(dict):
 
         return self
 
-
     def does_not_match_dict(self, **d):
         """
         Returns self if ALL of the key-value pairs do not match.
@@ -769,14 +736,12 @@ class Entity(dict):
 
         return self
 
-
     def __repr__(self):
 
         return "<pitz.%s %s %s>" % (
             self.__class__.__name__,
             self.frag,
             clepy.maybe_add_ellipses(self.title, 60))
-
 
     @property
     def html_summarized_view(self):
@@ -791,7 +756,6 @@ class Entity(dict):
             """<a href="/entity/%(uuid)s">%(safe_title)s</a>"""
             % dict(uuid=self.uuid, safe_title=safe_title))
 
-
     @property
     def one_line_view(self):
         """
@@ -801,7 +765,6 @@ class Entity(dict):
         return clepy.maybe_add_ellipses(
             "%(frag)s: %(title)s" % self,
             )
-
 
     @property
     def summarized_view(self):
@@ -850,10 +813,8 @@ class Entity(dict):
 
         return t.render(e=self, **d)
 
-
     @property
     def verbose_view(self):
-
         """
         Everything you could possibly want to know about this entity.
         """
@@ -868,8 +829,6 @@ class Entity(dict):
         t = self.e.get_template(self.cli_verbose_view_template)
 
         return t.render(e=self, **d)
-
-
 
     @property
     def yaml(self):
@@ -887,7 +846,6 @@ class Entity(dict):
 
         return y
 
-
     def __getstate__(self):
 
         """
@@ -899,7 +857,6 @@ class Entity(dict):
         d = self.copy()
         self.replace_pointers_with_objects()
         return d
-
 
     def to_yaml_file(self, pathname):
         """
@@ -919,9 +876,7 @@ class Entity(dict):
 
             return fp
 
-
     def save_attachment(self, filepath):
-
         """
         Save the file in filepath in the pitzdir.
         """
@@ -950,9 +905,7 @@ class Entity(dict):
 
         return new_filepath
 
-
     def replace_pointers_with_objects(self):
-
         """
         Replace pointer to entities with the entities that are pointed
         to.
@@ -985,7 +938,6 @@ class Entity(dict):
         self.record_activity_on_changes = True
         return self
 
-
     def replace_objects_with_pointers(self):
         """
         Replaces the value of an entity with just the string of the
@@ -1008,11 +960,9 @@ class Entity(dict):
         self.record_activity_on_changes = True
         return self
 
-
     @property
     def html_filename(self):
         return "%(uuid)s.html" % self
-
 
     @property
     def stale_html(self):
@@ -1021,7 +971,6 @@ class Entity(dict):
             datetime(1991, 1, 1))
 
         return self['modified_time'] > html_file_saved
-
 
     def to_html_file(self, htmldir, force=False):
         """
@@ -1058,7 +1007,6 @@ class Entity(dict):
 
             return """<pre>%(description)s</pre>""" % self
 
-
     @property
     def html(self):
         """
@@ -1080,7 +1028,6 @@ class Entity(dict):
 
         return s
 
-
     @classmethod
     def from_yaml_file(cls, fp, project=None):
 
@@ -1095,7 +1042,6 @@ class Entity(dict):
 
         if d:
             return cls(project, **d)
-
 
     def self_destruct(self, proj):
         """
@@ -1130,7 +1076,6 @@ class Entity(dict):
 
         return files_deleted
 
-
     @property
     def stale_yaml(self):
 
@@ -1139,9 +1084,7 @@ class Entity(dict):
 
         return self['modified_time'] > yaml_file_saved
 
-
     def edit(self, attr):
-
         """
         if attr is in the allowed_types dictionary, and the allowed type
         is an Entity subclass, then show a list of all instances of the
@@ -1172,7 +1115,6 @@ class Entity(dict):
             self[attr] = clepy.edit_with_editor(self.get(attr))
 
         return self
-
 
     def __cmp__(self, other):
 
@@ -1221,10 +1163,9 @@ class Estimate(Entity):
             dict(title='hard', points=3, pscore=80)]),
 
         ("one to ten points", [
-            dict(title=i, points=i, pscore=100-i*10)
-            for i in xrange(1, 11)])
+            dict(title=i, points=i, pscore=(100 - i * 10))
+            for i in xrange(1, 11)]),
     ]
-
 
     def __str__(self):
         return self.title
@@ -1241,15 +1182,12 @@ class Estimate(Entity):
         else:
             return self.project.tasks(estimate=self)
 
-
     @property
     def points(self):
         return self['points']
 
-
     @classmethod
     def choose_estimate_range(cls):
-
         """
         Print all the estimate ranges available and ask for a choice.
 
@@ -1274,7 +1212,6 @@ class Estimate(Entity):
         if choice:
             return cls.ranges[int(choice)-1]
 
-
     @classmethod
     def add_range_of_estimates_to_project(cls, proj, range):
         """
@@ -1286,7 +1223,6 @@ class Estimate(Entity):
             est = cls(proj, **val)
 
         return proj
-
 
 
 class Status(Entity):
@@ -1307,7 +1243,6 @@ class Status(Entity):
 
         else:
             return self.project.tasks(status=self)
-
 
     @classmethod
     def setup_defaults(cls, proj):
@@ -1385,19 +1320,22 @@ class Milestone(Entity):
         b = self.tasks(status=[finished, started, unstarted]).length
 
         if b is not 0:
-            pct_complete = 100*(float(a)/b)
+            pct_complete = 100 * (float(a) / b)
         else:
             pct_complete = 0.0
 
         d = {
-            'frag':self['frag'],
-            'title':self['title'],
-            'pct_complete':pct_complete,
-            'num_finished_tasks':a,
+            'frag': self['frag'],
+            'title': self['title'],
+            'pct_complete': pct_complete,
+            'num_finished_tasks': a,
             'num_tasks': b}
 
-        s = "%(frag)s %(title)s: %(pct_complete)0.0f%% complete (%(num_finished_tasks)d / %(num_tasks)d tasks)"
+        s = (
+            "%(frag)s %(title)s: %(pct_complete)0.0f%% complete"
+            " (%(num_finished_tasks)d / %(num_tasks)d tasks)")
         return s % d
+
 
 class Tag(Entity):
 
@@ -1446,10 +1384,7 @@ class Component(Entity):
         return unfinished
 
 
-
-
 class Comment(Entity):
-
     """
     You can comment on any entity.
     """
@@ -1466,7 +1401,6 @@ class Comment(Entity):
 
     @property
     def summarized_view(self):
-
         """
         Shorter description of the comment.
         """
@@ -1507,10 +1441,6 @@ class Comment(Entity):
             'comment_detailed_view.txt').render(locals())
 
 
-from pitz.entity.person import Person
-from pitz.entity.task import Task
-
-
 class Activity(Entity):
     """
     Tracks interesting changes to the data model.
@@ -1537,4 +1467,3 @@ class Activity(Entity):
         return '%s (%s)' % (
             self,
             clepy.time_ago(self['created_time']))
-

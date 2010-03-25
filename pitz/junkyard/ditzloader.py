@@ -4,22 +4,28 @@
 A bunch of experimental crap.
 """
 
-import csv, os
+import csv
+import os
 from glob import glob
 
 import yaml
 
+
 class Project(yaml.YAMLObject):
     yaml_tag = u'!ditz.rubyforge.org,2008-03-06/project'
+
 
 class Component(yaml.YAMLObject):
     yaml_tag = u'!ditz.rubyforge.org,2008-03-06/component'
 
+
 class Release(yaml.YAMLObject):
     yaml_tag = u'!ditz.rubyforge.org,2008-03-06/release'
 
+
 class Issue(yaml.YAMLObject):
     yaml_tag = u'!ditz.rubyforge.org,2008-03-06/issue'
+
 
 def load_ditz_issues(where_they_live):
 
@@ -32,9 +38,10 @@ def load_ditz_issues(where_they_live):
         raise ValueError("Sorry, %s must be a directory.")
 
     for issue_file in \
-    glob(os.path.join(where_they_live, 'issue-*.yaml')):    
+    glob(os.path.join(where_they_live, 'issue-*.yaml')):
 
         yield yaml.load(open(issue_file))
+
 
 def to_csv(issues, csvpath):
     """
@@ -54,18 +61,18 @@ __test__ = dict(
 >>> import pitz, yaml
 
 >>> x  = yaml.load('''
-... --- !ditz.rubyforge.org,2008-03-06/project 
+... --- !ditz.rubyforge.org,2008-03-06/project
 ... name: staffknex
 ... version: "0.5"
-... components: 
-... - !ditz.rubyforge.org,2008-03-06/component 
+... components:
+... - !ditz.rubyforge.org,2008-03-06/component
 ...   name: staffknex
-... releases: 
-... - !ditz.rubyforge.org,2008-03-06/release 
+... releases:
+... - !ditz.rubyforge.org,2008-03-06/release
 ...   name: 3.5.1
 ...   status: :released
 ...   release_time: 2008-10-10 18:40:45.054912 Z
-...   log_events: 
+...   log_events:
 ...   - - 2008-09-02 19:16:28.409034 Z
 ...     - Matthew Wilson <mw@staffknex.com>
 ...     - created
@@ -74,11 +81,11 @@ __test__ = dict(
 ...     - Matthew Wilson <mw@staffknex.com>
 ...     - released
 ...     - ""
-... - !ditz.rubyforge.org,2008-03-06/release 
+... - !ditz.rubyforge.org,2008-03-06/release
 ...   name: Matt's queue
 ...   status: :unreleased
-...   release_time: 
-...   log_events: 
+...   release_time:
+...   log_events:
 ...   - - 2008-10-10 18:41:10.757638 Z
 ...     - Matthew Wilson <mw@staffknex.com>
 ...     - created
@@ -91,4 +98,3 @@ __test__ = dict(
 >>> len(x.releases)
 2
 """)
-

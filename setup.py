@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import sys, os
 
 from pitz import __version__
 version = __version__
@@ -24,9 +23,9 @@ started pitz.""",
     packages=find_packages(exclude=['docs', 'pitzdir', 'tests']),
     include_package_data=True,
 
-    package_dir={'pitz':'pitz'},
+    package_dir={'pitz': 'pitz'},
 
-    package_data = {
+    package_data={
         'pitz': [
             'jinja2templates/*.html',
             'jinja2templates/*.txt',
@@ -92,7 +91,7 @@ started pitz.""",
 
     """,
 
-    test_suite = 'nose.collector',
+    test_suite='nose.collector',
 
 
 )

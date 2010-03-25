@@ -2,10 +2,13 @@
 
 import clepy
 
-from pitz.entity import Component, Entity, Estimate, Person, \
-Milestone, Status, Tag
+from pitz.entity import (
+    Component, Entity, Estimate, Person,
+    Milestone, Status, Tag, Comment,
+    )
 
 import pitz
+
 
 class Task(Entity):
 
@@ -73,16 +76,13 @@ class Task(Entity):
     def milestone(self):
         return self['milestone']
 
-
     @property
     def status(self):
         return self['status']
 
-
     @property
     def estimate(self):
         return self['estimate']
-
 
     @property
     def html_summarized_view(self):
@@ -90,7 +90,6 @@ class Task(Entity):
         return "%s (%s)""" % (
             super(Task, self).html_summarized_view,
             self['status'].html_summarized_view)
-
 
     @property
     def summarized_view(self):
@@ -101,13 +100,11 @@ class Task(Entity):
         return self.e.get_template('task_summarized_view.txt')\
         .render(e=self)
 
-
     @property
     def comments_view(self):
 
         return self.e.get_template(
             'task_comments_view.txt').render(e=self)
-
 
     @property
     def owner(self):
@@ -124,7 +121,6 @@ class Task(Entity):
             self['tags'] = self.required_fields['tags'](self.project)
         return self['tags']
 
-
     @property
     def tags_view(self):
 
@@ -133,7 +129,6 @@ class Task(Entity):
 
         else:
             return 'no tags'
-
 
     @property
     def components_view(self):
@@ -163,7 +158,6 @@ class Task(Entity):
 
         else:
             return 'no tags'
-
 
     @property
     def interesting_attributes_view(self):
@@ -201,13 +195,11 @@ class Task(Entity):
 
         return b
 
-
     @property
     def recent_activity_view(self):
 
         return self.e.get_template('task_activity_view.txt')\
         .render(activity=self.recent_activity)
-
 
     def abandon(self, comment_title=None, comment_description=None):
 
@@ -231,7 +223,6 @@ class Task(Entity):
             raise ValueError(
                 'You can only abandon unstarted or started tasks.')
 
-
     def start(self, comment_title=None, comment_description=None):
 
         self['status'] = Status(title='started')
@@ -245,7 +236,6 @@ class Task(Entity):
 
         return self
 
-
     def finish(self, comment_title=None, comment_description=None):
 
         self['status'] = Status(title='finished')
@@ -258,7 +248,6 @@ class Task(Entity):
                 description=comment_description)
 
         return self
-
 
     def assign(self, owner):
 

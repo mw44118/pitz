@@ -2,25 +2,27 @@
 
 from __future__ import with_statement
 
-import logging, optparse, os, pwd, sys, warnings
+import logging
+import optparse
+import os
+import sys
+import warnings
 
 warnings.simplefilter('ignore', DeprecationWarning)
 
 from wsgiref.simple_server import make_server
-
 from IPython.Shell import IPShellEmbed
-
 import clepy
 
-from pitz import *
+import pitz
 from pitz.project import Project
-
-from pitz.entity import Component, Entity, Estimate, Milestone, \
-Person, Status, Task
-
+from pitz.entity import (
+    Component, Entity, Estimate, Milestone,
+    Person, Status, Task)
 from pitz.webapp import SimpleWSGIApp
 
 log = logging.getLogger('pitz.cmdline')
+
 
 class PitzHelp(object):
 
@@ -34,18 +36,18 @@ class PitzHelp(object):
 
         return f
 
-
     def __call__(self):
 
         for name, description in sorted(self.scripts.items()):
-            print("    %-26s %-44s" % (name, clepy.maybe_add_ellipses(description, 44)))
+            print(
+                "    %-26s %-44s"
+                % (name, clepy.maybe_add_ellipses(description, 44)))
 
 pitz_help = PitzHelp()
 f = pitz_help.add_to_list_of_scripts
 
 
 class PitzScript(object):
-
     """
     Got this idea from a commenter, Linus, on my blog here:
 
@@ -76,7 +78,6 @@ class PitzScript(object):
         option.
         """
 
-
     def handle_options_and_args(self, p, options, args):
         """
         Use this to examine the options and args parsed from the
@@ -84,20 +85,18 @@ class PitzScript(object):
         they got all the right args and options.
         """
 
-
     def handle_proj(self, p, options, args, proj, results):
         """
         Do the interesting stuff of the script in here.
         """
 
     def apply_filter_and_grep(self, p, options, args, b):
-
         """
         Return a new bag after filtering and using grep on the bag b
         passed in.
         """
 
-        filter = build_filter(args)
+        filter = pitz.build_filter(args)
 
         results = b
 
@@ -108,7 +107,6 @@ class PitzScript(object):
             results = results.grep(options.grep)
 
         return results
-
 
     def setup_p(self):
         p = optparse.OptionParser()
@@ -123,7 +121,6 @@ class PitzScript(object):
 
         return p
 
-
     def setup_options_and_args(self, p):
 
         options, args = p.parse_args()
@@ -135,7 +132,6 @@ class PitzScript(object):
 
         return options, args
 
-
     def setup_proj(self, p, options, args):
 
         pitzdir = Project.find_pitzdir(options.pitzdir)
@@ -145,7 +141,6 @@ class PitzScript(object):
         proj.find_me()
 
         return proj
-
 
     def setup_results(self, p, options, args, proj):
 
@@ -157,14 +152,12 @@ class PitzScript(object):
 
         return results
 
-
     def add_grep_option(self, p):
 
         p.add_option('-g', '--grep',
             help='Filter to entities matching a regex')
 
         return p
-
 
     def add_view_options(self, p):
 
@@ -187,7 +180,6 @@ class PitzScript(object):
             dest='custom_view', action='store_const', const='frag')
 
         return p
-
 
     def __call__(self):
 
@@ -216,7 +208,6 @@ class PitzScript(object):
 
 
 class MyTasks(PitzScript):
-
     """
     List my tasks
     """
@@ -249,7 +240,6 @@ class MyTasks(PitzScript):
 
 
 class PitzEverything(PitzScript):
-
     """
     Everything in the project
     """
@@ -259,7 +249,6 @@ class PitzEverything(PitzScript):
     def handle_p(self, p):
         self.add_grep_option(p)
         self.add_view_options(p)
-
 
     def handle_proj(self, p, options, args, proj, results):
 
@@ -274,18 +263,15 @@ class PitzEverything(PitzScript):
 
 
 class PitzTodo(PitzScript):
-
     """
     List every unstarted and started task in the project.
     """
 
     script_name = 'pitz-todo'
 
-
     def handle_p(self, p):
         self.add_grep_option(p)
         self.add_view_options(p)
-
 
     def handle_proj(self, p, options, args, proj, results):
 
@@ -320,7 +306,6 @@ def print_version():
 
 
 def pid_is_running(pid):
-
     """
     Return pid if pid is still going.
 
@@ -421,7 +406,6 @@ def setup_options():
 
 
 class PitzShow(PitzScript):
-
     """
     Show a custom view of one entity (detailed by default)
     """
@@ -452,7 +436,6 @@ class PitzShow(PitzScript):
 
 
 def pitz_html():
-
     """
     Write out a bunch of HTML files.
     """
@@ -500,8 +483,6 @@ def pitz_html():
         proj.save_entities_to_yaml_files()
 
 
-
-
 def pitz_add_milestone():
 
     p = setup_options()
@@ -523,7 +504,8 @@ def pitz_add_milestone():
     m = Milestone(
         proj,
         title=options.title or raw_input("Milestone title: ").strip(),
-        description=clepy.edit_with_editor('# Milestone description goes here'),
+        description=clepy.edit_with_editor(
+            '# Milestone description goes here'),
         reached=Milestone.choose_from_allowed_values('reached', False),
     )
 
@@ -631,7 +613,8 @@ def pitz_add_component():
     c = Component(
         proj,
         title=options.title or raw_input("Component title: ").strip(),
-        description=clepy.edit_with_editor('# Component description goes here'),
+        description=clepy.edit_with_editor(
+            '# Component description goes here'),
     )
 
     proj.append(c)
@@ -695,7 +678,6 @@ def pitz_destroy():
 
 
 def pitz_me():
-
     """
     Pick a Person or make a new one, then save a me.yaml file.
     """
@@ -766,7 +748,6 @@ def pitz_claim_task():
 
 
 def pitz_assign_task():
-
     """
     Add this task to somebody's to-do list
     """
@@ -794,7 +775,7 @@ def pitz_assign_task():
     t = proj[args[0]]
 
     if len(args) == 2:
-        person  = proj[args[1]]
+        person = proj[args[1]]
 
     else:
         person = Person.choose_from_already_instantiated()
@@ -808,7 +789,6 @@ def pitz_assign_task():
 
 
 class PitzStartTask(PitzScript):
-
     """
     Begin a task
     """
@@ -844,7 +824,6 @@ class PitzStartTask(PitzScript):
 
 
 class RefreshPickle(PitzScript):
-
     """
     Rebuild the pickle file from the yaml files.
     """
@@ -855,9 +834,7 @@ class RefreshPickle(PitzScript):
         proj.to_pickle()
 
 
-
 class PitzFinishTask(PitzStartTask):
-
     """
     Finish a task
     """
@@ -876,9 +853,7 @@ class PitzFinishTask(PitzStartTask):
         t.finish(options.message)
 
 
-
 class PitzAbandonTask(PitzStartTask):
-
     """
     Abandon a task
     """
@@ -890,7 +865,6 @@ class PitzAbandonTask(PitzStartTask):
 
 
 class PitzUnassignTask(PitzStartTask):
-
     """
     Take this task off somebody's list of stuff to do.
     """
@@ -907,7 +881,6 @@ class PitzUnassignTask(PitzStartTask):
 
 
 class PitzPrioritizeAbove(PitzScript):
-
     """
     Put one task in front of another task
     """
@@ -930,7 +903,6 @@ class PitzPrioritizeAbove(PitzScript):
 
 
 class PitzPrioritizeBelow(PitzPrioritizeAbove):
-
     """
     Put one task behind another task
     """
@@ -974,8 +946,9 @@ class PitzAddTask(PitzScript):
 
             title=options.title or raw_input("Task title: ").strip(),
 
-            description='' if options.no_description else clepy.edit_with_editor(
-                '# Task description goes here'),
+            description=(
+                '' if options.no_description
+                else clepy.edit_with_editor('# Task description goes here')),
 
             status=Status(proj, title='unstarted'),
 
@@ -999,7 +972,6 @@ class PitzAddTask(PitzScript):
 
 
 def pitz_webapp():
-
     """
     Returns files asked for.
 
@@ -1139,7 +1111,7 @@ pitz_everything = f(PitzEverything(save_proj=False))
 pitz_todo = f(
     PitzTodo(save_proj=False))
 
-pitz_recent_activity= f(
+pitz_recent_activity = f(
     RecentActivity(
         script_name='pitz-recent-activity',
         doc='10 recent activities'))

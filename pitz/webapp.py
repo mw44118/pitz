@@ -1,10 +1,13 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import mimetypes, logging, uuid
+import mimetypes
+import logging
+import uuid
 
 from pitz import build_filter
 
 log = logging.getLogger('pitz.cmdline')
+
 
 class SimpleWSGIApp(object):
 
@@ -18,7 +21,7 @@ class SimpleWSGIApp(object):
         /entity/d734c3c0-0d25-4d3d-9d25-6ab32d13d65a
 
         Return the file /tmp/a.txt:
-        /attached_files/tmp/a.txt   
+        /attached_files/tmp/a.txt
 
         Views of lots of stuff:
 

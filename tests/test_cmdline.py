@@ -1,13 +1,14 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, sys, unittest
-from nose import SkipTest
+import glob
+import sys
+import os
+import unittest
+
 from nose.tools import raises
+from mock import Mock, patch
 
-from mock import Mock, patch, patch_object
-from IPython.Shell import IPShellEmbed
-
-from pitz.cmdline import *
+from pitz import cmdline
 from pitz.cmdline.pitzsetup import mk_pitzdir
 from pitz.project import Project
 from pitz.entity import Entity
@@ -28,7 +29,6 @@ class TestPitzCmdLine(unittest.TestCase):
         proj.save_entities_to_yaml_files()
         proj.to_yaml_file()
 
-
     def tearDown(self):
 
         for f in glob.glob('/tmp/pitzdir/*'):
@@ -46,24 +46,21 @@ class TestPitzEverything(TestPitzCmdLine):
         # up sys.argv.  Maybe I should mock it.
         sys.argv = ['pitz-everything', '--version']
 
-        pitz_everything()
-
+        cmdline.pitz_everything()
 
     @patch('clepy.send_through_pager')
     def test_nofilter(self, m1):
 
         sys.argv = ['pitz-everything']
 
-        pitz_everything()
-
+        cmdline.pitz_everything()
 
     @patch('clepy.send_through_pager')
     def test_filter(self, m1):
 
         sys.argv = ['pitz-everything', 'type=task']
 
-        pitz_everything()
-
+        cmdline.pitz_everything()
 
     @patch('clepy.send_through_pager')
     @patch('pitz.bag.Bag.grep')
@@ -71,7 +68,7 @@ class TestPitzEverything(TestPitzCmdLine):
 
         sys.argv = ['pitz-everything', '--grep', 'foo']
 
-        pitz_everything()
+        cmdline.pitz_everything()
 
 
 class TestPitzTodo(TestPitzCmdLine):
@@ -83,24 +80,21 @@ class TestPitzTodo(TestPitzCmdLine):
         # up sys.argv.  Maybe I should mock it.
         sys.argv = ['pitz-todo', '--version']
 
-        pitz_todo()
-
+        cmdline.pitz_todo()
 
     @patch('clepy.send_through_pager')
     def test_nofilter(self, m1):
 
         sys.argv = ['pitz-todo']
 
-        pitz_todo()
-
+        cmdline.pitz_todo()
 
     @patch('clepy.send_through_pager')
     def test_filter(self, m1):
 
         sys.argv = ['pitz-todo', 'type=task']
 
-        pitz_todo()
-
+        cmdline.pitz_todo()
 
     @patch('clepy.send_through_pager')
     @patch('pitz.bag.Bag.grep')
@@ -108,7 +102,7 @@ class TestPitzTodo(TestPitzCmdLine):
 
         sys.argv = ['pitz-todo', '--grep', 'foo']
 
-        pitz_todo()
+        cmdline.pitz_todo()
 
 
 class TestPitzShell(TestPitzCmdLine):
@@ -116,14 +110,14 @@ class TestPitzShell(TestPitzCmdLine):
     def test_version(self):
 
         sys.argv = ['pitz-shell', '--version']
-        pitz_shell()
+        cmdline.pitz_shell()
 
     @patch('pitz.cmdline.IPShellEmbed')
     @patch('__builtin__.raw_input')
     def test_shell(self, m1, m2):
 
         sys.argv = ['pitz-shell']
-        pitz_shell()
+        cmdline.pitz_shell()
 
 
 class TestPitzSetup(unittest.TestCase):
@@ -131,7 +125,7 @@ class TestPitzSetup(unittest.TestCase):
     def test_version(self):
 
         sys.argv = ['pitz-setup', '--version']
-        pitz_setup()
+        cmdline.pitz_setup()
 
 
 class TestPitzAdd(TestPitzCmdLine):
@@ -140,8 +134,7 @@ class TestPitzAdd(TestPitzCmdLine):
     def test_version(self):
 
         sys.argv = ['pitz-add', '--version']
-        pitz_add()
-
+        cmdline.pitz_add()
 
     @patch('__builtin__.raw_input')
     @patch('clepy.edit_with_editor')
@@ -152,7 +145,7 @@ class TestPitzAdd(TestPitzCmdLine):
         m1.return_value = None
         m2.return_value = 'bogus description'
 
-        pitz_add()
+        cmdline.pitz_add()
 
         proj = Project.from_pitzdir('/tmp/pitzdir')
 
@@ -164,7 +157,7 @@ class TestPitzHtml(unittest.TestCase):
     def test_version(self):
 
         sys.argv = ['pitz-html', '--version']
-        pitz_html()
+        cmdline.pitz_html()
 
 
 class TestMkPitzdir(unittest.TestCase):
@@ -182,7 +175,6 @@ class TestMkPitzdir(unittest.TestCase):
         if os.path.isdir('/tmp/pitzdir'):
             os.rmdir('/tmp/pitzdir')
 
-
     @patch('__builtin__.raw_input')
     def test_1(self, m):
 
@@ -191,7 +183,6 @@ class TestMkPitzdir(unittest.TestCase):
         mk_pitzdir()
 
         assert os.path.isdir('./pitzdir')
-
 
     def test_2(self):
 
@@ -202,7 +193,6 @@ class TestMkPitzdir(unittest.TestCase):
 
 class TestPitzScript(unittest.TestCase):
 
-
     def test_apply_filter_and_grep_1(self):
         """
         Make sure nothing blows up.
@@ -211,7 +201,7 @@ class TestPitzScript(unittest.TestCase):
         bogus_options = Mock()
         bogus_options.grep = False
 
-        script = PitzScript(title='bogus pitz script')
+        script = cmdline.PitzScript(title='bogus pitz script')
         b = script.apply_filter_and_grep(
             None, bogus_options, [], 'bogus')
 

@@ -1,6 +1,9 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import optparse, os, pwd
+import optparse
+import os
+import pwd
+import textwrap
 
 from pitz.project import Project
 from pitz.entity import Person, Status
@@ -8,7 +11,6 @@ from pitz.cmdline import print_version
 
 
 def mk_pitzdir():
-
     """
     Creates the pitzdir folder, the hooks folder inside that, and copies
     in all the example hook files.
@@ -40,14 +42,14 @@ def mk_pitzdir():
             hooksdir, 'after_saving_entities_to_yaml_files.example'),
         'w')
 
-    f.write(
-        """#! /bin/bash\n"""
-        """\n"""
-        """# Make this file executable to enable it."""
-        """echo "Starting the after_saving_entities_to_yaml_files hook..."\n"""
-        """git add $1/.\n"""
-        """echo "Finished the after_saving_entities_to_yaml_files hook."\n"""
-    )
+    f.write(textwrap.dedent("""\
+        #! /bin/bash
+
+        # Make this file executable to enable it.
+        echo "Starting the after_saving_entities_to_yaml_files hook..."
+        git add $1/.
+        echo "Finished the after_saving_entities_to_yaml_files hook."
+        """))
 
     return pitzdir
 

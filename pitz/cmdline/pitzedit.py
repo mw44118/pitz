@@ -5,9 +5,8 @@ import logging
 from pitz.entity import Entity
 from pitz.cmdline import PitzScript
 
-import clepy
-
 log = logging.getLogger('pitz.cmdline.pitzedit')
+
 
 class PitzEdit(PitzScript):
     """

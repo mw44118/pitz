@@ -7,9 +7,10 @@ from pitz import by_pscore_and_milestone
 from pitz.entity import Entity
 from pitz.project import Project
 
-from mock import Mock, patch
+from mock import Mock
 
 m, t = Mock(), Mock()
+
 
 class TestByPscoreAndMilestone(unittest.TestCase):
 

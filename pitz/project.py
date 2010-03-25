@@ -1,18 +1,21 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, logging, os
+import glob
+import logging
+import os
 import cPickle as pickle
 
+import yaml
 import clepy
 
 from pitz.bag import Bag
-from pitz.entity import *
-from pitz import *
+import pitz
+from pitz import entity
 
 log = logging.getLogger('pitz.project')
 
-class Project(Bag):
 
+class Project(Bag):
     """
     The project keeps references to every entity.
     """
@@ -54,7 +57,6 @@ class Project(Bag):
 
         self.find_me()
 
-
     def append(self, e):
         """
         Do a regular append and some other stuff too.
@@ -64,7 +66,6 @@ class Project(Bag):
 
         # Make sure the entity remembers this project.
         e.project = self
-
 
     def load_entities_from_yaml_files(self, pathname=None):
         """
@@ -103,7 +104,6 @@ class Project(Bag):
         self.rerun_sort_after_append = True
         return self
 
-
     def save_entities_to_yaml_files(self, pathname=None):
         """
         Ask every entity to write itself out to YAML.
@@ -125,15 +125,13 @@ class Project(Bag):
         [e for e in self if e.to_yaml_file(self.pathname)]
 
         if updated_yaml_files:
-            run_hook(
+            pitz.run_hook(
                 self.pitzdir,
                 'after_saving_entities_to_yaml_files')
 
         self.to_pickle()
 
-
         return updated_yaml_files
-
 
     @property
     def yaml(self):
@@ -150,7 +148,6 @@ class Project(Bag):
         )
 
         return yaml.dump(data, default_flow_style=False)
-
 
     def to_yaml_file(self, pathname=None):
         """
@@ -172,7 +169,6 @@ class Project(Bag):
 
         return fp
 
-
     def to_pickle(self, pathname=None):
         """
         Save a pickled version of this project at pathname +
@@ -193,13 +189,11 @@ class Project(Bag):
 
         return pf
 
-
     def setup_defaults(self):
 
         for cls in self.classes.values():
             if hasattr(cls, 'setup_defaults'):
                 cls.setup_defaults(self)
-
 
     @classmethod
     def from_pickle(cls, pf):
@@ -216,10 +210,8 @@ class Project(Bag):
         p._shell_mode = False
         return p
 
-
     @classmethod
     def find_pitzdir(cls, pitzdir=None, walkdown=False):
-
         """
         Return the path to the pitzdir.
 
@@ -273,12 +265,10 @@ class Project(Bag):
                     return os.path.abspath(
                         os.path.join(root, 'pitzdir'))
 
-        raise ProjectNotFound("Started looking at %s" % starting_path)
-
+        raise pitz.ProjectNotFound("Started looking at %s" % starting_path)
 
     @classmethod
     def from_pitzdir(cls, pitzdir):
-
         """
         Return a project (or subclass) instance based on data in
         pitzdir.
@@ -302,9 +292,8 @@ class Project(Bag):
 
             return cls.from_yaml_file(yaml_path)
 
-        raise ProjectNotFound("Couldn't find anything in pitzdir %s"
+        raise pitz.ProjectNotFound("Couldn't find anything in pitzdir %s"
             % pitzdir)
-
 
     @property
     def html_filename(self):
@@ -348,13 +337,13 @@ class Project(Bag):
         p.loaded_from = 'yaml'
         return p
 
-
     @property
     def todo(self):
 
-        b = self(type='task')\
-        .does_not_match_dict(status=Status(title='finished'))\
-        .does_not_match_dict(status=Status(title='abandoned'))
+        b = (
+            self(type='task')
+            .does_not_match_dict(status=entity.Status(title='finished'))
+            .does_not_match_dict(status=entity.Status(title='abandoned')))
 
         b.title = '%s: stuff to do' % self.title
         b._html_filename = 'todo.html'
@@ -367,17 +356,15 @@ class Project(Bag):
         return Bag(
             "Recent activity",
             entities=self(type='activity')[:10],
-            order_method=by_descending_created_time)
-
+            order_method=pitz.by_descending_created_time)
 
     # TODO: replace all these properties with some metaclass tomfoolery.
     @property
     def activities(self):
         b = self(type='activity')
-        b.title="Activities"
-        b.order(by_descending_created_time)
+        b.title = "Activities"
+        b.order(pitz.by_descending_created_time)
         return b
-
 
     @property
     def milestones(self):
@@ -386,13 +373,11 @@ class Project(Bag):
 
         return b
 
-
     @property
     def components(self):
         b = self(type='component')
         b.title = 'Components'
         return b
-
 
     @property
     def tasks(self):
@@ -400,13 +385,11 @@ class Project(Bag):
         b.title = 'Tasks'
         return b
 
-
     @property
     def people(self):
         b = self(type='person')
         b.title = 'People'
         return b
-
 
     @property
     def comments(self):
@@ -414,20 +397,17 @@ class Project(Bag):
         b.title = 'Comments'
         return b
 
-
     @property
     def estimates(self):
         b = self(type='estimate')
         b.title = 'Estimates'
         return b
 
-
     @property
     def statuses(self):
         b = self(type='status')
         b.title = 'Statuses'
         return b
-
 
     @property
     def unscheduled(self):
@@ -443,26 +423,21 @@ class Project(Bag):
         b.title = 'Unscheduled and unfinished tasks'
         return b
 
-
     @property
     def started(self):
         b = self(type='task', status='started')
         b.title = 'Started tasks'
         return b
 
-
     @property
     def me(self):
         return getattr(self, 'current_user', None)
 
-
     def find_me(self):
-
         """
         Return the person currently using this pitz session by reading
         the pitzdir/you.yaml file.
         """
-
 
         # When no people have been created, there's no point.
         if not self.people:

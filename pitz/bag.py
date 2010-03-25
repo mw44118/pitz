@@ -6,15 +6,18 @@ Bags and Bag subclasses.
 
 from __future__ import with_statement
 
-import collections, csv, glob, logging, os, subprocess
-import cPickle as pickle
+import collections
+import csv
+import logging
+import os
+import subprocess
 from uuid import UUID, uuid4
 from urllib import quote_plus
 
-import clepy, jinja2
+import clepy
+import jinja2
 
-from pitz.entity import *
-from pitz import *
+import pitz
 
 log = logging.getLogger('pitz.bag')
 
@@ -27,13 +30,14 @@ else:
 
 
 class Bag(BagSuperclass):
-
     """
     Bags act like lists with a few extra methods.
     """
 
-    def __init__(self, title='', html_filename=None, uuid=None,
-        pathname=None, entities=(), order_method=by_pscore_and_milestone,
+    def __init__(
+        self, title='', html_filename=None, uuid=None,
+        pathname=None, entities=(),
+        order_method=pitz.by_pscore_and_milestone,
         jinja_template=None, shell_mode=False, **kwargs):
 
         self.title = title
@@ -65,7 +69,6 @@ class Bag(BagSuperclass):
 
         self._setup_jinja()
 
-
     def __add__(self, other):
 
         if not isinstance(other, Bag):
@@ -75,25 +78,20 @@ class Bag(BagSuperclass):
 
         return Bag(
             title=title,
-            entities=list(self)+list(other))
-
+            entities=(list(self) + list(other)))
 
     def walk_through_elements(self):
         for el in self._elements:
             yield el
 
-
     def __iter__(self):
         return self.walk_through_elements()
-
 
     def __contains__(self, element):
         return element in self._elements
 
-
     def index(self, value):
         return self._elements.index(value)
-
 
     def _setup_jinja(self):
 
@@ -105,18 +103,16 @@ class Bag(BagSuperclass):
             loader=jinja2.FileSystemLoader(jinja2dir))
 
         self.e.globals = {
-            'clepy':clepy,
-            'isinstance':isinstance,
-            'hasattr':hasattr,
-            'getattr':getattr,
-            'enumerate':enumerate,
-            'len':len,
+            'clepy': clepy,
+            'isinstance': isinstance,
+            'hasattr': hasattr,
+            'getattr': getattr,
+            'enumerate': enumerate,
+            'len': len,
         }
 
         if not hasattr(self, 'jinja_template'):
             self.jinja_template = 'bag.html'
-
-
 
     def to_csv(self, filepath, *columns):
         """
@@ -140,7 +136,6 @@ class Bag(BagSuperclass):
             w.writerow(row)
 
     def __getitem__(self, i):
-
         """
         Allow lookups by index or uuid.
         """
@@ -149,7 +144,6 @@ class Bag(BagSuperclass):
             return self._elements[i]
         except TypeError:
             return self.by_uuid(i)
-
 
     def __delitem__(self, element):
         return self._elements.__delitem__(element)
@@ -173,13 +167,10 @@ class Bag(BagSuperclass):
             jinja_template=self.jinja_template,
             shell_mode=self.shell_mode)
 
-
     def sort(self, cmp=None, key=None, reverse=False):
         return self._elements.sort(cmp, key, reverse)
 
-
     def order(self, order_method=None):
-
         """
         Put all the entities into order based on either the order_method
         parameter or self.order_method.
@@ -195,7 +186,6 @@ class Bag(BagSuperclass):
 
         return self
 
-
     def matches_dict(self, **d):
 
         matches = [e for e in self if e.matches_dict(**d)]
@@ -205,7 +195,6 @@ class Bag(BagSuperclass):
             order_method=self.order_method, load_yaml_files=False,
             jinja_template=self.jinja_template,
             shell_mode=self.shell_mode)
-
 
     def does_not_match_dict(self, **d):
 
@@ -217,14 +206,12 @@ class Bag(BagSuperclass):
             jinja_template=self.jinja_template,
             shell_mode=self.shell_mode)
 
-
     def __call__(self, **d):
         """
         Now can just pass the filters right into the bag.
         """
 
         return self.matches_dict(**d)
-
 
     def by_uuid(self, obj):
         """
@@ -249,10 +236,8 @@ class Bag(BagSuperclass):
             except KeyError:
                 return obj
 
-
     def by_frag(self, frag):
         return self.entities_by_frag[frag]
-
 
     def append(self, e, rerun_sort_after_append=True):
         """
@@ -274,7 +259,6 @@ class Bag(BagSuperclass):
 
         return self
 
-
     def pop(self, index=-1):
 
         e = self._elements.pop(index)
@@ -284,18 +268,15 @@ class Bag(BagSuperclass):
 
         return e
 
-
     @property
     def pitzdir(self):
         return self.pathname
-
 
     @property
     def html_filename(self):
 
         return self._html_filename \
         or "%s.html" % quote_plus(self.title.lower())
-
 
     @property
     def summarized_view(self):
@@ -305,11 +286,9 @@ class Bag(BagSuperclass):
             self.title,
             self.contents)
 
-
     @property
     def shell_mode(self):
         return getattr(self, '_shell_mode', False)
-
 
     @property
     def detailed_view(self):
@@ -323,7 +302,6 @@ class Bag(BagSuperclass):
         return t.render(bag=self, entities=self,
             shell_mode=self.shell_mode,
             entity_view='summarized_view')
-
 
     def custom_view(self, entity_view='summarized_view'):
         """
@@ -340,10 +318,8 @@ class Bag(BagSuperclass):
             shell_mode=self.shell_mode,
             entity_view=entity_view)
 
-
     @property
     def contents(self):
-
         """
         Describe contents and the ordering method.
 
@@ -379,7 +355,6 @@ class Bag(BagSuperclass):
         else:
             return '(empty)'
 
-
     def __str__(self):
         return self.detailed_view
 
@@ -398,14 +373,12 @@ class Bag(BagSuperclass):
             if e.project:
                 e.replace_pointers_with_objects()
 
-
     def replace_objects_with_pointers(self):
         """
         Just like replace_pointers_with_objects, but reversed.
         """
         for e in self:
             e.replace_objects_with_pointers()
-
 
     @property
     def attributes(self):
@@ -422,7 +395,6 @@ class Bag(BagSuperclass):
 
         return sorted(dd.items(), key=lambda t: t[1], reverse=True)
 
-
     def values(self, attr):
         """
         Return a sorted list of tuples like (value, count) for all the
@@ -438,9 +410,7 @@ class Bag(BagSuperclass):
             [(e, c) for e, c in dd.items()],
             key=lambda t: t[1], reverse=True)
 
-
     def grep(self, phrase, ignore_case=False):
-
         """
         Return a new bag, filtering the entities in this bag by the ones
         that match the results of::
@@ -477,7 +447,6 @@ class Bag(BagSuperclass):
                 self.entities_by_yaml_filename[os.path.basename(s.strip())]
                 for s in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout])
 
-
     def to_html(self, filepath):
         """
         Write this bag out as HTML to a file at filepath.
@@ -486,7 +455,6 @@ class Bag(BagSuperclass):
         with open(os.path.join(filepath, self.html_filename), 'w') as f:
             f.write(self.html)
 
-
     def __getstate__(self):
 
         if hasattr(self, 'e'):
@@ -494,12 +462,10 @@ class Bag(BagSuperclass):
 
         return self.__dict__
 
-
     def __setstate__(self, d):
 
         self.__dict__.update(d)
         self._setup_jinja()
-
 
     @property
     def html(self):
@@ -512,9 +478,6 @@ class Bag(BagSuperclass):
         return tmpl.render(title=self.title, bag=self,
             isinstance=isinstance, UUID=UUID)
 
-
     @property
     def length(self):
         return len(self)
-
-

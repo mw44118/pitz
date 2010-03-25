@@ -1,18 +1,24 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
-import glob, os, pickle, unittest, uuid
-
-from pitz.entity import *
-from pitz.project import Bag, Project
-from pitz import NoProject
-import pitz
-
-from nose.tools import raises
-from mock import Mock, patch
+import glob
+import os
+import pickle
+import unittest
+import uuid
 
 import yaml
+from nose.tools import raises
+from mock import patch
+
+from pitz.entity import (
+    Entity, Task, Status, Comment, Component,
+    Person, Estimate, Milestone,
+    )
+from pitz.project import Bag, Project
+from pitz import NoProject
 
 e = None
+
 
 @raises(NoProject)
 def test_no_project():
@@ -59,7 +65,7 @@ def test_replace_pointers_with_objects():
 @patch('yaml.load')
 def test_from_yaml_file_1(m1, m2):
 
-    m2.return_value = {'title':'bogus entity', 'a':1, 'b':2}
+    m2.return_value = {'title': 'bogus entity', 'a': 1, 'b': 2}
 
     global e
 
@@ -91,11 +97,9 @@ def test_to_html_file():
 
 
 def test_self_destruct_1():
-
     """
     Delete an entity.
     """
-
 
     p = Project()
     p.pathname = '/tmp'
@@ -109,7 +113,6 @@ def test_self_destruct_1():
 
 
 def test_self_destruct_2():
-
     """
     Delete an entity with activities and verify activities are gone too.
     """
@@ -151,14 +154,14 @@ def test_self_destruct_2():
 @raises(TypeError)
 def test_allowed_types():
 
-    Entity.allowed_types = {'frotz':Entity}
+    Entity.allowed_types = {'frotz': Entity}
     e1 = Entity(title="e1", frotz='abc')
 
 
 @raises(ValueError)
 def test_allowed_values():
 
-    Entity.allowed_values = {'frotz':[1,2]}
+    Entity.allowed_values = {'frotz': [1, 2]}
     e1 = Entity(title="e1", frotz='abc')
 
     def test_from_yaml_file(self):
@@ -223,7 +226,6 @@ class TestPicklingEntity(unittest.TestCase):
 
 class TestMatchesDict(unittest.TestCase):
 
-
     def setUp(self):
 
         self.p = Project(title="TestMatchesDict")
@@ -237,9 +239,7 @@ class TestMatchesDict(unittest.TestCase):
         self.e = Entity(self.p, title='Clean cat box', creator='Matt',
             pscore=99, tags=['boring', 'chore'], priority=self.important)
 
-
     def test_matches_dict_1(self):
-
         """
         Verify matches_dict handles scalars and list comparisons.
         """
@@ -261,9 +261,7 @@ class TestMatchesDict(unittest.TestCase):
             creator=['Matt', 'Nobody'],
             tags=['fun', 'boring']) == self.e
 
-
     def test_order_independence_of_query(self):
-
         """
         Test two attributes with lists as values.
         """
@@ -274,9 +272,7 @@ class TestMatchesDict(unittest.TestCase):
         assert not self.e.matches_dict(creator=['DO NOT MATCH'],
             title=['Clean cat box'])
 
-
     def test_order_independence_of_subquery(self):
-
         """
         Test two attributes with lists, and one of the lists has a title
         as an element.
@@ -284,12 +280,9 @@ class TestMatchesDict(unittest.TestCase):
 
         assert not self.e.matches_dict(
             priority=[self.important.title], # this one matches
-            tags=['DOES NOT MATCH']          # but not this one.
-        )
-
+            tags=['DOES NOT MATCH'])         # but not this one.
 
     def test_matches_dict_2(self):
-
         """
         Verify we can match entities by using their UUID
         """
@@ -304,7 +297,6 @@ class TestMatchesDict(unittest.TestCase):
 
         assert self.e.matches_dict(priority=frag) == self.e
 
-
     def test_matches_dict_3(self):
         """
         Verify we can match entities by using their title.
@@ -318,7 +310,6 @@ class TestMatchesDict(unittest.TestCase):
             priority=self.important.title) == self.e, \
         "Lookup using title failed"
 
-
     def test_matches_dict_4(self):
         """
         Verify we can match with lists of titles.
@@ -329,7 +320,6 @@ class TestMatchesDict(unittest.TestCase):
         assert self.e.matches_dict(
             priority=[self.important.title]) == self.e, \
         "Lookup using list of titles failed"
-
 
     def test_matches_dict_5(self):
         """
@@ -345,7 +335,6 @@ class TestMatchesDict(unittest.TestCase):
 
         assert temp is None, "temp (%s) should be None!" % temp
 
-
     def test_matches_dict_6(self):
         """
         Verify we can match with lists of frags.
@@ -357,7 +346,6 @@ class TestMatchesDict(unittest.TestCase):
             priority=[self.important.frag]) == self.e, \
         "Lookup using list of frags failed"
 
-
     def test_matches_dict_7(self):
         """
         Test allowed_types['components'] = [Entity]
@@ -368,9 +356,7 @@ class TestMatchesDict(unittest.TestCase):
             tags=['boring', 'chore'], priority=self.important)
 
         assert e.matches_dict(
-            components='bogus component'
-        ) == e, 'OH NOES'
-
+            components='bogus component') == e, 'OH NOES'
 
 
 class TestEntityComparisons(unittest.TestCase):
@@ -387,13 +373,13 @@ class TestEntityComparisons(unittest.TestCase):
         print("e2 pscore is %(pscore)s" % self.e2)
         assert self.e1 < self.e2, cmp(self.e1, self.e2)
 
+
 class TestAppending(unittest.TestCase):
 
     def setUp(self):
 
         self.p = Project(title="TestAppending")
         self.e1 = Entity(title="e1")
-
 
     def test_append(self):
         """
@@ -408,7 +394,6 @@ class TestAppending(unittest.TestCase):
 
 
 class TestHilariousBug(unittest.TestCase):
-
     """
     This bug is hilarious because it took me about 14 hours to
     figure it out.
@@ -448,7 +433,6 @@ class TestHilariousBug(unittest.TestCase):
         for f in glob.glob('/tmp/*.yaml'):
             os.unlink(f)
 
-
     def test_1(self):
         """
         Simple case of hilarious bug.
@@ -468,7 +452,6 @@ class TestHilariousBug(unittest.TestCase):
         assert p.entities_by_uuid[est1_uuid] is est2
         assert est2.uuid in p.entities_by_uuid
         assert p.entities_by_uuid[est2_uuid] is est2
-
 
     def test_2(self):
 
@@ -496,7 +479,6 @@ class TestHilariousBug(unittest.TestCase):
 
 class TestNewMethod(unittest.TestCase):
 
-
     def test1(self):
 
         a = Entity(title="a")
@@ -514,7 +496,6 @@ class TestNewMethod(unittest.TestCase):
 
         assert a.uuid == b.uuid
 
-
     def test2(self):
 
         p = Project()
@@ -525,8 +506,8 @@ class TestNewMethod(unittest.TestCase):
         assert a is a2
         assert a2.project
 
-class TestEntity(unittest.TestCase):
 
+class TestEntity(unittest.TestCase):
 
     def test_detailed_view(self):
 
@@ -537,16 +518,13 @@ class TestEntity(unittest.TestCase):
 
         assert f['title'] in f.detailed_view
 
-
     def test_summarized_view(self):
 
         f = Entity(title='foo', description='fibityfoo')
         assert isinstance(f.summarized_view, str)
         assert f['title'] in f.summarized_view
 
-
     def test_required_fields_1(self):
-
         """
         When loading from yaml, verify we don't overwrite required fields.
         """
@@ -557,9 +535,7 @@ class TestEntity(unittest.TestCase):
 
         assert f2['description'] == 'fibityfoo', f2['description']
 
-
     def test_required_fields_2(self):
-
         """
         Verify entities retrieved from already_instantiated don't
         overwrite required fields.
@@ -569,9 +545,7 @@ class TestEntity(unittest.TestCase):
         f2 = Entity(title='foo')
         assert f2['description'] == 'fibityfoo', f2['description']
 
-
     def test_already_instantiated_1(self):
-
         """
         Verify parameters passed in init apply even when entity has
         already been instantiated once.
@@ -586,9 +560,7 @@ class TestEntity(unittest.TestCase):
 
         assert f1 is f2 is f3
 
-
     def test_created_by_1(self):
-
         """
         Verify nothing breaks when no current user is set.
         """
@@ -597,14 +569,12 @@ class TestEntity(unittest.TestCase):
         e = Entity(p, title="entity")
         assert 'created_by' not in e
 
-
     def test_created_by_2(self):
 
         p = Project()
         p.current_user = Person(p, title='matt')
         e = Entity(p, title="entity")
         assert e['created_by'] == p.current_user
-
 
     def test_new_task(self):
         """
@@ -620,7 +590,6 @@ class TestEntity(unittest.TestCase):
 
         assert t.uuid == t['uuid']
 
-
     def test_missing_attributes_replaced_with_defaults(self):
         """
         Verify we fill in missing attributes with defaults.
@@ -629,14 +598,12 @@ class TestEntity(unittest.TestCase):
         t = Task(title="bogus")
         assert t['status'] == Status(title='unstarted')
 
-
     def test_update_task_status(self):
 
         t1 = Task(title='t1')
 
         t1['status'] = Status(title='unstarted')
         t1['status'] = Status(title='finished')
-
 
     def test_comment_on_task(self):
 
@@ -651,7 +618,6 @@ class TestEntity(unittest.TestCase):
         assert len(comments_on_t1) == 1
         assert comments_on_t1[0]['title'] == 'blah blah'
 
-
     def test_convert_to_allowed_types(self):
         """
         Verify we coerce to an allowed type.
@@ -661,10 +627,7 @@ class TestEntity(unittest.TestCase):
         assert e['pscore'] == 99, 'pscore is %(pscore)s' % e
 
 
-
-
 class TestMisc(unittest.TestCase):
-
 
     def setUp(self):
 
@@ -717,7 +680,6 @@ class TestMisc(unittest.TestCase):
         for m in p.milestones:
             m.summarized_view
 
-
     def test_comments(self):
 
         p = self.p
@@ -731,7 +693,6 @@ class TestMisc(unittest.TestCase):
 
         p = self.p
         p.todo
-
 
     def test_project_tasks(self):
 
@@ -752,7 +713,6 @@ class TestMisc(unittest.TestCase):
 
         p = self.p
         p.unscheduled
-
 
     def test_abandon_task(self):
 
@@ -779,7 +739,6 @@ class TestMisc(unittest.TestCase):
         started_tasks = p(type='task', status='started')
         assert p.started.length == started_tasks.length
 
-
     def test_from_uid(self):
         """
         Use the os.getuid() to look up a person.
@@ -788,9 +747,7 @@ class TestMisc(unittest.TestCase):
         matt = Person(
             title='W. Matthew Wilson')
 
-
     def test_repr_after_replace_objects_with_pointers(self):
-
 
         p = Project(
             entities=[
@@ -805,7 +762,6 @@ class TestMisc(unittest.TestCase):
         assert isinstance(t['status'], uuid.UUID)
 
         t.summarized_view
-
 
     @patch('__builtin__.raw_input')
     def test_choose_many(self, m):
@@ -834,9 +790,7 @@ class TestAllowedTypes(unittest.TestCase):
 
         self.E = E
 
-
     def test_setitem(self):
-
         """
         Test allowed_types dictionary.
         """
@@ -851,7 +805,7 @@ class TestAllowedTypes(unittest.TestCase):
             TypeError,
             e1.__setitem__,
             'related_entities',
-            [1,2,3])
+            [1, 2, 3])
 
         self.assertRaises(
             TypeError,
@@ -860,9 +814,8 @@ class TestAllowedTypes(unittest.TestCase):
             e2)
 
         e1.__setitem__('owner', Entity(title="matt"))
-        e1.__setitem__('junk', [1,2,3])
+        e1.__setitem__('junk', [1, 2, 3])
         e1.__setitem__('pscore', '99')
-
 
     @patch('pitz.entity.Entity.choose_many_from_already_instantiated')
     def test_edit(self, m):
@@ -889,7 +842,7 @@ class TestWhatTheyReallyMean(unittest.TestCase):
         self.e = Entity(proj, title='bogus entity')
 
         self.e.allowed_types = {
-            'foo':Entity, 'i':int, 'foolist':[Entity]}
+            'foo': Entity, 'i': int, 'foolist': [Entity]}
 
     def test_1(self):
         """
@@ -927,7 +880,6 @@ class TestWhatTheyReallyMean(unittest.TestCase):
 
         assert [self.bar] == self.e.what_they_really_mean('foo', ['bar'])
 
-
     def test_7(self):
         """
         Pass a list of entities through.
@@ -937,7 +889,6 @@ class TestWhatTheyReallyMean(unittest.TestCase):
 
         assert [self.bar] == temp, \
         'got %s and wanted %s!' % (temp, [self.bar])
-
 
     def test_list_of_entities_2(self):
         """
@@ -949,7 +900,6 @@ class TestWhatTheyReallyMean(unittest.TestCase):
         assert [self.bar] == temp, \
         'got %s and wanted %s!' % (temp, [self.bar])
 
-
     def test_list_of_entities_3(self):
         """
         Verify I convert a list of titles.
@@ -959,7 +909,6 @@ class TestWhatTheyReallyMean(unittest.TestCase):
 
         assert [self.bar] == temp, \
         'got %s and wanted %s!' % (temp, [self.bar])
-
 
     def test_invalid_title(self):
 
@@ -971,7 +920,6 @@ class TestWhatTheyReallyMean(unittest.TestCase):
 
         assert ['fizzle'] == temp, \
         'got %s, expected %s!' % (temp, ['fizzle'])
-
 
     def test_by_uuid_1(self):
         """
@@ -991,7 +939,6 @@ class TestWhatTheyReallyMean(unittest.TestCase):
         assert [self.bar] == temp, \
         'got %r, expected %s!' % (temp, [self.bar])
 
-
     def test_by_frag(self):
         """
         Convert a UUID fragment into an entity.
@@ -1008,5 +955,3 @@ class TestWhatTheyReallyMean(unittest.TestCase):
 
         assert [self.bar] == \
         self.e.what_they_really_mean('foo', [self.bar.frag])
-
-
