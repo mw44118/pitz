@@ -97,7 +97,7 @@ is you want it for.  Bags make it easy to organize a bunch of entities::
     >>> from pitz.bag import Bag
     >>> b = Bag(title="Stuff")
     >>> b.append(e)
-    <pitz.Bag 'Stuff' (1 entities)>
+    <pitz.Bag 'Stuff' (1 entity entities)>
 
 Viewing them
 ------------
@@ -110,10 +110,10 @@ entities inside::
     Stuff
     =====
 
-    1 entities
-    -----------------
+    (1 entity entities)
+    -------------------
 
-       0: example entity (entity entities)
+    945331: example entity
 
 
 That number 0 can be used to pull out the entity at that position, just
@@ -140,9 +140,9 @@ Now I'll make a new bag that has both of these new entities::
 
     >>> b = Bag('Everything')
     >>> b.append(e1)
-    <pitz.Bag 'Everything' (1 entities)>
+    <pitz.Bag 'Everything' (1 entity entities)>
     >>> b.append(e2)
-    <pitz.Bag 'Everything' (2 entities)>
+    <pitz.Bag 'Everything' (2 entity entities)>
     >>> print(b) #doctest: +SKIP
     Everything
     ==========

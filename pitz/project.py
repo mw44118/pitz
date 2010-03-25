@@ -10,6 +10,8 @@ import clepy
 
 from pitz.bag import Bag
 import pitz
+from pitz import by_pscore_and_milestone
+
 from pitz import entity
 
 log = logging.getLogger('pitz.project')
@@ -23,23 +25,23 @@ class Project(Bag):
     # These are all the classes that I will try to instantiate when
     # reading yaml files.
     classes = dict(
-        activity=Activity,
-        comment=Comment,
-        component=Component,
-        entity=Entity,
-        estimate=Estimate,
-        milestone=Milestone,
-        person=Person,
-        status=Status,
-        tag=Tag,
-        task=Task,
+        activity=entity.Activity,
+        comment=entity.Comment,
+        component=entity.Component,
+        entity=entity.Entity,
+        estimate=entity.Estimate,
+        milestone=entity.Milestone,
+        person=entity.Person,
+        status=entity.Status,
+        tag=entity.Tag,
+        task=entity.Task,
     )
 
     plural_names = dict(
         [(c.plural_name, c) for c in classes.values()])
 
     def __init__(self, title='', uuid=None, pathname=None, entities=(),
-        order_method=by_pscore_and_milestone, load_yaml_files=True,
+        order_method=pitz.by_pscore_and_milestone, load_yaml_files=True,
         **kwargs):
 
         self.rerun_sort_after_append = True

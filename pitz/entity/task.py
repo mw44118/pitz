@@ -183,15 +183,8 @@ class Task(Entity):
         Return some (specified by how_many) activities.
         """
 
-        # Importing this here because the bag module also imports this.
-        # When I fix slicing on bags, this won't be necessary.
-        from pitz.bag import Bag
-
-        recent_activities = self.activities[:how_many]
-        b = Bag(
-            'Recent activity',
-            entities=recent_activities,
-            order_method=self.activities.order_method)
+        b = self.activities[:how_many]
+        b.title = 'Recent activity'
 
         return b
 

@@ -326,8 +326,9 @@ class Bag(BagSuperclass):
         >>> Bag().contents
         '(empty)'
 
+        >>> from pitz.entity import Entity
         >>> Bag().append(Entity(title="blah")).contents
-        '(1 entities)'
+        '(1 entity entities)'
         """
 
         if self:

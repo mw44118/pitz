@@ -18,7 +18,7 @@ import pitz
 from pitz.project import Project
 from pitz.entity import (
     Component, Entity, Estimate, Milestone,
-    Person, Status, Task)
+    Person, Status, Tag, Task)
 from pitz.webapp import SimpleWSGIApp
 
 log = logging.getLogger('pitz.cmdline')

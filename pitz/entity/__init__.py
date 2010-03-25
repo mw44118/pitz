@@ -27,10 +27,8 @@ import clepy
 import pitz
 from pitz import NoProject, by_descending_created_time
 from pitz import by_whatever
-from pitz.entity.person import Person
 
 log = logging.getLogger('pitz.entity')
-
 
 class MC(type):
     """
@@ -1440,6 +1438,7 @@ class Comment(Entity):
         return self.e.get_template(
             'comment_detailed_view.txt').render(locals())
 
+from pitz.entity.person import Person
 
 class Activity(Entity):
     """
@@ -1467,3 +1466,5 @@ class Activity(Entity):
         return '%s (%s)' % (
             self,
             clepy.time_ago(self['created_time']))
+
+from pitz.entity.task import Task
