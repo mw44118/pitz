@@ -1,0 +1,25 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-03-25 16:46:55.952238
+description: "This query will crash::\n\n    $ pitz-todo tags=[CLI, testing]\n\nThe\
+  \ spaces between the tags inside the square brackets don't get parsed\ncorrectly.\
+  \  So right now, that query must be written like this::\n\n    $  pitz-todo tags=[CLI,testing]\n\
+  \nThe command-line should be more forgiving and allow for extraneous white space."
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 281829325005055660957328011118288254534
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Handle CLI queries with spaces
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 36732544890231510454527983071215172442
+yaml_file_saved: 2010-03-25 16:46:55.961145

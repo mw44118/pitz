@@ -1154,9 +1154,14 @@ pitz_people = f(
 pitz_show = f(PitzShow(save_proj=False))
 
 from pitz.cmdline.pitzcomment import PitzComment
-from pitz.cmdline.pitzedit import PitzEdit
-from pitz.cmdline.pitzsetup import pitz_setup
-
 pitz_comment = f(PitzComment())
+
+from pitz.cmdline.pitzedit import PitzEdit
 pitz_edit = f(PitzEdit())
+
+from pitz.cmdline.pitzsetup import pitz_setup
 pitz_setup = f(pitz_setup)
+
+from pitz.cmdline.pitzaddtag import PitzAddTag
+pitz_add_tag = f(PitzAddTag())
+
