@@ -189,6 +189,25 @@ class Task(Entity):
             self.pscore,
         )])
 
+    @property
+    def colorized_one_line_view(self):
+        """
+        Should fit within 72 characters.
+        """
+
+        return clepy.maybe_add_ellipses(
+            "%(frag)s: %(title)s (%(status)s)" % self,
+            )
+
+    @property
+    def one_line_view(self):
+        """
+        Should fit within 72 characters.
+        """
+
+        return clepy.maybe_add_ellipses(
+            "%(frag)s: %(title)s (%(status)s)" % self,
+            )
 
     @property
     def recent_activity(self, how_many=5):

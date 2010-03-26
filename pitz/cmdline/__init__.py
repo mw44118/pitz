@@ -221,12 +221,12 @@ class PitzScript(object):
         os.remove(proj.pidfile)
 
 
-class MyTasks(PitzScript):
+class MyTodo(PitzScript):
     """
-    List my tasks
+    My todo list
     """
 
-    script_name = 'pitz-my-tasks'
+    script_name = 'pitz-my-todo'
 
     def handle_p(self, p):
         self.add_grep_option(p)
@@ -239,10 +239,10 @@ class MyTasks(PitzScript):
             print("Use pitz-me to add yourself to the project.")
             raise SystemExit
 
-        if proj.me.my_tasks:
+        if proj.me.my_todo:
 
             results = self.apply_filter_and_grep(
-                p, options, args, proj.me.my_tasks)
+                p, options, args, proj.me.my_todo)
 
             clepy.send_through_pager(
                 results.custom_view(
@@ -288,17 +288,33 @@ class PitzTodo(PitzScript):
     def handle_p(self, p):
         self.add_grep_option(p)
         self.add_view_options(p)
+        p.add_option('--by-owner', help='Group tasks by owner',
+            action='store_true')
 
     def handle_proj(self, p, options, args, proj, results):
 
-        results = self.apply_filter_and_grep(p, options, args, proj.todo)
-        results.title = proj.todo.title
+        if options.by_owner and options.color:
+            clepy.send_through_pager(
+                proj.colorized_todo_by_person_view,
+                clepy.figure_out_pager())
 
-        clepy.send_through_pager(
-            results.custom_view(
-                options.custom_view or 'summarized_view',
-                options.color),
-            clepy.figure_out_pager())
+        elif options.by_owner:
+            clepy.send_through_pager(
+                proj.todo_by_person_view,
+                clepy.figure_out_pager())
+
+        else:
+
+            results = self.apply_filter_and_grep(
+                p, options, args, proj.todo)
+
+            results.title = proj.todo.title
+
+            clepy.send_through_pager(
+                results.custom_view(
+                    options.custom_view or 'summarized_view',
+                    options.color),
+                clepy.figure_out_pager())
 
 
 class RecentActivity(PitzScript):
@@ -841,7 +857,7 @@ class PitzStartTask(PitzScript):
         t.assign(proj.me)
 
         if options.pause_other_tasks:
-            for tsk in proj.me.my_tasks(status='started'):
+            for tsk in proj.me.my_todo(status='started'):
                 tsk['status'] = Status(title='paused')
 
         try:
@@ -1164,7 +1180,7 @@ pitz_add_task = f(PitzAddTask())
 pitz_add = pitz_add_task
 
 # These scripts just read the data and report on it.
-pitz_my_tasks = f(MyTasks(save_proj=False))
+pitz_my_todo = f(MyTodo(save_proj=False))
 
 pitz_everything = f(PitzEverything(save_proj=False))
 

@@ -30,7 +30,7 @@ class Person(Entity):
         return me_yaml_path
 
     @property
-    def my_tasks(self):
+    def my_todo(self):
 
         if not self.project:
             return
@@ -41,3 +41,8 @@ class Person(Entity):
 
     def __str__(self):
         return getattr(self, 'abbr', self.title)
+
+    @classmethod
+    def setup_defaults(cls, proj):
+        cls(proj, title='no owner', pscore=-100)
+

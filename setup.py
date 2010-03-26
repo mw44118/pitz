@@ -63,7 +63,7 @@ started pitz.""",
     pitz-add-estimate = pitz.cmdline:pitz_add_estimate
     pitz-add-component = pitz.cmdline:pitz_add_component
     pitz-destroy = pitz.cmdline:pitz_destroy
-    pitz-my-tasks = pitz.cmdline:pitz_my_tasks
+    pitz-my-todo = pitz.cmdline:pitz_my_todo
     pitz-me = pitz.cmdline:pitz_me
     pitz-claim-task = pitz.cmdline:pitz_claim_task
     pitz-assign-task = pitz.cmdline:pitz_assign_task
