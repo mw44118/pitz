@@ -16,13 +16,13 @@ __version__ = "1.0.5"
 log = logging.getLogger('pitz')
 
 
-def setup_logging():
+def setup_logging(level=logging.INFO):
     log = logging.getLogger('pitz')
 
-    log.setLevel(logging.DEBUG)
+    log.setLevel(level)
 
     h = logging.StreamHandler()
-    h.setLevel(logging.DEBUG)
+    h.setLevel(level)
 
     f = logging.Formatter("%(levelname)s %(name)s: %(message)s")
     h.setFormatter(f)
@@ -130,6 +130,11 @@ class ProjectNotFound(PitzException):
     Could not find a project.
     """
 
+class OtherTaskStarted(PitzException):
+    """
+    Happens when you start a second task while another one is already
+    started.
+    """
 
 def build_filter(args):
     """

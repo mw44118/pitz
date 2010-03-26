@@ -62,7 +62,7 @@ class Task(Entity):
         return pitz.colors[status_title_colors[self.status.title]]
 
     @property
-    def colorized_title(self):
+    def colorized_title_view(self):
         """
         Return the title string dressed up in a bash color.
         """
@@ -71,6 +71,11 @@ class Task(Entity):
             self.title_color,
             clepy.maybe_add_ellipses(self.title, 59),
             pitz.colors['clear'])
+
+    @property
+    def title_view(self):
+
+        return '%-62s' % clepy.maybe_add_ellipses(self.title, 59)
 
     @property
     def milestone(self):
@@ -90,6 +95,13 @@ class Task(Entity):
         return "%s (%s)""" % (
             super(Task, self).html_summarized_view,
             self['status'].html_summarized_view)
+
+
+    @property
+    def colorized_summarized_view(self):
+
+        return self.e.get_template('colorized_task_summarized_view.txt')\
+        .render(e=self)
 
     @property
     def summarized_view(self):
@@ -164,7 +176,7 @@ class Task(Entity):
         """
         Return a string like:
 
-            owner | status | estimate | milestone
+            owner | status | estimate | milestone | pscore
 
         using this task's values for those attributes
         """
@@ -174,6 +186,7 @@ class Task(Entity):
             self.status,
             self.estimate,
             self.milestone,
+            self.pscore,
         )])
 
 
@@ -216,29 +229,34 @@ class Task(Entity):
             raise ValueError(
                 'You can only abandon unstarted or started tasks.')
 
-    def start(self, comment_title=None, comment_description=None):
+
+    def start(self, ignore_other_started_tasks=False):
+
+        if self.project and self.project.me:
+
+            other_started_tasks = self.project.tasks.matches_dict(
+                owner=self.project.me,
+                status='started')
+
+            if other_started_tasks and not ignore_other_started_tasks:
+
+                raise pitz.OtherTaskStarted(
+                    "You have %d other tasks started; "
+                    "pause those before starting this one."
+                    % other_started_tasks.length)
 
         self['status'] = Status(title='started')
 
-        if comment_title and self.project and self.project.me:
-
-            Comment(self.project, who_said_it=self.project.me,
-                entity=self,
-                title=comment_title,
-                description=comment_description)
-
         return self
 
-    def finish(self, comment_title=None, comment_description=None):
+
+    def pause(self):
+        self['status'] = Status(title='paused')
+
+
+    def finish(self):
 
         self['status'] = Status(title='finished')
-
-        if comment_title and self.project and self.project.me:
-
-            Comment(self.project, who_said_it=self.project.me,
-                title=comment_title,
-                entity=self,
-                description=comment_description)
 
         return self
 

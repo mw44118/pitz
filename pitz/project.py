@@ -244,8 +244,6 @@ class Project(Bag):
         # Walk up the file system.
         starting_path = os.getcwd()
 
-        log.debug("Starting the walkup at %s" % starting_path)
-
         # Walk up...
         for dir in clepy.walkup(starting_path):
 
@@ -257,9 +255,6 @@ class Project(Bag):
 
         # Walk down...
         if walkdown:
-
-
-            log.debug("Starting the walkdown...")
 
             for root, dirs, files in os.walk(starting_path):
 
@@ -317,9 +312,6 @@ class Project(Bag):
         # Read the section on __import__ at
         # http://docs.python.org/library/functions.html
         # to make sense out of this.
-
-        log.debug("yamldata['module'] is %(module)s" % yamldata)
-        log.debug("yamldata['classname'] is %(classname)s" % yamldata)
 
         m = __import__(yamldata['module'],
             fromlist=yamldata['classname'])

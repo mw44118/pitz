@@ -92,8 +92,8 @@ class PitzScript(object):
 
     def apply_filter_and_grep(self, p, options, args, b):
         """
-        Return a new bag after filtering and using grep on the bag b
-        passed in.
+        Return a new bag after filtering, grepping, and limiting on the
+        bag b passed in.
         """
 
         filter = pitz.build_filter(args)
@@ -105,6 +105,9 @@ class PitzScript(object):
 
         if options.grep:
             results = results.grep(options.grep)
+
+        if options.limit:
+            results = results[:options.limit]
 
         return results
 
@@ -137,6 +140,9 @@ class PitzScript(object):
         pitzdir = Project.find_pitzdir(options.pitzdir)
         pidfile = write_pidfile_or_die(pitzdir)
         proj = Project.from_pitzdir(pitzdir)
+
+        log.debug("Loaded project from %s" % proj.loaded_from)
+
         proj.pidfile = pidfile
         proj.find_me()
 
@@ -161,6 +167,9 @@ class PitzScript(object):
 
     def add_view_options(self, p):
 
+        p.add_option('-c', '--color', help='Colorize output',
+            action='store_true')
+
         p.add_option('--one-line-view', help='single line view',
             dest='custom_view', action='store_const', const='one_line_view')
 
@@ -179,9 +188,14 @@ class PitzScript(object):
         p.add_option('--frag-view', help='fragment view',
             dest='custom_view', action='store_const', const='frag')
 
+        p.add_option('-n', '--limit', help='limit to N results',
+            default=0, action='store', type='int')
+
         return p
 
     def __call__(self):
+
+        pitz.setup_logging(level=logging.INFO)
 
         with clepy.spinning_distraction():
 
@@ -230,8 +244,10 @@ class MyTasks(PitzScript):
             results = self.apply_filter_and_grep(
                 p, options, args, proj.me.my_tasks)
 
-            clepy.send_through_pager(results.custom_view(
-                options.custom_view or 'summarized_view'),
+            clepy.send_through_pager(
+                results.custom_view(
+                    options.custom_view or 'summarized_view',
+                    options.color),
                 clepy.figure_out_pager())
 
         else:
@@ -258,7 +274,7 @@ class PitzEverything(PitzScript):
             results.title = "%s: %s" % (proj.title, self.title)
 
         clepy.send_through_pager(results.custom_view(
-            options.custom_view or 'summarized_view'),
+                options.custom_view or 'summarized_view', options.color),
             clepy.figure_out_pager())
 
 
@@ -278,8 +294,10 @@ class PitzTodo(PitzScript):
         results = self.apply_filter_and_grep(p, options, args, proj.todo)
         results.title = proj.todo.title
 
-        clepy.send_through_pager(results.custom_view(
-            options.custom_view or 'summarized_view'),
+        clepy.send_through_pager(
+            results.custom_view(
+                options.custom_view or 'summarized_view',
+                options.color),
             clepy.figure_out_pager())
 
 
@@ -428,7 +446,9 @@ class PitzShow(PitzScript):
         if isinstance(e, Entity):
 
             clepy.send_through_pager(
-                e.custom_view(options.custom_view),
+                e.custom_view(
+                    options.custom_view or 'detailed_view',
+                    color=options.color),
                 clepy.figure_out_pager())
 
         else:
@@ -798,8 +818,11 @@ class PitzStartTask(PitzScript):
     def handle_p(self, p):
         p.set_usage("%prog task")
 
-        p.add_option('-m', '--message',
-            help="Store a comment")
+        p.add_option('-z',  '--pause-other-tasks',
+            action='store_true')
+
+        p.add_option('-i', '--ignore-other-started-tasks',
+            action='store_true')
 
     def handle_options_and_args(self, p, options, args):
 
@@ -812,15 +835,21 @@ class PitzStartTask(PitzScript):
         if not proj.me:
             print("Sorry, I don't know who you are.")
             print("Use pitz-me to add yourself to the project.")
-            sys.exit()
+            raise SystemExit
 
         t = proj[args[0]]
         t.assign(proj.me)
 
+        if options.pause_other_tasks:
+            for tsk in proj.me.my_tasks(status='started'):
+                tsk['status'] = Status(title='paused')
+
         try:
-            t.start(options.message)
-        except ValueError, ex:
+            t.start(options.ignore_other_started_tasks)
+
+        except pitz.OtherTaskStarted, ex:
             print(ex.message)
+            raise SystemExit
 
 
 class RefreshPickle(PitzScript):
@@ -832,6 +861,36 @@ class RefreshPickle(PitzScript):
 
     def hande_project(self, p, options, args, proj, results):
         proj.to_pickle()
+
+
+class PitzPauseTask(PitzScript):
+
+    """
+    Pause a task
+    """
+
+    script_name = 'pitz-pause-task'
+
+    def handle_p(self, p):
+        p.set_usage("%prog task")
+
+    def handle_options_and_args(self, p, options, args):
+
+        if not args:
+            p.print_usage()
+            raise SystemExit
+
+
+    def handle_proj(self, p, options, args, proj, results):
+
+        t = proj[args[0]]
+
+        if isinstance(t, Task):
+            t.pause()
+
+        else:
+            print("Sorry, couldn't find %s" % args[0])
+            raise SystemExit
 
 
 class PitzFinishTask(PitzStartTask):
@@ -850,7 +909,7 @@ class PitzFinishTask(PitzStartTask):
 
         t = proj[args[0]]
         t.assign(proj.me)
-        t.finish(options.message)
+        t.finish()
 
 
 class PitzAbandonTask(PitzStartTask):
@@ -861,7 +920,7 @@ class PitzAbandonTask(PitzStartTask):
     script_name = 'pitz-abandon-task'
 
     def handle_proj(self, p, options, args, proj, results):
-        proj[args[0]].abandon(options.message)
+        proj[args[0]].abandon()
 
 
 class PitzUnassignTask(PitzStartTask):
@@ -1095,6 +1154,7 @@ def pitz_frags():
 # These scripts change stuff.
 pitz_start_task = pitz_help.add_to_list_of_scripts(PitzStartTask())
 pitz_finish_task = f(PitzFinishTask())
+pitz_pause_task = f(PitzPauseTask())
 pitz_abandon_task = f(PitzAbandonTask())
 pitz_unassign_task = f(PitzUnassignTask())
 pitz_prioritize_above = f(PitzPrioritizeAbove())

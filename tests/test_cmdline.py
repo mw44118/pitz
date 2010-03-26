@@ -200,6 +200,7 @@ class TestPitzScript(unittest.TestCase):
 
         bogus_options = Mock()
         bogus_options.grep = False
+        bogus_options.limit = 0
 
         script = cmdline.PitzScript(title='bogus pitz script')
         b = script.apply_filter_and_grep(

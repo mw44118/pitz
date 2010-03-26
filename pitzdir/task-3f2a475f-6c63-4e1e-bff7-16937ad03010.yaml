@@ -1,0 +1,31 @@
+components: []
+created_by: &id001 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2010-03-26 09:01:59.127479
+description: 'The output for pitz-recent-activity isn''t useful.  It is showing old
+
+  stuff.  Not sure what is going wrong.
+
+
+  I think this might be a good opportunity to write a test for a CLI
+
+  script.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: 2010-03-26 09:34:01.542998
+owner: *id001
+pscore: -1
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Write tests for pitz-recent-activity
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 83960887813809894505717948642359259152
+yaml_file_saved: 2010-03-26 09:34:01.568207

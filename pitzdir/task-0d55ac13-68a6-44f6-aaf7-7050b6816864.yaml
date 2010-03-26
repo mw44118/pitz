@@ -1,15 +1,15 @@
-components:
-- !!python/object:uuid.UUID
-  int: 4957623306508968194182393857812906256
+components: []
 created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
-created_time: 2010-03-05 11:18:40.943524
-description: It should set the task's status to paused.
+created_time: 2010-03-26 09:29:46.444406
+description: 'The pitz-my-tasks --color script colorizes the task summary views, but
+
+  not the title.'
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-25 22:20:25.403468
+modified_time: 2010-03-26 10:00:34.229526
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
@@ -17,8 +17,8 @@ status: !!python/object:uuid.UUID
 tags:
 - !!python/object:uuid.UUID
   int: 327280339527671628486558366906481688438
-title: Write a pitz-pause-task script
+title: Colorize bag title in pitz-my-tasks --color
 type: task
 uuid: !!python/object:uuid.UUID
-  int: 9045745618470500393889574583298967574
-yaml_file_saved: 2010-03-25 22:20:25.414138
+  int: 17724799290353730933125148832644032612
+yaml_file_saved: 2010-03-26 10:00:34.255461

@@ -89,6 +89,7 @@ started pitz.""",
     pitz-comment = pitz.cmdline:pitz_comment
     pitz-tags = pitz.cmdline:pitz_tags
     pitz-add-tag = pitz.cmdline:pitz_add_tag
+    pitz-pause-task = pitz.cmdline:pitz_pause_task
 
     """,
 

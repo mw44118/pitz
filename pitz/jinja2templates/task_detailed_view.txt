@@ -1,5 +1,5 @@
-{{ e.colorized_title }}
-{{ e.title_color }}{% for equalsign in e.title -%}={% endfor %}{{ colors['clear'] }}
+{{ e.title }}
+{% for equalsign in e.title -%}={% endfor %}
 {{ e.interesting_attributes_view }}
 {{ e.tags_view }}
 

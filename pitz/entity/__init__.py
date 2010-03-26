@@ -300,18 +300,22 @@ class Entity(dict):
         """
         return self.uuid.int
 
-    def custom_view(self, name_of_view=None, default_view='detailed_view'):
+    def custom_view(self, name_of_view=None,
+        default_view='detailed_view', color=False):
         """
         Just a little nicer than writing all that getattr(...) stuff.
         """
-
-        log.debug("Inside custom_view with name_of_view %s" % name_of_view)
 
         if name_of_view is None or not hasattr(self, name_of_view):
             return getattr(self, default_view)
 
         else:
+
+            if color and hasattr(self, 'colorized_' + name_of_view):
+                name_of_view = 'colorized_' + name_of_view
+
             return getattr(self, name_of_view)
+
 
     def maybe_update_modified_time(self, attr):
 
@@ -764,6 +768,7 @@ class Entity(dict):
             "%(frag)s: %(title)s" % self,
             )
 
+
     @property
     def summarized_view(self):
         """
@@ -771,6 +776,7 @@ class Entity(dict):
         """
 
         return "%(frag)s: %(title)s" % self
+
 
     @property
     def abbr(self):
@@ -1054,8 +1060,6 @@ class Entity(dict):
         proj.pop(i)
 
         files_deleted = []
-
-        log.debug('destroying %r' % self)
 
         # Delete any yaml file.
         if proj.pathname and os.path.isdir(proj.pathname):

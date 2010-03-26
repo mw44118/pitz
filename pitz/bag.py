@@ -109,6 +109,7 @@ class Bag(BagSuperclass):
             'getattr': getattr,
             'enumerate': enumerate,
             'len': len,
+            'colors':pitz.colors,
         }
 
         if not hasattr(self, 'jinja_template'):
@@ -290,6 +291,24 @@ class Bag(BagSuperclass):
     def shell_mode(self):
         return getattr(self, '_shell_mode', False)
 
+
+    @property
+    def colorized_detailed_view(self):
+
+        self.order()
+
+        self._setup_jinja()
+
+        t = self.e.get_template('colorized_bag_detailed_view.txt')
+
+        return t.render(bag=self,
+            color=True,
+            entities=self,
+            shell_mode=self.shell_mode,
+            entity_view='summarized_view')
+
+
+
     @property
     def detailed_view(self):
 
@@ -300,10 +319,12 @@ class Bag(BagSuperclass):
         t = self.e.get_template('bag_detailed_view.txt')
 
         return t.render(bag=self, entities=self,
+            color=False,
             shell_mode=self.shell_mode,
             entity_view='summarized_view')
 
-    def custom_view(self, entity_view='summarized_view'):
+
+    def custom_view(self, entity_view='summarized_view', color=False):
         """
         Print the entities using the entity view given.
         """
@@ -312,11 +333,19 @@ class Bag(BagSuperclass):
 
         self._setup_jinja()
 
-        t = self.e.get_template('bag_detailed_view.txt')
+        if color:
+            t = self.e.get_template('colorized_bag_detailed_view.txt')
 
-        return t.render(bag=self, entities=self,
+        else:
+            t = self.e.get_template('bag_detailed_view.txt')
+
+        return t.render(
+            bag=self,
+            entities=self,
             shell_mode=self.shell_mode,
+            color=color,
             entity_view=entity_view)
+
 
     @property
     def contents(self):

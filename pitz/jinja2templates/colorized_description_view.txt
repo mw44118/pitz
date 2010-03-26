@@ -1,6 +1,6 @@
 {% if e.description -%}
-{{ colors['cyan'] }}Description
------------{{ colors['clear'] }}
+{{ colors['cyan'] }}Description{{ colors['clear'] }}
+{{ colors['cyan'] }}-----------{{ colors['clear'] }}
 
 {{e.description}}
 {% else %}no description{% endif %}
