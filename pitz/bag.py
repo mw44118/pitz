@@ -16,6 +16,7 @@ from urllib import quote_plus
 
 import clepy
 import jinja2
+import tempita
 
 import pitz
 
@@ -110,6 +111,7 @@ class Bag(BagSuperclass):
             'enumerate': enumerate,
             'len': len,
             'colors':pitz.colors,
+            'looper':tempita.looper,
         }
 
         if not hasattr(self, 'jinja_template'):
@@ -511,3 +513,22 @@ class Bag(BagSuperclass):
     @property
     def length(self):
         return len(self)
+
+    @property
+    def colorized_by_owner_view(self):
+
+        b = self.order(pitz.by_whatever('xxx', 'owner', 'milestone',
+            'status', 'pscore'))
+
+        return self.e.get_template(
+            'colorized_by_owner_view.txt').render(
+                bag=b)
+
+    @property
+    def by_owner_view(self):
+
+        b = self.order(pitz.by_whatever('xxx', 'owner', 'milestone',
+            'status', 'pscore'))
+
+        return self.e.get_template(
+            'by_owner_view.txt').render(bag=b)

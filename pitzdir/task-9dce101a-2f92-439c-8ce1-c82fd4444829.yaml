@@ -14,15 +14,18 @@ description: 'Right now, the log level is set explicitly in pitz/__init__.py.
   '
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-10-03 20:02:54.700578
+html_file_saved: 2009-10-03 20:02:54.700578
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: *id001
+modified_time: 2010-03-26 22:40:02.185424
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
+tags: []
 title: Allow control of log level from command-line
 type: task
 uuid: !!python/object:uuid.UUID
   int: 209758735084298468252639548293307975721
-yaml_file_saved: 2009-10-03 20:03:05.389616
+yaml_file_saved: 2010-03-27 12:23:16.610484

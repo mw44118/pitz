@@ -1,0 +1,10 @@
+{{ colors['white'] }}{{ bag.title }}{{ colors['clear'] }}
+{{ colors['white'] }}{% for letter in bag.title %}={% endfor %}{{ colors['clear'] }}
+{% for x, t in looper(bag) -%}
+{% if x.first or x.previous and t['owner'] != x.previous['owner'] %}
+{{ colors['cyan'] }}{{ t['owner'].title }}{{ colors['clear'] }}
+{{ colors['cyan'] }}{% for letter in t['owner'].title %}-{% endfor %}{{ colors['clear'] }}
+
+{% endif -%}
+{{ t.one_line_view }}
+{% endfor %}

@@ -1,0 +1,10 @@
+{{ bag.title }}
+{% for letter in bag.title %}={% endfor %}
+{% for x, t in looper(bag) -%}
+{% if x.first or x.previous and t['owner'] != x.previous['owner'] %}
+{{ t['owner'].title }}
+{% for letter in t['owner'].title %}-{% endfor %}
+
+{% endif -%}
+{{ t.one_line_view }}
+{% endfor %}

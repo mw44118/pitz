@@ -16,9 +16,11 @@ import clepy
 
 import pitz
 from pitz.project import Project
+
 from pitz.entity import (
     Component, Entity, Estimate, Milestone,
     Person, Status, Tag, Task)
+
 from pitz.webapp import SimpleWSGIApp
 
 log = logging.getLogger('pitz.cmdline')
@@ -103,21 +105,23 @@ class PitzScript(object):
         if filter:
             results = results(**filter)
 
-        if options.grep:
+        if getattr(options, 'grep', False):
             results = results.grep(options.grep)
 
-        if options.limit:
+        if getattr(options, 'limit', False):
             results = results[:options.limit]
 
         return results
 
     def setup_p(self):
-        p = optparse.OptionParser()
+        p = optparse.OptionParser(version='pitz %s' % pitz.__version__)
+
+        p.add_option('-l', '--log-level',
+            help='(DEBUG, INFO, WARNING, ERROR, CRITICAL)',
+            default='INFO',
+            choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
 
         p.add_option('-p', '--pitzdir')
-
-        p.add_option('--version', action='store_true',
-            help='show pitz version')
 
         if self.__doc__:
             p.epilog = self.__doc__.lstrip()
@@ -126,14 +130,7 @@ class PitzScript(object):
 
     def setup_options_and_args(self, p):
 
-        options, args = p.parse_args()
-
-        if options.version:
-            from pitz import __version__
-            print(__version__)
-            raise SystemExit
-
-        return options, args
+        return p.parse_args()
 
     def setup_proj(self, p, options, args):
 
@@ -148,15 +145,6 @@ class PitzScript(object):
 
         return proj
 
-    def setup_results(self, p, options, args, proj):
-
-        if self.filter:
-            results = proj(**self.filter)
-
-        else:
-            results = proj
-
-        return results
 
     def add_grep_option(self, p):
 
@@ -195,8 +183,6 @@ class PitzScript(object):
 
     def __call__(self):
 
-        pitz.setup_logging(level=logging.INFO)
-
         with clepy.spinning_distraction():
 
             p = self.setup_p()
@@ -206,11 +192,13 @@ class PitzScript(object):
 
             options, args = self.setup_options_and_args(p)
 
+            pitz.setup_logging(getattr(logging, options.log_level))
+
             # Call the second specialized function.
             self.handle_options_and_args(p, options, args)
 
             proj = self.setup_proj(p, options, args)
-            results = self.setup_results(p, options, args, proj)
+            results = self.apply_filter_and_grep(p, options, args, proj)
 
         # Third special function.
         self.handle_proj(p, options, args, proj, results)
@@ -293,22 +281,24 @@ class PitzTodo(PitzScript):
 
     def handle_proj(self, p, options, args, proj, results):
 
-        if options.by_owner and options.color:
-            clepy.send_through_pager(
-                proj.colorized_todo_by_person_view,
-                clepy.figure_out_pager())
+        if options.by_owner:
 
-        elif options.by_owner:
-            clepy.send_through_pager(
-                proj.todo_by_person_view,
-                clepy.figure_out_pager())
+            results = self.apply_filter_and_grep(p, options, args,
+                proj.todo)
+
+            if options.color:
+
+                clepy.send_through_pager(
+                    results.colorized_by_owner_view,
+                    clepy.figure_out_pager())
+
+            else:
+
+                clepy.send_through_pager(
+                    results.by_owner_view,
+                    clepy.figure_out_pager())
 
         else:
-
-            results = self.apply_filter_and_grep(
-                p, options, args, proj.todo)
-
-            results.title = proj.todo.title
 
             clepy.send_through_pager(
                 results.custom_view(

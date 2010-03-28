@@ -448,21 +448,3 @@ class Project(Bag):
 
         self.current_user = self[yaml.load(open(me_yaml))]
         return self.current_user
-
-
-    @property
-    def colorized_todo_by_person_view(self):
-
-        return self.e.get_template(
-            'colorized_by_person_view.txt').render(
-                people=self.people,
-                proj=self)
-
-    @property
-    def todo_by_person_view(self):
-
-        return self.e.get_template(
-            'by_person_view.txt').render(
-                people=self.people,
-                proj=self)
-

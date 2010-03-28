@@ -13,15 +13,18 @@ description: "Right now, the Entity class has these required fields::\n\n    cla
   \ this."
 estimate: !!python/object:uuid.UUID
   int: 53593374283076976629647435265038831042
-html_file_saved: &id001 2009-10-03 20:13:05.920917
+html_file_saved: 2009-10-03 20:13:05.920917
 milestone: !!python/object:uuid.UUID
   int: 246357804921662755488325692659396046179
-modified_time: *id001
+modified_time: 2010-03-26 22:40:02.093243
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
+tags: []
 title: Remove need to repeat everything in required_fields attribute
 type: task
 uuid: !!python/object:uuid.UUID
   int: 153798665731430798919121964624589915918
-yaml_file_saved: 2009-10-03 20:13:06.443485
+yaml_file_saved: 2010-03-27 12:23:16.465133
