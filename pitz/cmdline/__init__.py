@@ -87,7 +87,7 @@ class PitzScript(object):
         they got all the right args and options.
         """
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
         """
         Do the interesting stuff of the script in here.
         """
@@ -198,10 +198,9 @@ class PitzScript(object):
             self.handle_options_and_args(p, options, args)
 
             proj = self.setup_proj(p, options, args)
-            results = self.apply_filter_and_grep(p, options, args, proj)
 
         # Third special function.
-        self.handle_proj(p, options, args, proj, results)
+        self.handle_proj(p, options, args, proj)
 
         if self.save_proj:
             proj.save_entities_to_yaml_files()
@@ -220,7 +219,7 @@ class MyTodo(PitzScript):
         self.add_grep_option(p)
         self.add_view_options(p)
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         if not proj.me:
             print("Sorry, I don't know who you are.")
@@ -254,9 +253,9 @@ class PitzEverything(PitzScript):
         self.add_grep_option(p)
         self.add_view_options(p)
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
-        results = self.apply_filter_and_grep(p, options, args, results)
+        results = self.apply_filter_and_grep(p, options, args, proj)
 
         if self.title:
             results.title = "%s: %s" % (proj.title, self.title)
@@ -279,24 +278,16 @@ class PitzTodo(PitzScript):
         p.add_option('--by-owner', help='Group tasks by owner',
             action='store_true')
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
+
+        results = self.apply_filter_and_grep(p, options, args, proj.todo)
 
         if options.by_owner:
 
-            results = self.apply_filter_and_grep(p, options, args,
-                proj.todo)
-
-            if options.color:
-
-                clepy.send_through_pager(
-                    results.colorized_by_owner_view,
-                    clepy.figure_out_pager())
-
-            else:
-
-                clepy.send_through_pager(
-                    results.by_owner_view,
-                    clepy.figure_out_pager())
+            clepy.send_through_pager(
+                results.colorized_by_owner_view if options.color
+                else results.by_owner_view,
+                clepy.figure_out_pager())
 
         else:
 
@@ -313,7 +304,7 @@ class RecentActivity(PitzScript):
         self.add_grep_option(p)
         self.add_view_options(p)
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         results = self.apply_filter_and_grep(
             p, options, args, proj.recent_activity)
@@ -445,7 +436,7 @@ class PitzShow(PitzScript):
             p.print_usage()
             raise SystemExit
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         e = proj[args[0]]
 
@@ -836,7 +827,7 @@ class PitzStartTask(PitzScript):
             p.print_usage()
             raise SystemExit
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         if not proj.me:
             print("Sorry, I don't know who you are.")
@@ -887,7 +878,7 @@ class PitzPauseTask(PitzScript):
             raise SystemExit
 
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         t = proj[args[0]]
 
@@ -906,7 +897,7 @@ class PitzFinishTask(PitzStartTask):
 
     script_name = 'pitz-finish-task'
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         if not proj.me:
             print("Sorry, I don't know who you are.")
@@ -925,7 +916,7 @@ class PitzAbandonTask(PitzStartTask):
 
     script_name = 'pitz-abandon-task'
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
         proj[args[0]].abandon()
 
 
@@ -936,7 +927,7 @@ class PitzUnassignTask(PitzStartTask):
 
     script_name = 'pitz-unassign-task'
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
         t = proj[args[0]]
         if 'owner' in t:
             t.pop('owner')
@@ -947,7 +938,7 @@ class PitzUnassignTask(PitzStartTask):
 
 class PitzPrioritizeAbove(PitzScript):
     """
-    Put one task in front of another task
+    Set frag1['pscore'] to frag2['pscore'] + 1
     """
 
     script_name = 'pitz-prioritize-above'
@@ -958,7 +949,7 @@ class PitzPrioritizeAbove(PitzScript):
         p.add_option('-m', '--message',
             help="Store a comment")
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
         t1 = proj[args[0]]
         t2 = proj[args[1]]
         t1.prioritize_above(t2)
@@ -969,12 +960,12 @@ class PitzPrioritizeAbove(PitzScript):
 
 class PitzPrioritizeBelow(PitzPrioritizeAbove):
     """
-    Put one task behind another task
+    Set t1['pscore'] to t2['pscore'] - 1
     """
 
     script_name = 'pitz-prioritize-below'
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
         t1 = proj[args[0]]
         t2 = proj[args[1]]
         t1.prioritize_below(t2)
@@ -998,7 +989,7 @@ class PitzAddTask(PitzScript):
             action='store_true',
             help="Don't prompt for milestone, estimate, owner, or components")
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         default_milestone = Milestone(proj, title='unscheduled')
         default_estimate = Estimate(proj, title='not estimated')
