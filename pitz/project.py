@@ -346,10 +346,7 @@ class Project(Bag):
 
     @property
     def recent_activity(self):
-
-        return Bag(
-            "Recent activity",
-            entities=self(type='activity')[:10],
+        return Bag("Recent activity", entities=self.activities[:10],
             order_method=pitz.by_descending_created_time)
 
     # TODO: replace all these properties with some metaclass tomfoolery.

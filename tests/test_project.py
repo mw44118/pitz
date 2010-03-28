@@ -366,7 +366,8 @@ class TestProperties(unittest.TestCase):
     def test_recent_activity(self):
 
         assert self.p.recent_activity.order_method \
-        == pitz.by_descending_created_time
+        == pitz.by_descending_created_time, \
+        self.p.recent_activity.order_method
 
     def test_activities(self):
 

@@ -257,6 +257,9 @@ class PitzEverything(PitzScript):
 
         results = self.apply_filter_and_grep(p, options, args, proj)
 
+        if self.filter:
+            results = results(**self.filter)
+
         if options.limit:
             results = results[:options.limit]
 
@@ -264,7 +267,8 @@ class PitzEverything(PitzScript):
             results.title = "%s: %s" % (proj.title, self.title)
 
         clepy.send_through_pager(results.custom_view(
-                options.custom_view or 'summarized_view', options.color),
+                options.custom_view or 'summarized_view',
+                options.color),
             clepy.figure_out_pager())
 
 
