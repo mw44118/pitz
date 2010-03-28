@@ -10,7 +10,7 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-28 15:03:28.465053
+modified_time: 2010-03-28 16:50:06.786913
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
@@ -18,8 +18,8 @@ status: !!python/object:uuid.UUID
 tags:
 - !!python/object:uuid.UUID
   int: 287487067718242131705470400321668421628
-title: Handle /usr/bin/vim set 'mate -w'
+title: Handle $EDITOR settings including spaces
 type: task
 uuid: !!python/object:uuid.UUID
   int: 171557631710738387000053235115672559161
-yaml_file_saved: 2010-03-28 15:03:28.537596
+yaml_file_saved: 2010-03-28 16:50:06.809676
