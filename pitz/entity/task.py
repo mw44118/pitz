@@ -195,9 +195,8 @@ class Task(Entity):
         Should fit within 72 characters.
         """
 
-        return clepy.maybe_add_ellipses(
-            "%(frag)s: %(title)s (%(status)s)" % self,
-            )
+        return '%s %s' % (self.colorized_title_view, self.colorized_frag)
+
 
     @property
     def one_line_view(self):
@@ -205,9 +204,7 @@ class Task(Entity):
         Should fit within 72 characters.
         """
 
-        return clepy.maybe_add_ellipses(
-            "%(frag)s: %(title)s (%(status)s)" % self,
-            )
+        return '%s %s' % (self.title_view, self.frag)
 
     @property
     def recent_activity(self, how_many=5):

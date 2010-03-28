@@ -517,18 +517,12 @@ class Bag(BagSuperclass):
     @property
     def colorized_by_owner_view(self):
 
-        b = self.order(pitz.by_whatever('xxx', 'owner', 'milestone',
-            'status', 'pscore'))
-
         return self.e.get_template(
             'colorized_by_owner_view.txt').render(
-                bag=b)
+                bag=self)
 
     @property
     def by_owner_view(self):
 
-        b = self.order(pitz.by_whatever('xxx', 'owner', 'milestone',
-            'status', 'pscore'))
-
         return self.e.get_template(
-            'by_owner_view.txt').render(bag=b)
+            'by_owner_view.txt').render(bag=self)

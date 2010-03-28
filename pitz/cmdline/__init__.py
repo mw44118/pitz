@@ -94,8 +94,8 @@ class PitzScript(object):
 
     def apply_filter_and_grep(self, p, options, args, b):
         """
-        Return a new bag after filtering, grepping, and limiting on the
-        bag b passed in.
+        Return a new bag after filtering and grepping the bag b passed
+        in.
         """
 
         filter = pitz.build_filter(args)
@@ -107,9 +107,6 @@ class PitzScript(object):
 
         if getattr(options, 'grep', False):
             results = results.grep(options.grep)
-
-        if getattr(options, 'limit', False):
-            results = results[:options.limit]
 
         return results
 
@@ -231,6 +228,9 @@ class MyTodo(PitzScript):
             results = self.apply_filter_and_grep(
                 p, options, args, proj.me.my_todo)
 
+            if options.limit:
+                results = results[:options.limit]
+
             clepy.send_through_pager(
                 results.custom_view(
                     options.custom_view or 'summarized_view',
@@ -256,6 +256,9 @@ class PitzEverything(PitzScript):
     def handle_proj(self, p, options, args, proj):
 
         results = self.apply_filter_and_grep(p, options, args, proj)
+
+        if options.limit:
+            results = results[:options.limit]
 
         if self.title:
             results.title = "%s: %s" % (proj.title, self.title)
@@ -284,12 +287,23 @@ class PitzTodo(PitzScript):
 
         if options.by_owner:
 
+            results = results.order(pitz.by_whatever('xxx',
+                'owner', 'milestone', 'status', 'pscore'))
+
+            # I have to wait to apply the limit until AFTER I sorted the
+            # bag.
+            if options.limit:
+                results = results[:options.limit]
+
             clepy.send_through_pager(
                 results.colorized_by_owner_view if options.color
                 else results.by_owner_view,
                 clepy.figure_out_pager())
 
         else:
+
+            if options.limit:
+                results = results[:options.limit]
 
             clepy.send_through_pager(
                 results.custom_view(
@@ -308,6 +322,9 @@ class RecentActivity(PitzScript):
 
         results = self.apply_filter_and_grep(
             p, options, args, proj.recent_activity)
+
+        if options.limit:
+            results = results[:options.limit]
 
         clepy.send_through_pager(results.custom_view(
             options.custom_view or 'summarized_view'),

@@ -6,5 +6,5 @@
 {{ colors['cyan'] }}{% for letter in t['owner'].title %}-{% endfor %}{{ colors['clear'] }}
 
 {% endif -%}
-{{ t.one_line_view }}
+{{ t.colorized_one_line_view }}
 {% endfor %}
