@@ -24,7 +24,7 @@ class PitzComment(PitzScript):
 
         p.set_usage("%prog frag-to-comment-on")
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         if not proj.me:
             print("Sorry, I don't know who you are.")

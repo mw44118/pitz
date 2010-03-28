@@ -25,7 +25,7 @@ class PitzAddTag(PitzScript):
             help='Stores this tag with an empty description')
 
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         t = Tag(
 

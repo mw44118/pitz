@@ -856,18 +856,27 @@ class PitzStartTask(PitzScript):
             raise SystemExit
 
         t = proj[args[0]]
-        t.assign(proj.me)
 
-        if options.pause_other_tasks:
-            for tsk in proj.me.my_todo(status='started'):
-                tsk['status'] = Status(title='paused')
+        if isinstance(t, Entity):
 
-        try:
-            t.start(options.ignore_other_started_tasks)
+            t.assign(proj.me)
 
-        except pitz.OtherTaskStarted, ex:
-            print(ex.message)
+            if options.pause_other_tasks:
+                for tsk in proj.me.my_todo(status='started'):
+                    tsk['status'] = Status(title='paused')
+
+            try:
+                t.start(options.ignore_other_started_tasks)
+
+            except pitz.OtherTaskStarted, ex:
+                print(ex.message)
+                raise SystemExit
+
+        else:
+            print("Sorry, couldn't find %s" % args[0])
             raise SystemExit
+
+
 
 
 class RefreshPickle(PitzScript):

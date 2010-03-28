@@ -36,7 +36,7 @@ started pitz.""",
 
     install_requires=[
         'mock==0.4',
-        'clepy>=0.3.17',
+        'clepy>=0.3.18',
         'IPython',
         'PyYAML',
         'sphinx',

@@ -23,7 +23,7 @@ class PitzEdit(PitzScript):
             p.print_usage()
             raise SystemExit
 
-    def handle_proj(self, p, options, args, proj, results):
+    def handle_proj(self, p, options, args, proj):
 
         e = proj[args[0]]
 
