@@ -10,11 +10,11 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-28 16:50:06.786913
+modified_time: 2010-03-28 19:46:55.714278
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 336444450266496547059833010238290292739
+  int: 181191650815078915740523248343325601886
 tags:
 - !!python/object:uuid.UUID
   int: 287487067718242131705470400321668421628
@@ -22,4 +22,4 @@ title: Handle $EDITOR settings including spaces
 type: task
 uuid: !!python/object:uuid.UUID
   int: 171557631710738387000053235115672559161
-yaml_file_saved: 2010-03-28 16:50:06.809676
+yaml_file_saved: 2010-03-28 19:46:55.725767
