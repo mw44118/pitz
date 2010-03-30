@@ -37,6 +37,10 @@ class Person(Entity):
 
         b = self.project.todo(owner=self)
         b.title = "To-do list for %(title)s" % self
+
+        b.order_method = pitz.by_whatever('xxx', 'milestone', 'status',
+            'pscore', reverse=True)
+
         return b
 
     def __str__(self):
