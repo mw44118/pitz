@@ -20,15 +20,18 @@ description: 'Since projects are bag subclasses, not entities, the project code 
   '
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-10-03 20:02:13.155422
+html_file_saved: 2009-10-03 20:02:13.155422
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
+modified_time: 2010-04-17 22:41:04.399601
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: Only write out the project.yaml file when some attributes have been updated
 type: task
 uuid: !!python/object:uuid.UUID
   int: 216026790201774528638870751011514782870
-yaml_file_saved: 2009-10-03 20:03:04.661558
+yaml_file_saved: 2010-04-17 22:41:38.078803

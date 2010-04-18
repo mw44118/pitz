@@ -8,15 +8,18 @@ description: "The choose value function should work sort of like this::\n\n    >
   \ to choose one, and that one gets returned.\n"
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-10-03 20:02:16.855374
+html_file_saved: 2009-10-03 20:02:16.855374
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
+modified_time: 2010-04-17 22:41:04.469917
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: Write a choose_value function
 type: task
 uuid: !!python/object:uuid.UUID
   int: 7200135940145057213651168621040906221
-yaml_file_saved: 2009-10-03 20:03:04.712598
+yaml_file_saved: 2010-04-17 22:41:38.134535

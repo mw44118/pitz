@@ -147,12 +147,18 @@ class PitzScript(object):
         ['tags=[a,b,c]']
 
         Some nastier examples:
+
         >>> f([
         ...    'tags=[a,', 'b,', 'c]',
         ...    'owner=[matt,', 'lindsey,', 'charlie]',
         ... ])
         ['tags=[a,b,c]', 'owner=[matt,lindsey,charlie]']
 
+        >>> f(['abc123', 'def456'])
+        ['abc123', 'def456']
+
+        >>> f(['a=1', 'b=2'])
+        ['a=1', 'b=2']
 
         """
 
@@ -173,6 +179,9 @@ class PitzScript(object):
 
             if ']' in a:
                 inside_list = False
+
+            if not inside_list and not prev:
+                glued_args.append(a)
 
             if not inside_list and prev:
                 glued_args.append(prev)

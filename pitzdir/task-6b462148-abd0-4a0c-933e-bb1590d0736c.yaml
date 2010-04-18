@@ -6,15 +6,18 @@ description: 'I need to mock out raw_input so it just returns maybe a random cho
   '
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-10-03 20:01:59.399105
+html_file_saved: 2009-10-03 20:01:59.399105
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
+modified_time: 2010-04-17 22:41:04.198590
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: Write a test for Bag.choose_value
 type: task
 uuid: !!python/object:uuid.UUID
   int: 142591531406201800803881421519465771884
-yaml_file_saved: 2009-10-03 20:03:04.468928
+yaml_file_saved: 2010-04-17 22:41:37.896730

@@ -13,15 +13,18 @@ description: 'I do a test to see if less is installed, and as a side effect, the
   its path to stdout.'
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-10-03 20:02:24.298618
+html_file_saved: 2009-10-03 20:02:24.298618
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
+modified_time: 2010-04-17 22:41:04.616995
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: Hide /usr/bin/less output
 type: task
 uuid: !!python/object:uuid.UUID
   int: 123475723288431976103359271711537004874
-yaml_file_saved: 2009-10-03 20:03:04.805997
+yaml_file_saved: 2010-04-17 22:41:38.251145

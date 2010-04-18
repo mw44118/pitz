@@ -10,13 +10,14 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-23 11:04:02.367451
+modified_time: 2010-04-17 22:41:04.690949
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: Figure out how use template files from an install rather than a checkout
 type: task
 uuid: !!python/object:uuid.UUID
   int: 275886890879929374412177604966731564845
-yaml_file_saved: 2010-03-23 11:04:02.402587
+yaml_file_saved: 2010-04-17 22:41:38.300167

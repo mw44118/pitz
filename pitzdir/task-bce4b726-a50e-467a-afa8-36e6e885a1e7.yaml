@@ -4,15 +4,18 @@ created_time: 2009-03-27 09:59:31.277513
 description: ''
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id001 2009-10-03 20:02:20.566779
+html_file_saved: 2009-10-03 20:02:20.566779
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
+modified_time: 2010-04-17 22:41:04.554861
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: A bag should dump to a single CSV file and columns should be chosen
 type: task
 uuid: !!python/object:uuid.UUID
   int: 251082421634020053013763637531283661287
-yaml_file_saved: 2009-10-03 20:03:04.760417
+yaml_file_saved: 2010-04-17 22:41:38.205644

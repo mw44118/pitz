@@ -6,15 +6,18 @@ description: "Right now, slicing a bag returns a list::\n\n    >>> type(p.todo)\
   \ be better to return a new bag instead.\n"
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-10-03 20:02:36.397979
+html_file_saved: 2009-10-03 20:02:36.397979
 milestone: !!python/object:uuid.UUID
   int: 246357804921662755488325692659396046179
-modified_time: *id001
+modified_time: 2010-04-17 22:41:04.875942
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: Slicing bags should return bags, not lists
 type: task
 uuid: !!python/object:uuid.UUID
   int: 236852270568109503406539718343778399175
-yaml_file_saved: 2009-10-03 20:03:04.998005
+yaml_file_saved: 2010-04-17 22:41:38.350143

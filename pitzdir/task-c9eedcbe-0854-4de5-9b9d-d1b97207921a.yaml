@@ -7,9 +7,9 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-25 09:12:54.190719
+modified_time: 2010-04-17 22:50:13.624226
 owner: *id001
-pscore: 0
+pscore: -2
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
 tags:
@@ -19,4 +19,4 @@ title: Move pidfile stuff into clepy
 type: task
 uuid: !!python/object:uuid.UUID
   int: 268415070991140858212128200895614128666
-yaml_file_saved: 2010-03-25 09:12:54.218951
+yaml_file_saved: 2010-04-17 22:50:13.636334

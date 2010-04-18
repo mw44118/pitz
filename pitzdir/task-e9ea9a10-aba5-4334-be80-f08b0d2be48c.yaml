@@ -6,18 +6,21 @@ creator: person-a385659b-8610-4650-8aa5-7fc04ea7fcb1
 description: Allow comments on all entities (tasks, comments, milestones, etc)
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
-html_file_saved: &id002 2009-10-03 20:02:25.637745
+html_file_saved: 2009-10-03 20:02:25.637745
 last_modified_by: Matt
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
 modified_date: *id001
-modified_time: *id002
+modified_time: 2010-04-17 22:41:04.637734
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 peppers: 1
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: Allow comments on all entities (tasks, comments, milestones, etc)
 type: task
 uuid: !!python/object:uuid.UUID
   int: 310928245294633837448336571368886494348
-yaml_file_saved: 2009-10-03 20:03:04.822194
+yaml_file_saved: 2010-04-17 22:41:38.267418

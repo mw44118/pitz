@@ -8,14 +8,15 @@ estimate: !!python/object:uuid.UUID
 html_file_saved: 2009-10-03 20:02:37.963141
 milestone: !!python/object:uuid.UUID
   int: 246357804921662755488325692659396046179
-modified_time: 2010-03-13 20:57:30.462027
+modified_time: 2010-04-17 22:41:04.867131
 owner: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: Allow two bags to be added
 type: task
 uuid: !!python/object:uuid.UUID
   int: 276546821639741522246219621529602643794
-yaml_file_saved: 2010-03-13 20:57:30.476169
+yaml_file_saved: 2010-04-17 22:41:38.342662

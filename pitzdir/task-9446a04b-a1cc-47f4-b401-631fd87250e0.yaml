@@ -13,15 +13,18 @@ description: 'I want to reorganize the pitz code so that entity.py defines the E
   No need for all these fancy files.'
 estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
-html_file_saved: &id001 2009-10-03 20:02:15.013682
+html_file_saved: 2009-10-03 20:02:15.013682
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
+modified_time: 2010-04-17 22:41:04.428623
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
 pscore: 0
 status: !!python/object:uuid.UUID
   int: 181191650815078915740523248343325601886
+tags: []
 title: Reorganize code
 type: task
 uuid: !!python/object:uuid.UUID
   int: 197092455333987807211288266277039263968
-yaml_file_saved: 2009-10-03 20:03:04.688878
+yaml_file_saved: 2010-04-17 22:41:38.102824
