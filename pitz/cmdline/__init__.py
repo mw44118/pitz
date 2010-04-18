@@ -120,14 +120,72 @@ class PitzScript(object):
 
         p.add_option('-p', '--pitzdir')
 
+        p.add_option(
+            '--pdb',
+            help='Drop into debugger or error',
+            action='store_true')
+
         if self.__doc__:
             p.epilog = self.__doc__.lstrip()
 
         return p
 
+    @classmethod
+    def maybe_glue_args_together(cls, args):
+
+        """
+        When a list of values is split across several elements,
+        this function glues them together:
+
+        >>> f = PitzScript.maybe_glue_args_together
+        >>> f(['tags=[a,', 'b,', 'c]'])
+        ['tags=[a,b,c]']
+
+        Just pass through the args if nothing is split up:
+
+        >>> f(['tags=[a,b,c]'])
+        ['tags=[a,b,c]']
+
+        Some nastier examples:
+        >>> f([
+        ...    'tags=[a,', 'b,', 'c]',
+        ...    'owner=[matt,', 'lindsey,', 'charlie]',
+        ... ])
+        ['tags=[a,b,c]', 'owner=[matt,lindsey,charlie]']
+
+
+        """
+
+        if len(args) == 1:
+            return args
+
+        glued_args = []
+
+        prev = ""
+        inside_list = False
+        for a in args:
+
+            if '[' in a and ']' not in a:
+                inside_list = True
+
+            if inside_list:
+                prev += a
+
+            if ']' in a:
+                inside_list = False
+
+            if not inside_list and prev:
+                glued_args.append(prev)
+                prev = ""
+
+        return glued_args
+
+
     def setup_options_and_args(self, p):
 
-        return p.parse_args()
+        options, args = p.parse_args()
+        return options, self.maybe_glue_args_together(args)
+
 
     def setup_proj(self, p, options, args):
 
@@ -197,7 +255,10 @@ class PitzScript(object):
             proj = self.setup_proj(p, options, args)
 
         # Third special function.
-        self.handle_proj(p, options, args, proj)
+        if options.pdb:
+            clepy.into_debugger(self.handle_proj)(p, options, args, proj)
+        else:
+            self.handle_proj(p, options, args, proj)
 
         if self.save_proj:
             proj.save_entities_to_yaml_files()

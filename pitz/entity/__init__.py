@@ -1281,12 +1281,19 @@ class Milestone(Entity):
         reached=[False, True],
     )
 
+    allowed_types = dict(
+        reached=bool)
+
     plural_name = "milestones"
 
     jinja_template = 'milestone.html'
 
     def __str__(self):
         return self.title
+
+    @property
+    def reached(self):
+        return self['reached']
 
     @property
     def tasks(self):

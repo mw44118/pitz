@@ -128,13 +128,13 @@ class TestPitzSetup(unittest.TestCase):
         cmdline.pitz_setup()
 
 
-class TestPitzAdd(TestPitzCmdLine):
+class TestPitzAddTask(TestPitzCmdLine):
 
     @raises(SystemExit)
     def test_version(self):
 
         sys.argv = ['pitz-add', '--version']
-        cmdline.pitz_add()
+        cmdline.pitz_add_task()
 
     @patch('__builtin__.raw_input')
     @patch('clepy.edit_with_editor')
@@ -145,7 +145,7 @@ class TestPitzAdd(TestPitzCmdLine):
         m1.return_value = None
         m2.return_value = 'bogus description'
 
-        cmdline.pitz_add()
+        cmdline.pitz_add_task()
 
         proj = Project.from_pitzdir('/tmp/pitzdir')
 
