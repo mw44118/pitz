@@ -1,0 +1,27 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-05-03 16:53:45.485382
+description: "I was a little surprised by how slowly some queries ran, even within\
+  \ the\npitz-shell.\n\nI tried this query and it was really slow::\n\n    >>> p(type=['milestone'])\n\
+  \nThat query looks simple, but really since the value is a list, I'm doing\na lot\
+  \ of manipulation."
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
+- !!python/object:uuid.UUID
+  int: 116377909236696500232003487119181129214
+title: Do some profiling again
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 149510299433671835003487135691064165434
+yaml_file_saved: 2010-05-03 16:53:45.491632

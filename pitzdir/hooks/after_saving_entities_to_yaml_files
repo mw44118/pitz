@@ -1,3 +1,4 @@
 #! /bin/bash
 
+echo "Inside after_saving_entities_to_yaml_files..."
 git add $1/.
