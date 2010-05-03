@@ -12,19 +12,25 @@ description: "Starting up and loading all the pitz data at the beginning of ever
   \ in Accept:\n        return data formatted with bash colorization\n\n    elif if\
   \ 'text/html' in Accept:\n        return HTML format of data\n\n    else:\n    \
   \    return text/plain\n\nExample URLs\n~~~~~~~~~~~~\n\n=======================================\
-  \ ===============================\nURL                                     meaning\n\
+  \ ===============================\nURL                                     translation\n\
   ======================================= ===============================\n/     \
   \                                  p()\n/?type=task                            \
   \ p(type='task')\n/?type=milestone&reached=0              p(type='milestone', reached=0)\n\
-  /?owner=matt&owner=lindsey              p(owner=['matt', 'lindsey'])\n=======================================\
-  \ ==============================="
+  /?owner=matt&owner=lindsey              p(owner=['matt', 'lindsey'])\n/?type=activity\
+  \                         p(type='activity')\n=======================================\
+  \ ===============================\n\nI wrestled with how to represent concepts like\
+  \ \"attribute can be this or\nthat\".  I could do it either of these ways:\n\n1.\
+  \  owner=matt&owner=lindsey\n2.  owner=matt,lindsey\n\nI decided to go with #1 because\
+  \ it is obvious that there are two keys\nwith the same name.  It might be possible\
+  \ that #2 means that I need to\nmatch an attribute that is exactly defined as \"\
+  matt,lindsey\".\n\nMy parsing code would need to treat commas as special characters."
 estimate: !!python/object:uuid.UUID
   int: 194238884256655928753821602839070306529
 milestone: !!python/object:uuid.UUID
-  int: 281829325005055660957328011118288254534
-modified_time: 2010-04-16 12:22:09.730519
+  int: 286057988816149038667284962231564097114
+modified_time: 2010-05-03 16:36:27.325274
 owner: *id001
-pscore: 0
+pscore: 1
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
 tags:
@@ -36,4 +42,4 @@ title: Allow CLI scripts to talk to pitz-webapp
 type: task
 uuid: !!python/object:uuid.UUID
   int: 211495042880395369769065116258946487437
-yaml_file_saved: 2010-04-16 12:22:09.737253
+yaml_file_saved: 2010-05-03 16:36:27.329343

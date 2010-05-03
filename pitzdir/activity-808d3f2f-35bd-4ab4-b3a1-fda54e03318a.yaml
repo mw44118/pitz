@@ -1,0 +1,14 @@
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-05-03 16:25:11.864640
+description: ''
+entity: !!python/object:uuid.UUID
+  int: 211495042880395369769065116258946487437
+modified_time: *id001
+pscore: 0
+title: matt set milestone from 1.1 to 1.0 on 9f1c76
+type: activity
+uuid: !!python/object:uuid.UUID
+  int: 170874578849682855941886704140058571146
+who_did_it: *id002
+yaml_file_saved: 2010-05-03 16:25:11.870814
