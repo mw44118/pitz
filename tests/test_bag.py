@@ -362,8 +362,8 @@ class TestBag(unittest.TestCase):
 
     def test_init(self):
 
-        b = Bag(uuid='99999999')
-        assert b.uuid == '99999999'
+        b = Bag(title='blah')
+        assert b.title == 'blah'
 
     def test_slice(self):
 

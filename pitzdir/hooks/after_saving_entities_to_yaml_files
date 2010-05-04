@@ -1,4 +1,5 @@
 #! /bin/bash
 
 echo "Inside after_saving_entities_to_yaml_files..."
+echo "dollar one is $1."
 git add $1/.

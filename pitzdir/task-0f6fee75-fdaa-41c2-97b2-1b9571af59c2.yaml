@@ -15,9 +15,9 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-25 08:59:32.479501
+modified_time: 2010-05-04 12:26:19.759290
 owner: *id001
-pscore: 0
+pscore: 1
 status: !!python/object:uuid.UUID
   int: 327359014471868074244219043980996376403
 tags:
@@ -27,4 +27,4 @@ title: Experiment with different task summarized views
 type: task
 uuid: !!python/object:uuid.UUID
   int: 20519601449757322644367744635111430594
-yaml_file_saved: 2010-03-25 09:01:09.418101
+yaml_file_saved: 2010-05-04 12:26:19.771237
