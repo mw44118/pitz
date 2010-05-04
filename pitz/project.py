@@ -61,7 +61,8 @@ class Project(Bag):
 
         self.find_me()
 
-    def append(self, e):
+    def append(self, e, rerun_sort_after_append=True):
+
         """
         Do a regular append and some other stuff too.
         """
@@ -400,6 +401,12 @@ class Project(Bag):
     def statuses(self):
         b = self(type='status')
         b.title = 'Statuses'
+        return b
+
+    @property
+    def tags(self):
+        b = self(type='tag')
+        b.title = 'Tags'
         return b
 
     @property

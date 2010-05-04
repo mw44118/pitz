@@ -63,7 +63,9 @@ class Bag(BagSuperclass):
         self.entities_by_yaml_filename = dict()
 
         for e in entities:
-            self.append(e)
+            self.append(e, rerun_sort_after_append=False)
+
+        self.order()
 
         # Tell all the entities to replace UUIDs with objects.
         self.replace_pointers_with_objects()
