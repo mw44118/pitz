@@ -26,7 +26,8 @@ import clepy
 
 import pitz
 from pitz import NoProject, by_descending_created_time
-from pitz import by_whatever
+from pitz import by_whatever, PitzException
+from pitz.bag import Bag
 
 log = logging.getLogger('pitz.entity')
 
@@ -39,6 +40,11 @@ class MC(type):
     def __init__(cls, name, bases, d):
         cls.already_instantiated = weakref.WeakValueDictionary()
 
+
+class EntityDoesNotExist(PitzException):
+    """
+    Happens when a by_whatever lookup fails.
+    """
 
 class Entity(dict):
     """
@@ -112,10 +118,10 @@ class Entity(dict):
 
         title = kwargs['title']
 
-        if title in cls.already_instantiated:
-            return cls.already_instantiated[title]
+        try:
+            return cls.by_title(title)
 
-        else:
+        except EntityDoesNotExist:
             self = super(Entity, cls).__new__(cls, project, **kwargs)
             cls.already_instantiated[title] = self
             return self
@@ -215,6 +221,28 @@ class Entity(dict):
                 self.replace_pointers_with_objects()
 
     project = property(_get_project, _set_project)
+
+    @classmethod
+    def all(cls):
+        """
+        Return all the already instantiated instances of this class,
+        wrapped up in a pretty little bag.
+        """
+
+        return Bag(
+            title='All %s' % cls.plural_name,
+            entities=cls.already_instantiated.values())
+
+    @classmethod
+    def by_title(cls, title):
+
+        if title in cls.already_instantiated:
+            return cls.already_instantiated[title]
+
+        else:
+            raise EntityDoesNotExist(
+                "Couldn't find a %s with title %s"
+                % (cls.__name__, title))
 
     def _setup_jinja(self):
 

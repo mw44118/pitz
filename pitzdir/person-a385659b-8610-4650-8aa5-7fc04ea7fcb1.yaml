@@ -3,15 +3,16 @@ abc:
 - 1
 - 2
 - 3
+attached_files: []
 comments: []
 created_time: 2009-03-10 22:25:32.240143
-description: ''
+description: W. Matthew Wilson <matt@tplus1.com>
 email: matt@tplus1.com
-html_file_saved: &id001 2009-10-03 20:01:51.149637
-modified_time: *id001
+html_file_saved: 2009-10-03 20:01:51.149637
+modified_time: 2010-05-04 09:53:14.458041
 pscore: 0
-title: W. Matthew Wilson <matt@tplus1.com>
+title: matt
 type: person
 uuid: !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
-yaml_file_saved: 2009-10-03 20:03:04.314639
+yaml_file_saved: 2010-05-04 09:53:14.464572
