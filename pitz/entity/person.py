@@ -48,7 +48,7 @@ class Person(Entity):
 
     @property
     def use_colorization(self):
-        return self.get('use_colorization', False)
+        return self.get('use_colorization', None)
 
     @classmethod
     def setup_defaults(cls, proj):

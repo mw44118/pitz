@@ -217,10 +217,41 @@ class PitzScript(object):
 
         return p
 
+    @classmethod
+    def figure_out_colorization(cls, cli_option=None,
+        my_preference=None):
+
+        """
+        The CLI option (if defined) trumps the setting stored in
+        me.yaml.
+
+        >>> PitzScript.figure_out_colorization(None, True)
+        True
+
+        >>> PitzScript.figure_out_colorization(False, True)
+        False
+
+        >>> PitzScript.figure_out_colorization(True, False)
+        True
+
+        >>> PitzScript.figure_out_colorization(None, False)
+        False
+        """
+
+        if cli_option is not None:
+            return cli_option
+
+        else:
+            return my_preference
+
+
     def add_view_options(self, p):
 
         p.add_option('-c', '--color', help='Colorize output',
-            action='store_true')
+            default='undefined', action='store_true')
+
+        p.add_option('--no-color', help='Do not colorize output',
+            action='store_false', dest='color')
 
         p.add_option('--one-line-view', help='single line view',
             dest='custom_view', action='store_const', const='one_line_view')
@@ -302,9 +333,13 @@ class MyTodo(PitzScript):
                 results = results[:options.limit]
 
             clepy.send_through_pager(
+
                 results.custom_view(
                     options.custom_view or 'summarized_view',
-                    options.color or proj.me.use_colorization),
+
+                    self.figure_out_colorization(options.color,
+                        proj.me.use_colorization)),
+
                 clepy.figure_out_pager())
 
         else:
@@ -336,9 +371,13 @@ class PitzEverything(PitzScript):
         if self.title:
             results.title = "%s: %s" % (proj.title, self.title)
 
-        clepy.send_through_pager(results.custom_view(
+        clepy.send_through_pager(
+            results.custom_view(
                 options.custom_view or 'summarized_view',
-                options.color),
+
+                self.figure_out_colorization(options.color,
+                    proj.me.use_colorization if proj.me else None)),
+
             clepy.figure_out_pager())
 
 
@@ -370,7 +409,11 @@ class PitzTodo(PitzScript):
                 results = results[:options.limit]
 
             clepy.send_through_pager(
-                results.colorized_by_owner_view if options.color
+                results.colorized_by_owner_view
+
+                if self.figure_out_colorization(options.color,
+                    proj.me.use_colorization)
+
                 else results.by_owner_view,
                 clepy.figure_out_pager())
 
@@ -382,7 +425,11 @@ class PitzTodo(PitzScript):
             clepy.send_through_pager(
                 results.custom_view(
                     options.custom_view or 'summarized_view',
-                    options.color),
+
+                    self.figure_out_colorization(
+                        options.color,
+                        proj.me.use_colorization if proj.me else None)),
+
                 clepy.figure_out_pager())
 
 
@@ -536,7 +583,11 @@ class PitzShow(PitzScript):
             clepy.send_through_pager(
                 e.custom_view(
                     options.custom_view or 'detailed_view',
-                    color=options.color),
+
+                    color=self.figure_out_colorization(
+                        options.color,
+                        proj.me.use_colorization)),
+
                 clepy.figure_out_pager())
 
         else:
@@ -946,9 +997,6 @@ class PitzStartTask(PitzScript):
             print("Sorry, couldn't find %s" % args[0])
             raise SystemExit
 
-
-
-
 class RefreshPickle(PitzScript):
     """
     Rebuild the pickle file from the yaml files.
@@ -1129,8 +1177,6 @@ class PitzAddTask(PitzScript):
 
 def pitz_webapp():
     """
-    Returns files asked for.
-
     Later on, will be awesome.
     """
 
