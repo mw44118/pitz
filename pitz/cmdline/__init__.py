@@ -304,7 +304,7 @@ class MyTodo(PitzScript):
             clepy.send_through_pager(
                 results.custom_view(
                     options.custom_view or 'summarized_view',
-                    options.color),
+                    options.color or proj.me.use_colorization),
                 clepy.figure_out_pager())
 
         else:

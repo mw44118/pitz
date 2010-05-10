@@ -46,6 +46,10 @@ class Person(Entity):
     def __str__(self):
         return getattr(self, 'abbr', self.title)
 
+    @property
+    def use_colorization(self):
+        return self.get('use_colorization', False)
+
     @classmethod
     def setup_defaults(cls, proj):
         cls(proj, title='no owner', pscore=-100)

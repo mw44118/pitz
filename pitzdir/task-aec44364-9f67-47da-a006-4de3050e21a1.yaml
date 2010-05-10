@@ -1,7 +1,7 @@
 components: []
-created_by: &id002 !!python/object:uuid.UUID
+created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
-created_time: &id001 2010-05-04 12:02:16.587970
+created_time: 2010-05-04 12:02:16.587970
 description: 'Right now, I have to type -c or --color to get the colorized CLI output.
 
   I would like to store this as a preference in me.yaml and have the
@@ -11,11 +11,11 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: *id001
-owner: *id002
+modified_time: 2010-05-10 07:54:52.217607
+owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 181191650815078915740523248343325601886
 tags:
 - !!python/object:uuid.UUID
   int: 327280339527671628486558366906481688438
@@ -23,4 +23,4 @@ title: Store colorization preference in me.yaml
 type: task
 uuid: !!python/object:uuid.UUID
   int: 232304728344440859430762223668632101281
-yaml_file_saved: 2010-05-04 12:02:16.594348
+yaml_file_saved: 2010-05-10 07:54:52.259524
