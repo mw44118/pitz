@@ -5,7 +5,6 @@ Stuff in here is for profiling and timing.
 """
 
 import cProfile
-import pstats
 import timeit
 
 commands = {
@@ -15,7 +14,15 @@ commands = {
     'todo': """p.todo.detailed_view""",
 }
 
-def prof(command, outfilename):
-    cProfile.runctx(command, globals(), locals(), filename=outfilename)
+setup = """
+from pitz.project import Project
+p = Project.from_pitzdir(Project.find_pitzdir())
+"""
 
+def prof_this(k):
 
+    return cProfile.runctx(commands[k], globals(), locals(),
+        filename='%s.profile')
+
+def time_this(k, number=100):
+    return min(timeit.Timer(commands[k], setup).repeat(3, number))

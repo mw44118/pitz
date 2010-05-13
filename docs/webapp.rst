@@ -2,6 +2,8 @@
 The pitz webapp
 +++++++++++++++
 
+.. contents::
+
 Starting up and loading all the pitz data at the beginning of every
 script is really slow.
 
@@ -34,8 +36,8 @@ URL                                     translation
 /?type=activity                         p(type='activity')
 ======================================= ===============================
 
-Encoding lists
-~~~~~~~~~~~~~~
+Encoding lists of values
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 I wrestled with how to represent concepts like "attribute can be this or
 that".  I could do it either of these ways:
@@ -78,11 +80,10 @@ like::
 
 That is pretty nasty.  Meanwhile, in regular python, I can do this::
 
-    >>> Person.by_title('matt').my_todo # doctest: +SKIP
+    Person.by_title('matt').my_todo
 
-That will return the same thing.  It is possible to call **some**
-methods through the webapp.   The table below shows a few examples. All
-of these queries are GET requests.
+It is possible to call **some** methods through the webapp.   The table
+below shows a few examples. All of these queries are GET requests.
 
 ======================================= ===============================
 URL                                     translation
@@ -93,5 +94,40 @@ URL                                     translation
 /Task/all?status=unstarted              Tag.all().matches_dict(
                                             status=['unstarted'])
 
+
 ======================================= ===============================
 
+Set the view
+~~~~~~~~~~~~
+
+Bags have just two views (right now).  Entities have lots of
+views.
+
+To choose the view you want, put something like this in the URL::
+
+    /Person/by_title/matt/view/detailed
+
+To set the view on a query, do something like this::
+
+    /Task/all/view/detailed?status=unstarted
+
+and that will translates to::
+
+    Task.all().matches_dict(status='unstarted').detailed_view
+
+
+Example URLs and their translations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/Task/all/view/detailed?status=unstarted
+    Tag.all().matches_dict(
+    status=['unstarted']).detailed_view
+
+/Person/by_title/matt/my_todo
+    Person.by_title('matt').my_todo
+
+/Tag/all
+    Tag.all()
+
+/?owner=matt&owner=lindsey
+    p(owner=['matt', 'lindsey'])
