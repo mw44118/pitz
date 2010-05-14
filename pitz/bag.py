@@ -67,7 +67,6 @@ class Bag(BagSuperclass):
 
         self.order()
 
-        # Tell all the entities to replace UUIDs with objects.
         self.replace_pointers_with_objects()
 
         self._setup_jinja()
