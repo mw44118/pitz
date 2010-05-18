@@ -1,0 +1,30 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-05-18 12:19:18.128227
+description: 'I ran pitz-my-todo and then pitz-todo --by-owner owner=matt and noticed
+
+  that the sort order on the two collections was different.
+
+
+  They need to match.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: pitz-todo --by-owner should use same sort order as pitz-todo (except skipping
+  owner)
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 29959932964306013043241255806023471561
+yaml_file_saved: 2010-05-18 12:19:18.134500

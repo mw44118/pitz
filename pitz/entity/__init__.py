@@ -1182,10 +1182,10 @@ class Estimate(Entity):
     ranges = [
 
         ("Matt's choice", [
-            dict(title='trivial', points=1, pscore=100),
-            dict(title='straightforward', points=2, pscore=90),
-            dict(title='difficult', points=4, pscore=80),
-            dict(title='maybe impossible', points=4, pscore=70)]),
+            dict(title='trivial', points=1, pscore=1),
+            dict(title='straightforward', points=2, pscore=10),
+            dict(title='difficult', points=4, pscore=100),
+            dict(title='maybe impossible', points=4, pscore=1000)]),
 
         ("easy-medium-hard", [
             dict(title='easy', points=1, pscore=100),
