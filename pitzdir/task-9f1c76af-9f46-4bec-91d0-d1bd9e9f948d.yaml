@@ -2,33 +2,17 @@ components: []
 created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 created_time: 2010-04-15 15:39:21.148076
-description: "Starting up and loading all the pitz data at the beginning of every\n\
-  script is really slow.\n\nIt would be nice to make the webapp and the scripts work\
-  \ together.  In\nother words, the scripts could send requests to the web app and\
-  \ the web\napp could reply.\n\nThe webapp might be able to respond faster than a\
-  \ command-line script\nbecause it would already have all the data loaded.\n\nThen\
-  \ the scripts would essentially be like a little CLI browser.\n\nThe Accept header\n\
-  ~~~~~~~~~~~~~~~~~\n\nWe'll do something like this::\n\n    if 'application/x-pitz\
-  \ in Accept:\n        return data formatted with bash colorization\n\n    elif if\
-  \ 'text/html' in Accept:\n        return HTML format of data\n\n    else:\n    \
-  \    return text/plain\n\nExample URLs\n~~~~~~~~~~~~\n\n=======================================\
-  \ ===============================\nURL                                     translation\n\
-  ======================================= ===============================\n/     \
-  \                                  p()\n/?type=task                            \
-  \ p(type='task')\n/?type=milestone&reached=0              p(type='milestone', reached=0)\n\
-  /?owner=matt&owner=lindsey              p(owner=['matt', 'lindsey'])\n/?type=activity\
-  \                         p(type='activity')\n=======================================\
-  \ ===============================\n\nI wrestled with how to represent concepts like\
-  \ \"attribute can be this or\nthat\".  I could do it either of these ways:\n\n1.\
-  \  owner=matt&owner=lindsey\n2.  owner=matt,lindsey\n\nI decided to go with #1 because\
-  \ it is obvious that there are two keys\nwith the same name.  It might be possible\
-  \ that #2 means that I need to\nmatch an attribute that is exactly defined as \"\
-  matt,lindsey\".\n\nMy parsing code would need to treat commas as special characters."
+description: 'Starting up and loading all the pitz data at the beginning of every
+
+  script is really slow.
+
+
+  The file docs/webapp.rst has a discussion of how this thing should work.'
 estimate: !!python/object:uuid.UUID
   int: 194238884256655928753821602839070306529
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-05-04 10:22:58.487225
+modified_time: 2010-05-18 08:45:07.387927
 owner: *id001
 pscore: 1
 status: !!python/object:uuid.UUID
@@ -42,4 +26,4 @@ title: Allow CLI scripts to talk to pitz-webapp
 type: task
 uuid: !!python/object:uuid.UUID
   int: 211495042880395369769065116258946487437
-yaml_file_saved: 2010-05-04 10:22:58.503847
+yaml_file_saved: 2010-05-18 08:45:07.391957
