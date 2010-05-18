@@ -1310,6 +1310,7 @@ class Milestone(Entity):
     )
 
     allowed_types = dict(
+        pscore=int,
         reached=bool)
 
     plural_name = "milestones"
@@ -1495,6 +1496,7 @@ class Activity(Entity):
     )
 
     allowed_types = dict(
+        pscore=int,
         who_did_it=Person,
         entity=Entity,
     )
