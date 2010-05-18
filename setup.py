@@ -35,14 +35,17 @@ started pitz.""",
     zip_safe=False,
 
     install_requires=[
-        'mock==0.4',
         'clepy>=0.3.18',
         'IPython',
         'PyYAML',
-        'sphinx',
-        'nose',
         'jinja2',
         'Tempita',
+
+        # This stuff isn't required for using pitz, just for developing
+        # it.
+        'sphinx',
+        'nose',
+        'mock==0.4',
     ],
 
 
