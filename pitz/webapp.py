@@ -16,17 +16,18 @@ class SimpleWSGIApp(object):
 
     def __call__(self, environ, start_response):
 
-        log.debug('PATH_INFO is %(PATH_INFO)s' % environ)
-        log.debug('QUERY_STRING is %(QUERY_STRING)s' % environ)
-        log.debug('HTTP_ACCEPT is %(HTTP_ACCEPT)s' % environ)
+        log.debug('PATH_INFO is %(PATH_INFO)s.' % environ)
+        log.debug('QUERY_STRING is %(QUERY_STRING)s.' % environ)
+        log.debug('HTTP_ACCEPT is %(HTTP_ACCEPT)s.' % environ)
 
         path_info = environ['PATH_INFO']
         qs = environ['QUERY_STRING']
 
-        # Filter the project.
-        filtered = self.proj(**cgi.parse_qs(environ['QUERY_STRING']))
+        if environ['QUERY_STRING']:
+            filtered = self.proj(**cgi.parse_qs(environ['QUERY_STRING']))
 
-        # Figure out what format to return.
+        else:
+            filtered = self.proj
 
         status = '200 OK'
         headers = [('Content-type', 'text/plain')]

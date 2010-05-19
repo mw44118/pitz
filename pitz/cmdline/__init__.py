@@ -114,7 +114,7 @@ class PitzScript(object):
         p = optparse.OptionParser(version='pitz %s' % pitz.__version__)
 
         p.add_option('-l', '--log-level',
-            help='(DEBUG, INFO, WARNING, ERROR, CRITICAL)',
+            help='DEBUG, INFO (default), WARNING, ERROR, CRITICAL',
             default='INFO',
             choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
 
@@ -551,6 +551,11 @@ def setup_options():
     p = optparse.OptionParser()
 
     p.add_option('-p', '--pitzdir')
+
+    p.add_option('-l', '--log-level',
+        help='DEBUG, INFO (default), WARNING, ERROR, CRITICAL',
+        default='INFO',
+        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
 
     p.add_option('--version', action='store_true',
         help='show pitz version')
@@ -1183,6 +1188,7 @@ def pitz_webapp():
     p = setup_options()
 
     options, args = p.parse_args()
+    pitz.setup_logging(options.log_level)
 
     if options.version:
         print_version()
