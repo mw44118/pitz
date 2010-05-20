@@ -248,7 +248,7 @@ class PitzScript(object):
     def add_view_options(self, p):
 
         p.add_option('-c', '--color', help='Colorize output',
-            default='undefined', action='store_true')
+            default=None, action='store_true')
 
         p.add_option('--no-color', help='Do not colorize output',
             action='store_false', dest='color')
