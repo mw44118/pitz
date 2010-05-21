@@ -14,13 +14,15 @@ class TestWebApp(unittest.TestCase):
     def setUp(self):
 
         self.p = Project(title='Bogus project for testing webapp')
-        self.c = Entity(self.p, title="c")
-        self.e = Entity(self.p, title="t", c=self.c)
+        Entity(self.p, title="c")
+        Entity(self.p, title="t")
+        Person(self.p, title='matt')
         self.webapp = SimpleWSGIApp(self.p)
 
     def tearDown(self):
-        self.c.self_destruct(self.p)
-        self.e.self_destruct(self.p)
+
+        for e in self.p:
+            e.self_destruct(self.p)
 
         if os.path.exists('/tmp/project.pickle'):
             os.remove('/tmp/project.pickle')
@@ -103,8 +105,8 @@ class TestWebApp(unittest.TestCase):
     def test_6(self):
 
         bogus_environ = dict(
-            PATH_INFO='/Task/all/detailed_view?status=unstarted',
-            QUERY_STRING='',
+            PATH_INFO='/Task/all/detailed_view',
+            QUERY_STRING='status=unstarted',
             HTTP_ACCEPT='text/plain')
 
         bogus_start_response = mock.Mock()
@@ -129,7 +131,7 @@ class TestWebApp(unittest.TestCase):
 
         expected_results = Person.by_title('matt').my_todo
 
-        assert results == [expected_results], results
+        assert results == [str(expected_results)], results
 
 
     def test_8(self):
