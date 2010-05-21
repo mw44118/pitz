@@ -5,15 +5,16 @@ abc:
 - 3
 attached_files: []
 comments: []
+created_by: &id001 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
 created_time: 2009-03-10 22:25:32.240143
 description: W. Matthew Wilson <matt@tplus1.com>
 email: matt@tplus1.com
 html_file_saved: 2009-10-03 20:01:51.149637
-modified_time: 2010-05-10 07:53:49.668292
+modified_time: 2010-05-20 11:39:23.278629
 pscore: 0
 title: matt
 type: person
 use_colorization: true
-uuid: !!python/object:uuid.UUID
-  int: 217356799640352244068158184369341070513
-yaml_file_saved: 2010-05-10 07:53:57.767433
+uuid: *id001
+yaml_file_saved: 2010-05-20 11:39:25.299078
