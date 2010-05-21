@@ -87,13 +87,17 @@ class SimpleWSGIApp(object):
                 start_response(status, headers)
                 return [str(results.detailed_view)]
 
-        m2 = re.search(r'^/Task/all/detailed_view/?$', path_info)
+        m2 = re.search(
+            r'^/(Status|Estimate|Milestone|Entity|Person|Tag|Task)'
+            r'/all/?(detailed_view|summarized_view)?/?$', path_info)
+
         if m2:
 
             log.debug('Matched m2...')
 
-            Task = self.proj.classes['task']
-            results = Task.all()
+            classname, view_type = m2.groups()
+            cls = self.proj.classes[classname.lower()]
+            results = cls.all()
 
             if qs:
                 results = results.matches_dict(**qs)
@@ -131,7 +135,7 @@ class SimpleWSGIApp(object):
 
                 headers = [('Content-type', 'text/plain')]
                 start_response(status, headers)
-                return [str(results.detailed_view)]
+                return [str(results)]
 
         m3 = re.search(
             r'^/Person/by_title/(\w+)/my_todo/?'

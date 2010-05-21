@@ -27,141 +27,73 @@ class TestWebApp(unittest.TestCase):
         if os.path.exists('/tmp/project.pickle'):
             os.remove('/tmp/project.pickle')
 
-    def test_1(self):
-
+    def mk_request(self, pi, qs, ha, expected_results):
         bogus_environ = dict(
-            PATH_INFO='/',
-            QUERY_STRING='',
-            HTTP_ACCEPT='text/plain')
+            PATH_INFO=pi,
+            QUERY_STRING=qs,
+            HTTP_ACCEPT=ha)
 
         bogus_start_response = mock.Mock()
         results = self.webapp(bogus_environ, bogus_start_response)
 
-        assert results == [self.p.detailed_view]
+        assert results == [expected_results], results
 
+    def test_1(self):
+        self.mk_request('/', '', 'text/plain', self.p.detailed_view)
 
     def test_2(self):
-
-        bogus_environ = dict(
-            PATH_INFO='/',
-            QUERY_STRING='title=c',
-            HTTP_ACCEPT='text/plain')
-
-        bogus_start_response = mock.Mock()
-        results = self.webapp(bogus_environ, bogus_start_response)
-
-        assert results == [
-            self.p.matches_dict(
-                title='c').detailed_view], results
-
+        self.mk_request('/', 'title=c', 'text/plain', 
+            self.p.matches_dict(title='c').detailed_view)
 
     def test_3(self):
-
-        bogus_environ = dict(
-            PATH_INFO='/',
-            QUERY_STRING='title=c&title=t',
-            HTTP_ACCEPT='text/plain')
-
-        bogus_start_response = mock.Mock()
-        results = self.webapp(bogus_environ, bogus_start_response)
-
-        assert results == [
-            self.p.matches_dict(
-                title=['c', 't']).detailed_view], results
-
+        self.mk_request('/', 'title=c&title=t', 'text/plain', 
+            self.p.matches_dict(title=['c', 't']).detailed_view)
 
     def test_4(self):
-
-        bogus_environ = dict(
-            PATH_INFO='/',
-            QUERY_STRING='title=c&title=t',
-            HTTP_ACCEPT='application/x-pitz')
-
-        bogus_start_response = mock.Mock()
-        results = self.webapp(bogus_environ, bogus_start_response)
-
-        assert results == [
-            self.p.matches_dict(
-                title=['c', 't']).colorized_detailed_view], results
-
+        self.mk_request('/', 'title=c&title=t', 'application/x-pitz',
+            self.p.matches_dict(title=['c', 't']).colorized_detailed_view)
 
     def test_5(self):
-
-        bogus_environ = dict(
-            PATH_INFO='/Entity/by_title/c',
-            QUERY_STRING='',
-            HTTP_ACCEPT='text/plain')
-
-        bogus_start_response = mock.Mock()
-        results = self.webapp(bogus_environ, bogus_start_response)
-
-        expected_results = Entity.by_title('c').detailed_view
-
-        print(expected_results)
-
-        assert results == [expected_results], results
-
+        self.mk_request('/Entity/by_title/c', '', 'text/plain',
+            Entity.by_title('c').detailed_view)
 
     def test_6(self):
-
-        bogus_environ = dict(
-            PATH_INFO='/Task/all/detailed_view',
-            QUERY_STRING='status=unstarted',
-            HTTP_ACCEPT='text/plain')
-
-        bogus_start_response = mock.Mock()
-        results = self.webapp(bogus_environ, bogus_start_response)
-
-        expected_results = Task.all().matches_dict(
-            status=['unstarted']).detailed_view
-
-        print(expected_results)
-        assert results == [expected_results], results
-
+        self.mk_request('/Task/all/detailed_view', 'status=unstarted', 
+            'text/plain', Task.all().matches_dict(
+                status=['unstarted']).detailed_view)
 
     def test_7(self):
-
-        bogus_environ = dict(
-            PATH_INFO='/Person/by_title/matt/my_todo',
-            QUERY_STRING='',
-            HTTP_ACCEPT='text/plain')
-
-        bogus_start_response = mock.Mock()
-        results = self.webapp(bogus_environ, bogus_start_response)
-
-        expected_results = Person.by_title('matt').my_todo
-
-        assert results == [str(expected_results)], results
-
+        self.mk_request('/Person/by_title/matt/my_todo', '', 
+            'text/plain', Person.by_title('matt').my_todo.detailed_view)
 
     def test_8(self):
-
-        bogus_environ = dict(
-
-            PATH_INFO='/Person/by_title/matt/my_todo/summarized_view',
-            QUERY_STRING='status=unstarted',
-            HTTP_ACCEPT='text/plain')
-
-        bogus_start_response = mock.Mock()
-        results = self.webapp(bogus_environ, bogus_start_response)
-
-        expected_results = Person.by_title('matt')\
-        .my_todo.matches_dict(status=['unstarted']).summarized_view
-
-        assert results == [expected_results], results
-
+        self.mk_request('/Person/by_title/matt/my_todo/summarized_view', 
+            '', 'text/plain', 
+            Person.by_title('matt').my_todo.summarized_view)
 
     def test_9(self):
+        self.mk_request('/',
+            'owner=matt&owner=lindsey', 
+            'text/plain', 
+            self.p(owner=['matt', 'lindsey']))
 
-        bogus_environ = dict(
+    def test_10(self):
 
-            PATH_INFO='/',
-            QUERY_STRING='owner=matt&owner=lindsey',
-            HTTP_ACCEPT='text/plain')
+        for c, C in sorted(self.p.classes.items()):
 
-        bogus_start_response = mock.Mock()
-        results = self.webapp(bogus_environ, bogus_start_response)
+            print("Working on %s..." % c)
+            print("C is %s" % C)
+            
+            self.mk_request(
+                '/%s/all' % c.title(), 
+                '',
+                'text/plain', str(C.all()))
 
-        expected_results = self.p(owner=['matt', 'lindsey'])
+            x = C(self.p, title='test_10')
 
-        assert results == [str(expected_results)], results
+            """
+            self.mk_request(
+                '/%s/by_title/test_10' % c.title(), 
+                '',
+                'text/plain', str(x))
+            """
