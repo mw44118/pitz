@@ -120,7 +120,7 @@ Example URLs and their translations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /Task/all/view/detailed?status=unstarted
-    Tag.all().matches_dict(
+    Task.all().matches_dict(
     status=['unstarted']).detailed_view
 
 /Person/by_title/matt/my_todo

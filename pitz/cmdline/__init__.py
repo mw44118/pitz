@@ -1188,7 +1188,7 @@ def pitz_webapp():
     p = setup_options()
 
     options, args = p.parse_args()
-    pitz.setup_logging(options.log_level)
+    pitz.setup_logging(getattr(logging, options.log_level))
 
     if options.version:
         print_version()
