@@ -4,8 +4,52 @@ The pitz webapp
 
 .. contents::
 
-Starting up and loading all the pitz data at the beginning of every
-script is really slow.
+GET URLs
+~~~~~~~~
+
+For all classes in the project, you should be able to run at least the
+.all() method and the .by_title method.
+
+======================================= ===============================
+URL                                     translation
+======================================= ===============================
+/                                       p()
+/?type=task                             p(type='task')
+/?type=milestone&reached=0              p(type='milestone', reached=0)
+/?owner=matt&owner=lindsey              p(owner=['matt', 'lindsey'])
+/?type=activity                         p(type='activity')
+
+/Person/by_title/matt/my_todo           Person.by_title('matt').my_todo
+/Tag/all                                Tag.all()
+
+/Task/all?status=unstarted              Tag.all().matches_dict(
+                                            status=['unstarted'])
+
+/Task/all/view/detailed                 Task.all().detailed_view
+/Person/by_title/matt/my_todo           Person.by_title('matt').my_todo
+
+/Tag/all                                Tag.all()
+
+/?owner=matt&owner=lindsey              p(owner=['matt', 'lindsey'])
+
+======================================= ===============================
+
+POST URLs
+~~~~~~~~~
+
+======================================= ===============================
+URL                                     translation
+======================================= ===============================
+/Entity/new                             Insert a new entity using data
+                                        in the post body.
+
+/Entity/by_frag/abc123/update           Update some attribute (or
+                                        attributes) on this entity.
+
+/Entity/by_frag/abc123/destroy          Tell this entity to destroy
+                                        itself.              
+
+======================================= ===============================
 
 Set the format with HTTP_ACCEPT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,20 +158,3 @@ To set the view on a query, do something like this::
 and that will translates to::
 
     Task.all().matches_dict(status='unstarted').detailed_view
-
-
-Example URLs and their translations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/Task/all/view/detailed?status=unstarted
-    Task.all().matches_dict(
-    status=['unstarted']).detailed_view
-
-/Person/by_title/matt/my_todo
-    Person.by_title('matt').my_todo
-
-/Tag/all
-    Tag.all()
-
-/?owner=matt&owner=lindsey
-    p(owner=['matt', 'lindsey'])

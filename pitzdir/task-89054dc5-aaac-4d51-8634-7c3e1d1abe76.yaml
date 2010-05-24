@@ -1,0 +1,24 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-05-24 09:15:07.267824
+description: "Every time my hook runs after creating a new entity, I get this error\n\
+  message and the new yaml file is not added to the project::\n\n    fatal: unable\
+  \ to add /home/matt/checkouts/pitz/pitzdir/__init__.py to index\n\nI need to research."
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Fix issue with hook
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 182131774313134397251339689347067330166
+yaml_file_saved: 2010-05-24 09:15:07.276983

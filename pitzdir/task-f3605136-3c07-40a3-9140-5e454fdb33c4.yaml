@@ -1,0 +1,32 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-05-24 09:13:45.421450
+description: "Right now, the Task.interesting_attributes view looks a little like\
+  \ this::\n\n    owner | status | estimate | milestone | pscore\n\nThis works great\
+  \ in a plain text format.  When I want to use HTML, I'll\nneed to render that as::\n\
+  \n    owner_ | status_ | estimate_ | milestone_ | pscore\n\n    .. _owner: Person/by_title/owner\n\
+  \    .. _status: Status/by_title/status\n    .. _estimate: Estimate/by_title/estimate\n\
+  \    .. _milestone: Milestone/by_title/milestone\n\nAll that extra linkage stuff\
+  \ is meaningless when just outputting text,\nbut is very useful for converting to\
+  \ other formats.\n\nMaybe the right solution is to start by having the system output\n\
+  reStructured Text, and then use some reST tool to strip out the markup."
+estimate: !!python/object:uuid.UUID
+  int: 194238884256655928753821602839070306529
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 115897731472495632588122822348854247787
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Add restructured text views to entities
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 323502510646230440442301276459911295940
+yaml_file_saved: 2010-05-24 09:13:45.427681

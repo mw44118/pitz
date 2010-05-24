@@ -1,0 +1,38 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-05-24 09:17:28.013701
+description: 'Right now, pitz uses a separate YAML file for each entity, and pitz
+  does
+
+  **a lot** of work to handle references between yaml files.
+
+
+  Although initially I figured I would be manually editing yaml files,
+
+  now, I''m not.
+
+
+  So now I should experiment with a new backend that doesn''t use separate
+
+  yaml files.
+
+
+  Maybe I could use just one single yaml file.  Or just use a pickle.'
+estimate: !!python/object:uuid.UUID
+  int: 194238884256655928753821602839070306529
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
+title: Write a new backend storage system just for fun
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 25267220476804211710984907549844632978
+yaml_file_saved: 2010-05-24 09:17:28.020254
