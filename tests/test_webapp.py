@@ -2,11 +2,15 @@
 
 import os
 import unittest
+import urllib
 
 import mock
 
 from pitz.project import Project
-from pitz.entity import Entity, Person, Task
+
+from pitz.entity import Entity, Person, Task, Status, Milestone, \
+Activity, Estimate, Tag, Comment
+
 from pitz.webapp import SimpleWSGIApp
 
 class TestWebApp(unittest.TestCase):
@@ -14,10 +18,26 @@ class TestWebApp(unittest.TestCase):
     def setUp(self):
 
         self.p = Project(title='Bogus project for testing webapp')
-        Entity(self.p, title="c")
+        c = Entity(self.p, title="c")
         Entity(self.p, title="t")
-        Person(self.p, title='matt')
+        matt = Person(self.p, title='matt')
         self.webapp = SimpleWSGIApp(self.p)
+        Status(self.p, title='bogus status')
+        Estimate(self.p, title='bogus estimate')
+        Milestone(self.p, title='bogus milestone')
+        Tag(self.p, title='bogus tag')
+        Task(self.p, title='bogus task')
+
+        Comment(
+            self.p,
+            title='bogus comment',
+            who_said_it=matt,
+            entity=c)
+
+        Activity(
+            self.p,
+            title='bogus activity',
+            who_did_it=matt, entity=c)
 
     def tearDown(self):
 
@@ -42,11 +62,11 @@ class TestWebApp(unittest.TestCase):
         self.mk_request('/', '', 'text/plain', self.p.detailed_view)
 
     def test_2(self):
-        self.mk_request('/', 'title=c', 'text/plain', 
+        self.mk_request('/', 'title=c', 'text/plain',
             self.p.matches_dict(title='c').detailed_view)
 
     def test_3(self):
-        self.mk_request('/', 'title=c&title=t', 'text/plain', 
+        self.mk_request('/', 'title=c&title=t', 'text/plain',
             self.p.matches_dict(title=['c', 't']).detailed_view)
 
     def test_4(self):
@@ -55,27 +75,27 @@ class TestWebApp(unittest.TestCase):
 
     def test_5(self):
         self.mk_request('/Entity/by_title/c', '', 'text/plain',
-            Entity.by_title('c').detailed_view)
+            str(Entity.by_title('c')))
 
     def test_6(self):
-        self.mk_request('/Task/all/detailed_view', 'status=unstarted', 
+        self.mk_request('/Task/all/detailed_view', 'status=unstarted',
             'text/plain', Task.all().matches_dict(
                 status=['unstarted']).detailed_view)
 
     def test_7(self):
-        self.mk_request('/Person/by_title/matt/my_todo', '', 
+        self.mk_request('/Person/by_title/matt/my_todo', '',
             'text/plain', Person.by_title('matt').my_todo.detailed_view)
 
     def test_8(self):
-        self.mk_request('/Person/by_title/matt/my_todo/summarized_view', 
-            '', 'text/plain', 
+        self.mk_request('/Person/by_title/matt/my_todo/summarized_view',
+            '', 'text/plain',
             Person.by_title('matt').my_todo.summarized_view)
 
     def test_9(self):
         self.mk_request('/',
-            'owner=matt&owner=lindsey', 
-            'text/plain', 
-            self.p(owner=['matt', 'lindsey']))
+            'owner=matt&owner=lindsey',
+            'text/plain',
+            str(self.p(owner=['matt', 'lindsey'])))
 
     def test_10(self):
 
@@ -83,17 +103,16 @@ class TestWebApp(unittest.TestCase):
 
             print("Working on %s..." % c)
             print("C is %s" % C)
-            
+
             self.mk_request(
-                '/%s/all' % c.title(), 
+                '/%s/all' % c.title(),
                 '',
-                'text/plain', str(C.all()))
+                'text/plain',
+                str(C.all()))
 
-            x = C(self.p, title='test_10')
+            x = self.p(type=c)[0]
 
-            """
             self.mk_request(
-                '/%s/by_title/test_10' % c.title(), 
+                '/%s/by_title/%s' % (c.title(), urllib.quote(x.title)),
                 '',
                 'text/plain', str(x))
-            """
