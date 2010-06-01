@@ -47,7 +47,7 @@ class TestWebApp(unittest.TestCase):
         if os.path.exists('/tmp/project.pickle'):
             os.remove('/tmp/project.pickle')
 
-    def mk_request(self, pi, qs, ha, expected_results):
+    def mk_request(self, pi, qs, ha, expected_status, expected_results):
         bogus_environ = dict(
             PATH_INFO=pi,
             QUERY_STRING=qs,
@@ -55,46 +55,58 @@ class TestWebApp(unittest.TestCase):
 
         bogus_start_response = mock.Mock()
         results = self.webapp(bogus_environ, bogus_start_response)
-
+        assert bogus_start_response.called
+        assert bogus_start_response.call_args[0][0] == expected_status
         assert results == [expected_results], results
 
     def test_1(self):
-        self.mk_request('/', '', 'text/plain', self.p.detailed_view)
+        self.mk_request('/', '', 'text/plain', '200 OK',
+            self.p.detailed_view)
 
     def test_2(self):
         self.mk_request('/', 'title=c', 'text/plain',
+            '200 OK',
             self.p.matches_dict(title='c').detailed_view)
 
     def test_3(self):
         self.mk_request('/', 'title=c&title=t', 'text/plain',
+            '200 OK',
             self.p.matches_dict(title=['c', 't']).detailed_view)
 
     def test_4(self):
         self.mk_request('/', 'title=c&title=t', 'application/x-pitz',
+            '200 OK',
             self.p.matches_dict(title=['c', 't']).colorized_detailed_view)
 
     def test_5(self):
         self.mk_request('/Entity/by_title/c', '', 'text/plain',
+            '200 OK',
             str(Entity.by_title('c')))
 
     def test_6(self):
         self.mk_request('/Task/all/detailed_view', 'status=unstarted',
-            'text/plain', Task.all().matches_dict(
+            'text/plain', 
+            '200 OK',
+            Task.all().matches_dict(
                 status=['unstarted']).detailed_view)
 
     def test_7(self):
         self.mk_request('/Person/by_title/matt/my_todo', '',
-            'text/plain', Person.by_title('matt').my_todo.detailed_view)
+            'text/plain', 
+            '200 OK',
+            Person.by_title('matt').my_todo.detailed_view)
 
     def test_8(self):
         self.mk_request('/Person/by_title/matt/my_todo/summarized_view',
             '', 'text/plain',
+            '200 OK',
             Person.by_title('matt').my_todo.summarized_view)
 
     def test_9(self):
         self.mk_request('/',
             'owner=matt&owner=lindsey',
             'text/plain',
+            '200 OK',
             str(self.p(owner=['matt', 'lindsey'])))
 
     def test_10(self):
@@ -108,6 +120,7 @@ class TestWebApp(unittest.TestCase):
                 '/%s/all' % c.title(),
                 '',
                 'text/plain',
+                '200 OK',
                 str(C.all()))
 
             x = self.p(type=c)[0]
@@ -115,4 +128,33 @@ class TestWebApp(unittest.TestCase):
             self.mk_request(
                 '/%s/by_title/%s' % (c.title(), urllib.quote(x.title)),
                 '',
-                'text/plain', str(x))
+                'text/plain', 
+                '200 OK',
+                str(x))
+
+            self.mk_request(
+                '/by_frag/%s' % urllib.quote(x.frag),
+                '',
+                'text/plain', 
+                '200 OK',
+                str(x))
+
+    def test_11(self):
+        matt = Person.by_title('matt')
+
+        self.mk_request('/by_frag/%s/my_todo' % matt.frag,
+            '',
+            'text/plain',
+            '200 OK',
+            str(matt.my_todo))
+
+    def test_12(self):
+
+        m = self.p.milestones[0]
+
+        self.mk_request('/by_frag/%s/my_todo' % m.frag,
+            '',
+            'text/plain',
+            '404 NOT FOUND',
+            """Sorry, didn't match any patterns...""")
+

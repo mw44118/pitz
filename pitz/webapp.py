@@ -6,40 +6,31 @@ import logging
 import re
 import urllib
 
-from pitz import build_filter
+from pitz import build_filter, PitzException
 from pitz.entity import Entity
 
 log = logging.getLogger('pitz.webapp')
 
-"""
-/                                       p()
-/?type=task                             p(type='task')
-/?type=milestone&reached=0              p(type='milestone', reached=0)
-/?owner=matt&owner=lindsey              p(owner=['matt', 'lindsey'])
-/?type=activity                         p(type='activity')
-
-/Person/by_title/matt/my_todo           Person.by_title('matt').my_todo
-/Tag/all                                Tag.all()
-
-/Task/all?status=unstarted              Tag.all().matches_dict(
-                                            status=['unstarted'])
-
-/Task/all/view/detailed?status=unstarted
-    Task.all().matches_dict(
-    status=['unstarted']).detailed_view
-
-/Person/by_title/matt/my_todo
-    Person.by_title('matt').my_todo
-
-/Tag/all
-    Tag.all()
-
-/?owner=matt&owner=lindsey
-    p(owner=['matt', 'lindsey'])
-
-"""
+class NoMatch(PitzException):
+    """
+    Indicates that we couldn't match this URL.
+    """
 
 class SimpleWSGIApp(object):
+
+    @classmethod
+    def reply404(cls, start_response, msg=None):
+
+        log.debug("404")
+
+        status = '404 NOT FOUND'
+        headers = [('Content-type', 'text/plain')]
+        start_response(status, headers)
+
+        if msg:
+            return [msg]
+        else:
+            return ["Sorry, didn't match any patterns..."]
 
     def __init__(self, proj):
         self.proj = proj
@@ -58,217 +49,317 @@ class SimpleWSGIApp(object):
             + '|'.join([c.title() for c in self.proj.classes])
             + ')')
 
-        if re.search('^/$', path_info):
+        try:
 
-            log.debug("matched the slash...")
+            if re.search('^/$', path_info):
 
-            if qs:
-                results = self.proj(**qs)
-            else:
-                results = self.proj
+                log.debug("matched the slash...")
 
-            status = '200 OK'
+                if qs:
+                    results = self.proj(**qs)
+                else:
+                    results = self.proj
 
-            if 'application/x-pitz' in http_accept \
-            and 'detailed_view' in path_info:
+                status = '200 OK'
 
-                log.debug('a')
+                if 'application/x-pitz' in http_accept \
+                and 'detailed_view' in path_info:
 
-                headers = [('Content-type', 'application/x-pitz')]
-                start_response(status, headers)
-                return [str(results.colorized_detailed_view)]
+                    log.debug('a')
 
-            if 'application/x-pitz' in http_accept:
-                log.debug('e')
-                headers = [('Content-type', 'application/x-pitz')]
-                start_response(status, headers)
-                return [str(results.colorized_detailed_view)]
+                    headers = [('Content-type', 'application/x-pitz')]
+                    start_response(status, headers)
+                    return [str(results.colorized_detailed_view)]
 
-            if 'detailed_view' in path_info:
+                if 'application/x-pitz' in http_accept:
+                    log.debug('e')
+                    headers = [('Content-type', 'application/x-pitz')]
+                    start_response(status, headers)
+                    return [str(results.colorized_detailed_view)]
 
-                log.debug('b')
+                if 'detailed_view' in path_info:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results.detailed_view)]
+                    log.debug('b')
 
-            if 'summarized_view' in path_info:
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.detailed_view)]
 
-                log.debug('c')
+                if 'summarized_view' in path_info:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results.colorized_detailed_view)]
+                    log.debug('c')
 
-            else:
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.colorized_detailed_view)]
 
-                log.debug('d')
+                else:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results)]
+                    log.debug('d')
 
-        pattern = (all_classes +
-            r'/all/?(detailed_view|summarized_view)?/?$')
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results)]
 
-        m2 = re.search(pattern, path_info)
+            pattern = (all_classes +
+                r'/all/?(detailed_view|summarized_view)?/?$')
 
-        if m2:
+            m2 = re.search(pattern, path_info)
 
-            log.debug('Matched m2...')
+            if m2:
 
-            classname, view_type = m2.groups()
-            cls = self.proj.classes[classname.lower()]
-            results = cls.all()
+                log.debug('Matched m2...')
 
-            if qs:
-                results = results.matches_dict(**qs)
+                classname, view_type = m2.groups()
+                cls = self.proj.classes[classname.lower()]
+                results = cls.all()
 
-            status = '200 OK'
+                if qs:
+                    results = results.matches_dict(**qs)
 
-            if 'application/x-pitz' in http_accept \
-            and 'detailed_view' in path_info:
+                status = '200 OK'
 
-                log.debug('a')
+                if 'application/x-pitz' in http_accept \
+                and 'detailed_view' in path_info:
 
-                headers = [('Content-type', 'application/x-pitz')]
-                start_response(status, headers)
-                return [str(results.colorized_detailed_view)]
+                    log.debug('a')
 
-            if 'detailed_view' in path_info:
+                    headers = [('Content-type', 'application/x-pitz')]
+                    start_response(status, headers)
+                    return [str(results.colorized_detailed_view)]
 
-                log.debug('b')
+                if 'detailed_view' in path_info:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results.detailed_view)]
+                    log.debug('b')
 
-            if 'summarized_view' in path_info:
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.detailed_view)]
 
-                log.debug('c')
+                if 'summarized_view' in path_info:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results.colorized_detailed_view)]
+                    log.debug('c')
 
-            else:
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.colorized_detailed_view)]
 
-                log.debug('d')
+                else:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results)]
+                    log.debug('d')
 
-        m3 = re.search(all_classes +
-            r'/by_title/([^/]+)/?'
-            '(detailed_view|summarized_view)?/?$', path_info)
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results)]
 
-        if m3:
+            m3 = re.search(all_classes +
+                r'/by_title/([^/]+)/?'
+                '(detailed_view|summarized_view)?/?$', path_info)
 
-            log.debug('matched m3. groups: %s' % list(m3.groups()))
+            if m3:
 
-            classname, title, view_type = m3.groups()
+                log.debug('matched m3. groups: %s' % list(m3.groups()))
 
-            cls = self.proj.classes[classname.lower()]
-            results = cls.by_title(urllib.unquote(title))
+                classname, title, view_type = m3.groups()
 
-            if qs:
-                results = results.matches_dict(**qs)
+                cls = self.proj.classes[classname.lower()]
+                results = cls.by_title(urllib.unquote(title))
 
-            status = '200 OK'
+                if qs:
+                    results = results.matches_dict(**qs)
 
-            if 'application/x-pitz' in http_accept \
-            and 'detailed_view' in path_info:
+                status = '200 OK'
 
-                log.debug('a')
+                if 'application/x-pitz' in http_accept \
+                and 'detailed_view' in path_info:
 
-                headers = [('Content-type', 'application/x-pitz')]
-                start_response(status, headers)
-                return [str(results.colorized_detailed_view)]
+                    log.debug('a')
 
-            if 'detailed_view' in path_info:
+                    headers = [('Content-type', 'application/x-pitz')]
+                    start_response(status, headers)
+                    return [str(results.colorized_detailed_view)]
 
-                log.debug('b')
+                if 'detailed_view' in path_info:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results.detailed_view)]
+                    log.debug('b')
 
-            if 'summarized_view' in path_info:
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.detailed_view)]
 
-                log.debug('c')
+                if 'summarized_view' in path_info:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results.summarized_view)]
+                    log.debug('c')
 
-            else:
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.summarized_view)]
 
-                log.debug('d')
+                else:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results)]
+                    log.debug('d')
 
-        # /Person/by_title/matt/my_todo
-        # /Person/by_title/matt/my_todo/
-        # /Person/by_title/matt/my_todo/detailed_view
-        # /Person/by_title/matt/my_todo/detailed_view/
-        # /Person/by_title/matt/my_todo/summarized_view
-        # /Person/by_title/matt/my_todo/summarized_view/
-        m4 = re.search(r'^/Person/by_title/([^/]+)/my_todo/?'
-            '(detailed_view|summarized_view)?/?$', path_info)
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results)]
 
-        if m4:
+            m4 = re.search(r'^/Person/by_title/([^/]+)/my_todo/?'
+                '(detailed_view|summarized_view)?/?$', path_info)
 
-            log.debug('matched m4. groups: %s' % list(m4.groups()))
-            title, view_type = m4.groups()
-            Person = self.proj.classes['person']
-            results = Person.by_title(urllib.unquote(title)).my_todo
+            if m4:
 
-            if qs:
-                results = results.matches_dict(**qs)
+                log.debug('matched m4. groups: %s' % list(m4.groups()))
+                title, view_type = m4.groups()
+                Person = self.proj.classes['person']
+                results = Person.by_title(urllib.unquote(title)).my_todo
 
-            status = '200 OK'
+                if qs:
+                    results = results.matches_dict(**qs)
 
-            if 'application/x-pitz' in http_accept \
-            and 'detailed_view' in path_info:
+                status = '200 OK'
 
-                log.debug('a')
+                if 'application/x-pitz' in http_accept \
+                and 'detailed_view' in path_info:
 
-                headers = [('Content-type', 'application/x-pitz')]
-                start_response(status, headers)
-                return [str(results.colorized_detailed_view)]
+                    log.debug('a')
 
-            if 'detailed_view' in path_info:
+                    headers = [('Content-type', 'application/x-pitz')]
+                    start_response(status, headers)
+                    return [str(results.colorized_detailed_view)]
 
-                log.debug('b')
+                if 'detailed_view' in path_info:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results.detailed_view)]
+                    log.debug('b')
 
-            if 'summarized_view' in path_info:
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.detailed_view)]
 
-                log.debug('c')
+                if 'summarized_view' in path_info:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results.summarized_view)]
+                    log.debug('c')
 
-            else:
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.summarized_view)]
 
-                log.debug('d')
+                else:
 
-                headers = [('Content-type', 'text/plain')]
-                start_response(status, headers)
-                return [str(results)]
+                    log.debug('d')
 
-        log.debug("404")
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results)]
 
-        status = '404 NOT FOUND'
-        headers = [('Content-type', 'text/plain')]
-        start_response(status, headers)
+            m5 = re.search('/by_frag/([^/]+)/?'
+                '(detailed_view|summarized_view)?/?$', path_info)
 
-        return ["Sorry, didn't match any patterns..."]
+            if m5:
+
+                log.debug('matched m5. groups: %s' % list(m5.groups()))
+
+                frag, view_type = m5.groups()
+
+                results = self.proj.by_frag(frag)
+
+                if qs:
+                    results = results.matches_dict(**qs)
+
+                status = '200 OK'
+
+                if 'application/x-pitz' in http_accept \
+                and 'detailed_view' in path_info:
+
+                    log.debug('a')
+
+                    headers = [('Content-type', 'application/x-pitz')]
+                    start_response(status, headers)
+                    return [str(results.colorized_detailed_view)]
+
+                if 'detailed_view' in path_info:
+
+                    log.debug('b')
+
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.detailed_view)]
+
+                if 'summarized_view' in path_info:
+
+                    log.debug('c')
+
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.summarized_view)]
+
+                else:
+
+                    log.debug('d')
+
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results)]
+
+            m6 = re.search('/by_frag/([^/]+)/my_todo/?'
+                '(detailed_view|summarized_view)?/?$', path_info)
+
+            if m6:
+
+                log.debug('matched m6. groups: %s' % list(m6.groups()))
+
+                frag, view_type = m6.groups()
+
+                results = self.proj.by_frag(frag)
+                Person = self.proj.classes['person']
+
+                if not isinstance(results, Person):
+                    return self.reply404(start_response)
+                
+                results = results.my_todo
+
+                if qs:
+                    results = results.matches_dict(**qs)
+
+                status = '200 OK'
+
+                if 'application/x-pitz' in http_accept \
+                and 'detailed_view' in path_info:
+
+                    log.debug('a')
+
+                    headers = [('Content-type', 'application/x-pitz')]
+                    start_response(status, headers)
+                    return [str(results.colorized_detailed_view)]
+
+                if 'detailed_view' in path_info:
+
+                    log.debug('b')
+
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.detailed_view)]
+
+                if 'summarized_view' in path_info:
+
+                    log.debug('c')
+
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results.summarized_view)]
+
+                else:
+
+                    log.debug('d')
+
+                    headers = [('Content-type', 'text/plain')]
+                    start_response(status, headers)
+                    return [str(results)]
+
+            raise NoMatch(path_info)
+
+        except NoMatch, ex:
+
+            self.reply404()
+
+
 
