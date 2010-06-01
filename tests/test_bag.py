@@ -204,7 +204,8 @@ class TestSorting1(unittest.TestCase):
 
         assert self.p.length == 4
 
-        assert self.p.order_method == pitz.by_pscore_and_milestone, \
+        assert self.p.order_method == \
+        pitz.by_milestone_status_pscore_created_time, \
         self.p.order_method
 
         for e in self.p:
