@@ -23,9 +23,8 @@ class SimpleWSGIApp(object):
 
         log.debug("404")
 
-        status = '404 NOT FOUND'
-        headers = [('Content-type', 'text/plain')]
-        start_response(status, headers)
+        start_response('404 NOT FOUND',
+            [('content-type', 'text/plain')])
 
         if msg:
             return [msg]
@@ -314,7 +313,7 @@ class SimpleWSGIApp(object):
 
                 if not isinstance(results, Person):
                     return self.reply404(start_response)
-                
+
                 results = results.my_todo
 
                 if qs:
@@ -359,7 +358,4 @@ class SimpleWSGIApp(object):
 
         except NoMatch, ex:
 
-            self.reply404()
-
-
-
+            return self.reply404(start_response)

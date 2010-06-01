@@ -29,7 +29,7 @@ class Project(Bag):
     classes = dict(
         activity=entity.Activity,
         comment=entity.Comment,
-        # component=entity.Component,
+        component=entity.Component,
         entity=entity.Entity,
         estimate=entity.Estimate,
         milestone=entity.Milestone,

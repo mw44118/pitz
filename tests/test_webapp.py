@@ -9,7 +9,7 @@ import mock
 from pitz.project import Project
 
 from pitz.entity import Entity, Person, Task, Status, Milestone, \
-Activity, Estimate, Tag, Comment
+Activity, Estimate, Tag, Comment, Component
 
 from pitz.webapp import SimpleWSGIApp
 
@@ -22,11 +22,13 @@ class TestWebApp(unittest.TestCase):
         Entity(self.p, title="t")
         matt = Person(self.p, title='matt')
         self.webapp = SimpleWSGIApp(self.p)
+
         Status(self.p, title='bogus status')
         Estimate(self.p, title='bogus estimate')
         Milestone(self.p, title='bogus milestone')
         Tag(self.p, title='bogus tag')
         Task(self.p, title='bogus task')
+        Component(self.p, title='bogus component')
 
         Comment(
             self.p,
@@ -111,19 +113,26 @@ class TestWebApp(unittest.TestCase):
 
     def test_10(self):
 
-        for c, C in sorted(self.p.classes.items()):
+        # for c, C in sorted(self.p.classes.items()):
+        for c, C in [('component', self.p.classes['component'])]:
 
             print("Working on %s..." % c)
             print("C is %s" % C)
+
+            expected_results = str(C.all())
+
+            print("expected_results: %s" % expected_results)
 
             self.mk_request(
                 '/%s/all' % c.title(),
                 '',
                 'text/plain',
                 '200 OK',
-                str(C.all()))
+                expected_results)
 
             x = self.p(type=c)[0]
+
+            print("x is %s" % x)
 
             self.mk_request(
                 '/%s/by_title/%s' % (c.title(), urllib.quote(x.title)),
