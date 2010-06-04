@@ -87,14 +87,14 @@ class TestWebApp(unittest.TestCase):
 
     def test_6(self):
         self.mk_request('/Task/all/detailed_view', 'status=unstarted',
-            'text/plain', 
+            'text/plain',
             '200 OK',
             Task.all().matches_dict(
                 status=['unstarted']).detailed_view)
 
     def test_7(self):
         self.mk_request('/Person/by_title/matt/my_todo', '',
-            'text/plain', 
+            'text/plain',
             '200 OK',
             Person.by_title('matt').my_todo.detailed_view)
 
@@ -137,14 +137,14 @@ class TestWebApp(unittest.TestCase):
             self.mk_request(
                 '/%s/by_title/%s' % (c.title(), urllib.quote(x.title)),
                 '',
-                'text/plain', 
+                'text/plain',
                 '200 OK',
                 str(x))
 
             self.mk_request(
                 '/by_frag/%s' % urllib.quote(x.frag),
                 '',
-                'text/plain', 
+                'text/plain',
                 '200 OK',
                 str(x))
 
@@ -156,6 +156,19 @@ class TestWebApp(unittest.TestCase):
             'text/plain',
             '200 OK',
             str(matt.my_todo))
+
+        self.mk_request('/by_frag/%s/my_todo/summarized_view' % matt.frag,
+            '',
+            'text/plain',
+            '200 OK',
+            str(matt.my_todo.summarized_view))
+
+        self.mk_request('/by_frag/%s/my_todo/detailed_view' % matt.frag,
+            '',
+            'text/plain',
+            '200 OK',
+            str(matt.my_todo.detailed_view))
+
 
     def test_12(self):
 
