@@ -35,7 +35,7 @@ started pitz.""",
     zip_safe=False,
 
     install_requires=[
-        'clepy>=0.3.18',
+        'clepy>=0.3.19',
         'IPython',
         'PyYAML',
         'jinja2',
