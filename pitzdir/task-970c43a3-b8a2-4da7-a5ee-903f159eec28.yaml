@@ -1,0 +1,22 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-09-13 14:52:07.954422
+description: This should do the same thing as --no-description --use-defaults.
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Add a -q, --quick option to pitz-add-task
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 200777106818600103731709820776956750888
+yaml_file_saved: 2010-09-13 14:52:07.960880
