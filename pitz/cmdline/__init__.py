@@ -340,7 +340,7 @@ class MyTodo(PitzScript):
                     self.figure_out_colorization(options.color,
                         proj.me.use_colorization)),
 
-                clepy.figure_out_pager())
+                clepy.figure_out_pager(os.environ))
 
         else:
             print("I didn't find any tasks for you (%(title)s)."
@@ -378,7 +378,7 @@ class PitzEverything(PitzScript):
                 self.figure_out_colorization(options.color,
                     proj.me.use_colorization if proj.me else None)),
 
-            clepy.figure_out_pager())
+            clepy.figure_out_pager(os.environ))
 
 
 class PitzTodo(PitzScript):
@@ -415,7 +415,7 @@ class PitzTodo(PitzScript):
                     proj.me.use_colorization)
 
                 else results.by_owner_view,
-                clepy.figure_out_pager())
+                clepy.figure_out_pager(os.environ))
 
         else:
 
@@ -430,7 +430,7 @@ class PitzTodo(PitzScript):
                         options.color,
                         proj.me.use_colorization if proj.me else None)),
 
-                clepy.figure_out_pager())
+                clepy.figure_out_pager(os.environ))
 
 
 class RecentActivity(PitzScript):
@@ -449,7 +449,7 @@ class RecentActivity(PitzScript):
 
         clepy.send_through_pager(results.custom_view(
             options.custom_view or 'summarized_view'),
-            clepy.figure_out_pager())
+            clepy.figure_out_pager(os.environ))
 
 
 def print_version():
@@ -593,7 +593,7 @@ class PitzShow(PitzScript):
                         options.color,
                         proj.me.use_colorization)),
 
-                clepy.figure_out_pager())
+                clepy.figure_out_pager(os.environ))
 
         else:
             print("Sorry, couldn't find %s" % args[0])
