@@ -1,0 +1,44 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-08-30 09:15:28.935942
+description: 'I did a stock install of pitz 1.0.6 to track abais work.
+
+
+  Then I made a bunch of tasks.
+
+
+  Then I upgraded to pitz 1.0.7.
+
+
+  Then I made more tasks.
+
+
+  Somehow, the order method for pitz-todo got to be different than the
+
+  order method for pitz-my-todo.
+
+
+  Not sure how that happened.
+
+
+  Instead of investigating abais, I should set up a bogus new install,
+
+  then make a bunch of tasks, and then see if the problem happens again.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 116844512387905207184986485847965343674
+title: Explore how abais pitz-todo and pitz-my-todo got different order methods
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 137525473080142625265723280357558230591
+yaml_file_saved: 2010-08-30 09:15:28.942624

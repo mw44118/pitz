@@ -253,7 +253,7 @@ class PitzScript(object):
         p.add_option('--no-color', help='Do not colorize output',
             action='store_false', dest='color')
 
-        p.add_option('--one-line-view', help='single line view',
+        p.add_option('-1', '--one-line-view', help='single line view',
             dest='custom_view', action='store_const', const='one_line_view')
 
         p.add_option('--summarized-view', help='summarized view (default)',

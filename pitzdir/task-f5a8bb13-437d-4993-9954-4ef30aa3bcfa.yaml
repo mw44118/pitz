@@ -1,0 +1,35 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-08-16 10:11:55.324483
+description: 'Right now, I only show a list of tags and ask for choices from that
+
+  list.
+
+
+  It might also be nice to support adding new tags at that moment.
+
+
+  I wouldn''t want to go into a long extra flow at that point, where I
+
+  prompt for lots of other fields on each new tag typed in.
+
+
+  So I would just use defaults.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Allow creating tags during pitz-add-task
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 326536959176356169377372664727731420410
+yaml_file_saved: 2010-08-16 10:11:55.331040

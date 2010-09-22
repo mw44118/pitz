@@ -11,7 +11,7 @@ import logging
 import os
 import subprocess
 
-__version__ = "1.0.6"
+__version__ = "1.0.7"
 
 log = logging.getLogger('pitz')
 
