@@ -5,7 +5,7 @@ import os
 import unittest
 
 from nose.tools import raises
-from mock import patch
+import mock
 
 import pitz
 from pitz.entity import Entity
@@ -65,7 +65,7 @@ def test_values():
     assert ('hard', 1) in v
 
 
-@patch('__builtin__.open')
+@mock.patch('__builtin__.open')
 def test_to_csv(o):
 
     global b
@@ -169,8 +169,10 @@ def test_html():
     b.html
 
 
-@patch('__builtin__.open')
-def test_to_html(o):
+@mock.patch(
+    '__builtin__.open',
+    mock.Mock(return_value=mock.MagicMock(spec=file)))
+def test_to_html():
 
     global b
     b.to_html('bogus filepath')
