@@ -61,8 +61,8 @@ def test_replace_pointers_with_objects():
     assert e1['friend'] == e2, e1['friend']
 
 
-@patch('__builtin__.open')
 @patch('yaml.load')
+@patch('__builtin__.open')
 def test_from_yaml_file_1(m1, m2):
 
     m2.return_value = {'title': 'bogus entity', 'a': 1, 'b': 2}
@@ -74,8 +74,8 @@ def test_from_yaml_file_1(m1, m2):
     assert e2['b'] == 2
 
 
-@patch('__builtin__.open')
 @patch('yaml.load')
+@patch('__builtin__.open')
 def test_from_yaml_file_2(m1, m2):
 
     m2.return_value = {}

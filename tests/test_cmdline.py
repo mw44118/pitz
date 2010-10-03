@@ -136,8 +136,8 @@ class TestPitzAddTask(TestPitzCmdLine):
         sys.argv = ['pitz-add', '--version']
         cmdline.pitz_add_task()
 
-    @patch('__builtin__.raw_input')
     @patch('clepy.edit_with_editor')
+    @patch('__builtin__.raw_input')
     def test_created_by(self, m1, m2):
 
         sys.argv = ['pitz-add', '--pitzdir=/tmp/pitzdir', '--title=foo']

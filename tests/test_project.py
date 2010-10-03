@@ -85,9 +85,9 @@ def test_to_yaml_file_2(o):
     p.to_yaml_file()
 
 
-@patch('__builtin__.open')
-@patch('yaml.load')
 @patch('__builtin__.globals')
+@patch('yaml.load')
+@patch('__builtin__.open')
 def test_from_yaml_file_1(m1, m2, m3):
 
     # yaml.load(...) will return m2.

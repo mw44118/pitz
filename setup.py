@@ -45,7 +45,7 @@ started pitz.""",
         # it.
         'sphinx',
         'nose',
-        'mock==0.4',
+        'mock',
     ],
 
 
