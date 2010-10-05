@@ -7,11 +7,11 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-10-04 21:03:01.797669
+modified_time: 2010-10-04 21:30:36.633057
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 336444450266496547059833010238290292739
+  int: 181191650815078915740523248343325601886
 tags:
 - !!python/object:uuid.UUID
   int: 327280339527671628486558366906481688438
@@ -19,4 +19,4 @@ title: Add a -q, --quick option to pitz-add-task
 type: task
 uuid: !!python/object:uuid.UUID
   int: 200777106818600103731709820776956750888
-yaml_file_saved: 2010-10-04 21:03:01.815067
+yaml_file_saved: 2010-10-04 21:30:36.645211

@@ -1127,6 +1127,12 @@ class PitzPrioritizeBelow(PitzPrioritizeAbove):
             t1.comment(title=options.message, description='')
 
 
+def my_callback(option, opt, value, parser):
+
+    parser.values.use_defaults = True
+    parser.values.no_description = True
+
+
 class PitzAddTask(PitzScript):
 
     script_name = 'pitz-add-task'
@@ -1141,6 +1147,11 @@ class PitzAddTask(PitzScript):
         p.add_option('--use-defaults',
             action='store_true',
             help="Don't prompt for milestone, estimate, owner, or components")
+
+        p.add_option('-q', '--quick',
+            action='callback',
+            callback=my_callback,
+            help='Just store a title')
 
     def handle_proj(self, p, options, args, proj):
 
