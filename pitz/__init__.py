@@ -11,7 +11,9 @@ import logging
 import os
 import subprocess
 
-__version__ = "1.0.7"
+# Read http://semver.org for an explanation of how semantic versioning
+# works.
+__version__ = "1.1.0"
 
 log = logging.getLogger('pitz')
 
