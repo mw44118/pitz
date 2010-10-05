@@ -9,7 +9,7 @@ setup(
     version=version,
     description="Python to-do tracker inspired by ditz (ditz.rubyforge.org)",
 
-    long_description=open('README'),
+    long_description=open('README').read(),
 
     classifiers=[],
     keywords='ditz',
