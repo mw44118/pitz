@@ -12,11 +12,11 @@ estimate: !!python/object:uuid.UUID
   int: 194238884256655928753821602839070306529
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-05-18 11:48:26.052209
+modified_time: 2010-10-04 21:02:22.472778
 owner: *id001
 pscore: 1
 status: !!python/object:uuid.UUID
-  int: 336444450266496547059833010238290292739
+  int: 253180895711991390199790182412556981095
 tags:
 - !!python/object:uuid.UUID
   int: 162106955348893831939149234360796181164
@@ -26,4 +26,4 @@ title: Write new CLI scripts (witz!) to talk to pitz-webapp
 type: task
 uuid: !!python/object:uuid.UUID
   int: 211495042880395369769065116258946487437
-yaml_file_saved: 2010-05-18 11:48:26.066553
+yaml_file_saved: 2010-10-04 21:02:22.541022
