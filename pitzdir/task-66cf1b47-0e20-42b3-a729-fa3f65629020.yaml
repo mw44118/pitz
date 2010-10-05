@@ -1,0 +1,23 @@
+components: []
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2010-10-05 08:59:54.578108
+description: ''
+estimate: !!python/object:uuid.UUID
+  int: 334988786726400201598883942844016081861
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: 2010-10-05 09:00:26.796275
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 186549294108620083675905586221689859068
+title: Add docs to pypi page
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 136656614274408756217090540121050222624
+yaml_file_saved: 2010-10-05 09:00:26.810669
