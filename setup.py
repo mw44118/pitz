@@ -9,10 +9,7 @@ setup(
     version=version,
     description="Python to-do tracker inspired by ditz (ditz.rubyforge.org)",
 
-    long_description="""\
-ditz (http://ditz.rubyforge.org) is the best distributed ticketing
-system that I know of.  There's a few things I want to change, so I
-started pitz.""",
+    long_description=open('README'),
 
     classifiers=[],
     keywords='ditz',
