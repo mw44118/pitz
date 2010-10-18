@@ -1,0 +1,25 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-10-18 10:00:49.249426
+description: 'Nose is a lovely package, but I don''t want to depend on it.
+
+
+  I want the install for pitz to be as fast as possible.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 116844512387905207184986485847965343674
+title: Rewrite tests to not depend on nose
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 45120933865588653493316528591733129803
+yaml_file_saved: 2010-10-18 10:00:49.256630

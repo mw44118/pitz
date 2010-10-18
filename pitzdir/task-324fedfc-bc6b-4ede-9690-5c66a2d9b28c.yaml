@@ -13,11 +13,11 @@ estimate: !!python/object:uuid.UUID
   int: 194238884256655928753821602839070306529
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-03-25 08:59:32.483047
+modified_time: 2010-10-05 10:04:23.782603
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 336444450266496547059833010238290292739
 tags:
 - !!python/object:uuid.UUID
   int: 327280339527671628486558366906481688438
@@ -25,4 +25,4 @@ title: Make bag summarized view compatible with rst tools
 type: task
 uuid: !!python/object:uuid.UUID
   int: 66876418195955973428071570831679533708
-yaml_file_saved: 2010-03-25 09:01:09.428002
+yaml_file_saved: 2010-10-05 10:04:23.802651

@@ -1,0 +1,31 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-10-08 11:55:49.444577
+description: 'In the CLI during pitz-add-task, when pitz asks for a choice of
+
+  estimate, if the user pushes anything that is outside the allowed list,
+
+  the app just detonates.
+
+
+  This situation needs to be caught.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 213302401238485658731862796644474871986
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Catch index errors in choose from already instantiated methods
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 247241325421348233019986067983396294971
+yaml_file_saved: 2010-10-08 11:55:49.452357
