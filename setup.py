@@ -37,14 +37,7 @@ setup(
         'PyYAML',
         'jinja2',
         'Tempita',
-
-        # This stuff isn't required for using pitz, just for developing
-        # it.
-        'sphinx',
-        'nose',
-        'mock',
     ],
-
 
     entry_points="""
     [console_scripts]
