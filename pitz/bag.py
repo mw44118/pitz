@@ -273,6 +273,10 @@ class Bag(BagSuperclass):
         return e
 
     @property
+    def title_underline(self):
+        return "=" * len(self.title)
+
+    @property
     def pitzdir(self):
         return self.pathname
 
@@ -353,7 +357,7 @@ class Bag(BagSuperclass):
     @property
     def contents(self):
         """
-        Describe contents and the ordering method.
+        Describe count by type of the contents of this bag.
 
         >>> Bag().contents
         '(empty)'
@@ -375,14 +379,7 @@ class Bag(BagSuperclass):
 
                 for typename, typecount in self.values('type')]
 
-            if self.order_method.__doc__:
-
-                return "(%s, ordered by %s)" \
-                % (', '.join(nasty_list_comprehension),
-                    self.order_method.__doc__)
-
-            else:
-                return "(%s)" % (', '.join(nasty_list_comprehension))
+            return "(%s)" % (', '.join(nasty_list_comprehension))
 
 
         else:

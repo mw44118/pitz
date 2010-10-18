@@ -1,13 +1,9 @@
-{%  for equalsign in bag.title -%}={% endfor %}
+{{ bag.title_underline }}
 {{ bag.title }}
-{%  for equalsign in bag.title -%}={% endfor %}
+{{ bag.title_underline }}
 
 {{ bag.contents }}
 
 {% for i, e in enumerate(entities) -%}
-{% if shell_mode -%}
-{{ '%4d' | format(i) }}: {{ getattr(e, entity_view) }}
-{% else -%}
-{{ e.custom_view(entity_view, color=color) }}
-{% endif -%}
+{{ '%-4s' | format( '%s.' % (i+1) )}}{{ getattr(e, entity_view) }}
 {% endfor %}
