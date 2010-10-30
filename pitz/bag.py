@@ -327,12 +327,6 @@ class Bag(BagSuperclass):
             shell_mode=self.shell_mode,
             entity_view='summarized_view')
 
-    @property
-    def rst_detailed_view(self):
-
-        return self.custom_view(entity_view='rst_summarized_view')
-
-
     def custom_view(self, entity_view='summarized_view', color=False):
         """
         Print the entities using the entity view given.
@@ -342,7 +336,9 @@ class Bag(BagSuperclass):
 
         self._setup_jinja()
 
-        if color:
+        # This is yucky.  I want a better way to know if the entity's
+        # view supports colorization.
+        if color and not entity_view.startswith('rst'):
             t = self.e.get_template('colorized_bag_detailed_view.txt')
 
         else:

@@ -103,6 +103,28 @@ def test_detailed_view():
     global b
     b.detailed_view
 
+class TestViews(unittest.TestCase):
+
+    def setUp(self):
+
+        b = Bag("Testing bag")
+
+        tasks = [
+
+            Entity(b, title='Clean dog poop in back yard!',
+                creator='person-matt',
+                status='really important'),
+        ]
+
+        self.b = b
+
+
+    def test_custom_view_1(self):
+        self.b.custom_view('summarized_view')
+
+    def test_custom_view_2(self):
+        self.b.custom_view('rst_summarized_view')
+
 
 def test_contents_1():
 

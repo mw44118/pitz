@@ -330,6 +330,7 @@ class Entity(dict):
 
     def custom_view(self, name_of_view=None,
         default_view='detailed_view', color=False):
+
         """
         Just a little nicer than writing all that getattr(...) stuff.
         """

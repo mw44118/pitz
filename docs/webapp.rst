@@ -47,9 +47,10 @@ URL                                     translation
                                         attributes) on this entity.
 
 /Entity/by_frag/abc123/destroy          Tell this entity to destroy
-                                        itself.              
+                                        itself.
 
 ======================================= ===============================
+
 
 Set the format with HTTP_ACCEPT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

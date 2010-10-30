@@ -1,5 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import textwrap
+
 import clepy
 
 from pitz.entity import (
@@ -196,6 +198,41 @@ class Task(Entity):
             self.milestone,
             self.pscore,
         )])
+
+    @property
+    def rst_interesting_attributes_view(self):
+        """
+        Return a string like:
+
+            matt_ | started_ | straightforward_ | 1.0_ | 0
+
+            .. _matt: Person/by_title/matt
+            .. _started: Status/by_title/started
+            .. _straightforward: Estimate/by_title/straightforward
+            .. _1.0: Milestone/by_title/1.0
+
+        using this task's values for those attributes.
+        """
+
+        t = textwrap.dedent("""
+            %(owner_title)s_ | %(status_title)s_ | %(estimate_title)s_ | %(milestone_title)s_ | %(pscore)s
+
+            .. _%(owner_title)s: Person/by_title/%(owner_title)s
+            .. _%(status_title)s: Status/by_title/%(status_title)s
+            .. _%(estimate_title)s: Estimate/by_title/%(estimate_title)s
+            .. _%(milestone_title)s: Milestone/by_title/%(milestone_title)s
+        """)
+
+        d = dict(
+            owner_title=self.owner.title,
+            status_title=self.status.title,
+            estimate_title=self.estimate.title,
+            milestone_title=self.milestone.title,
+            pscore=self.pscore
+        )
+
+        return t % d
+
 
     @property
     def colorized_one_line_view(self):
