@@ -1,0 +1,21 @@
+components: []
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-10-30 13:16:35.698999
+description: ''
+estimate: !!python/object:uuid.UUID
+  int: 334988786726400201598883942844016081861
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: *id001
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags: []
+title: Check options on pitz-finish-task and remove silly ones like -z and -i
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 330303956308297786711397821071621184375
+yaml_file_saved: 2010-10-30 13:16:35.715896
