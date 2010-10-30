@@ -4,16 +4,29 @@ components:
 created_by: &id001 !!python/object:uuid.UUID
   int: 217356799640352244068158184369341070513
 created_time: 2010-03-22 17:18:41.194256
-description: "It is possible to do this::\n\n    $ pitz-show-task abc123 | rst2pdf\
-  \ > abc123.pdf\n\nAnd then view a pretty PDF version of task abc123.\n\nI had to\
-  \ tweak the template used by pitz-show-task so that it would\noutput stuff with\
-  \ restructured text syntax.\n\nNow I should do the same thing for the detailed view\
-  \ property on bags."
+description: "It is possible to do this::\n\n    $ pitz-show abc123 | rst2pdf > abc123.pdf\n\
+  \nAnd then view a pretty PDF version of task abc123.\n\nI had to tweak the template\
+  \ used by pitz-show-task so that it would\noutput stuff with restructured text syntax.\n\
+  \nNow I should do the same thing for the detailed view property on bags.\n\nRight\
+  \ now, this is what the detailed view of a bag looks like::\n\n    $ pitz-my-todo\
+  \ -n 3\n    ==============================\n    slice from To-do list for matt\n\
+  \    ==============================\n\n    (3 task entities)\n\n    Make bag summarized\
+  \ view compatible with rst tools             324fed\n    matt | started | difficult\
+  \ | 1.0 | 0\n    CLI\n    It is possible to do this::      $ pitz-show abc123 |\
+  \ rst2pdf > ab...\n\n    Write new CLI scripts (witz!) to talk to pitz-webapp  \
+  \         9f1c76\n    matt | paused | difficult | 1.0 | 1\n    webapp, CLI\n   \
+  \ Starting up and loading all the pitz data at the beginning of ever...\n\n    Experiment\
+  \ with different task summarized views                0f6fee\n    matt | unstarted\
+  \ | straightforward | 1.0 | 1\n    CLI\n    Right now, the summarized view of a\
+  \ task looks a little like this:...\n\nIf I run that through a restructured text\
+  \ parser, the line breaks will get\nignored.\n\nI might write a special restructured\
+  \ text detailed view, so that the original\nversion won't need to be littered with\
+  \ distracting markup."
 estimate: !!python/object:uuid.UUID
   int: 194238884256655928753821602839070306529
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-10-05 10:04:23.782603
+modified_time: 2010-10-27 09:26:43.084270
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
@@ -25,4 +38,4 @@ title: Make bag summarized view compatible with rst tools
 type: task
 uuid: !!python/object:uuid.UUID
   int: 66876418195955973428071570831679533708
-yaml_file_saved: 2010-10-05 10:04:23.802651
+yaml_file_saved: 2010-10-27 09:26:43.092540

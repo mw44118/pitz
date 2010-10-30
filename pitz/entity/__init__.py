@@ -807,6 +807,15 @@ class Entity(dict):
 
 
     @property
+    def rst_summarized_view(self):
+        """
+        Summarized view that uses reStrucuredText.
+        """
+
+        return self.summarized_view
+
+
+    @property
     def abbr(self):
         """
         Shortest possible description of entity.

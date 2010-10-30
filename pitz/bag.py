@@ -298,7 +298,6 @@ class Bag(BagSuperclass):
     def shell_mode(self):
         return getattr(self, '_shell_mode', False)
 
-
     @property
     def colorized_detailed_view(self):
 
@@ -314,8 +313,6 @@ class Bag(BagSuperclass):
             shell_mode=self.shell_mode,
             entity_view='summarized_view')
 
-
-
     @property
     def detailed_view(self):
 
@@ -329,6 +326,11 @@ class Bag(BagSuperclass):
             color=False,
             shell_mode=self.shell_mode,
             entity_view='summarized_view')
+
+    @property
+    def rst_detailed_view(self):
+
+        return self.custom_view(entity_view='rst_summarized_view')
 
 
     def custom_view(self, entity_view='summarized_view', color=False):

@@ -1,0 +1,11 @@
+{{ e.title_view }} {{ e.frag }}
+{{ e.underline_title_and_frag() }}
+
+{{ e.interesting_attributes_view }}
+
+{{ e.tags_view }}
+
+::
+
+    {{ e.description_excerpt }}
+

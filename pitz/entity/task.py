@@ -74,8 +74,10 @@ class Task(Entity):
 
     @property
     def title_view(self):
-
         return '%-62s' % clepy.maybe_add_ellipses(self.title, 59)
+
+    def underline_title_and_frag(self, char='-'):
+        return char * (len(self.title_view) + 7)
 
     @property
     def milestone(self):
@@ -110,6 +112,12 @@ class Task(Entity):
         """
 
         return self.e.get_template('task_summarized_view.txt')\
+        .render(e=self)
+
+    @property
+    def rst_summarized_view(self):
+
+        return self.e.get_template('task_rst_summarized_view.txt')\
         .render(e=self)
 
     @property
@@ -275,6 +283,7 @@ class Task(Entity):
         self['status'] = Status(title='finished')
 
         return self
+
 
     def assign(self, owner):
 

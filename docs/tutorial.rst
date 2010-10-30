@@ -20,8 +20,8 @@ You'll get asked lots of questions, and at the end, get dumped back out
 to the command line, and a fancy new pitzdir directory will hold your
 stuff.
 
-Tell your SCM to ignore some files
-==================================
+Tell your source control system to ignore some files
+====================================================
 
 You should **not** track changes in these files, since they do stuff
 like cache data for quicker retrieval and protect against multiple
@@ -36,7 +36,6 @@ me.yaml
 The me.yaml file can be tracked as long as you know you're the only one on the
 project.  If many people have checkouts, each person's me.yaml file
 should be different, and so you should not track changes to it.
-
 
 git example
 -----------
