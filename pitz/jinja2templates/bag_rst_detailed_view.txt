@@ -4,6 +4,6 @@
 
 {{ bag.contents }}
 
-{% for i, e in enumerate(entities) -%}
+{% for e in entities -%}
 {{{ getattr(e, entity_view) }}
 {% endfor %}

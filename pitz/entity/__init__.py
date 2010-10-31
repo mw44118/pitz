@@ -467,10 +467,10 @@ class Entity(dict):
     def title_view(self):
         return '%-62s' % clepy.maybe_add_ellipses(self.title, 59)
 
-    def underline_title(self, char='-'):
+    def underline_title(self, char='='):
         return char * (len(self.title_view))
 
-    def underline_title_and_frag(self, char='-'):
+    def underline_title_and_frag(self, char='='):
         return char * (len(self.title_view) + 7)
 
     @property

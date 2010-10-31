@@ -1,11 +1,11 @@
 {{ colors['white'] -}}
-{%  for equalsign in bag.title -%}={% endfor %}
+{%  for equalsign in bag.title -%}+{% endfor %}
 {{ colors['clear'] -}}
 {{ colors['white'] -}}
 {{ bag.title }}
 {{ colors['clear'] -}}
 {{ colors['white'] -}}
-{%  for equalsign in bag.title -%}={% endfor %}
+{%  for equalsign in bag.title -%}+{% endfor %}
 {{- colors['clear'] }}
 
 {{ bag.contents }}

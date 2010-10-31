@@ -17,15 +17,15 @@ estimate: !!python/object:uuid.UUID
 html_file_saved: 2009-10-03 20:02:54.700578
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: 2010-03-26 22:40:02.185424
+modified_time: 2010-10-31 13:12:40.288838
 owner: !!python/object:uuid.UUID
-  int: 219503519214021148627266826050732492225
+  int: 217356799640352244068158184369341070513
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 327359014471868074244219043980996376403
+  int: 181191650815078915740523248343325601886
 tags: []
 title: Allow control of log level from command-line
 type: task
 uuid: !!python/object:uuid.UUID
   int: 209758735084298468252639548293307975721
-yaml_file_saved: 2010-03-27 12:23:16.610484
+yaml_file_saved: 2010-10-31 13:12:40.306136

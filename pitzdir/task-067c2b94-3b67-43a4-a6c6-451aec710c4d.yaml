@@ -1,15 +1,15 @@
 comments: []
 components: []
 created_time: 2009-06-26 19:04:18.930465
-description: "The simplest way I can think of translating this dictionary:\n\n   \
-  \ class = {\n        'tasks':Task,\n        'milestones':Milestone\n    }\n\nis\
-  \ with a metaclass.  But maybe that ain't the right solution.\n"
+description: "The simplest way I can think of translating this dictionary::\n\n  \
+  \  class = {\n        'tasks':Task,\n        'milestones':Milestone\n    }\n\nis\
+  \ with a metaclass.  But maybe that ain't the right solution."
 estimate: !!python/object:uuid.UUID
   int: 334988786726400201598883942844016081861
 html_file_saved: 2009-10-03 20:03:01.341855
 milestone: !!python/object:uuid.UUID
   int: 43202488294965147244317640483158997306
-modified_time: 2010-03-26 22:40:02.266840
+modified_time: 2010-10-31 13:38:46.069222
 owner: !!python/object:uuid.UUID
   int: 219503519214021148627266826050732492225
 pscore: 0
@@ -20,4 +20,4 @@ title: Map classes dictionary on Project class into properties
 type: task
 uuid: !!python/object:uuid.UUID
   int: 8620096672933277371028232334790954061
-yaml_file_saved: 2010-03-27 12:23:16.700707
+yaml_file_saved: 2010-10-31 13:38:46.092889

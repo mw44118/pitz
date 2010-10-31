@@ -274,7 +274,7 @@ class Bag(BagSuperclass):
 
     @property
     def title_underline(self):
-        return "=" * len(self.title)
+        return "+" * len(self.title)
 
     @property
     def pitzdir(self):
@@ -338,6 +338,14 @@ class Bag(BagSuperclass):
 
         # This is yucky.  I want a better way to know if the entity's
         # view supports colorization.
+
+        # I probably should write custom view to make it easy to specify
+        # the view for the bag itself and the view to apply to each
+        # entity in the bag separately.
+
+        # Also, the color parameter is not good.  The view choice itself
+        # should specify if color should be used.
+
         if color and not entity_view.startswith('rst'):
             t = self.e.get_template('colorized_bag_detailed_view.txt')
 

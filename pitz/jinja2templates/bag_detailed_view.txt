@@ -4,6 +4,10 @@
 
 {{ bag.contents }}
 
+.. contents::
+    :depth: 1
+
 {% for e in entities -%}
 {{ getattr(e, entity_view) }}
+
 {% endfor %}
