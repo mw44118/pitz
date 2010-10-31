@@ -251,7 +251,7 @@ class SimpleWSGIApp(object):
                     return [str(results)]
 
             m5 = re.search('/by_frag/([^/]+)/?'
-                '(detailed_view|summarized_view)?/?$', path_info)
+                '(detailed_view|summarized_view|rst_detailed_view|rst_summarized_view|one_line_view)?/?$', path_info)
 
             if m5:
 
@@ -297,7 +297,9 @@ class SimpleWSGIApp(object):
 
                     headers = [('Content-type', 'text/plain')]
                     start_response(status, headers)
-                    return [str(results)]
+                    return [str(
+                        getattr(results, view_type) if view_type
+                        else results)]
 
             m6 = re.search('/by_frag/([^/]+)/my_todo/?'
                 '(detailed_view|summarized_view)?/?$', path_info)
@@ -352,7 +354,9 @@ class SimpleWSGIApp(object):
 
                     headers = [('Content-type', 'text/plain')]
                     start_response(status, headers)
-                    return [str(results)]
+                    return [str(
+                        getattr(results, view_type) if view_type
+                        else results)]
 
             raise NoMatch(path_info)
 

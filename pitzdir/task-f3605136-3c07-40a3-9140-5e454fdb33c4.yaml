@@ -22,13 +22,14 @@ description: "Right now, the Task.interesting_attributes view looks a little lik
   \ the view can really be thought of as a serialization layer."
 estimate: !!python/object:uuid.UUID
   int: 194238884256655928753821602839070306529
+html_file_saved: 2010-10-31 10:45:52.810688
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-10-30 13:45:09.384180
+modified_time: 2010-10-31 13:00:21.063804
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 336444450266496547059833010238290292739
+  int: 181191650815078915740523248343325601886
 tags:
 - !!python/object:uuid.UUID
   int: 115897731472495632588122822348854247787
@@ -38,4 +39,4 @@ title: Add restructured text views to entities
 type: task
 uuid: !!python/object:uuid.UUID
   int: 323502510646230440442301276459911295940
-yaml_file_saved: 2010-10-30 13:45:09.402537
+yaml_file_saved: 2010-10-31 13:00:21.075995

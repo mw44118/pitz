@@ -1,8 +1,10 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import logging
 import textwrap
 
 import clepy
+import jinja2
 
 from pitz.entity import (
     Component, Entity, Estimate, Person,
@@ -11,12 +13,14 @@ from pitz.entity import (
 
 import pitz
 
+log = logging.getLogger('entity.task')
 
 class Task(Entity):
 
     plural_name = "tasks"
 
     cli_detailed_view_template = 'task_detailed_view.txt'
+    rst_detailed_view_template = 'task_rst_detailed_view.txt'
     colorized_detailed_view_template = 'colorized_task_detailed_view.txt'
     cli_verbose_view_template = 'task_verbose_view.txt'
 
@@ -75,13 +79,6 @@ class Task(Entity):
             pitz.colors['clear'])
 
     @property
-    def title_view(self):
-        return '%-62s' % clepy.maybe_add_ellipses(self.title, 59)
-
-    def underline_title_and_frag(self, char='-'):
-        return char * (len(self.title_view) + 7)
-
-    @property
     def milestone(self):
         return self['milestone']
 
@@ -137,22 +134,6 @@ class Task(Entity):
         return self['components']
 
     @property
-    def tags(self):
-
-        if 'tags' not in self:
-            self['tags'] = self.required_fields['tags'](self.project)
-        return self['tags']
-
-    @property
-    def tags_view(self):
-
-        if self['tags']:
-            return ', '.join([t.title for t in self.tags])
-
-        else:
-            return 'no tags'
-
-    @property
     def components_view(self):
         """
         Return a string (maybe empty) of this task's components.
@@ -163,6 +144,14 @@ class Task(Entity):
 
         else:
             return 'no components'
+
+    @property
+    def tags(self):
+
+        if 'tags' not in self:
+            self['tags'] = self.required_fields['tags'](self.project)
+        return self['tags']
+
 
     @property
     def tags_view(self):
@@ -180,6 +169,38 @@ class Task(Entity):
 
         else:
             return 'no tags'
+
+    @property
+    def rst_tags_view(self):
+
+        """
+        Returns a string like:
+
+            `web`_, `tests`_, `documentation`-, `data model`_, `CLI`_
+
+            .. _`web`: Tag/by_title/web
+            .. _`tests`: Tag/by_title/tests
+            .. _`documentation`: Tag/by_title/documentation
+            .. _`data model`: Tag/by_title/data model
+            .. _`CLI`: Tag/by_title/CLI
+        """
+
+        if self.tags:
+
+            first_row = ', '.join(['`%(title)s`_' % tag
+                for tag in self.tags])
+
+            log.debug('first_row is %s' % first_row)
+
+            targets = '\n'.join([
+                tag.rst_link_target_view for tag in self.tags])
+
+            return """%(first_row)s\n\n%(targets)s\n\n""" \
+                % dict(first_row=first_row, targets=targets)
+
+        else:
+            return 'no tags'
+
 
     @property
     def interesting_attributes_view(self):
@@ -214,24 +235,16 @@ class Task(Entity):
         using this task's values for those attributes.
         """
 
-        t = textwrap.dedent("""
-            %(owner_title)s_ | %(status_title)s_ | %(estimate_title)s_ | %(milestone_title)s_ | %(pscore)s
+        t = jinja2.Template(textwrap.dedent("""
+            `{{t.owner.title}}`_ | `{{t.status.title}}`_ | `{{t.estimate.title}}`_ | `{{t.milestone.title}}`_ | {{t.pscore}}
 
-            .. _%(owner_title)s: Person/by_title/%(owner_title)s
-            .. _%(status_title)s: Status/by_title/%(status_title)s
-            .. _%(estimate_title)s: Estimate/by_title/%(estimate_title)s
-            .. _%(milestone_title)s: Milestone/by_title/%(milestone_title)s
-        """)
+            {{t.owner.rst_link_target_view}}
+            {{t.status.rst_link_target_view}}
+            {{t.estimate.rst_link_target_view}}
+            {{t.milestone.rst_link_target_view}}
+        """))
 
-        d = dict(
-            owner_title=self.owner.title,
-            status_title=self.status.title,
-            estimate_title=self.estimate.title,
-            milestone_title=self.milestone.title,
-            pscore=self.pscore
-        )
-
-        return t % d
+        return t.render(t=self)
 
 
     @property

@@ -459,11 +459,19 @@ class Entity(dict):
     def uuid(self):
         return self['uuid']
 
-
     @property
     def title(self):
         return self['title']
 
+    @property
+    def title_view(self):
+        return '%-62s' % clepy.maybe_add_ellipses(self.title, 59)
+
+    def underline_title(self, char='-'):
+        return char * (len(self.title_view))
+
+    def underline_title_and_frag(self, char='-'):
+        return char * (len(self.title_view) + 7)
 
     @property
     def description(self):
@@ -489,6 +497,20 @@ class Entity(dict):
 
         t = self.e.get_template('colorized_description_view.txt')
         return t.render(e=self)
+
+    @property
+    def rst_link_target_view(self):
+        """
+        Return a string that looks a little like this::
+
+            .. _`matt`: /by_uuid/abc123def456
+        """
+
+        t = ".. _`%(title)s`: /by_uuid/%(uuid)s"
+
+        d = dict(title=self.title, uuid=self.uuid)
+
+        return t % d
 
 
     @property
@@ -854,6 +876,13 @@ class Entity(dict):
         t = self.e.get_template(self.cli_detailed_view_template)
 
         return t.render(e=self, **d)
+
+    @property
+    def rst_detailed_view(self):
+
+        t = self.e.get_template(self.rst_detailed_view_template)
+        return t.render(e=self)
+
 
     @property
     def verbose_view(self):

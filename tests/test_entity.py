@@ -955,3 +955,13 @@ class TestWhatTheyReallyMean(unittest.TestCase):
 
         assert [self.bar] == \
         self.e.what_they_really_mean('foo', [self.bar.frag])
+
+
+class TestViews(unittest.TestCase):
+
+    def setUp(self):
+        self.e = Entity(title="test views")
+
+    def test_rst_link_view(self):
+
+        self.e.rst_link_target_view

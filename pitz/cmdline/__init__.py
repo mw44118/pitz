@@ -262,6 +262,11 @@ class PitzScript(object):
         p.add_option('--detailed-view', help='detailed view',
             dest='custom_view', action='store_const', const='detailed_view')
 
+        p.add_option('--rst-detailed-view',
+            help='detailed view (with reST markup)',
+            dest='custom_view', action='store_const',
+            const='rst_detailed_view')
+
         p.add_option('--rst-summarized-view',
             help='summarized view (compatible with reStructuredText)',
             dest='custom_view', action='store_const',

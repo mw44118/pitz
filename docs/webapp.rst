@@ -52,20 +52,6 @@ URL                                     translation
 ======================================= ===============================
 
 
-Set the format with HTTP_ACCEPT
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The code internally works a little like this::
-
-    if 'application/x-pitz in Accept:
-        return data formatted with bash colorization
-
-    elif if 'text/html' in Accept or '*/*' in Accept:
-        return HTML format of data
-
-    else:
-        return text/plain
-
 Filter with QUERY_STRING
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -111,9 +97,7 @@ List all tags::
 
 List all tags and request colorized output::
 
-    $ wget --header="Accept:application/x-pitz" \
-    -q -O - http://localhost:8000/?type=tag
-
+    $ wget -q -O - http://localhost:8000/colorized_detailed_view?type=tag
 
 Calling methods on classes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
