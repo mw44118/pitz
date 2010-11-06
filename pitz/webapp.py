@@ -1,10 +1,13 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 import cgi
-import mimetypes
 import logging
+import mimetypes
+import os
 import re
 import urllib
+
+import jinja2
 
 from pitz import build_filter, PitzException
 from pitz.entity import Entity
@@ -16,7 +19,50 @@ class NoMatch(PitzException):
     Indicates that we couldn't match this URL.
     """
 
+class HelpHandler(object):
+
+    def wants_to_handle(self, environ):
+
+        """
+        Return self or None.  self means this handler wants to handle
+        this request.  None means it doesn't want to handle this.
+        """
+
+        if environ['PATH_INFO'] == '/help':
+            return self
+
+
+    def __call__(self, environ, start_response):
+
+        """
+        Return a screen of help about the web app.
+        """
+
+        # Figure out the path to the jinja2templates.
+        jinja2dir = os.path.join(
+            os.path.split(os.path.dirname(__file__))[0],
+            'pitz',
+            'jinja2templates')
+
+        # Set up a template loader.
+        self.e = jinja2.Environment(
+            extensions=['jinja2.ext.loopcontrols'],
+            loader=jinja2.FileSystemLoader(jinja2dir))
+
+        t = self.e.get_template('help.html')
+
+        status = '200 OK'
+        headers = [('Content-type', 'text/html')]
+
+        start_response(status, headers)
+        return [str(t.render(title='Help'))]
+
+
 class SimpleWSGIApp(object):
+
+    def __init__(self, proj):
+        self.proj = proj
+        self.handlers = list()
 
     @classmethod
     def reply404(cls, start_response, msg=None):
@@ -31,14 +77,27 @@ class SimpleWSGIApp(object):
         else:
             return ["Sorry, didn't match any patterns..."]
 
-    def __init__(self, proj):
-        self.proj = proj
+
+    def dispatch(self, environ):
+
+        """
+        Return the first handler that wants to handle this environ.
+        """
+
+        for h in self.handlers:
+            if h.wants_to_handle(environ):
+                return h
 
     def __call__(self, environ, start_response):
 
         log.debug('PATH_INFO is %(PATH_INFO)s.' % environ)
         log.debug('QUERY_STRING is %(QUERY_STRING)s.' % environ)
         log.debug('HTTP_ACCEPT is %(HTTP_ACCEPT)s.' % environ)
+
+        h = self.dispatch(environ)
+
+        if h:
+            return h(environ, start_response)
 
         path_info = environ['PATH_INFO']
         qs = cgi.parse_qs(environ['QUERY_STRING'])
@@ -47,6 +106,8 @@ class SimpleWSGIApp(object):
         all_classes = ('^/('
             + '|'.join([c.title() for c in self.proj.classes])
             + ')')
+
+
 
         try:
 

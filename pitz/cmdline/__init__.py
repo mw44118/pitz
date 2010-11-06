@@ -21,7 +21,7 @@ from pitz.entity import (
     Component, Entity, Estimate, Milestone,
     Person, Status, Tag, Task)
 
-from pitz.webapp import SimpleWSGIApp
+from pitz import webapp
 
 log = logging.getLogger('pitz.cmdline')
 
@@ -44,6 +44,7 @@ class PitzHelp(object):
             print(
                 "    %-26s %-44s"
                 % (name, clepy.maybe_add_ellipses(description, 44)))
+
 
 pitz_help = PitzHelp()
 f = pitz_help.add_to_list_of_scripts
@@ -1220,7 +1221,10 @@ def pitz_webapp():
     proj = Project.from_pitzdir(pitzdir)
     proj.find_me()
 
-    httpd = make_server('', 8000, SimpleWSGIApp(proj))
+    app = webapp.SimpleWSGIApp(proj)
+    app.handlers.append(webapp.HelpHandler())
+
+    httpd = make_server('', 8000, app)
     print "Serving on port 8000..."
     httpd.serve_forever()
 

@@ -11,7 +11,7 @@ from pitz.project import Project
 from pitz.entity import Entity, Person, Task, Status, Milestone, \
 Activity, Estimate, Tag, Comment, Component
 
-from pitz.webapp import SimpleWSGIApp
+from pitz.webapp import HelpHandler, SimpleWSGIApp
 
 class TestWebApp(unittest.TestCase):
 
@@ -22,6 +22,7 @@ class TestWebApp(unittest.TestCase):
         Entity(self.p, title="t")
         matt = Person(self.p, title='matt')
         self.webapp = SimpleWSGIApp(self.p)
+        self.webapp.handlers.append(HelpHandler())
 
         Status(self.p, title='bogus status')
         Estimate(self.p, title='bogus estimate')
@@ -49,7 +50,9 @@ class TestWebApp(unittest.TestCase):
         if os.path.exists('/tmp/project.pickle'):
             os.remove('/tmp/project.pickle')
 
-    def mk_request(self, pi, qs, ha, expected_status, expected_results):
+    def mk_request(self, pi, qs, ha, expected_status,
+        expected_results=None):
+
         bogus_environ = dict(
             PATH_INFO=pi,
             QUERY_STRING=qs,
@@ -57,9 +60,15 @@ class TestWebApp(unittest.TestCase):
 
         bogus_start_response = mock.Mock()
         results = self.webapp(bogus_environ, bogus_start_response)
+
         assert bogus_start_response.called
         assert bogus_start_response.call_args[0][0] == expected_status
-        assert results == [expected_results], results
+
+        if expected_results:
+            assert results == [expected_results], results
+
+        return results
+
 
     def test_1(self):
         self.mk_request('/', '', 'text/plain', '200 OK',
@@ -183,4 +192,36 @@ class TestWebApp(unittest.TestCase):
 
     def test_help(self):
 
+        self.mk_request('/help',
+            '',
+            'text/plain',
+            '200 OK',
+            '')
+
+class TestHelpHandler(unittest.TestCase):
+
+    def setUp(self):
+        self.hh = HelpHandler()
+
+    def test_1(self):
+        help_page_iterable = self.hh(mock.Mock(), mock.Mock())
+
+
+class TestDispatcher(unittest.TestCase):
+
+    def setUp(self):
+        self.p = Project(title='Bogus project for testing webapp')
+        self.app = SimpleWSGIApp(self.p)
+        self.app.handlers = []
+
+        self.bogus_environ = dict(
+            PATH_INFO='/fibityfoo',
+            QUERY_STRING='?a=1')
+
+    def test_1(self):
+        """
+        Make sure nothing blows up when nothing matches.
+        """
+
+        assert self.app.dispatch(self.bogus_environ) is None
 
