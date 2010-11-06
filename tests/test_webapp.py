@@ -180,3 +180,7 @@ class TestWebApp(unittest.TestCase):
             '404 NOT FOUND',
             """Sorry, didn't match any patterns...""")
 
+
+    def test_help(self):
+
+

@@ -1216,8 +1216,6 @@ class Estimate(Entity):
         pscore=int,
         points=int)
 
-    # Maybe this should be a dictionary of bags, not a dictionary of
-    # lists.
     ranges = [
 
         ("Matt's choice", [
