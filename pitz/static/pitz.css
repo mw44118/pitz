@@ -1,0 +1,46 @@
+body
+{
+    width:40em;
+    margin:auto;
+    font-family: helvetica, sans-serif;
+    font-size: 20px;
+    line-height:1.5;
+    color:#333;
+}
+
+#globalnav
+{
+    margin-top:2em;
+    padding-top:1em;
+    border-top:3px solid #ccc;
+}
+
+#globalnav ul
+{
+    margin:0;
+    padding:0;
+}
+
+#globalnav li
+{
+    list-style:none;
+    display:inline;
+    margin-right:2em;
+}
+
+#globalnav a
+{
+    font-weight:bold;
+    text-decoration:none;
+    color:#333;
+}
+
+#globalnav a:hover
+{
+    border-bottom:1px dotted black;
+}
+
+#content
+{
+    border-top:3px solid #ccc;
+}

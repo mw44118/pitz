@@ -1,10 +1,80 @@
-{% extends "base.html" %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-{%block page_title %}
+<html>
+
+<head>
+
 <title>{{ title }}</title>
-{% endblock %}
 
-{%block content %}
+<link rel="stylesheet" type="text/css"
+    href="/static/pitz.css" />
+
+</head>
+
+<body>
+
+<div id="header">
+
 <h1>{{ title }}</h1>
 
-{% endblock %}
+</div><!-- closes div id="header" -->
+
+<div id="content">
+<h2>Supported GET URLs</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>URL</th>
+<th>Translation</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>/</td>
+<td>p()</td>
+</tr>
+
+<tr>
+<td>/?type=task</td>
+<td>p(type='task')</td>
+</tr>
+
+<tr>
+<td>/Task/all</td>
+<td>Task.all()</td>
+</tr>
+
+<tr>
+<td>/Task/all?status=started</td>
+<td>Task.all(status='started')</td>
+</tr>
+
+<tr>
+<td>/by_frag/abc123</td>
+<td>p['abc123']</td>
+</tr>
+
+<tr>
+<td>/by_frag/abc123/one_line_view</td>
+<td>p['abc123'].one_line_view</td>
+</tr>
+
+</tbody>
+
+</table>
+</div><!-- closes div id="content" -->
+
+<div id="globalnav">
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/help">Help</a></li>
+</ul>
+</div><!-- closes div id="globalnav" -->
+
+</body>
+
+</html>

@@ -31,7 +31,6 @@ class HelpHandler(object):
         if environ['PATH_INFO'] == '/help':
             return self
 
-
     def __call__(self, environ, start_response):
 
         """
@@ -55,7 +54,48 @@ class HelpHandler(object):
         headers = [('Content-type', 'text/html')]
 
         start_response(status, headers)
-        return [str(t.render(title='Help'))]
+        return [str(t.render(title='Pitz Webapp Help'))]
+
+
+class StaticHandler(object):
+
+    def wants_to_handle(self, environ):
+
+        if environ['PATH_INFO'].startswith('/static'):
+            return self
+
+    def __call__(self, environ, start_response):
+
+        status = '200 OK'
+        headers = [('Content-type', 'text/plain')]
+        start_response(status, headers)
+
+        filename = self.extract_filename(environ['PATH_INFO'])
+        f = self.find_file(filename)
+
+        return [f.read()]
+
+    @staticmethod
+    def find_file(filename):
+        """
+        Return an open file for filename.
+        """
+
+        return open(os.path.join(
+            os.path.split(os.path.dirname(__file__))[0],
+            'pitz', 'static', filename))
+
+    @staticmethod
+    def extract_filename(path_info):
+
+        """
+        >>> StaticHandler.extract_filename('/static/pitz.css')
+        'pitz.css'
+        """
+
+        return re.match(
+            r'^/static/(?P<filename>.+)$',
+            path_info).groupdict()['filename']
 
 
 class SimpleWSGIApp(object):

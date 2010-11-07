@@ -1222,7 +1222,9 @@ def pitz_webapp():
     proj.find_me()
 
     app = webapp.SimpleWSGIApp(proj)
+    app.handlers.append(webapp.StaticHandler())
     app.handlers.append(webapp.HelpHandler())
+
 
     httpd = make_server('', 8000, app)
     print "Serving on port 8000..."
