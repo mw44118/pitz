@@ -24,32 +24,30 @@
     <dd><a href="/by_frag/{{ task.owner.frag }}">{{ task.owner.title }}</a></dd>
 
     <dt>Status</dt>
-    <dd>{{ task.status.title }}</dd>
+    <dd><a href="/by_frag/{{ task.status.frag }}">{{ task.status.title }}</a></dd>
 
     <dt>Estimate</dt>
-    <dd>{{ task.estimate.title }}</dd>
+    <dd><a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a></dd>
 
     <dt>Milestone</dt>
-    <dd>{{ task.milestone.title }}</dd>
+    <dd><a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a></dd>
+
+{% if task.tags %}
+    <dt>Tags</dt>
+    <dd>
+        <ul>
+
+        {% for tag in task.tags %}
+            <li><a href="/by_frag/{{ tag.frag }}">{{ tag.title }}</a></li>
+        {% endfor %}
+
+        </ul>
+    </dd>
+{% endif %}
 
     </dl>
 
 </div><!-- closes div id="attributes" -->
-
-{% if task.tags %}
-<div id="tags">
-
-<ul>
-
-{% for tag in task.tags %}
-    <li>{{ tag.title }}</li>
-{% endfor %}
-
-</ul>
-
-</div>
-{% endif %}
-
 
 <div id="description">
 

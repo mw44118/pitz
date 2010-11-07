@@ -191,6 +191,24 @@ class Bag(BagSuperclass):
         return self
 
     def matches_dict(self, **d):
+        """
+        Return a new bag by filtering this bag based on key-value pairs
+        in mapping d.
+
+        >>> from pitz.entity import Entity
+        >>> sweet = Entity(title='sweet')
+        >>> sour = Entity(title='sour')
+        >>> flavors = Bag(entities=[sweet, sour])
+        >>> flavors.length
+        2
+        >>> sour in flavors
+        True
+        >>> sweet_flavors = flavors.matches_dict(title='sweet')
+        >>> sweet_flavors.length
+        1
+        >>> sour in sweet_flavors
+        False
+        """
 
         matches = [e for e in self if e.matches_dict(**d)]
 

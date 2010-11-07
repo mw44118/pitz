@@ -19,7 +19,7 @@
 <div id="description">
 <h2>Description</h2>
 
-{{ entity.description_as_html }}
+{{ entity.description }}
 </div><!-- closes div id="description" -->
 
 {% if entity.tasks %}
@@ -35,7 +35,7 @@
 <th class="taskowner">Owner</th>
 <th class="taskstatus">Status</th>
 <th class="taskestimate">Estimate</th>
-<th class="tasktags">Tags</th>
+<th class="taskmilestone">Milestone</th>
 <th class="taskpscore">pscore</th>
 </tr>
 
@@ -54,15 +54,9 @@
 <a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a>
 </td>
 
-<td class="tasktags">
-{% if task.tags %}
-<ul>
-{% for tag in task.tags %}
-<li><a href="/by_frag/{{ tag.frag }}">{{ tag.title }}</a></li>
-{% endfor %}
-</ul>
-{% endif %} <!-- closes if task.tags -->
-</td><!-- closes td class="tasktags" -->
+<td class="taskmilestone">
+    <a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a>
+</td>
 
 <td class="taskpscore">{{ task.pscore }}</td>
 

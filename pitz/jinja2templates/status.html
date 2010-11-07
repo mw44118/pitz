@@ -19,7 +19,7 @@
 <div id="description">
 <h2>Description</h2>
 
-{{ entity.description_as_html }}
+{{ entity.description }}
 </div><!-- closes div id="description" -->
 
 {% if entity.tasks %}
@@ -33,8 +33,8 @@
 <tr>
 <th class="tasktitle">Task</th>
 <th class="taskowner">Owner</th>
-<th class="taskstatus">Status</th>
 <th class="taskestimate">Estimate</th>
+<th class="taskmilestone">Milestone</th>
 <th class="tasktags">Tags</th>
 <th class="taskpscore">pscore</th>
 </tr>
@@ -46,12 +46,12 @@
 <td class="tasktitle"><a href="/by_frag/{{ task.frag }}">{{ task.title }}</a></td>
 <td class="taskowner"><a href="/by_frag/{{ task.owner.frag }}">{{ task.owner.title }}</a></td>
 
-<td class="taskstatus">
-<a href="/by_frag/{{ task.status.frag }}">{{ task.status.title }}</a>
-</td>
-
 <td class="taskestimate">
 <a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a>
+</td>
+
+<td class="taskmilestone">
+    <a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a>
 </td>
 
 <td class="tasktags">

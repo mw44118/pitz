@@ -61,3 +61,14 @@ class Person(Entity):
     def setup_defaults(cls, proj):
         cls(proj, title='no owner', pscore=-100)
 
+
+    @property
+    def my_activities(self):
+
+        all_my_activities = self.project.activities(who_did_it=self)
+
+        return all_my_activities.order(pitz.by_descending_created_time)
+
+
+
+

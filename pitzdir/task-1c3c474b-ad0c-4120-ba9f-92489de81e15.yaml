@@ -1,0 +1,26 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-11-07 10:18:59.752766
+description: "I just ran these commands::\n\n    (master)$ pitz-todo tags=webapp\n\
+  \    Sorry, found a pidfile!  Kill process 18945.\n\n    [matt@sprout: 0.55] ~/checkouts/pitz\n\
+  \    (master)$ ps 18945\n      PID TTY      STAT   TIME COMMAND\n      18945 pts/5\
+  \    S+     0:01 /home/matt/.virtualenvs/pitz/bin/python2.6 /home/matt/.virtualenvs/pitz/bin/pitz-shell\n\
+  \nWhen I warn about a running process, I might as well show all the other\ninformation."
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: When pitz detects pidfile, show process command
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 37531367740239503303936744416304700949
+yaml_file_saved: 2010-11-07 10:18:59.765205

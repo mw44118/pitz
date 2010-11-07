@@ -442,6 +442,10 @@ class Entity(dict):
             'created_time', reverse=True))
 
     @property
+    def created_time(self):
+        return self['created_time']
+
+    @property
     def yaml_filename(self):
         return '%(type)s-%(uuid)s.yaml' % self
 
@@ -1200,6 +1204,7 @@ class Entity(dict):
 class Estimate(Entity):
 
     plural_name = 'estimates'
+    jinja_template = 'estimate.html'
 
     required_fields = dict(
         title=None,
@@ -1290,6 +1295,7 @@ class Estimate(Entity):
 class Status(Entity):
 
     plural_name = 'statuses'
+    jinja_template = 'status.html'
 
     def __str__(self):
         return self.title
@@ -1532,6 +1538,10 @@ class Activity(Entity):
         who_did_it=Person,
         entity=Entity,
     )
+
+    @property
+    def time_ago(self):
+        return clepy.time_ago(self.created_time)
 
     @property
     def summarized_view(self):

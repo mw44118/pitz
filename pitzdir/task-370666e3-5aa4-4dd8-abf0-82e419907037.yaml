@@ -1,0 +1,72 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-11-07 10:25:33.048549
+description: 'Right now, the pidfile code is an all-or-nothing proposition.
+
+
+  If pitz-todo is running in one window, and I''m viewing the results with
+
+  less, then I can''t run pitz-show in another window, since pitz-todo
+
+  isn''t finished.
+
+
+  There are some pitz programs that are obviously safe to run
+
+  concurrently, like:
+
+
+  *   pitz-todo
+
+  *   pitz-show
+
+  *   pitz-estimates, pitz-tags, pitz-milestones
+
+  *   pitz-me
+
+
+  Meanwhile, these programs all update the model:
+
+
+  *   pitz-add-task, pitz-add-tag, pitz-add-estimate, and friends
+
+  *   pitz-edit
+
+  *   pitz-claim
+
+
+  Stuff like pitz-shell and pitz-webapp are hybrid cases.  They allow
+
+  reads and writes.
+
+
+  Anyhow, the goal here should be to only lock out other programs when
+
+  necessary.
+
+
+  This seems like a classic database problem, so I should study how real
+
+  systems like PostgreSQL solve this.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 164428807845611858952115970237144668243
+- !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Block reading and writing commands differently
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 73140780367946327521311750392418168887
+yaml_file_saved: 2010-11-07 10:25:33.060907

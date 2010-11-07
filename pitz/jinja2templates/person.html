@@ -29,6 +29,7 @@
 <th class="taskstatus">Status</th>
 <th class="taskestimate">Estimate</th>
 <th class="taskmilestone">Milestone</th>
+<th class="tasktags">Tags</th>
 <th class="taskpscore">pscore</th>
 </tr>
 
@@ -36,10 +37,33 @@
 
 {% for i, task in enumerate(person.my_todo) %}
 <tr>
-<td class="tasktitle"><a href="/by_frag/{{ task.frag }}">{{ task.title }}</a></td>
-<td class="taskstatus">{{ task.status.title }}</td>
-<td class="taskestimate">{{ task.estimate.title }}</td>
-<td class="taskmilestone">{{ task.milestone.title }}</td>
+
+<td class="tasktitle">
+<a href="/by_frag/{{ task.frag }}">{{ task.title }}</a>
+</td>
+
+<td class="taskstatus">
+<a href="/by_frag/{{ task.status.frag }}">{{ task.status.title }}</a>
+</td>
+
+<td class="taskestimate">
+<a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a>
+</td>
+
+<td class="taskmilestone">
+    <a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a>
+</td>
+
+<td class="tasktags">
+{% if task.tags %}
+<ul>
+{% for tag in task.tags %}
+<li><a href="/by_frag/{{ tag.frag }}">{{ tag.title }}</a></li>
+{% endfor %}
+</ul>
+{% endif %} <!-- closes if task.tags -->
+</td><!-- closes td class="tasktags" -->
+
 <td class="taskpscore">{{ task.pscore }}</td>
 </tr>
 {% endfor %}
@@ -53,6 +77,32 @@
 
 {{ person.description }}
 
+{% if person.my_activities %}
+<div id="my_activities">
+<h2>My Activities</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>What</th>
+<th>When</th>
+</tr>
+</thead>
+
+<tbody>
+{% for act in person.my_activities %}
+<tr>
+<td><a href="/by_frag/{{ act['entity'].frag }}">{{ act.title }}</a></td>
+<td>{{ act.time_ago }}</td>
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+
+</div><!-- closes div id="my_activities" -->
+{% endif %} <!-- closes if person.my_activities -->
 
 </body>
 

@@ -6,44 +6,47 @@ body
     font-size: 10px;
     line-height:1.5;
     color:#333;
+    padding-bottom:2em;
 }
 
-#attributes th, #todo th
+#attributes th, #todo th, #my_activities th
 {
     font-size: 10px;
     text-align:left;
     font-weight:normal;
 }
 
-#attributes td, #todo td
+#attributes td, #todo td, #my_activities td
 {
     font-size: 10px;
     text-align: left;
 }
 
-#globalnav ul, #header ul, #tags ul
+#globalnav ul, #header ul, #tags ul, #attributes ul
 {
     margin:0;
     padding:0;
+    display:inline;
 }
 
-#globalnav li, #header li, #tags li
+#globalnav li, #header li, #tags li, #attributes li
 {
     list-style:none;
     display:inline;
 }
 
-#tags li:after
+#tags li:after, #attributes li:after
 {
     content: ", ";
 }
 
-#tags li:last-child:after
+#tags li:last-child:after, #attributes li:last-child:after
 {
     content: "";
 }
 
-#globalnav a, #header a, #attributes a, #tags a, #todo a
+#globalnav a, #header a, #attributes a, #tags a, #todo a,
+#my_activities a
 {
     font-weight:bold;
     text-decoration:none;
@@ -51,7 +54,7 @@ body
 }
 
 #globalnav a:hover, #header a:hover, #attributes a:hover,
-#tags a:hover, #todo a:hover
+#tags a:hover
 {
     border-bottom:1px dotted black;
 }
@@ -61,10 +64,11 @@ h1
     border-bottom:5px solid #ccc;
 }
 
-#comments, #activity
+#comments, #activity, #description
 {
     border-top:1px solid #ccc;
 }
+
 
 dt, dd
 {
@@ -84,7 +88,7 @@ dt:after
     content: ":";
 }
 
-#todo th
+#todo th, #my_activities th
 {
     font-weight:bold;
 }
@@ -100,25 +104,39 @@ dt:after
     content: ".";
 }
 
-#todo table
+#todo table, #my_activities table
 {
+    width:100%;
     border-collapse: collapse;
+    border-bottom:3px solid #ccc;
 }
 
+/*
 #todo table tbody tr
 {
-    background-color:#f2f2f2;
     border-top:3px solid white;
     border-bottom:3px solid white;
 }
+*/
 
-#todo table tr td
+#todo thead tr, #my_activities thead tr
 {
-    padding-top:1.0em;
-    padding-bottom:1.0em;
+    background-color:#ccc;
 }
 
-#todo a
+#todo tr:hover, #my_activities tr:hover
+{
+    background-color:#f2f2f2;
+}
+
+#todo table tr td, #todo table tr th, #my_activities tr td,
+#my_activities tr th
+{
+    padding-top:0.5em;
+    padding-bottom:0.5em;
+}
+
+#todo a, #my_activities a
 {
     font-weight:normal;
 }
@@ -132,4 +150,9 @@ td.taskstatus, td.taskestimate, td.taskmilestone, th.taskstatus,
 th.taskestimate, th.taskmilestone
 {
     padding-left:1em;
+}
+
+#tags
+{
+    margin-bottom:1.5em;
 }
