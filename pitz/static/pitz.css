@@ -1,46 +1,135 @@
 body
 {
-    width:40em;
+    width:60em;
     margin:auto;
     font-family: helvetica, sans-serif;
-    font-size: 20px;
+    font-size: 10px;
     line-height:1.5;
     color:#333;
 }
 
-#globalnav
+#attributes th, #todo th
 {
-    margin-top:2em;
-    padding-top:1em;
-    border-top:3px solid #ccc;
+    font-size: 10px;
+    text-align:left;
+    font-weight:normal;
 }
 
-#globalnav ul
+#attributes td, #todo td
+{
+    font-size: 10px;
+    text-align: left;
+}
+
+#globalnav ul, #header ul, #tags ul
 {
     margin:0;
     padding:0;
 }
 
-#globalnav li
+#globalnav li, #header li, #tags li
 {
     list-style:none;
     display:inline;
-    margin-right:2em;
 }
 
-#globalnav a
+#tags li:after
+{
+    content: ", ";
+}
+
+#tags li:last-child:after
+{
+    content: "";
+}
+
+#globalnav a, #header a, #attributes a, #tags a, #todo a
 {
     font-weight:bold;
     text-decoration:none;
     color:#333;
 }
 
-#globalnav a:hover
+#globalnav a:hover, #header a:hover, #attributes a:hover,
+#tags a:hover, #todo a:hover
 {
     border-bottom:1px dotted black;
 }
 
-#content
+h1
 {
-    border-top:3px solid #ccc;
+    border-bottom:5px solid #ccc;
+}
+
+#comments, #activity
+{
+    border-top:1px solid #ccc;
+}
+
+dt, dd
+{
+    display:inline;
+    margin:0;
+    padding:0;
+}
+
+dd
+{
+    font-weight:bold;
+    margin-right:1em;
+}
+
+dt:after
+{
+    content: ":";
+}
+
+#todo th
+{
+    font-weight:bold;
+}
+
+#todo td.priority
+{
+    text-align: right;
+    padding-right: 3.5em;
+}
+
+#todo td.priority:after
+{
+    content: ".";
+}
+
+#todo table
+{
+    border-collapse: collapse;
+}
+
+#todo table tbody tr
+{
+    background-color:#f2f2f2;
+    border-top:3px solid white;
+    border-bottom:3px solid white;
+}
+
+#todo table tr td
+{
+    padding-top:1.0em;
+    padding-bottom:1.0em;
+}
+
+#todo a
+{
+    font-weight:normal;
+}
+
+td.tasktitle, th.tasktitle
+{
+    padding-left:0.5em;
+}
+
+td.taskstatus, td.taskestimate, td.taskmilestone, th.taskstatus,
+th.taskestimate, th.taskmilestone
+{
+    padding-left:1em;
 }

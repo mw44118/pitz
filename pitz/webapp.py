@@ -362,9 +362,6 @@ class SimpleWSGIApp(object):
 
                 results = self.proj.by_frag(frag)
 
-                if qs:
-                    results = results.matches_dict(**qs)
-
                 status = '200 OK'
 
                 if 'application/x-pitz' in http_accept \
@@ -396,11 +393,11 @@ class SimpleWSGIApp(object):
 
                     log.debug('d')
 
-                    headers = [('Content-type', 'text/plain')]
+                    headers = [('Content-type', 'text/html')]
                     start_response(status, headers)
                     return [str(
                         getattr(results, view_type) if view_type
-                        else results)]
+                        else results.html)]
 
             m6 = re.search('/by_frag/([^/]+)/my_todo/?'
                 '(detailed_view|summarized_view)?/?$', path_info)

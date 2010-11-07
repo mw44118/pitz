@@ -1,37 +1,88 @@
-{% extends "entity.html" %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
 
-{%block page_title %}
-<title>{{ title }}</title>
-{% endblock %}
+<head>
 
-{% block localnav %}
-<div id="localnav">
-    <h1>{{ title }} ({{ entity.type }})</h1>
+<title>{{ task.title }}</title>
 
-    <ul>
-        <li><a href="#description">description</a></li>
-        <li><a href="#attributes">attributes</a></li>
-        <li><a href="#comments">comments</a></li>
-    </ul>
+<link rel="stylesheet" type="text/css"
+    href="/static/pitz.css" />
 
-</div>
-{% endblock %}
+<script type="text/javascript" src="/static/jquery-1.4.3.js"></script>
 
-{%block content %}
+</head>
 
-{{ super() }}
+<body>
 
-{% if entity.comments %}
-<div id="comments">
-    <h2>Comments</h2>
-    <a class="toplink" href="#globalnav">top</a>
+<h1>{{ task.title }}</h1>
 
-    <ol>
-    {% for c in entity.comments %}
-        <li>{{c.detailed_view | safe}}</li>
-    {% endfor %}
-    </ol>
+<div id="attributes">
+
+    <dl>
+
+    <dt>Owner</dt>
+    <dd><a href="/by_frag/{{ task.owner.frag }}">{{ task.owner.title }}</a></dd>
+
+    <dt>Status</dt>
+    <dd>{{ task.status.title }}</dd>
+
+    <dt>Estimate</dt>
+    <dd>{{ task.estimate.title }}</dd>
+
+    <dt>Milestone</dt>
+    <dd>{{ task.milestone.title }}</dd>
+
+    </dl>
+
+</div><!-- closes div id="attributes" -->
+
+{% if task.tags %}
+<div id="tags">
+
+<ul>
+
+{% for tag in task.tags %}
+    <li>{{ tag.title }}</li>
+{% endfor %}
+
+</ul>
+
 </div>
 {% endif %}
 
-{% endblock %}
+
+<div id="description">
+
+<h2>Description</h2>
+
+{{ task.description_as_html }}
+
+</div><!-- closes div id="description" -->
+
+
+
+
+{% if task.comments %}
+<div id="comments">
+<h2>Comments</h2>
+</div>
+{% endif %}
+
+{% if task.activities %}
+<div id="activity">
+<h2>Activity</h2>
+
+<ol>
+
+{% for activity in task.activities %}
+<li>{{ activity.title }} at {{ clepy.time_ago(activity['created_time']) }}</li>
+{% endfor %}
+
+</ol>
+
+</div>
+{% endif %} <!-- closes if task.activities -->
+
+</body>
+
+</html>

@@ -15,6 +15,8 @@ class Person(Entity):
 
     plural_name = "people"
 
+    jinja_template = "person.html"
+
     def save_as_me_yaml(self):
         """
         Designate this person is me by saving a me.yaml file.
@@ -28,6 +30,11 @@ class Person(Entity):
         me_yaml.write(yaml.dump(self.uuid))
 
         return me_yaml_path
+
+    @property
+    def html(self):
+        tmpl = self.e.get_template(self.jinja_template)
+        return tmpl.render(person=self)
 
     @property
     def my_todo(self):

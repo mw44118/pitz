@@ -257,6 +257,7 @@ class Entity(dict):
             loader=jinja2.FileSystemLoader(jinja2dir))
 
         self.e.globals = {
+            'enumerate': enumerate,
             'clepy': clepy,
             'datetime': datetime,
             'os': os,
@@ -477,20 +478,17 @@ class Entity(dict):
     def description(self):
         return self['description']
 
-
     @property
     def attributes_view(self):
 
         t = self.e.get_template('entity_attributes_table.txt')
         return t.render(e=self)
 
-
     @property
     def description_view(self):
 
         t = self.e.get_template('description_view.txt')
         return t.render(e=self)
-
 
     @property
     def colorized_description_view(self):
@@ -1081,10 +1079,7 @@ class Entity(dict):
     @property
     def html(self):
         """
-        Return a string of HTML representing this entity.
-
-        Convert the description attribute from restructured text into
-        HTML.
+        Use self.jinja_template to render self.
         """
 
         self.replace_objects_with_pointers()

@@ -97,6 +97,11 @@ class Task(Entity):
             super(Task, self).html_summarized_view,
             self['status'].html_summarized_view)
 
+    @property
+    def html(self):
+
+        tmpl = self.e.get_template(self.jinja_template)
+        return tmpl.render(task=self)
 
     @property
     def colorized_summarized_view(self):

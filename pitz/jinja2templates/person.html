@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+
+<head>
+
+<title>{{ person.title }}</title>
+
+<link rel="stylesheet" type="text/css"
+    href="/static/pitz.css" />
+
+<script type="text/javascript" src="/static/jquery-1.4.3.js"></script>
+
+</head>
+
+<body>
+
+<h1>{{ person.title }}</h1>
+
+{% if person.my_todo %}
+<div id="todo">
+<h2>{{ person.my_todo.title }}</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th class="tasktitle">Task</th>
+<th class="taskstatus">Status</th>
+<th class="taskestimate">Estimate</th>
+<th class="taskmilestone">Milestone</th>
+<th class="taskpscore">pscore</th>
+</tr>
+
+</thead>
+
+{% for i, task in enumerate(person.my_todo) %}
+<tr>
+<td class="tasktitle"><a href="/by_frag/{{ task.frag }}">{{ task.title }}</a></td>
+<td class="taskstatus">{{ task.status.title }}</td>
+<td class="taskestimate">{{ task.estimate.title }}</td>
+<td class="taskmilestone">{{ task.milestone.title }}</td>
+<td class="taskpscore">{{ task.pscore }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+{% endif %}
+
+<h2>Description</h2>
+
+{{ person.description }}
+
+
+</body>
+
+</html>

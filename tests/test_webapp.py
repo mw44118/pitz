@@ -122,7 +122,6 @@ class TestWebApp(unittest.TestCase):
 
     def test_10(self):
 
-        # for c, C in sorted(self.p.classes.items()):
         for c, C in [('component', self.p.classes['component'])]:
 
             print("Working on %s..." % c)
@@ -130,7 +129,7 @@ class TestWebApp(unittest.TestCase):
 
             expected_results = str(C.all())
 
-            print("expected_results: %s" % expected_results)
+            # print("expected_results: %s" % expected_results)
 
             self.mk_request(
                 '/%s/all' % c.title(),
