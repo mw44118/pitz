@@ -1,9 +1,12 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import logging
 import os
 import re
 
 import jinja2
+
+log = logging.getLogger('pitz.webapp.handlers')
 
 class HelpHandler(object):
 
@@ -101,3 +104,36 @@ class StaticHandler(object):
         return re.match(
             r'^/static/(?P<filename>.+)$',
             path_info).groupdict()['filename']
+
+class ByFragHandler(object):
+
+    def __init__(self, proj):
+        self.proj = proj
+
+    def wants_to_handle(self, environ):
+        if environ['PATH_INFO'].startswith('/by_frag'):
+            return self
+
+    def __call__(self, environ, start_response):
+
+        results = self.proj.by_frag(
+            self.extract_frag(environ['PATH_INFO']))
+
+        status = '200 OK'
+        headers = [('Content-type', 'text/html')]
+        start_response(status, headers)
+
+        return [str(results.html)]
+
+
+    @staticmethod
+    def extract_frag(path_info):
+
+        """
+        >>> ByFragHandler.extract_frag('/by_frag/9f1c76')
+        '9f1c76'
+        """
+
+        return re.match(
+            r'^/by_frag/(?P<frag>.+)$',
+            path_info).groupdict()['frag']
