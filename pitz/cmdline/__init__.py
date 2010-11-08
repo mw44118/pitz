@@ -22,9 +22,9 @@ from pitz.entity import (
     Person, Status, Tag, Task)
 
 from pitz import webapp
+from pitz.webapp import handlers
 
 log = logging.getLogger('pitz.cmdline')
-
 
 class PitzHelp(object):
 
@@ -1227,9 +1227,9 @@ def pitz_webapp():
     # a request arrives, the app starts with the first handler added and
     # asks it if wants to handle that request.  So, the default handler
     # (if you make one) belongs at the end.
-    app.handlers.append(webapp.FaviconHandler())
-    app.handlers.append(webapp.StaticHandler())
-    app.handlers.append(webapp.HelpHandler())
+    app.handlers.append(handlers.FaviconHandler())
+    app.handlers.append(handlers.StaticHandler())
+    app.handlers.append(handlers.HelpHandler())
 
     httpd = make_server('', 8000, app)
     print "Serving on port 8000..."

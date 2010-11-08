@@ -11,7 +11,8 @@ from pitz.project import Project
 from pitz.entity import Entity, Person, Task, Status, Milestone, \
 Activity, Estimate, Tag, Comment, Component
 
-from pitz.webapp import HelpHandler, SimpleWSGIApp
+from pitz import webapp
+from pitz.webapp import handlers
 
 class TestWebApp(unittest.TestCase):
 
@@ -21,8 +22,8 @@ class TestWebApp(unittest.TestCase):
         c = Entity(self.p, title="c")
         Entity(self.p, title="t")
         matt = Person(self.p, title='matt')
-        self.webapp = SimpleWSGIApp(self.p)
-        self.webapp.handlers.append(HelpHandler())
+        self.webapp = webapp.SimpleWSGIApp(self.p)
+        self.webapp.handlers.append(handlers.HelpHandler())
 
         Status(self.p, title='bogus status')
         Estimate(self.p, title='bogus estimate')
@@ -165,7 +166,7 @@ class TestWebApp(unittest.TestCase):
 class TestHelpHandler(unittest.TestCase):
 
     def setUp(self):
-        self.hh = HelpHandler()
+        self.hh = handlers.HelpHandler()
 
     def test_1(self):
         help_page_iterable = self.hh(mock.Mock(), mock.Mock())
@@ -175,7 +176,7 @@ class TestDispatcher(unittest.TestCase):
 
     def setUp(self):
         self.p = Project(title='Bogus project for testing webapp')
-        self.app = SimpleWSGIApp(self.p)
+        self.app = webapp.SimpleWSGIApp(self.p)
         self.app.handlers = []
 
         self.bogus_environ = dict(
