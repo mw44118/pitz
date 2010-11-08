@@ -120,41 +120,6 @@ class TestWebApp(unittest.TestCase):
             '200 OK',
             str(self.p(owner=['matt', 'lindsey'])))
 
-    def test_10(self):
-
-        for c, C in [('component', self.p.classes['component'])]:
-
-            print("Working on %s..." % c)
-            print("C is %s" % C)
-
-            expected_results = str(C.all())
-
-            # print("expected_results: %s" % expected_results)
-
-            self.mk_request(
-                '/%s/all' % c.title(),
-                '',
-                'text/plain',
-                '200 OK',
-                expected_results)
-
-            x = self.p(type=c)[0]
-
-            print("x is %s" % x)
-
-            self.mk_request(
-                '/%s/by_title/%s' % (c.title(), urllib.quote(x.title)),
-                '',
-                'text/plain',
-                '200 OK',
-                str(x))
-
-            self.mk_request(
-                '/by_frag/%s' % urllib.quote(x.frag),
-                '',
-                'text/plain',
-                '200 OK',
-                str(x))
 
     def test_11(self):
         matt = Person.by_title('matt')
