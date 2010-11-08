@@ -9,66 +9,56 @@ body
     padding-bottom:2em;
 }
 
-#attributes th, #todo th, #my_activities th
+th
 {
     font-size: 10px;
     text-align:left;
-    font-weight:normal;
 }
 
-#attributes td, #todo td, #my_activities td
+td
 {
     font-size: 10px;
     text-align: left;
 }
 
-#globalnav ul, #header ul, #tags ul, #attributes ul
+ul
 {
     margin:0;
     padding:0;
     display:inline;
 }
 
-#globalnav li, #header li, #tags li, #attributes li
+ul li
 {
     list-style:none;
     display:inline;
 }
 
-#tags li:after, #attributes li:after
+ul li:after
 {
     content: ", ";
 }
 
-#tags li:last-child:after, #attributes li:last-child:after
+ul li:last-child:after
 {
     content: "";
 }
 
-#globalnav a, #header a, #attributes a, #tags a, #todo a,
-#my_activities a
+a
 {
-    font-weight:bold;
     text-decoration:none;
     color:#333;
 }
 
-#globalnav a:hover, #header a:hover, #attributes a:hover,
-#tags a:hover
+a:hover
 {
-    border-bottom:1px dotted black;
+    color:green;
 }
 
 h1
 {
     border-bottom:5px solid #ccc;
 }
-
-#comments, #activity, #description
-{
-    border-top:1px solid #ccc;
-}
-
 
 dt, dd
 {
@@ -88,49 +78,24 @@ dt:after
     content: ":";
 }
 
-#todo th, #my_activities th
-{
-    font-weight:bold;
-}
-
-#todo td.priority
-{
-    text-align: right;
-    padding-right: 3.5em;
-}
-
-#todo td.priority:after
-{
-    content: ".";
-}
-
-#todo table, #my_activities table
+table
 {
     width:100%;
     border-collapse: collapse;
     border-bottom:3px solid #ccc;
 }
 
-/*
-#todo table tbody tr
-{
-    border-top:3px solid white;
-    border-bottom:3px solid white;
-}
-*/
-
-#todo thead tr, #my_activities thead tr
+thead tr
 {
     background-color:#ccc;
 }
 
-#todo tr:hover, #my_activities tr:hover
+tbody tr:hover
 {
     background-color:#f2f2f2;
 }
 
-#todo table tr td, #todo table tr th, #my_activities tr td,
-#my_activities tr th
+table tr td, table tr th
 {
     padding-top:0.5em;
     padding-bottom:0.5em;
@@ -141,18 +106,8 @@ dt:after
     font-weight:normal;
 }
 
-td.tasktitle, th.tasktitle
+td, th
 {
     padding-left:0.5em;
-}
-
-td.taskstatus, td.taskestimate, td.taskmilestone, th.taskstatus,
-th.taskestimate, th.taskmilestone
-{
-    padding-left:1em;
-}
-
-#tags
-{
-    margin-bottom:1.5em;
+    padding-right:0.5em;
 }

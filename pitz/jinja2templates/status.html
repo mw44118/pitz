@@ -24,7 +24,7 @@
 
 {% if entity.tasks %}
 <div id="tasks">
-<h2>Tasks</h2>
+<h2>Tasks with status {{ entity.title }}</h2>
 
 <table>
 
@@ -36,7 +36,6 @@
 <th class="taskestimate">Estimate</th>
 <th class="taskmilestone">Milestone</th>
 <th class="tasktags">Tags</th>
-<th class="taskpscore">pscore</th>
 </tr>
 
 </thead>
@@ -63,8 +62,6 @@
 </ul>
 {% endif %} <!-- closes if task.tags -->
 </td><!-- closes td class="tasktags" -->
-
-<td class="taskpscore">{{ task.pscore }}</td>
 
 </tr>
 {% endfor %}

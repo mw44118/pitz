@@ -7,12 +7,11 @@ import jinja2
 
 class HelpHandler(object):
 
-    def wants_to_handle(self, environ):
+    """
+    Handles the GET /help request.
+    """
 
-        """
-        Return self or None.  self means this handler wants to handle
-        this request.  None means it doesn't want to handle this.
-        """
+    def wants_to_handle(self, environ):
 
         if environ['PATH_INFO'] == '/help':
             return self
