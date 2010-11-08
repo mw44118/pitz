@@ -1222,10 +1222,14 @@ def pitz_webapp():
     proj.find_me()
 
     app = webapp.SimpleWSGIApp(proj)
+
+    # Remember that the order that you add handlers here matters.  When
+    # a request arrives, the app starts with the first handler added and
+    # asks it if wants to handle that request.  So, the default handler
+    # (if you make one) belongs at the end.
     app.handlers.append(webapp.FaviconHandler())
     app.handlers.append(webapp.StaticHandler())
     app.handlers.append(webapp.HelpHandler())
-
 
     httpd = make_server('', 8000, app)
     print "Serving on port 8000..."
