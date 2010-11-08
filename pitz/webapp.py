@@ -57,6 +57,27 @@ class HelpHandler(object):
         return [str(t.render(title='Pitz Webapp Help'))]
 
 
+class FaviconHandler(object):
+
+    def __init__(self):
+
+        self.favicon_guts = open(
+            os.path.join(os.path.split(os.path.dirname(__file__))[0],
+            'pitz', 'static', 'favicon.ico')).read()
+
+    def wants_to_handle(self, environ):
+
+        if environ['PATH_INFO'] == '/favicon.ico':
+            return self
+
+    def __call__(self, environ, start_response):
+        status = '200 OK'
+        headers = [('Content-type', 'text/plain')]
+        start_response(status, headers)
+
+        return [self.favicon_guts]
+
+
 class StaticHandler(object):
 
     def wants_to_handle(self, environ):
@@ -116,7 +137,6 @@ class SimpleWSGIApp(object):
             return [msg]
         else:
             return ["Sorry, didn't match any patterns..."]
-
 
     def dispatch(self, environ):
 

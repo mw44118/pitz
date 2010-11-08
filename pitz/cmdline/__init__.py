@@ -1222,6 +1222,7 @@ def pitz_webapp():
     proj.find_me()
 
     app = webapp.SimpleWSGIApp(proj)
+    app.handlers.append(webapp.FaviconHandler())
     app.handlers.append(webapp.StaticHandler())
     app.handlers.append(webapp.HelpHandler())
 
