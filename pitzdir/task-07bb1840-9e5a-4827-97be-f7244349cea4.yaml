@@ -1,0 +1,36 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-11-12 10:03:02.581496
+description: 'The top-level screen of the app should be a little friendlier than just
+
+  a dump of every entity in the project.
+
+
+  That screen should exist, but it probably belongs under a URL like
+
+  /everything or /Entity/all.
+
+
+  The top page should be what a non-technical client can go to and
+
+  navigate, to get an idea about what is going on with the project.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 162106955348893831939149234360796181164
+- !!python/object:uuid.UUID
+  int: 115897731472495632588122822348854247787
+title: Write new index (/) screen for webapp
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 10276047380481088046151704610159054500
+yaml_file_saved: 2010-11-12 10:03:02.640974
