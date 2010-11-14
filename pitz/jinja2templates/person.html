@@ -15,61 +15,17 @@
 
 <body>
 
-<h1>{{ person.title }}</h1>
+<div id="header">
+<h1>{{ person.title }}<span class="viewtype">person</span></h1>
+</div><!-- closes div id="header" -->
 
-{% if person.my_todo %}
+<div id="main">
+
+{% if person.first_four_tasks %}
 <div id="todo">
-<h2>{{ person.my_todo.title }}</h2>
+<h2>{{ person.first_four_tasks.title }}</h2>
 
-<table>
-
-<thead>
-
-<tr>
-<th class="tasktitle">Task</th>
-<th class="taskstatus">Status</th>
-<th class="taskestimate">Estimate</th>
-<th class="taskmilestone">Milestone</th>
-<th class="tasktags">Tags</th>
-</tr>
-
-</thead>
-
-<tbody>
-{% for i, task in enumerate(person.my_todo) %}
-<tr>
-
-<td class="tasktitle">
-<a href="/by_frag/{{ task.frag }}">{{ task.title }}</a>
-</td>
-
-<td class="taskstatus">
-<a href="/by_frag/{{ task.status.frag }}">{{ task.status.title }}</a>
-</td>
-
-<td class="taskestimate">
-<a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a>
-</td>
-
-<td class="taskmilestone">
-    <a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a>
-</td>
-
-<td class="tasktags">
-{% if task.tags %}
-<ul>
-{% for tag in task.tags %}
-<li><a href="/by_frag/{{ tag.frag }}">{{ tag.title }}</a></li>
-{% endfor %}
-</ul>
-{% endif %} <!-- closes if task.tags -->
-</td><!-- closes td class="tasktags" -->
-
-</tr>
-{% endfor %}
-</tbody>
-
-</table>
+{{ m.draw_task_table(person.first_four_tasks) }}
 
 </div>
 {% endif %}
@@ -78,9 +34,9 @@
 
 {{ person.description }}
 
-{% if person.my_activities %}
+{% if person.four_recent_activities %}
 <div id="my_activities">
-<h2>My Activities</h2>
+<h2>{{ person.four_recent_activities.title }}</h2>
 
 <table>
 
@@ -92,7 +48,7 @@
 </thead>
 
 <tbody>
-{% for act in person.my_activities %}
+{% for act in person.four_recent_activities %}
 <tr>
 <td><a href="/by_frag/{{ act['entity'].frag }}">{{ act.title }}</a></td>
 <td>{{ act.time_ago }}</td>
@@ -104,6 +60,8 @@
 
 </div><!-- closes div id="my_activities" -->
 {% endif %} <!-- closes if person.my_activities -->
+
+</div><!-- closes div id="main" -->
 
 {{ m.draw_footer(proj) }}
 

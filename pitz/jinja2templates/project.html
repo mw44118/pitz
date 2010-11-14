@@ -15,14 +15,17 @@
 
 <body>
 
-<h1>{{ proj.title }}<span class="viewtype">project view</span></h1>
+<div id="header">
+<h1>{{ proj.title }}<span class="viewtype">project</span></h1>
+</div><!-- closes div id="header" -->
 
+<div id="main">
 {% if proj.todo %}
 <div id="todo">
 
-<h2>{{ proj.todo[:11].title }}</h2>
+<h2>{{ proj.first_ten_tasks.title }}</h2>
 
-{{ m.draw_task_table(proj.todo[:10]) }}
+{{ m.draw_task_table(proj.first_ten_tasks) }}
 
 </div><!-- closes div id="todo" -->
 {% endif %} <!-- closes if proj.todo -->
@@ -60,6 +63,7 @@
 </div><!-- closes div id="recent-activity" -->
 
 {% endif %} <!--  closes if proj.recent_activity -->
+</div><!--closes div id="main" -->
 
 {{ m.draw_footer(proj) }}
 

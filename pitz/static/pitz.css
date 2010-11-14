@@ -1,23 +1,22 @@
 body
 {
-    width:60em;
+    width:720px;
     margin:auto;
     font-family: helvetica, sans-serif;
-    font-size: 10px;
-    line-height:1.5;
+    font-size: 12px;
     color:#333;
     padding-bottom:2em;
 }
 
 th
 {
-    font-size: 10px;
+    font-size: 12px;
     text-align:left;
 }
 
 td
 {
-    font-size: 10px;
+    font-size: 12px;
     text-align: left;
 }
 
@@ -55,23 +54,28 @@ a:hover
     color:green;
 }
 
-#todo a.startedtask
+#header
 {
-    font-weight:bold;
-    color:green;
+    background-color:white;
+    z-index:99;
+    width:720px;
+    position:fixed;
+    top:0;
+    border-bottom:5px solid #ccc;
+    height:30px;
 }
 
-h1
+#header h1
 {
-    border-bottom:5px solid #ccc;
+    margin:0;
 }
 
 h1 span.viewtype
 {
     float:right;
     font-weight:normal;
-    font-size:smaller;
-    margin-top:5px;
+    font-size:12px;
+    margin-top:10px;
 }
 
 dt, dd
@@ -130,6 +134,7 @@ td, th
 
 #footer
 {
+    z-index:99;
     background-color:white;
     width:60em;
     margin-top:5px;
@@ -139,4 +144,9 @@ td, th
     border-top:5px solid #ccc;
     position:fixed;
     bottom:0px;
+}
+
+#main
+{
+    padding-top:30px;
 }

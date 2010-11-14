@@ -50,8 +50,27 @@ class Person(Entity):
 
         return b
 
+    @property
+    def top_priority_task(self):
+
+        if not self.project:
+            return
+
+        return self.my_todo[0]
+
     def __str__(self):
         return getattr(self, 'abbr', self.title)
+
+    @property
+    def first_four_tasks(self):
+
+        if not self.project:
+            return
+
+        first_four_tasks = self.my_todo[:4]
+        first_four_tasks.title = 'First four tasks from to-do list'
+        return first_four_tasks
+
 
     @property
     def use_colorization(self):
@@ -69,6 +88,9 @@ class Person(Entity):
 
         return all_my_activities.order(pitz.by_descending_created_time)
 
+    @property
+    def four_recent_activities(self):
 
-
-
+        four_recent_activities = self.my_activities[:4]
+        four_recent_activities.title = 'Four most recent activities'
+        return four_recent_activities

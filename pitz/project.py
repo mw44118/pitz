@@ -358,6 +358,13 @@ class Project(Bag):
         return b
 
     @property
+    def first_ten_tasks(self):
+
+        first_ten_tasks = self.todo[:10]
+        first_ten_tasks.title = 'First ten tasks from to-do list'
+        return first_ten_tasks
+
+    @property
     def recent_activity(self):
         return Bag("Recent activity", entities=self.activities[:10],
             order_method=pitz.by_descending_created_time)
