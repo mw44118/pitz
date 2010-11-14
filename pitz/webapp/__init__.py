@@ -59,6 +59,8 @@ class SimpleWSGIApp(object):
         if h:
             return h(environ, start_response)
 
+        # Stuff below is the old junk that will one day be rewritten.
+
         path_info = environ['PATH_INFO']
         qs = cgi.parse_qs(environ['QUERY_STRING'])
         http_accept = environ.get('HTTP_ACCEPT', '')

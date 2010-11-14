@@ -24,6 +24,8 @@ class Project(Bag):
     The project keeps references to every entity.
     """
 
+    jinja_template = 'project.html'
+
     # These are all the classes that I will try to instantiate when
     # reading yaml files.
     classes = dict(
@@ -43,7 +45,7 @@ class Project(Bag):
         [(c.plural_name, c) for c in classes.values()])
 
     def __init__(self, title='', uuid=None, pathname=None, entities=(),
-        order_method=pitz.by_milestone_status_pscore_created_time, 
+        order_method=pitz.by_milestone_status_pscore_created_time,
         load_yaml_files=True,
         **kwargs):
 
@@ -300,6 +302,13 @@ class Project(Bag):
     def html_filename(self):
 
         return "index.html"
+
+    @property
+    def html(self):
+
+        tmpl = self.e.get_template(self.jinja_template)
+
+        return tmpl.render(proj=self)
 
     @classmethod
     def from_yaml_file(cls, fp):

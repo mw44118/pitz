@@ -59,7 +59,7 @@ class FaviconHandler(object):
 
     def __call__(self, environ, start_response):
         status = '200 OK'
-        headers = [('Content-type', 'text/plain')]
+        headers = [('Content-type', 'image/x-icon')]
         start_response(status, headers)
 
         return [self.favicon_guts]
@@ -125,7 +125,6 @@ class ByFragHandler(object):
 
         return [str(results.html)]
 
-
     @staticmethod
     def extract_frag(path_info):
 
@@ -137,3 +136,27 @@ class ByFragHandler(object):
         return re.match(
             r'^/by_frag/(?P<frag>.+)$',
             path_info).groupdict()['frag']
+
+
+class Project(object):
+
+    def __init__(self, proj):
+        self.proj = proj
+
+        log.debug('type(self.proj) is %s' % type(self.proj))
+
+        log.debug('self.proj.jinja_template is %s'
+            % self.proj.jinja_template)
+
+    def wants_to_handle(self, environ):
+
+        if environ['PATH_INFO'] in ('/', '/Project'):
+            return self
+
+    def __call__(self, environ, start_response):
+
+        status = '200 OK'
+        headers = [('Content-type', 'text/html')]
+        start_response(status, headers)
+
+        return [str(self.proj.html)]

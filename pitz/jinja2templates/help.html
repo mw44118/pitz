@@ -1,3 +1,4 @@
+{% import 'macros.html' as m %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <html>
@@ -68,12 +69,7 @@
 </table>
 </div><!-- closes div id="content" -->
 
-<div id="globalnav">
-<ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/help">Help</a></li>
-</ul>
-</div><!-- closes div id="globalnav" -->
+{{ m.draw_footer(proj) }}
 
 </body>
 

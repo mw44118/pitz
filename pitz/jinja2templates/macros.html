@@ -1,0 +1,80 @@
+{% macro draw_footer(proj) %}
+<div id="footer">
+
+<ul>
+<li><a href="/">project view</a></li>
+<li><a href="/help">help</a></li>
+<li><a href="/milestones">milestones</a></li>
+<li><a href="/tasks">tasks</a></li>
+<li><a href="/people">people</a></li>
+<li><a href="/tags">tags</a></li>
+</ul>
+
+</div><!-- closes div id="footer" -->
+{% endmacro %}
+
+{% macro boom() %}
+<h2>boom</h2>
+{% endmacro %}
+
+{% macro draw_task_table(tasks) %}
+<table>
+
+<thead>
+
+<tr>
+<th class="tasktitle">Task</th>
+<th class="taskowner">Owner</th>
+<th class="taskstatus">Status</th>
+<th class="taskestimate">Estimate</th>
+<th class="taskmilestone">Milestone</th>
+<th class="tasktags">Tags</th>
+</tr>
+
+</thead>
+
+<tbody>
+{% for task in tasks %}
+<tr>
+
+<td class="tasktitle">
+{% if task.status.title == 'started' %}
+<a class="startedtask" href="/by_frag/{{ task.frag }}">{{ task.title }}</a>
+{% else %}
+<a href="/by_frag/{{ task.frag }}">{{ task.title }}</a>
+{% endif %}
+</td>
+
+<td class="taskowner">
+<a href="/by_frag/{{ task.owner.frag }}">{{ task.owner.title }}</a>
+</td>
+
+<td class="taskstatus">
+<a href="/by_frag/{{ task.status.frag }}">{{ task.status.title }}</a>
+</td>
+
+<td class="taskestimate">
+<a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a>
+</td>
+
+<td class="taskmilestone">
+    <a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a>
+</td>
+
+<td class="tasktags">
+{% if task.tags %}
+<ul>
+{% for tag in task.tags %}
+<li><a href="/by_frag/{{ tag.frag }}">{{ tag.title }}</a></li>
+{% endfor %}
+</ul>
+{% endif %} <!-- closes if task.tags -->
+</td><!-- closes td class="tasktags" -->
+
+</tr>
+
+{% endfor %}
+</tbody>
+
+</table>
+{% endmacro %}

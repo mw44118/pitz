@@ -10,19 +10,14 @@ import warnings
 
 warnings.simplefilter('ignore', DeprecationWarning)
 
-from wsgiref.simple_server import make_server
 from IPython.Shell import IPShellEmbed
 import clepy
 
 import pitz
 from pitz.project import Project
 
-from pitz.entity import (
-    Component, Entity, Estimate, Milestone,
-    Person, Status, Tag, Task)
-
-from pitz import webapp
-from pitz.webapp import handlers
+from pitz.entity import Component, Entity, Estimate, Milestone, \
+Person, Status, Tag, Task
 
 log = logging.getLogger('pitz.cmdline')
 
@@ -1202,41 +1197,6 @@ class PitzAddTask(PitzScript):
         print("Added %r to the project." % t)
 
 
-def pitz_webapp():
-    """
-    Later on, will be awesome.
-    """
-
-    p = setup_options()
-
-    options, args = p.parse_args()
-    pitz.setup_logging(getattr(logging, options.log_level))
-
-    if options.version:
-        print_version()
-        return
-
-    pitzdir = Project.find_pitzdir(options.pitzdir)
-
-    proj = Project.from_pitzdir(pitzdir)
-    proj.find_me()
-
-    app = webapp.SimpleWSGIApp(proj)
-
-    # Remember that the order that you add handlers here matters.  When
-    # a request arrives, the app starts with the first handler added and
-    # asks it if wants to handle that request.  So, the default handler
-    # (if you make one) belongs at the end.
-    app.handlers.append(handlers.FaviconHandler())
-    app.handlers.append(handlers.StaticHandler())
-    app.handlers.append(handlers.HelpHandler())
-    app.handlers.append(handlers.ByFragHandler(proj))
-
-    httpd = make_server('', 8000, app)
-    print "Serving on port 8000..."
-    httpd.serve_forever()
-
-
 def pitz_estimate_task():
 
     # Start of code to set up project.
@@ -1407,3 +1367,4 @@ pitz_setup = f(pitz_setup)
 from pitz.cmdline.pitzaddtag import PitzAddTag
 pitz_add_tag = f(PitzAddTag())
 
+from pitz.cmdline.webapp import pitz_webapp

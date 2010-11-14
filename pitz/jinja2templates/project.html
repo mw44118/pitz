@@ -1,0 +1,68 @@
+{% import 'macros.html' as m %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+
+<head>
+
+<title>{{ proj.title }} project view</title>
+
+<link rel="stylesheet" type="text/css"
+    href="/static/pitz.css" />
+
+<script type="text/javascript" src="/static/jquery-1.4.3.js"></script>
+
+</head>
+
+<body>
+
+<h1>{{ proj.title }}<span class="viewtype">project view</span></h1>
+
+{% if proj.todo %}
+<div id="todo">
+
+<h2>{{ proj.todo[:11].title }}</h2>
+
+{{ m.draw_task_table(proj.todo[:10]) }}
+
+</div><!-- closes div id="todo" -->
+{% endif %} <!-- closes if proj.todo -->
+
+{% if proj.recent_activity %}
+<div id="recent-activity">
+
+<h2>{{ proj.recent_activity.title }}</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>What</th>
+<th>When</th>
+</tr>
+</thead>
+
+<tbody>
+{% for act in proj.recent_activity %}
+<tr>
+
+<td>
+<a href="/by_frag/{{ act['entity'].frag }}">{{ act.title }}</a>
+</td>
+
+<td>{{ act.time_ago }}</td>
+
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+
+</div><!-- closes div id="recent-activity" -->
+
+{% endif %} <!--  closes if proj.recent_activity -->
+
+{{ m.draw_footer(proj) }}
+
+</body>
+
+</html>

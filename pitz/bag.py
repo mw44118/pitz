@@ -35,17 +35,20 @@ class Bag(BagSuperclass):
     Bags act like lists with a few extra methods.
     """
 
+    jinja_template = 'bag.html'
+
     def __init__(
-        self, title='', html_filename=None, uuid=None,
+        self, title='', description='',
+        html_filename=None, uuid=None,
         pathname=None, entities=(),
         order_method=pitz.by_pscore_and_milestone,
-        jinja_template=None, shell_mode=False, **kwargs):
+        shell_mode=False, **kwargs):
 
         self.title = title
         self.pathname = pathname
         self.order_method = order_method
         self._html_filename = html_filename
-        self.jinja_template = jinja_template or 'bag.html'
+
         self._shell_mode = shell_mode
 
         self._elements = list()
@@ -115,8 +118,6 @@ class Bag(BagSuperclass):
             'looper':tempita.looper,
         }
 
-        if not hasattr(self, 'jinja_template'):
-            self.jinja_template = 'bag.html'
 
     def to_csv(self, filepath, *columns):
         """

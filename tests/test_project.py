@@ -308,6 +308,14 @@ class TestFromPitzdir(unittest.TestCase):
 
 class TestProject(unittest.TestCase):
 
+    def test_jinja_template(self):
+        assert Project(pathname='/tmp').jinja_template == 'project.html'
+
+    def test_html(self):
+
+        p = Project(pathname='/tmp')
+        p.html
+
     def test_html_then_pickle(self):
 
         p = Project(pathname='/tmp')
