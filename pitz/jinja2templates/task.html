@@ -25,34 +25,95 @@
 <div id="main">
 <div id="attributes">
 
-    <dl>
+<dl>
 
-    <dt>Owner</dt>
-    <dd><a href="/by_frag/{{ task.owner.frag }}">{{ task.owner.title }}</a></dd>
+<dt>Owner</dt>
+<dd>
 
-    <dt>Status</dt>
-    <dd><a href="/by_frag/{{ task.status.frag }}">{{ task.status.title }}</a></dd>
+<a href="/by_frag/{{ task.owner.frag }}">{{ task.owner.title }}</a>
 
-    <dt>Estimate</dt>
-    <dd><a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a></dd>
+<form id="update-owner"
+    method="post"
+    action="/update-owner/{{ task.frag }}">
 
-    <dt>Milestone</dt>
-    <dd><a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a></dd>
+<select name="owner">
+{% for owner in task.owner.already_instantiated.values() %}
+{% if owner == task.owner %}
+<option selected>{{ owner.title }}</option>
+{% else %}
+<option>{{ owner.title }}</option>
+{% endif %}
+{% endfor %}
+</select>
+
+</form>
+
+</dd>
+
+<dt>Status</dt>
+<dd>
+
+<a class="update-status"
+    href="/by_frag/{{ task.status.frag }}/update_status">{{ task.status.title }}</a>
+
+<form id="update-status"
+    method="post"
+    action="/update-status/{{ task.frag }}">
+
+<select name="status">
+{% for status in task.status.already_instantiated.values() %}
+{% if status == task.status %}
+<option selected>{{ status.title }}</option>
+{% else %}
+<option>{{ status.title }}</option>
+{% endif %}
+{% endfor %}
+</select>
+
+</form>
+
+</dd>
+
+<dt>Estimate</dt>
+<dd>
+
+<a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a>
+
+<form id="update-estimate"
+    method="post"
+    action="/update-estimate/{{ task.frag }}">
+
+<select name="owner">
+{% for estimate in task.estimate.already_instantiated.values() %}
+{% if estimate == task.estimate %}
+<option selected>{{ estimate.title }}</option>
+{% else %}
+<option>{{ estimate.title }}</option>
+{% endif %}
+{% endfor %}
+</select>
+
+</form>
+
+</dd>
+
+<dt>Milestone</dt>
+<dd><a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a></dd>
 
 {% if task.tags %}
-    <dt>Tags</dt>
-    <dd>
-        <ul>
+<dt>Tags</dt>
+<dd>
+<ul>
 
-        {% for tag in task.tags %}
-            <li><a href="/by_frag/{{ tag.frag }}">{{ tag.title }}</a></li>
-        {% endfor %}
+{% for tag in task.tags %}
+<li><a href="/by_frag/{{ tag.frag }}">{{ tag.title }}</a></li>
+{% endfor %}
 
-        </ul>
-    </dd>
+</ul>
+</dd>
 {% endif %}
 
-    </dl>
+</dl>
 
 </div><!-- closes div id="attributes" -->
 
@@ -63,9 +124,6 @@
 {{ task.description_as_html }}
 
 </div><!-- closes div id="description" -->
-
-
-
 
 {% if task.comments %}
 <div id="comments">
@@ -87,6 +145,7 @@
 
 </div><!-- closes div id="activity" -->
 {% endif %} <!-- closes if task.activities -->
+
 
 </div><!-- closes div="main" -->
 

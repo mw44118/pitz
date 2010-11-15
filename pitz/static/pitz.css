@@ -96,6 +96,12 @@ dt:after
     content: ":";
 }
 
+dl
+{
+    margin-top:20px;
+    padding-top:20px;
+}
+
 table
 {
     width:100%;
@@ -150,3 +156,20 @@ td, th
 {
     padding-top:30px;
 }
+
+#attributes form
+{
+    display:none;
+}
+
+form#update-status
+{
+    margin:0;
+    padding:0;
+}
+
+#attributes form select
+{
+    margin:0;
+}
+

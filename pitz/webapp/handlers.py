@@ -143,17 +143,43 @@ class Project(object):
     def __init__(self, proj):
         self.proj = proj
 
-        log.debug('type(self.proj) is %s' % type(self.proj))
-
-        log.debug('self.proj.jinja_template is %s'
-            % self.proj.jinja_template)
-
     def wants_to_handle(self, environ):
 
         if environ['PATH_INFO'] in ('/', '/Project'):
             return self
 
     def __call__(self, environ, start_response):
+
+        status = '200 OK'
+        headers = [('Content-type', 'text/html')]
+        start_response(status, headers)
+
+        return [str(self.proj.html)]
+
+class Handler(object):
+
+    def __init__(self, proj):
+        self.proj = proj
+
+        jinja2dir = os.path.join(
+            os.path.split(os.path.dirname(__file__))[0],
+            'jinja2templates')
+
+        # Set up a template loader.
+        self.e = jinja2.Environment(
+            extensions=['jinja2.ext.loopcontrols'],
+            loader=jinja2.FileSystemLoader(jinja2dir))
+
+class Greedy(Handler):
+
+    def wants_to_handle(self, environ):
+        return True
+
+    def __call__(self, environ, start_response):
+
+        """
+        Look for a template named the same as PATH_INFO or return a 404.
+        """
 
         status = '200 OK'
         headers = [('Content-type', 'text/html')]
