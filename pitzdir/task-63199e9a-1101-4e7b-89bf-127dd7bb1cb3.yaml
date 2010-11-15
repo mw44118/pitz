@@ -1,0 +1,40 @@
+components: []
+created_by: &id001 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2010-11-14 14:39:30.317019
+description: "Add a button to mark a started task as finished to the webapp.\n\nThis\
+  \ involves a few parts:\n\n1.  We need to add the button to the template.  Really,\
+  \ since this is a\n    state-changing action, the button will be a submit button\
+  \ for a\n    form.\n\n2.  Write a handler for the form.  The handler should try\
+  \ to update the\n    model, and then use this table to figure out how to reply:\n\
+  \n    =========== =============== ========================================\n   \
+  \ XHR         Update succeeds Reply\n    =========== =============== ========================================\n\
+  \    Yes         Yes             JSON success message and data to update\n     \
+  \                           page\n\n    Yes         No              JSON error message\
+  \ and data to update\n                                page\n\n    No          Yes\
+  \             302 redirect back to the /by_frag page\n                         \
+  \       for the task\n\n    No          No              Redraw the page and show\
+  \ some error\n                                message.\n    =========== ===============\
+  \ ========================================\n\n3.  Write some javascript to allow\
+  \ the form created in step one to be\n    submitted via XHR."
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: 2010-11-14 14:44:05.000447
+owner: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 336444450266496547059833010238290292739
+tags:
+- !!python/object:uuid.UUID
+  int: 162106955348893831939149234360796181164
+- !!python/object:uuid.UUID
+  int: 115897731472495632588122822348854247787
+- !!python/object:uuid.UUID
+  int: 164428807845611858952115970237144668243
+title: Allow finishing a task through the webapp
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 131726595831287270985068472579001097395
+yaml_file_saved: 2010-11-14 14:44:05.006718

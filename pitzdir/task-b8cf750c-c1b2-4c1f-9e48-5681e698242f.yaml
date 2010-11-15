@@ -1,0 +1,31 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-11-14 14:04:06.136898
+description: "Add a screen to the webapp, maybe named /assignments, that does\nsomething\
+  \ like this::\n\n    Matt\n    ====\n\n    *   Clean up backyard toys\n\n\n    Lindsey\n\
+  \    =======\n\n    *   Pick out which school photos to order prints for\n    *\
+  \   Buy soccer shoes for Charlie\n\n    Charlie\n    =======\n\n    Has absolutely\
+  \ nothing to do.\n\n    Oliver\n    ======\n\n    *   Get out that poop\n\n\nAnd\
+  \ so forth.  The big idea is to make it easy to see how tasks are\ndivided up among\
+  \ people."
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 162106955348893831939149234360796181164
+- !!python/object:uuid.UUID
+  int: 115897731472495632588122822348854247787
+title: Write a manager's view screen, showing all people's first four open assigned
+  tasks
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 245655130726748962524536192589907895343
+yaml_file_saved: 2010-11-14 14:04:06.149323

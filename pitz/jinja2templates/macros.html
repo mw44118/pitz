@@ -17,17 +17,34 @@
 <h2>boom</h2>
 {% endmacro %}
 
-{% macro draw_task_table(tasks, skip_columns=None) %}
+{% macro draw_task_table(tasks,
+    show_owner=True,
+    show_status=True,
+    show_estimate=True,
+    show_milestone=True) %}
 <table>
 
 <thead>
 
 <tr>
 <th class="tasktitle">Task</th>
+
+{% if show_owner %}
 <th class="taskowner">Owner</th>
+{% endif %}
+
+{% if show_status %}
 <th class="taskstatus">Status</th>
+{% endif %}
+
+{% if show_estimate %}
 <th class="taskestimate">Estimate</th>
+{% endif %}
+
+{% if show_milestone %}
 <th class="taskmilestone">Milestone</th>
+{% endif %}
+
 <th class="tasktags">Tags</th>
 </tr>
 
@@ -45,21 +62,29 @@
 {% endif %}
 </td>
 
+{% if show_owner %}
 <td class="taskowner">
 <a href="/by_frag/{{ task.owner.frag }}">{{ task.owner.title }}</a>
 </td>
+{% endif %}
 
+{% if show_status %}
 <td class="taskstatus">
 <a href="/by_frag/{{ task.status.frag }}">{{ task.status.title }}</a>
 </td>
+{% endif %}
 
+{% if show_estimate %}
 <td class="taskestimate">
 <a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a>
 </td>
+{% endif %}
 
+{% if show_milestone %}
 <td class="taskmilestone">
-    <a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a>
+<a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a>
 </td>
+{% endif %}
 
 <td class="tasktags">
 {% if task.tags %}
@@ -77,4 +102,21 @@
 </tbody>
 
 </table>
+{% endmacro %}
+
+{% macro add_jquery_script_tags() %}
+<script type="text/javascript"
+    src="/static/jquery-latest.js"></script>
+
+<script type="text/javascript"
+    src="/static/jquery-ui-latest.js"></script>
+{% endmacro %}
+
+{% macro draw_header(entity) %}
+<div id="header">
+<h1>
+<span>{{ entity.title }}</span>
+<span class="viewtype">{{ entity.__class__.__name__.lower() }}</span>
+</h1>
+</div><!-- closes div id="header" -->
 {% endmacro %}

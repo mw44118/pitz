@@ -9,14 +9,20 @@
 <link rel="stylesheet" type="text/css"
     href="/static/pitz.css" />
 
-<script type="text/javascript" src="/static/jquery-1.4.3.js"></script>
+{{ m.add_jquery_script_tags() }}
 
 </head>
 
 <body>
 
-<h1>{{ task.title }}<span class="viewtype">task view</span></h1>
+<div id="header">
+<h1>
+<span>{{ task.title }}</span>
+<span class="viewtype">task view</span>
+</h1>
+</div><!-- closes div id="header" -->
 
+<div id="main">
 <div id="attributes">
 
     <dl>
@@ -64,7 +70,7 @@
 {% if task.comments %}
 <div id="comments">
 <h2>Comments</h2>
-</div>
+</div><!-- closes div id="comments" -->
 {% endif %}
 
 {% if task.activities %}
@@ -79,8 +85,10 @@
 
 </ol>
 
-</div>
+</div><!-- closes div id="activity" -->
 {% endif %} <!-- closes if task.activities -->
+
+</div><!-- closes div="main" -->
 
 {{ m.draw_footer(proj) }}
 

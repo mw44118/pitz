@@ -1,3 +1,4 @@
+{% import 'macros.html' as m %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 
@@ -8,70 +9,45 @@
 <link rel="stylesheet" type="text/css"
     href="/static/pitz.css" />
 
-<script type="text/javascript" src="/static/jquery-1.4.3.js"></script>
+<script type="text/javascript"
+    src="/static/jquery-latest.js"></script>
+
+<script type="text/javascript"
+    src="/static/jquery-ui-latest.js"></script>
 
 </head>
 
 <body>
 
-<h1>{{ entity.title }}</h1>
+<div id="header">
+<h1>
+<span>{{ entity.title }}</span>
+<span class="viewtype">estimate</span>
+</h1>
+</div><!-- closes div id="header" -->
 
+<div id="main">
+
+{% if entity.description %}
 <div id="description">
 <h2>Description</h2>
-
 {{ entity.description }}
 </div><!-- closes div id="description" -->
+{% endif %}<!-- closes if entity.description -->
 
 {% if entity.tasks %}
 <div id="tasks">
 <h2>Tasks estimated as {{ entity.title }}</h2>
 
-<table>
+{{ m.draw_task_table(entity.tasks, show_estimate=False) }}
 
-<thead>
-
-<tr>
-<th class="tasktitle">Task</th>
-<th class="taskowner">Owner</th>
-<th class="taskstatus">Status</th>
-<th class="taskmilestone">Milestone</th>
-<th class="tasktags">Tags</th>
-<th class="taskpscore">pscore</th>
-</tr>
-
-</thead>
-
-{% for i, task in enumerate(entity.tasks) %}
-<tr>
-<td class="tasktitle"><a href="/by_frag/{{ task.frag }}">{{ task.title }}</a></td>
-<td class="taskowner"><a href="/by_frag/{{ task.owner.frag }}">{{ task.owner.title }}</a></td>
-
-<td class="taskstatus">
-<a href="/by_frag/{{ task.status.frag }}">{{ task.status.title }}</a>
-</td>
-
-<td class="taskmilestone">
-    <a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a>
-</td>
-
-<td class="tasktags">
-{% if task.tags %}
-<ul>
-{% for tag in task.tags %}
-<li><a href="/by_frag/{{ tag.frag }}">{{ tag.title }}</a></li>
-{% endfor %}
-</ul>
-{% endif %} <!-- closes if task.tags -->
-</td><!-- closes td class="tasktags" -->
-
-<td class="taskpscore">{{ task.pscore }}</td>
-
-</tr>
-{% endfor %}
-
-</table>
 </div><!-- closes div id="tasks" -->
 {% endif %}
+
+</div><!-- closes div id="main" -->
+
+{{ m.draw_footer(proj) }}
+
 </body>
 
 </html>
