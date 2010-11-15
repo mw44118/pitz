@@ -75,11 +75,21 @@ class StaticHandler(object):
     def __call__(self, environ, start_response):
 
         status = '200 OK'
-        headers = [('Content-type', 'text/plain')]
-        start_response(status, headers)
 
         filename = self.extract_filename(environ['PATH_INFO'])
         f = self.find_file(filename)
+
+        if filename.endswith('.js'):
+            content_type = 'application/x-javascript'
+
+        elif filename.endswith('.css'):
+            content_type = 'text/css'
+
+        else:
+            content_type = 'text/plain'
+
+        headers = [('Content-type', content_type)]
+        start_response(status, headers)
 
         return [f.read()]
 
