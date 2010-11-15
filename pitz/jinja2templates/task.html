@@ -11,6 +11,18 @@
 
 {{ m.add_jquery_script_tags() }}
 
+<script type="text/javascript">
+$(document).ready(function () {
+
+$("#attributes a").toggle(
+    function () { $(this).siblings('form').css('display', 'inline'); },
+    function () { $(this).siblings('form').css('display', 'none'); }
+);
+
+});
+
+</script>
+
 </head>
 
 <body>
