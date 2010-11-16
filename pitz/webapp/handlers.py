@@ -46,11 +46,8 @@ class HelpHandler(object):
 
 class StaticHandler(object):
 
-    def __init__(self):
-
-        self.static_files = os.path.join(
-            os.path.split(os.path.dirname(__file__))[0],
-            'static')
+    def __init__(self, static_files):
+        self.static_files = static_files
 
     def wants_to_handle(self, environ):
 
@@ -63,8 +60,8 @@ class StaticHandler(object):
 
         f = self.find_file(filename)
 
-        modified_time = self.figure_out_modified_time(os.path.join(
-            self.static_files, filename))
+        modified_time = self.figure_out_modified_time(
+            os.path.join(self.static_files, filename))
 
         headers = [
             ('Content-Type', self.figure_out_content_type(filename)),
@@ -75,15 +72,14 @@ class StaticHandler(object):
 
         return [f.read()]
 
-    @staticmethod
-    def find_file(filename):
+    def find_file(self, filename):
         """
         Return an open file for filename.
         """
 
         return open(os.path.join(
-            os.path.split(os.path.dirname(__file__))[0],
-            'static', filename))
+            self.static_files,
+            filename))
 
     @staticmethod
     def extract_filename(path_info):

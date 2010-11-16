@@ -190,3 +190,48 @@ class TestDispatcher(unittest.TestCase):
 
         assert self.app.dispatch(self.bogus_environ) is None
 
+class TestStaticHandler(unittest.TestCase):
+
+    def test_1(self):
+
+        sh = handlers.StaticHandler(os.path.join(os.path.split(
+                os.path.dirname(__file__))[0],
+            'pitz', 'static'))
+
+
+class Test304(unittest.TestCase):
+
+    def setUp(self):
+        self.sh = handlers.StaticHandler(os.path.join(os.path.split(
+                os.path.dirname(__file__))[0],
+            'pitz', 'static'))
+
+    def test_1(self):
+        """
+        Verify our handlers reply with a Last-Modified header.
+        """
+
+        bogus_start_response = mock.Mock()
+        self.sh({'PATH_INFO': '/static/pitz.css'}, bogus_start_response)
+
+        assert bogus_start_response.called
+
+        headers = bogus_start_response.call_args[0][1]
+
+        # Make sure that there's a Last-Modified header.
+        assert [v for (k, v) in headers if k == 'Last-Modified']
+
+
+    def test_2(self):
+        """
+        When the request includes an If-Modified-Since header, and the
+        content hasn't been updated since that date, verify the handler
+        replies with a 304.
+        """
+
+    def test_3(self):
+        """
+        When the request includes an If-Modified-Since header, and the
+        content WAS updated since that date, verify the handler replies
+        with a 200.
+        """

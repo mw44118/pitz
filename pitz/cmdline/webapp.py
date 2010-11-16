@@ -1,6 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 import logging
+import os
 from wsgiref.simple_server import make_server
 
 import pitz
@@ -37,7 +38,11 @@ def pitz_webapp():
     # asks it if wants to handle that request.  So, the default handler
     # (if you make one) belongs at the end.
     app.handlers.append(handlers.FaviconHandler())
-    app.handlers.append(handlers.StaticHandler())
+
+    static_files = os.path.join(os.path.split(
+        os.path.dirname(__file__))[0], 'static')
+
+    app.handlers.append(handlers.StaticHandler(static_files))
     app.handlers.append(handlers.HelpHandler())
     app.handlers.append(handlers.ByFragHandler(proj))
     app.handlers.append(handlers.Project(proj))
