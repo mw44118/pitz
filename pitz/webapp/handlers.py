@@ -3,6 +3,7 @@
 import logging
 import os
 import re
+import time
 
 import jinja2
 
@@ -38,34 +39,18 @@ class HelpHandler(object):
         t = self.e.get_template('help.html')
 
         status = '200 OK'
-        headers = [('Content-type', 'text/html')]
+        headers = [('Content-Type', 'text/html')]
 
         start_response(status, headers)
         return [str(t.render(title='Pitz Webapp Help'))]
 
-
-class FaviconHandler(object):
+class StaticHandler(object):
 
     def __init__(self):
 
-        self.favicon_guts = open(
-            os.path.join(os.path.split(os.path.dirname(__file__))[0],
-            'static', 'favicon.ico')).read()
-
-    def wants_to_handle(self, environ):
-
-        if environ['PATH_INFO'] == '/favicon.ico':
-            return self
-
-    def __call__(self, environ, start_response):
-        status = '200 OK'
-        headers = [('Content-type', 'image/x-icon')]
-        start_response(status, headers)
-
-        return [self.favicon_guts]
-
-
-class StaticHandler(object):
+        self.static_files = os.path.join(
+            os.path.split(os.path.dirname(__file__))[0],
+            'static')
 
     def wants_to_handle(self, environ):
 
@@ -74,22 +59,19 @@ class StaticHandler(object):
 
     def __call__(self, environ, start_response):
 
-        status = '200 OK'
-
         filename = self.extract_filename(environ['PATH_INFO'])
+
         f = self.find_file(filename)
 
-        if filename.endswith('.js'):
-            content_type = 'application/x-javascript'
+        modified_time = self.figure_out_modified_time(os.path.join(
+            self.static_files, filename))
 
-        elif filename.endswith('.css'):
-            content_type = 'text/css'
+        headers = [
+            ('Content-Type', self.figure_out_content_type(filename)),
+            ('Last-Modified', modified_time),
+        ]
 
-        else:
-            content_type = 'text/plain'
-
-        headers = [('Content-type', content_type)]
-        start_response(status, headers)
+        start_response('200 OK', headers)
 
         return [f.read()]
 
@@ -114,6 +96,66 @@ class StaticHandler(object):
         return re.match(
             r'^/static/(?P<filename>.+)$',
             path_info).groupdict()['filename']
+
+    @staticmethod
+    def figure_out_modified_time(favicon_path):
+
+        tt = time.gmtime(os.stat(favicon_path).st_mtime)
+        return time.strftime('%a, %d %b %Y %H:%M:%S GMT', tt)
+
+    @staticmethod
+    def figure_out_content_type(filename):
+
+        """
+        >>> StaticHandler.figure_out_content_type('abc.js')
+        'application/x-javascript'
+        >>> StaticHandler.figure_out_content_type('abc.css')
+        'text/css'
+        >>> StaticHandler.figure_out_content_type('x.pdf')
+        'text/plain'
+        """
+
+        if filename.endswith('.js'):
+            content_type = 'application/x-javascript'
+
+        elif filename.endswith('.css'):
+            content_type = 'text/css'
+
+        else:
+            content_type = 'text/plain'
+
+        return content_type
+
+
+class FaviconHandler(StaticHandler):
+
+    def __init__(self):
+
+        self.favicon_path = os.path.join(os.path.split(os.path.dirname(
+            __file__))[0], 'static', 'favicon.ico')
+
+        self.favicon_guts = open(self.favicon_path).read()
+
+        self.last_modified = self.figure_out_modified_time(
+            self.favicon_path)
+
+
+    def wants_to_handle(self, environ):
+
+        if environ['PATH_INFO'] == '/favicon.ico':
+            return self
+
+    def __call__(self, environ, start_response):
+        status = '200 OK'
+
+        headers = [
+            ('Content-Type', 'image/x-icon'),
+            ('Last-Modified', self.last_modified),
+        ]
+
+        start_response(status, headers)
+
+        return [self.favicon_guts]
 
 class ByFragHandler(object):
 

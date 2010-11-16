@@ -1,0 +1,39 @@
+components: []
+created_by: &id001 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2010-11-15 21:28:33.609318
+description: 'Today I noticed the webapp is a little slow when running on a remote
+
+  server.
+
+
+  Most of the lag is because I added those big jquery and jquery-ui files.
+
+
+  I want to change the StaticHandler so it sends a Last-Modified header,
+
+  and then also looks in the request for an If-Modified-Since header.
+
+
+  If the If-Modified-Since header exists, it should check and see if the
+
+  browser''s cache is good enough.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: 2010-11-15 21:28:57.267517
+owner: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 336444450266496547059833010238290292739
+tags:
+- !!python/object:uuid.UUID
+  int: 162106955348893831939149234360796181164
+- !!python/object:uuid.UUID
+  int: 164428807845611858952115970237144668243
+title: Make the webapp static handlers smart enough to reply with 304 when possible
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 10981377732433179602630918554313638474
+yaml_file_saved: 2010-11-15 21:28:57.329506
