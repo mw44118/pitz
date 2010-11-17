@@ -22,11 +22,11 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-11-15 21:28:57.267517
+modified_time: 2010-11-16 22:37:21.523552
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 336444450266496547059833010238290292739
+  int: 181191650815078915740523248343325601886
 tags:
 - !!python/object:uuid.UUID
   int: 162106955348893831939149234360796181164
@@ -36,4 +36,4 @@ title: Make the webapp static handlers smart enough to reply with 304 when possi
 type: task
 uuid: !!python/object:uuid.UUID
   int: 10981377732433179602630918554313638474
-yaml_file_saved: 2010-11-15 21:28:57.329506
+yaml_file_saved: 2010-11-16 22:37:21.598273
