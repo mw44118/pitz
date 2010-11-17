@@ -1,0 +1,46 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-11-16 09:41:50.578604
+description: 'Right now, all my tests live in a top-level tests folder.
+
+
+  It might be better to put tests next to the code they test.  For
+
+  example, the tests for pitz.webapp.handlers would be in
+
+  pitz.webapp.handlers.tests.
+
+
+  When I install pitz right now, I don''t copy the tests folder into
+
+  site-packages.  If I mix the tests in with the code, when I install
+
+  pitz, I would probably not want to move the test code in.
+
+
+  So I would need to rewrite the setup.py script to be smart enough not to
+
+  copy those files into the tree.
+
+
+  Really though, before I do anything, I should post to some python
+
+  packaging mailing list and ask what other people are doing.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 116377909236696500232003487119181129214
+title: Consider reorganizing tests to be inside of code subdirectory
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 18114733183336887605684517605666257572
+yaml_file_saved: 2010-11-16 09:41:50.637902
