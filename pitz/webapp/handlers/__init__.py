@@ -43,7 +43,8 @@ class HelpHandler(object):
 
         # Figure out the path to the jinja2templates.
         jinja2dir = os.path.join(
-            os.path.split(os.path.dirname(__file__))[0],
+            os.path.split(
+                os.path.split(os.path.dirname(__file__))[0])[0],
             'jinja2templates')
 
         # Set up a template loader.
