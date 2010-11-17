@@ -1,5 +1,6 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
+import datetime
 import logging
 import os
 import re
@@ -8,6 +9,20 @@ import time
 import jinja2
 
 log = logging.getLogger('pitz.webapp.handlers')
+
+class Handler(object):
+
+    def __init__(self, proj):
+        self.proj = proj
+
+        jinja2dir = os.path.join(
+            os.path.split(os.path.dirname(__file__))[0],
+            'jinja2templates')
+
+        # Set up a template loader.
+        self.e = jinja2.Environment(
+            extensions=['jinja2.ext.loopcontrols'],
+            loader=jinja2.FileSystemLoader(jinja2dir))
 
 class HelpHandler(object):
 
@@ -46,6 +61,8 @@ class HelpHandler(object):
 
 class StaticHandler(object):
 
+    timefmt = '%a, %d %b %Y %H:%M:%S GMT'
+
     def __init__(self, static_files):
         self.static_files = static_files
 
@@ -56,6 +73,8 @@ class StaticHandler(object):
 
     def __call__(self, environ, start_response):
 
+        log.debug(environ)
+
         filename = self.extract_filename(environ['PATH_INFO'])
 
         f = self.find_file(filename)
@@ -63,14 +82,36 @@ class StaticHandler(object):
         modified_time = self.figure_out_modified_time(
             os.path.join(self.static_files, filename))
 
-        headers = [
-            ('Content-Type', self.figure_out_content_type(filename)),
-            ('Last-Modified', modified_time),
-        ]
+        modified_time_header = modified_time.strftime(self.timefmt)
 
-        start_response('200 OK', headers)
+        if 'HTTP_IF_MODIFIED_SINCE' in environ:
 
-        return [f.read()]
+            if_modified_since = datetime.datetime.strptime(
+                environ['HTTP_IF_MODIFIED_SINCE'],
+                self.timefmt)
+
+        if 'HTTP_IF_MODIFIED_SINCE' in environ \
+        and if_modified_since >= modified_time:
+
+            headers = [
+                ('Content-Type', self.figure_out_content_type(filename)),
+                ('Last-Modified', modified_time_header),
+            ]
+
+            start_response('304 Not Modified', headers)
+
+            return []
+
+        else:
+
+            headers = [
+                ('Content-Type', self.figure_out_content_type(filename)),
+                ('Last-Modified', modified_time_header),
+            ]
+
+            start_response('200 OK', headers)
+
+            return [f.read()]
 
     def find_file(self, filename):
         """
@@ -97,7 +138,8 @@ class StaticHandler(object):
     def figure_out_modified_time(favicon_path):
 
         tt = time.gmtime(os.stat(favicon_path).st_mtime)
-        return time.strftime('%a, %d %b %Y %H:%M:%S GMT', tt)
+        return datetime.datetime(*tt[:6])
+
 
     @staticmethod
     def figure_out_content_type(filename):
@@ -133,8 +175,7 @@ class FaviconHandler(StaticHandler):
         self.favicon_guts = open(self.favicon_path).read()
 
         self.last_modified = self.figure_out_modified_time(
-            self.favicon_path)
-
+            self.favicon_path).strftime(self.timefmt)
 
     def wants_to_handle(self, environ):
 
@@ -152,6 +193,7 @@ class FaviconHandler(StaticHandler):
         start_response(status, headers)
 
         return [self.favicon_guts]
+
 
 class ByFragHandler(object):
 
@@ -204,19 +246,6 @@ class Project(object):
 
         return [str(self.proj.html)]
 
-class Handler(object):
-
-    def __init__(self, proj):
-        self.proj = proj
-
-        jinja2dir = os.path.join(
-            os.path.split(os.path.dirname(__file__))[0],
-            'jinja2templates')
-
-        # Set up a template loader.
-        self.e = jinja2.Environment(
-            extensions=['jinja2.ext.loopcontrols'],
-            loader=jinja2.FileSystemLoader(jinja2dir))
 
 class Greedy(Handler):
 
