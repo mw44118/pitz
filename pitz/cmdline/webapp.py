@@ -37,16 +37,16 @@ def pitz_webapp():
     # request arrives, the app starts with the first handler added and
     # asks it if wants to handle that request.  So, the default handler
     # (if you make one) belongs at the end.
-    app.handlers.append(handlers.FaviconHandler())
 
     static_files = os.path.join(os.path.split(
         os.path.dirname(__file__))[0], 'static')
 
+    app.handlers.append(handlers.FaviconHandler(static_files))
     app.handlers.append(handlers.StaticHandler(static_files))
     app.handlers.append(handlers.HelpHandler())
     app.handlers.append(handlers.ByFragHandler(proj))
     app.handlers.append(handlers.Project(proj))
-    # app.handlers.append(handlers.Greedy(proj))
+    app.handlers.append(handlers.Team(proj))
 
     httpd = make_server('', 8000, app)
     print "Serving on port 8000..."

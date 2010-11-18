@@ -70,6 +70,20 @@ a:hover
     margin:0;
 }
 
+h2
+{
+    border-bottom:1px solid #ccc;
+    padding-bottom:3px;
+}
+
+h2 span.contents
+{
+    float:right;
+    font-weight:normal;
+    font-size:12px;
+    margin-top:5px;
+}
+
 h1 span.viewtype
 {
     float:right;

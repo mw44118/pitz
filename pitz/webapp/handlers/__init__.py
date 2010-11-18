@@ -8,6 +8,8 @@ import time
 
 import jinja2
 
+import pitz.jinja2templates
+
 log = logging.getLogger('pitz.webapp.handlers')
 
 class Handler(object):
@@ -15,9 +17,7 @@ class Handler(object):
     def __init__(self, proj):
         self.proj = proj
 
-        jinja2dir = os.path.join(
-            os.path.split(os.path.dirname(__file__))[0],
-            'jinja2templates')
+        jinja2dir = os.path.dirname(pitz.jinja2templates.__file__)
 
         # Set up a template loader.
         self.e = jinja2.Environment(
@@ -249,7 +249,6 @@ class Project(object):
 
         return [str(self.proj.html)]
 
-
 class Greedy(Handler):
 
     def wants_to_handle(self, environ):
@@ -266,3 +265,5 @@ class Greedy(Handler):
         start_response(status, headers)
 
         return [str(self.proj.html)]
+
+from pitz.webapp.handlers.team import Team
