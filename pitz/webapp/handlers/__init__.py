@@ -168,10 +168,12 @@ class StaticHandler(object):
 
 class FaviconHandler(StaticHandler):
 
-    def __init__(self):
+    def __init__(self, static_dir):
 
-        self.favicon_path = os.path.join(os.path.split(os.path.split(
-            os.path.dirname(__file__))[0])[0], 'static', 'favicon.ico')
+        super(FaviconHandler, self).__init__(static_dir)
+
+        self.favicon_path = os.path.join(
+            self.static_files, 'favicon.ico')
 
         self.favicon_guts = open(self.favicon_path).read()
 
