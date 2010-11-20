@@ -157,7 +157,12 @@ class TestTeam1(unittest.TestCase):
 class TestTeam2(unittest.TestCase):
 
     def setUp(self):
-        self.th = handlers.Team(mock.Mock())
+
+        bogus_project = mock.Mock()
+        self.th = handlers.Team(bogus_project)
+
+        bogus_template_environment = mock.Mock()
+        self.th.e = bogus_template_environment
 
     def test_wants_to_handle(self):
 
