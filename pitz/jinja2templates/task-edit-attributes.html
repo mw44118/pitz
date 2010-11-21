@@ -11,84 +11,9 @@
 
 {{ m.add_jquery_script_tags() }}
 
-<script type="text/javascript">
-
-$(document).ready(function () {
-
-$("#edit-attributes").toggle(
-
-    function () {
-        $(this).text('hide form');
-        $("#update-task").toggle();
-        // $("#attributes dl").toggle();
-    },
-
-    function () {
-        $(this).text('edit');
-        $("#update-task").toggle();
-        // $("#attributes dl").toggle();
-    }
-
-);
-
-}); // Closes $(document).ready(function () {
-
-</script>
-
 </head>
 
 <body>
-
-<div id="header">
-<h1>
-<span>{{ task.title }}</span>
-<span class="viewtype">task view</span>
-</h1>
-</div><!-- closes div id="header" -->
-
-<div id="main">
-<div id="attributes">
-
-<a id="edit-attributes"
-    href="/by_frag/{{ task.frag }}/edit-attributes"
-    style="font-weight:bold;float:right;margin-top:0px;">edit</a>
-
-<dl>
-<dt>Owner</dt>
-<dd>
-<a href="/by_frag/{{ task.owner.frag }}">{{ task.owner.title }}</a>
-</dd>
-
-<dt>Status</dt>
-<dd>
-
-<a class="update-status"
-    href="/by_frag/{{ task.status.frag }}">{{ task.status.title }}</a>
-
-</dd>
-
-<dt>Estimate</dt>
-<dd>
-<a href="/by_frag/{{ task.estimate.frag }}">{{ task.estimate.title }}</a>
-</dd>
-
-<dt>Milestone</dt>
-<dd><a href="/by_frag/{{ task.milestone.frag }}">{{ task.milestone.title }}</a></dd>
-
-{% if task.tags %}
-<dt>Tags</dt>
-<dd>
-<ul>
-
-{% for tag in task.tags %}
-<li><a href="/by_frag/{{ tag.frag }}">{{ tag.title }}</a></li>
-{% endfor %}
-
-</ul>
-</dd>
-{% endif %}
-
-</dl>
 
 <form name="update-task" id="update-task" method="post"
     action="/update-task">
@@ -169,42 +94,6 @@ $("#edit-attributes").toggle(
     style="clear:both;margin-top:10px;margin-bottom:10px" />
 
 </form>
-
-</div><!-- closes div id="attributes" -->
-
-<div id="description" style="clear:both;">
-
-<h2>Description</h2>
-
-{{ task.description_as_html }}
-
-</div><!-- closes div id="description" -->
-
-{% if task.comments %}
-<div id="comments">
-<h2>Comments</h2>
-</div><!-- closes div id="comments" -->
-{% endif %}
-
-{% if task.activities %}
-<div id="activity">
-<h2>Activity</h2>
-
-<ol>
-
-{% for activity in task.activities %}
-<li>{{ activity.title }} at {{ clepy.time_ago(activity['created_time']) }}</li>
-{% endfor %}
-
-</ol>
-
-</div><!-- closes div id="activity" -->
-{% endif %} <!-- closes if task.activities -->
-
-
-</div><!-- closes div="main" -->
-
-{{ m.draw_footer(proj) }}
 
 </body>
 

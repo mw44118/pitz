@@ -202,9 +202,16 @@ class ByFragHandler(object):
 
     def __init__(self, proj):
         self.proj = proj
+        self.pattern = re.compile(r'^/by_frag/......$')
 
     def wants_to_handle(self, environ):
-        if environ['PATH_INFO'].startswith('/by_frag'):
+
+        log.info('self.__class__.__name__ is %s'
+            % self.__class__.__name__)
+
+        log.info("PATH_INFO is %(PATH_INFO)s" % environ)
+
+        if self.pattern.match(environ['PATH_INFO']):
             return self
 
     def __call__(self, environ, start_response):
@@ -224,10 +231,14 @@ class ByFragHandler(object):
         """
         >>> ByFragHandler.extract_frag('/by_frag/9f1c76')
         '9f1c76'
+
+        >>> ByFragHandler.extract_frag(
+        ...     '/by_frag/9f1c76/edit-attributes')
+        '9f1c76'
         """
 
         return re.match(
-            r'^/by_frag/(?P<frag>.+)$',
+            r'^/by_frag/(?P<frag>.{6}).*$',
             path_info).groupdict()['frag']
 
 
@@ -265,5 +276,24 @@ class Greedy(Handler):
         start_response(status, headers)
 
         return [str(self.proj.html)]
+
+class EditAttributes(ByFragHandler):
+
+    def __init__(self, proj):
+        self.proj = proj
+        self.pattern = re.compile(r'^/by_frag/....../edit-attributes$')
+
+    def __call__(self, environ, start_response):
+
+        task = self.proj.by_frag(
+            self.extract_frag(environ['PATH_INFO']))
+
+        tmpl = task.e.get_template('task-edit-attributes.html')
+
+        status = '200 OK'
+        headers = [('Content-type', 'text/html')]
+        start_response(status, headers)
+
+        return [str(tmpl.render(task=task))]
 
 from pitz.webapp.handlers.team import Team

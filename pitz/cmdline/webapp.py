@@ -45,6 +45,7 @@ def pitz_webapp():
     app.handlers.append(handlers.StaticHandler(static_files))
     app.handlers.append(handlers.HelpHandler())
     app.handlers.append(handlers.ByFragHandler(proj))
+    app.handlers.append(handlers.EditAttributes(proj))
     app.handlers.append(handlers.Project(proj))
     app.handlers.append(handlers.Team(proj))
 
