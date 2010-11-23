@@ -19,6 +19,9 @@ def pitz_webapp():
 
     p = setup_options()
 
+    p.add_option('-p', '--port', help='HTTP port (default is 9876)',
+       type='int', action='store', default=9876)
+
     options, args = p.parse_args()
     pitz.setup_logging(getattr(logging, options.log_level))
 
@@ -48,6 +51,6 @@ def pitz_webapp():
     app.handlers.append(handlers.Project(proj))
     # app.handlers.append(handlers.Greedy(proj))
 
-    httpd = make_server('', 8000, app)
-    print "Serving on port 8000..."
+    httpd = make_server('', options.port, app)
+    print "Serving on port %d..." % options.port
     httpd.serve_forever()

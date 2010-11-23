@@ -114,7 +114,7 @@ class PitzScript(object):
             default='INFO',
             choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
 
-        p.add_option('-p', '--pitzdir')
+        p.add_option('--pitzdir')
 
         p.add_option(
             '--pdb',
@@ -556,7 +556,7 @@ f(pitz_shell)
 def setup_options():
     p = optparse.OptionParser()
 
-    p.add_option('-p', '--pitzdir')
+    p.add_option('--pitzdir')
 
     p.add_option('-l', '--log-level',
         help='DEBUG, INFO (default), WARNING, ERROR, CRITICAL',
