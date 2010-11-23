@@ -33,7 +33,7 @@ ul li
     display:inline;
 }
 
-ul li:after
+dl ul li:after
 {
     content: ", ";
 }
@@ -70,6 +70,20 @@ a:hover
     margin:0;
 }
 
+h2
+{
+    border-bottom:1px solid #ccc;
+    padding-bottom:3px;
+}
+
+h2 span.contents
+{
+    float:right;
+    font-weight:normal;
+    font-size:12px;
+    margin-top:5px;
+}
+
 h1 span.viewtype
 {
     float:right;
@@ -96,10 +110,9 @@ dt:after
     content: ":";
 }
 
-dl
+dl, form#update-task
 {
-    margin-top:20px;
-    padding-top:20px;
+    margin-top:10px;
 }
 
 table
@@ -160,6 +173,8 @@ td, th
 #attributes form
 {
     display:none;
+    margin-bottom:5px;
+    border-bottom:1px solid #ccc;
 }
 
 form#update-status
@@ -171,5 +186,15 @@ form#update-status
 #attributes form select
 {
     margin:0;
+    margin-right:1em;
 }
 
+#attributes label:after
+{
+    content: ":";
+}
+
+#tag-checkboxes label:after
+{
+    content: "";
+}

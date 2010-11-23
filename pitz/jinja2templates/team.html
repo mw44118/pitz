@@ -1,0 +1,49 @@
+{% import 'macros.html' as m %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+
+<head>
+
+<title>Team View</title>
+
+<link rel="stylesheet" type="text/css"
+    href="/static/pitz.css" />
+
+{{ m.add_jquery_script_tags() }}
+
+</head>
+
+<body>
+
+<div id="header">
+<h1>
+<span>Team View</span>
+</h1>
+</div><!-- closes div id="header" -->
+
+<div id="main">
+
+{% for person in proj.people %}
+
+{% if person.first_four_tasks %}
+<div id="{{ person.frag }}">
+<h2>
+<span>{{ person.title }}</span>
+<span class="contents">first four tasks</span>
+</h2>
+
+{{ m.draw_task_table(person.first_four_tasks, show_owner=False) }}
+
+</div><!-- closes div id="{{ person.frag }}" -->
+{% endif %}
+
+{% endfor %}<!-- closes for person in proj.people -->
+
+</div><!-- closes div id="main" -->
+
+{{ m.draw_footer(proj) }}
+
+</body>
+
+</html>
