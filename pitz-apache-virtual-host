@@ -1,0 +1,23 @@
+<VirtualHost *>
+
+    ServerAdmin webmaster@localhost
+
+    DocumentRoot /home/matt/checkouts/pitz/pitz/static
+
+    ServerName pitz.tplus1.com
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/pitz-access.log combined
+    ErrorLog /var/log/apache2/pitz-error.log
+    ServerSignature On
+
+    # Send requests for pitz.tplus1.com to localhost 9876.
+
+    RewriteEngine on
+    RewriteRule ^/static/(.*) /home/matt/checkouts/pitz/pitz/static/$1 [last]
+    RewriteRule ^(.*) http://127.0.0.1:9876$1 [proxy]
+
+</VirtualHost>

@@ -44,6 +44,8 @@ class SimpleWSGIApp(object):
         Return the first handler that wants to handle this environ.
         """
 
+        log.debug(environ)
+
         for h in self.handlers:
             if h.wants_to_handle(environ):
                 return h

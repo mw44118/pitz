@@ -74,8 +74,6 @@ class StaticHandler(object):
 
     def __call__(self, environ, start_response):
 
-        log.debug(environ)
-
         filename = self.extract_filename(environ['PATH_INFO'])
 
         f = self.find_file(filename)
@@ -205,11 +203,6 @@ class ByFragHandler(object):
         self.pattern = re.compile(r'^/by_frag/......$')
 
     def wants_to_handle(self, environ):
-
-        log.info('self.__class__.__name__ is %s'
-            % self.__class__.__name__)
-
-        log.info("PATH_INFO is %(PATH_INFO)s" % environ)
 
         if self.pattern.match(environ['PATH_INFO']):
             return self
