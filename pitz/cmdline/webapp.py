@@ -14,7 +14,7 @@ from pitz.webapp import handlers
 def pitz_webapp():
 
     """
-    Later on, will be awesome.
+    This function gets run by the command-line script pitz-webapp.
     """
 
     p = setup_options()
@@ -41,12 +41,16 @@ def pitz_webapp():
     # asks it if wants to handle that request.  So, the default handler
     # (if you make one) belongs at the end.
 
+    # Consider this section below the same as the urls.py file in
+    # django.
+
     static_files = os.path.join(os.path.split(
         os.path.dirname(__file__))[0], 'static')
 
     app.handlers.append(handlers.FaviconHandler(static_files))
     app.handlers.append(handlers.StaticHandler(static_files))
-    app.handlers.append(handlers.HelpHandler())
+    app.handlers.append(handlers.HelpHandler(proj))
+    app.handlers.append(handlers.Update(proj))
     app.handlers.append(handlers.ByFragHandler(proj))
     app.handlers.append(handlers.EditAttributes(proj))
     app.handlers.append(handlers.Project(proj))

@@ -71,15 +71,13 @@ class Person(Entity):
         first_four_tasks.title = 'First four tasks from to-do list'
         return first_four_tasks
 
-
     @property
     def use_colorization(self):
         return self.get('use_colorization', None)
 
     @classmethod
     def setup_defaults(cls, proj):
-        cls(proj, title='no owner', pscore=-100)
-
+        cls(proj, title='no owner', pscore=-100, is_a_default=True)
 
     @property
     def my_activities(self):

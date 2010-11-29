@@ -19,14 +19,6 @@ import pitz.static
 from pitz import webapp
 from pitz.webapp import handlers
 
-class TestHelpHandler(unittest.TestCase):
-
-    def setUp(self):
-        self.hh = handlers.HelpHandler()
-
-    def test_1(self):
-        help_page_iterable = self.hh(mock.Mock(), mock.Mock())
-
 class TestStaticHandler1(unittest.TestCase):
 
     def test_1(self):
@@ -148,32 +140,3 @@ class TestFaviconHandler2(unittest.TestCase):
     def test_call(self):
 
         assert self.fh({}, mock.Mock())
-
-class TestTeam1(unittest.TestCase):
-
-    def test_instantiate(self):
-        handlers.Team(mock.Mock())
-
-class TestTeam2(unittest.TestCase):
-
-    def setUp(self):
-
-        bogus_project = mock.Mock()
-        self.th = handlers.Team(bogus_project)
-
-        bogus_template_environment = mock.Mock()
-        self.th.e = bogus_template_environment
-
-    def test_wants_to_handle(self):
-
-        assert self.th.wants_to_handle({'PATH_INFO':'/team'})
-
-    def test_call(self):
-
-        bogus_start_response = mock.Mock()
-        self.th({}, bogus_start_response)
-
-        assert bogus_start_response.called
-
-        assert bogus_start_response.call_args[0][0] == '200 OK', \
-        bogus_start_response.call_args[0][0]

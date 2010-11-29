@@ -5,6 +5,7 @@ import logging
 import os
 import re
 import time
+from wsgiref.headers import Headers
 
 import jinja2
 
@@ -17,14 +18,59 @@ class Handler(object):
     def __init__(self, proj):
         self.proj = proj
 
-        jinja2dir = os.path.dirname(pitz.jinja2templates.__file__)
+    @staticmethod
+    def extract_frag(path_info):
 
-        # Set up a template loader.
-        self.e = jinja2.Environment(
-            extensions=['jinja2.ext.loopcontrols'],
-            loader=jinja2.FileSystemLoader(jinja2dir))
+        """
+        >>> ByFragHandler.extract_frag('/by_frag/9f1c76')
+        '9f1c76'
 
-class HelpHandler(object):
+        >>> ByFragHandler.extract_frag(
+        ...     '/by_frag/9f1c76/edit-attributes')
+        '9f1c76'
+
+        """
+
+        return re.match(
+            r'^/by_frag/(?P<frag>.{6}).*$',
+            path_info).groupdict()['frag']
+
+class DispatchingHandler(Handler):
+
+    def __init__(self, proj):
+        super(DispatchingHandler, self).__init__(proj)
+        self.handlers = list()
+
+    def dispatch(self, environ):
+
+        """
+        Return the first handler that wants to handle this environ.
+        """
+
+        log.debug('PATH_INFO is %(PATH_INFO)s' % environ)
+        log.debug('REQUEST_METHOD is %(REQUEST_METHOD)s' % environ)
+        log.debug('CONTENT_LENGTH is %s' % environ.get('CONTENT_LENGTH'))
+        log.debug('wsgi.input is %(wsgi.input)s' % environ)
+
+        for h in self.handlers:
+
+            log.debug(
+                'Asking %s if it wants this request...'
+                % h.__class__.__name__)
+
+            if h.wants_to_handle(environ):
+                log.debug('And the answer is YES!')
+                return h
+
+    def __call__(self, environ, start_response):
+
+        h = self.dispatch(environ)
+
+        if h:
+            return h(environ, start_response)
+
+
+class HelpHandler(Handler):
 
     """
     Handles the GET /help request.
@@ -41,26 +87,20 @@ class HelpHandler(object):
         Return a screen of help about the web app.
         """
 
-        # Figure out the path to the jinja2templates.
-        jinja2dir = os.path.join(
-            os.path.split(
-                os.path.split(os.path.dirname(__file__))[0])[0],
-            'jinja2templates')
-
-        # Set up a template loader.
-        self.e = jinja2.Environment(
-            extensions=['jinja2.ext.loopcontrols'],
-            loader=jinja2.FileSystemLoader(jinja2dir))
-
-        t = self.e.get_template('help.html')
+        t = self.proj.e.get_template('help.html')
 
         status = '200 OK'
+
         headers = [('Content-Type', 'text/html')]
 
         start_response(status, headers)
         return [str(t.render(title='Pitz Webapp Help'))]
 
 class StaticHandler(object):
+
+    """
+    Serves files like CSS and javascript.
+    """
 
     timefmt = '%a, %d %b %Y %H:%M:%S GMT'
 
@@ -196,15 +236,17 @@ class FaviconHandler(StaticHandler):
         return [self.favicon_guts]
 
 
-class ByFragHandler(object):
+class ByFragHandler(Handler):
 
     def __init__(self, proj):
-        self.proj = proj
+
+        super(ByFragHandler, self).__init__(proj)
         self.pattern = re.compile(r'^/by_frag/......$')
 
     def wants_to_handle(self, environ):
 
-        if self.pattern.match(environ['PATH_INFO']):
+        if environ['REQUEST_METHOD'] == 'GET' \
+        and self.pattern.match(environ['PATH_INFO']) :
             return self
 
     def __call__(self, environ, start_response):
@@ -218,27 +260,7 @@ class ByFragHandler(object):
 
         return [str(results.html)]
 
-    @staticmethod
-    def extract_frag(path_info):
-
-        """
-        >>> ByFragHandler.extract_frag('/by_frag/9f1c76')
-        '9f1c76'
-
-        >>> ByFragHandler.extract_frag(
-        ...     '/by_frag/9f1c76/edit-attributes')
-        '9f1c76'
-        """
-
-        return re.match(
-            r'^/by_frag/(?P<frag>.{6}).*$',
-            path_info).groupdict()['frag']
-
-
-class Project(object):
-
-    def __init__(self, proj):
-        self.proj = proj
+class Project(Handler):
 
     def wants_to_handle(self, environ):
 
@@ -253,40 +275,6 @@ class Project(object):
 
         return [str(self.proj.html)]
 
-class Greedy(Handler):
-
-    def wants_to_handle(self, environ):
-        return True
-
-    def __call__(self, environ, start_response):
-
-        """
-        Look for a template named the same as PATH_INFO or return a 404.
-        """
-
-        status = '200 OK'
-        headers = [('Content-type', 'text/html')]
-        start_response(status, headers)
-
-        return [str(self.proj.html)]
-
-class EditAttributes(ByFragHandler):
-
-    def __init__(self, proj):
-        self.proj = proj
-        self.pattern = re.compile(r'^/by_frag/....../edit-attributes$')
-
-    def __call__(self, environ, start_response):
-
-        task = self.proj.by_frag(
-            self.extract_frag(environ['PATH_INFO']))
-
-        tmpl = task.e.get_template('task-edit-attributes.html')
-
-        status = '200 OK'
-        headers = [('Content-type', 'text/html')]
-        start_response(status, headers)
-
-        return [str(tmpl.render(task=task))]
-
 from pitz.webapp.handlers.team import Team
+from pitz.webapp.handlers.editattributes import EditAttributes
+from pitz.webapp.handlers.update import Update
