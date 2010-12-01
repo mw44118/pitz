@@ -26,7 +26,6 @@ class TestUpdate1(unittest.TestCase):
         self.bogus_environ['PATH_INFO'] = '/by_frag/%(frag)s' % self.entity
         self.bogus_start_response = mock.Mock()
 
-
     def test_init(self):
         handlers.Update(self.proj)
 
@@ -71,5 +70,35 @@ class TestUpdate1(unittest.TestCase):
         self.assertFalse(wants_to_handle)
 
     def test_call1(self):
-        self.bogus_environ['CONTENT_LENGTH'] = 0
+        """
+        Update the flavor from chocolate to vanilla.
+        """
+
+        # Put something in the wsgi input dictionary.
+        something = 'flavor=vanilla'
+        self.bogus_environ['wsgi.input'].write(something)
+        self.bogus_environ['wsgi.input'].seek(0)
+        self.bogus_environ['CONTENT_LENGTH'] = len(something)
+
+        self.assertEqual(self.entity['flavor'], 'chocolate')
         self.uh(self.bogus_environ, self.bogus_start_response)
+        self.assertEqual(self.entity['flavor'], 'vanilla')
+
+    def test_call2(self):
+
+        """
+        Update the flavor from chocolate to ['chocolate', 'vanilla'].
+        """
+
+        # Put something in the wsgi input dictionary.
+        something = 'flavor=chocolate&flavor=vanilla'
+
+        self.bogus_environ['wsgi.input'].write(something)
+        self.bogus_environ['wsgi.input'].seek(0)
+        self.bogus_environ['CONTENT_LENGTH'] = len(something)
+
+        self.assertEqual(self.entity['flavor'], 'chocolate')
+        self.uh(self.bogus_environ, self.bogus_start_response)
+
+        self.assertEqual(self.entity['flavor'],
+            ['chocolate', 'vanilla'])

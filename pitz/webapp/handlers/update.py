@@ -45,30 +45,26 @@ class Update(Handler):
 
     def __call__(self, environ, start_response):
 
-        log.debug('Inside the top of __call__...')
-
         frag = self.extract_frag(environ['PATH_INFO'])
         e = self.proj.by_frag(frag)
-
-        log.debug('Found entity %(frag)s' % e)
 
         raw_post_data = environ['wsgi.input'].read(
             int(environ['CONTENT_LENGTH']))
 
-        log.debug('raw_post_data is %s' % raw_post_data)
+        log.debug('raw_post_data: %s' % raw_post_data)
 
-        post_data = urlparse.parse_qs(raw_post_data)
-
-        log.debug('parsed post_data is %s' % post_data)
+        for k, v in urlparse.parse_qs(raw_post_data).items():
+            log.debug('k is %s and v is %s' % (k, v))
+            if isinstance(v, list) and len(v) == 1:
+                e[k] = v[0]
+            else:
+                e[k] = v
 
         status = '302 FOUND'
         headers = [('Location', 'http://google.com')]
         start_response(status, headers)
 
-        log.debug('About to return an empty list...')
-
         return []
-
 
 
 class UpdateTask(Handler):
