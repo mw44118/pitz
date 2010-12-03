@@ -26,7 +26,7 @@
 
 {% for person in proj.people %}
 
-{% if person.first_four_tasks %}
+{% if person.first_four_tasks and not person.get('is_a_default') %}
 <div id="{{ person.frag }}">
 <h2>
 <span>{{ person.title }}</span>

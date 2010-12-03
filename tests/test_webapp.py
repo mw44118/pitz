@@ -6,6 +6,7 @@ import rfc822
 import time
 import unittest
 import urllib
+import wsgiref.util
 
 import mock
 
@@ -26,7 +27,7 @@ class TestWebApp(unittest.TestCase):
         Entity(self.p, title="t")
         matt = Person(self.p, title='matt')
         self.webapp = webapp.SimpleWSGIApp(self.p)
-        self.webapp.handlers.append(handlers.HelpHandler())
+        self.webapp.handlers.append(handlers.HelpHandler(self.p))
 
         Status(self.p, title='bogus status')
         Estimate(self.p, title='bogus estimate')
@@ -61,6 +62,8 @@ class TestWebApp(unittest.TestCase):
             PATH_INFO=pi,
             QUERY_STRING=qs,
             HTTP_ACCEPT=ha)
+
+        wsgiref.util.setup_testing_defaults(bogus_environ)
 
         bogus_start_response = mock.Mock()
         results = self.webapp(bogus_environ, bogus_start_response)
@@ -169,7 +172,8 @@ class TestWebApp(unittest.TestCase):
 class TestHelpHandler(unittest.TestCase):
 
     def setUp(self):
-        self.hh = handlers.HelpHandler()
+        self.p = Project(title='Bogus project for testing webapp')
+        self.hh = handlers.HelpHandler(self.p)
 
     def test_1(self):
         help_page_iterable = self.hh(mock.Mock(), mock.Mock())
@@ -185,6 +189,8 @@ class TestDispatcher(unittest.TestCase):
         self.bogus_environ = dict(
             PATH_INFO='/fibityfoo',
             QUERY_STRING='?a=1')
+
+        wsgiref.util.setup_testing_defaults(self.bogus_environ)
 
     def test_1(self):
         """

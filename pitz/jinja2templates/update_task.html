@@ -1,0 +1,80 @@
+<form name="update-task" id="update-task" method="POST"
+    action="/by_frag/{{ task.frag }}">
+
+<input type="hidden" name="frag" value="{{ task.frag }}" />
+
+<label>Owner</label>
+
+<select name="owner">
+{% for owner in task.owner.already_instantiated.values() %}
+{% if owner == task.owner %}
+<option selected>{{ owner.title }}</option>
+{% else %}
+<option>{{ owner.title }}</option>
+{% endif %}
+{% endfor %}
+</select>
+
+<label>Status</label>
+
+<select name="status">
+{% for status in task.status.already_instantiated.values() %}
+{% if status == task.status %}
+<option selected>{{ status.title }}</option>
+{% else %}
+<option>{{ status.title }}</option>
+{% endif %}
+{% endfor %}
+</select>
+
+<label>Estimate</label>
+<select name="estimate">
+{% for estimate in task.estimate.already_instantiated.values() %}
+{% if estimate == task.estimate %}
+<option selected>{{ estimate.title }}</option>
+{% else %}
+<option>{{ estimate.title }}</option>
+{% endif %}
+{% endfor %}
+</select>
+
+<label>Milestone</label>
+<select name="milestone">
+{% for milestone in task.milestone.already_instantiated.values() %}
+{% if milestone == task.milestone %}
+<option selected>{{ milestone.title }}</option>
+{% else %}
+<option>{{ milestone.title }}</option>
+{% endif %}
+{% endfor %}
+</select>
+
+<div id="tag-checkboxes">
+
+<label style="display:block;margin-top:5px;margin-bottom:5px">Tags</label>
+
+<ul style="display:block;float:left;">
+{% for tag in task.project.classes['tag'].already_instantiated.values() %}
+<li style="display:block;float:left;width:10em;">
+{% if tag in task.tags %}
+<input type="checkbox" name="tags" value="{{tag.frag}}" checked />
+
+{% else %}
+<input type="checkbox" name="tags" value="{{tag.frag}}" />
+
+{% endif %}
+
+<label>{{ tag.title }}</label>
+
+</li>
+{% endfor %}
+
+</ul>
+
+</div><!-- closes div id="tag-checkboxes" -->
+
+<input type="submit" value="Save"
+    style="clear:both;margin-top:10px;margin-bottom:10px" />
+
+</form>
+

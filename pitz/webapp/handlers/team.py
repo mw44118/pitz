@@ -11,10 +11,10 @@ class Team(Handler):
 
     def __call__(self, environ, start_response):
 
-        t = self.e.get_template('team.html')
+        tmpl = self.proj.e.get_template('team.html')
 
         status = '200 OK'
         headers = [('Content-type', 'text/html')]
         start_response(status, headers)
 
-        return [str(t.render(proj=self.proj))]
+        return [str(tmpl.render(proj=self.proj))]

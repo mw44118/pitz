@@ -33,12 +33,13 @@ ul li
     display:inline;
 }
 
-dl ul li:after
+dl ul li:after, #footer li:after, td.tasktags li:after
 {
     content: ", ";
 }
 
-ul li:last-child:after
+ul li:last-child:after, #footer li:last-child:after,
+td.tasktags:last-child:after
 {
     content: "";
 }

@@ -11,6 +11,7 @@ import jinja2
 
 from pitz import build_filter, PitzException
 from pitz.entity import Entity
+from pitz.webapp.handlers import DispatchingHandler
 
 log = logging.getLogger('pitz.webapp')
 
@@ -19,11 +20,7 @@ class NoMatch(PitzException):
     Indicates that we couldn't match this URL.
     """
 
-class SimpleWSGIApp(object):
-
-    def __init__(self, proj):
-        self.proj = proj
-        self.handlers = list()
+class SimpleWSGIApp(DispatchingHandler):
 
     @classmethod
     def reply404(cls, start_response, msg=None):
@@ -37,18 +34,6 @@ class SimpleWSGIApp(object):
             return [msg]
         else:
             return ["Sorry, didn't match any patterns..."]
-
-    def dispatch(self, environ):
-
-        """
-        Return the first handler that wants to handle this environ.
-        """
-
-        log.debug(environ)
-
-        for h in self.handlers:
-            if h.wants_to_handle(environ):
-                return h
 
     def __call__(self, environ, start_response):
 
