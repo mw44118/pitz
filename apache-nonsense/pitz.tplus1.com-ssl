@@ -1,5 +1,5 @@
-NameVirtualHost *:80
-<VirtualHost *:80>
+NameVirtualHost *:443
+<VirtualHost *:443>
 
     ServerName pitz.tplus1.com
 
@@ -19,6 +19,11 @@ NameVirtualHost *:80
     Order allow,deny
     Allow from all
     </Directory>
+
+    SSLEngine on
+
+    SSLCertificateFile /home/matt/checkouts/pitz/apache-nonsense/server.crt
+    SSLCertificateKeyFile /home/matt/checkouts/pitz/apache-nonsense/server.key
 
     WSGIScriptAlias /myapp /home/matt/checkouts/pitz/apache-nonsense/myapp.wsgi
 
