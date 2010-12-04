@@ -1,0 +1,25 @@
+.. vim: set filetype=rst :
+
+
+++++++++++++++++++++++++++++++++++++++++++
+Instructions for setting up pitz on Ubuntu
+++++++++++++++++++++++++++++++++++++++++++
+
+Install these modules
+---------------------
+
+*   mod_wsgi
+*   mod_ssl
+
+/etc/apache2/ports.conf
+-----------------------
+
+Add this line in the <IfModule mod_ssl.c> section::
+
+    NameVirtualHost *:443
+
+Copy these files
+----------------
+
+*   cp pitz.tplus1.com /etc/apache/sites-available/
+*   cp pitz.tplus1.com-ssl /etc/apache/sites-available/

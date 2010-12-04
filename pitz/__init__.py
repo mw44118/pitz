@@ -8,6 +8,7 @@ which is a grab bag of fanciness.
 """
 
 import logging
+import logging.config
 import os
 import subprocess
 

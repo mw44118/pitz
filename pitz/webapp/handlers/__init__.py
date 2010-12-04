@@ -7,8 +7,6 @@ import re
 import time
 from wsgiref.headers import Headers
 
-import jinja2
-
 import pitz.jinja2templates
 
 log = logging.getLogger('pitz.webapp.handlers')

@@ -1,3 +1,11 @@
+# vim: set filetype=python :
+
+import logging
+import logging.config
+
+
+
+
 def application(environ, start_response):
 
     status = '200 OK'

@@ -20,6 +20,7 @@ NameVirtualHost *:80
     Allow from all
     </Directory>
 
+    WSGIPythonHome /home/matt/.virtualenvs/pitz
     WSGIScriptAlias /myapp /home/matt/checkouts/pitz/apache-nonsense/myapp.wsgi
 
     RewriteEngine on
