@@ -1,0 +1,29 @@
+components: []
+created_by: &id001 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: 2010-12-04 10:46:41.834409
+description: "I want to do this mostly because pitz is a non-trivial webapp, and if\
+  \ I\nget pitz working with Apache and mod_wsgi, I'll feel pretty confident I\ncan\
+  \ set up the SpotHero project this way too.\n\nParticular details\n------------------\n\
+  \n*   Use my virtualenv at /home/matt/.virtualenvs/pitz\n\n*   Apache should handle\
+  \ requests for pitz/static/*\n\n*   Offer it in HTTP and HTTPS and make sure that\
+  \ a change made in HTTP\n    also shows up in HTTPS."
+estimate: !!python/object:uuid.UUID
+  int: 194238884256655928753821602839070306529
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: 2010-12-04 10:46:51.783386
+owner: *id001
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 336444450266496547059833010238290292739
+tags:
+- !!python/object:uuid.UUID
+  int: 162106955348893831939149234360796181164
+- !!python/object:uuid.UUID
+  int: 116377909236696500232003487119181129214
+title: Run pitz-webapp through Apache and mod_wsgi
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 20777108306616050927185619747616819580
+yaml_file_saved: 2010-12-04 10:46:51.815598

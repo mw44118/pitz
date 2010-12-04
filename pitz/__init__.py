@@ -20,6 +20,10 @@ log = logging.getLogger('pitz')
 
 
 def setup_logging(level=logging.INFO):
+
+    logging.config.fileConfig(os.path.join(os.path.dirname(__file__),
+        'logging.cfg'))
+
     log = logging.getLogger('pitz')
 
     log.setLevel(level)

@@ -21,11 +21,11 @@ estimate: !!python/object:uuid.UUID
   int: 207205260775652781422748338617572801073
 milestone: !!python/object:uuid.UUID
   int: 286057988816149038667284962231564097114
-modified_time: 2010-11-20 15:55:25.656500
+modified_time: 2010-12-04 10:46:51.726385
 owner: *id001
 pscore: 0
 status: !!python/object:uuid.UUID
-  int: 336444450266496547059833010238290292739
+  int: 253180895711991390199790182412556981095
 tags:
 - !!python/object:uuid.UUID
   int: 162106955348893831939149234360796181164
@@ -37,4 +37,4 @@ title: Allow finishing a task through the webapp
 type: task
 uuid: !!python/object:uuid.UUID
   int: 131726595831287270985068472579001097395
-yaml_file_saved: 2010-11-20 15:55:25.669210
+yaml_file_saved: 2010-12-04 10:46:51.801126
