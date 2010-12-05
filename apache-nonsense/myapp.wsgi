@@ -1,12 +1,8 @@
 # vim: set filetype=python :
 
-import logging
-import logging.config
-
-
-
-
 def application(environ, start_response):
+
+    import ctypes
 
     status = '200 OK'
     output = 'Hello World!'
