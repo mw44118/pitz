@@ -1,0 +1,35 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2010-12-04 20:49:42.187034
+description: 'It would be nice to have a way to export a statement of work from a
+  pitz
+
+  task.
+
+
+  I might need a new Entity subclass -- something that has a collection of
+
+  tasks under it.
+
+
+  Maybe I could just use a milestone for that.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 286057988816149038667284962231564097114
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 164428807845611858952115970237144668243
+- !!python/object:uuid.UUID
+  int: 287487067718242131705470400321668421628
+title: Make tasks useful as statements-of-work
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 197192831256514238530491131633578035139
+yaml_file_saved: 2010-12-04 20:49:42.205114
