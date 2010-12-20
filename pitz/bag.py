@@ -293,7 +293,7 @@ class Bag(BagSuperclass):
 
     @property
     def title_underline(self):
-        return "+" * len(self.title)
+        return "=" * len(self.title)
 
     @property
     def pitzdir(self):
@@ -438,7 +438,7 @@ class Bag(BagSuperclass):
     @property
     def attributes(self):
         """
-        Return a sorted list of tuplies like (attribute, count) for all
+        Return a sorted list of tuples like (attribute, count) for all
         attributes in any entity in this bag.
         """
 
