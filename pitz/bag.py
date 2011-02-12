@@ -107,7 +107,7 @@ class Bag(BagSuperclass):
         self.e = jinja2.Environment(
             loader=jinja2.FileSystemLoader(jinja2dir))
 
-        self.e.globals = {
+        self.e.globals.update({
             'clepy': clepy,
             'isinstance': isinstance,
             'hasattr': hasattr,
@@ -116,7 +116,7 @@ class Bag(BagSuperclass):
             'len': len,
             'colors':pitz.colors,
             'looper':tempita.looper,
-        }
+        })
 
 
     def to_csv(self, filepath, *columns):
