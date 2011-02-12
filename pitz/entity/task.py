@@ -321,7 +321,7 @@ class Task(Entity):
 
                 raise pitz.OtherTaskStarted(
                     "You have %d other tasks started; "
-                    "pause those before starting this one."
+                    "pause those (with -z) before starting this one."
                     % other_started_tasks.length)
 
         self['status'] = Status(title='started')
