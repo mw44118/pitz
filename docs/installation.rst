@@ -2,7 +2,17 @@
 Install pitz
 ++++++++++++
 
-Until I release 1.0, I suggest cloning the repository at github::
+Install the most recent release
+===============================
+
+You can get it off the python package index like this::
+
+    $ easy_install pitz
+
+Or build the development version from source
+============================================
+
+Grab this git repo::
 
     $ git clone git://github.com/mw44118/pitz.git
 
