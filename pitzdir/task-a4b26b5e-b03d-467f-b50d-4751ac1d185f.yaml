@@ -1,0 +1,25 @@
+components: []
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2011-02-20 21:51:23.569625
+description: "Right now, I'm using optparse.  argparse is now in the standard library,\n\
+  and it might be a better solution.\n\nEspecially if it makes it easy to do stuff\
+  \ like::\n\n    $ pitz todo\n\nrather than::\n\n    $ pitz-todo"
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: *id001
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Research if argparse is a better fit
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 218919797869363708668675567204760885343
+yaml_file_saved: 2011-02-20 21:51:23.582469
