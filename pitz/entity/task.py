@@ -79,6 +79,18 @@ class Task(Entity):
             pitz.colors['clear'])
 
     @property
+    def colorized_title_view_without_ellipses(self):
+        """
+        Return the title string dressed up in a bash color.
+        """
+
+        return '%s%-62s%s' % (
+            self.title_color,
+            self.title,
+            pitz.colors['clear'])
+
+
+    @property
     def milestone(self):
         return self['milestone']
 

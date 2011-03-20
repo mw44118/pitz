@@ -1,4 +1,4 @@
-{{ e.colorized_title_view }}
+{{ e.colorized_title_view_without_ellipses }}
 {{ e.title_color }}{% for equalsign in e.title -%}={% endfor %}{{ colors['clear'] }}
 
 {{ e.interesting_attributes_view }}
