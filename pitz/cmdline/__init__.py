@@ -1179,7 +1179,9 @@ class PitzAddTask(PitzScript):
             status=Status(proj, title='unstarted'),
 
             milestone=default_milestone if options.use_defaults \
-            else Milestone.choose_from_already_instantiated(default_milestone),
+            else Milestone.choose_from_already_instantiated(
+                default_milestone,
+                predicate=lambda m: not m.reached),
 
             estimate=default_estimate if options.use_defaults \
             else Estimate.choose_from_already_instantiated(default_estimate),

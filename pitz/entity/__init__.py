@@ -552,9 +552,15 @@ class Entity(dict):
             return default
 
     @classmethod
-    def choose(cls, default=None):
+    def choose(cls, default=None, predicate=None):
 
-        choices = sorted(cls.already_instantiated.values(), reverse=True)
+        sorted_values = sorted(cls.already_instantiated.values(), reverse=True)
+
+        if predicate:
+            choices = [choice for choice in sorted_values if predicate(choice)]
+
+        else:
+            choices = sorted_values
 
         print("Choose a %s" % cls.__name__)
         for i, e in enumerate(choices):
