@@ -24,6 +24,7 @@ setup(
 
     package_data={
         'pitz': [
+            'static/*',
             'logging.cfg',
             'jinja2templates/*.html',
             'jinja2templates/*.txt',

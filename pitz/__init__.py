@@ -14,7 +14,7 @@ import subprocess
 
 # Read http://semver.org for an explanation of how semantic versioning
 # works.
-__version__ = "1.2.2"
+__version__ = "1.2.3"
 
 log = logging.getLogger('pitz')
 
