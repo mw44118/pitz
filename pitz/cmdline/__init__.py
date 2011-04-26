@@ -10,7 +10,6 @@ import warnings
 
 warnings.simplefilter('ignore', DeprecationWarning)
 
-from IPython.Shell import IPShellEmbed
 import clepy
 
 import pitz
@@ -536,6 +535,7 @@ def pitz_shell():
     ns['send_through_pager'] = clepy.send_through_pager
     ns['edit_with_editor'] = clepy.edit_with_editor
 
+    from IPython.Shell import IPShellEmbed
     s = IPShellEmbed(['-colors', 'Linux'])
     s(local_ns=ns)
 

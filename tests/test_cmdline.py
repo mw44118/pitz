@@ -112,13 +112,6 @@ class TestPitzShell(TestPitzCmdLine):
         sys.argv = ['pitz-shell', '--version']
         cmdline.pitz_shell()
 
-    @patch('pitz.cmdline.IPShellEmbed')
-    @patch('__builtin__.raw_input')
-    def test_shell(self, m1, m2):
-
-        sys.argv = ['pitz-shell']
-        cmdline.pitz_shell()
-
 
 class TestPitzSetup(unittest.TestCase):
 

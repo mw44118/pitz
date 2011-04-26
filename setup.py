@@ -35,7 +35,6 @@ setup(
 
     install_requires=[
         'clepy>=0.3.19',
-        'IPython',
         'PyYAML',
         'jinja2',
         'Tempita',
