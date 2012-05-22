@@ -1,0 +1,30 @@
+components: []
+created_time: &id001 2012-05-22 11:44:55.148489
+description: '# Task description goes here
+
+  It would be much better if pitz would follow the git example ... having all
+
+  commands in some %{_libdir}/pitz/ directory and central command pitz which
+
+  should call the subcommands.
+
+
+  Of course, the following first step should be to rewrite setup.py.'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: *id001
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 327280339527671628486558366906481688438
+title: Rewrite setup.py to move subcommands out of $PATH
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 231324085020429227165209919096344218266
+yaml_file_saved: 2012-05-22 11:44:55.210106
