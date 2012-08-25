@@ -1,0 +1,12 @@
+attached_files: []
+created_time: &id001 2012-05-22 12:27:42.066771
+description: '# Person description goes here
+
+  Trying to find my way around here.'
+modified_time: *id001
+pscore: 0
+title: mcepl
+type: person
+uuid: !!python/object:uuid.UUID
+  int: 121087376307874086099140936508327087962
+yaml_file_saved: 2012-05-22 12:27:42.124994
