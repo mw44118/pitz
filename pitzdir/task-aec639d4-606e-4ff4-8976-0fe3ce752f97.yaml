@@ -1,0 +1,28 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 121087376307874086099140936508327087962
+created_time: &id001 2012-05-22 14:05:02.962581
+description: '# Task description goes here
+
+  That''s a long time task, but my original motivation for starting
+
+  to work on pitz. We may get some inspiration from ditz-trac (best
+
+  preserved on https://github.com/mcepl/ditz-trac).'
+estimate: !!python/object:uuid.UUID
+  int: 194238884256655928753821602839070306529
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 164428807845611858952115970237144668243
+title: Synchronization with Trac
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 232314918968127039285834759982049210263
+yaml_file_saved: 2012-05-22 14:05:02.969522

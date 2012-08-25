@@ -1,0 +1,27 @@
+components: []
+created_time: 2012-05-22 11:52:05.698110
+description: "# Task description goes here\nwycliff:pitz (master) $ pitz-show 98876e\n\
+  Traceback (most recent call last):\n  File \"/home/matej/.local/bin/pitz-show\"\
+  , line 9, in <module>\n    load_entry_point('pitz==1.2.4', 'console_scripts', 'pitz-show')()\n\
+  \  File \"/home/matej/archiv/knihovna/repos/pitz/pitz/cmdline/__init__.py\", line\
+  \ 306, in __call__\n    self.handle_proj(p, options, args, proj)\n  File \"/home/matej/archiv/knihovna/repos/pitz/pitz/cmdline/__init__.py\"\
+  , line 600, in handle_proj\n    proj.me.use_colorization)),\nAttributeError: 'NoneType'\
+  \ object has no attribute 'use_colorization'\nwycliff:pitz (master) $"
+estimate: !!python/object:uuid.UUID
+  int: 75772849121300233890882493547161365968
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: 2012-05-22 13:20:23.300010
+owner: !!python/object:uuid.UUID
+  int: 121087376307874086099140936508327087962
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 181191650815078915740523248343325601886
+tags:
+- !!python/object:uuid.UUID
+  int: 213302401238485658731862796644474871986
+title: Crash in proj.me.use_colorization
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 157121179184309617561263659582440039651
+yaml_file_saved: 2012-05-22 13:20:23.312757

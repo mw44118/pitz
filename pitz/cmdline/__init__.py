@@ -591,14 +591,14 @@ class PitzShow(PitzScript):
 
         if isinstance(e, Entity):
 
+            colorization = None
+            if proj.me:
+                colorization = proj.me.use_colorization
             clepy.send_through_pager(
                 e.custom_view(
                     options.custom_view or 'detailed_view',
-
                     color=self.figure_out_colorization(
-                        options.color,
-                        proj.me.use_colorization)),
-
+                        options.color, colorization)),
                 clepy.figure_out_pager(os.environ))
 
         else:

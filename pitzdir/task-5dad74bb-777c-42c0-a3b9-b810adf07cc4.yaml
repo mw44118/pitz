@@ -1,0 +1,35 @@
+components: []
+created_by: &id002 !!python/object:uuid.UUID
+  int: 121087376307874086099140936508327087962
+created_time: &id001 2012-05-22 13:59:11.096654
+description: '# Task description goes here
+
+  It is most likely that the most (if any?) new users of pitz will
+
+  be coming from ditz. Import of their data is thus very important.
+
+
+  There is a discussion on this at http://blog.tplus1.com/index.php\
+
+  /2009/03/04/how-to-load-ditz-issues-into-python/ It shouldn''t be
+
+  that difficult to fix YAML issues (see my yamlish package for
+
+  examples how to do it.)'
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: *id001
+owner: *id002
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 164428807845611858952115970237144668243
+title: Import .ditz tasks
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 124518838576683053321122812170276469956
+yaml_file_saved: 2012-05-22 13:59:11.161567
