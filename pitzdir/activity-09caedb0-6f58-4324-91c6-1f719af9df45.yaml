@@ -1,0 +1,14 @@
+created_by: &id002 !!python/object:uuid.UUID
+  int: 121087376307874086099140936508327087962
+created_time: &id001 2012-05-22 14:02:25.700428
+description: ''
+entity: !!python/object:uuid.UUID
+  int: 190961925548368660980085708616065171850
+modified_time: *id001
+pscore: 0
+title: mcepl set milestone from unscheduled to 1.0 on 8fa9ed
+type: activity
+uuid: !!python/object:uuid.UUID
+  int: 13016716837180484628947962432593715013
+who_did_it: *id002
+yaml_file_saved: 2012-05-22 14:02:25.713847
