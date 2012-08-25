@@ -1,0 +1,25 @@
+components: []
+created_by: !!python/object:uuid.UUID
+  int: 217356799640352244068158184369341070513
+created_time: &id001 2011-05-28 16:00:57.368473
+description: "It is possible to grab all issues for a project::\n\n    http://develop.github.com/p/issues.html\n\
+  \nIt would be nice to be able to make pitz issues from github issues.\nThat would\
+  \ give me a free web interface."
+estimate: !!python/object:uuid.UUID
+  int: 207205260775652781422748338617572801073
+milestone: !!python/object:uuid.UUID
+  int: 43202488294965147244317640483158997306
+modified_time: *id001
+owner: !!python/object:uuid.UUID
+  int: 219503519214021148627266826050732492225
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 327359014471868074244219043980996376403
+tags:
+- !!python/object:uuid.UUID
+  int: 164428807845611858952115970237144668243
+title: Allow pitz to make tasks from github issues
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 48691483739837135502767233766305990290
+yaml_file_saved: 2011-05-28 16:00:57.381700
