@@ -38,6 +38,7 @@ setup(
         'PyYAML',
         'jinja2',
         'Tempita',
+        'docutils', # thanks Nicolas!
     ],
 
     entry_points="""
